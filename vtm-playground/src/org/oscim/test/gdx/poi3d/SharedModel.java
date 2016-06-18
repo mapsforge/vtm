@@ -106,8 +106,8 @@ public class SharedModel implements RenderableProvider {
 			copy.translation.set(0,0,0);
 			copy.rotation.idt();
 			copy.scale.set(1,1,1);
-		} else if (parentTransform && copy.parent != null)
-			this.transform.mul(node.parent.globalTransform);
+		} else if (parentTransform && copy.getParent() != null)
+			this.transform.mul(node.getParent().globalTransform);
 		setBones();
 		copyAnimations(model.animations);
 		calculateTransforms();
@@ -234,10 +234,8 @@ public class SharedModel implements RenderableProvider {
 	}
 	
 	private Node copyNode(Node parent, Node node) {
-		Node copy = new Node();
+		Node copy = parent.copy();
 		copy.id = node.id;
-		//copy.boneId = node.boneId;
-		copy.parent = parent;
 		copy.translation.set(node.translation);
 		copy.rotation.set(node.rotation);
 		copy.scale.set(node.scale);
@@ -246,8 +244,8 @@ public class SharedModel implements RenderableProvider {
 		for(NodePart nodePart: node.parts) {
 			copy.parts.add(copyNodePart(nodePart));
 		}
-		for(Node child: node.children) {
-			copy.children.add(copyNode(copy, child));
+		for(Node child: node.getChildren()) {
+			copy.addChild(copyNode(copy, child));
 		}
 		return copy;
 	}
@@ -256,8 +254,8 @@ public class SharedModel implements RenderableProvider {
 		NodePart copy = new NodePart();
 		copy.meshPart = new MeshPart();
 		copy.meshPart.id = nodePart.meshPart.id;
-		copy.meshPart.indexOffset = nodePart.meshPart.indexOffset;
-		copy.meshPart.numVertices = nodePart.meshPart.numVertices;
+		copy.meshPart.offset = nodePart.meshPart.offset;
+		copy.meshPart.size = nodePart.meshPart.size;
 		copy.meshPart.primitiveType = nodePart.meshPart.primitiveType;
 		copy.meshPart.mesh = nodePart.meshPart.mesh;
 		
@@ -286,15 +284,12 @@ public class SharedModel implements RenderableProvider {
 					continue;
 				NodeAnimation nodeAnim = new NodeAnimation();
 				nodeAnim.node = node;
-				for (final NodeKeyframe kf : nanim.keyframes) {
-					NodeKeyframe keyframe = new NodeKeyframe();
+				for (final NodeKeyframe kf : nanim.translation) {
+					NodeKeyframe keyframe = new NodeKeyframe(kf.keytime,kf);
 					keyframe.keytime = kf.keytime;
-					keyframe.rotation.set(kf.rotation);
-					keyframe.scale.set(kf.scale);
-					keyframe.translation.set(kf.translation);
-					nodeAnim.keyframes.add(keyframe);
+					nodeAnim.translation.add(keyframe);
 				}
-				if (nodeAnim.keyframes.size > 0)
+				if (nodeAnim.translation.size > 0)
 					animation.nodeAnimations.add(nodeAnim);
 			}
 			if (animation.nodeAnimations.size > 0)
@@ -346,7 +341,7 @@ public class SharedModel implements RenderableProvider {
 			}
 		}
 		
-		for(Node child: node.children) {
+		for(Node child: node.getChildren()) {
 			getRenderables(child, renderables, pool);
 		}
 	}
