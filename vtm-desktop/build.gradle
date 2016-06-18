@@ -34,7 +34,7 @@ dependencies {
   compile "com.badlogicgames.gdx:gdx-backend-jglfw:$gdxVersion"
   compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
   compile 'org.slf4j:slf4j-simple:1.7.6'
-  compile files('../vtm-ext-libs/gdx/vtm-jni-natives.jar')
+  compile files('vtm-jni-natives.jar')
 }
 
 run { ignoreExitValue = true }

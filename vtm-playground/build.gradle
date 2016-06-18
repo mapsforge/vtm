@@ -10,7 +10,7 @@ mainClassName = 'org.oscim.gdx.GdxMapApp'
 
 // package vtm native libs into jar
 task copyLibs(type: Copy) {
-  from(zipTree("../vtm-ext-libs/gdx/vtm-jni-natives.jar"))
+  from(zipTree("../vtm-desktop/vtm-jni-natives.jar"))
   into("${buildDir}/assets")
 }
 

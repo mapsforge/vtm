@@ -14,8 +14,8 @@
   <application
     android:label="VTM Start"
     android:icon="@drawable/ic_launcher"
-    android:allowBackup="true" >
-    <!-- android:theme="@style/AppTheme" -->
+    android:allowBackup="true"
+    android:theme="@style/AppTheme" >
     <activity
       android:name="org.oscim.android.start.TestActivity"
       android:label="VTM Start" >

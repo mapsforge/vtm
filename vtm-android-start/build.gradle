@@ -8,7 +8,7 @@ configurations {
 dependencies {
   compile project(':vtm-android')
   compile project(':vtm-themes')
-  compile files("${rootDir}/vtm-ext-libs/native-libs.jar")
+  compile files("${rootDir}/vtm-android/vtm-jni-natives.jar")
 
   compile 'com.android.support:support-v4:22.+'
   compile 'com.android.support:appcompat-v7:22.+'

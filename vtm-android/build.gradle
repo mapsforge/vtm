@@ -7,7 +7,7 @@ configurations {
 
 dependencies {
   compile project(':vtm')
-  provided files("${rootDir}/vtm-ext-libs/native-libs.jar")
+  provided files('vtm-jni-natives.jar')
 
   compile 'com.android.support:support-v4:21.+'
   eclipseCompile project(':appcompat')

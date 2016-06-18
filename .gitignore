@@ -5,7 +5,6 @@ target/
 build/
 *.o
 *.so
-*.jar
 *.class
 /vtm-web/war/
 /vtm-web/assets/

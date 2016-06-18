@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -40,6 +41,7 @@ public class MainActivity extends AndroidApplication {
 		Tile.SIZE = 400;
 
 		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
+		cfg.stencil = 8;
 
 		new SharedLibraryLoader().load("vtm-jni");
 
