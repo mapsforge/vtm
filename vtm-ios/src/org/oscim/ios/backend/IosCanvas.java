@@ -26,7 +26,7 @@ public class IosCanvas implements Canvas {
 	}
 
 	@Override
-	public void drawText(String string, float x, float y, Paint paint) {
+	public void drawText(String string, float x, float y, Paint fill, Paint stroke) {
 		if (bitmap == null) {
 			// log.debug("no bitmap set");
 			return;
@@ -64,13 +64,14 @@ public class IosCanvas implements Canvas {
 			if (i > 0)
 				adv += last.getKerning(c);
 			pixmap.drawPixmap(f, adv, //- g.xoffset,
-			                  yy - (g.height + g.yoffset) - (h - ch),
-			                  g.srcX, g.srcY,
-			                  g.width, g.height);
+					yy - (g.height + g.yoffset) - (h - ch),
+					g.srcX, g.srcY,
+					g.width, g.height);
 			adv += g.width;
 			last = g;
 		}
 	}
+
 
 	@Override
 	public void drawBitmap(Bitmap bitmap, float x, float y) {

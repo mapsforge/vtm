@@ -20,23 +20,24 @@ public class IosGraphics extends CanvasAdapter {
 		g = INSTANCE;
 	}
 
+
 	@Override
-	public Canvas getCanvas() {
+	protected Canvas newCanvasImpl() {
 		return new IosCanvas();
 	}
 
 	@Override
-	public Paint getPaint() {
+	protected Paint newPaintImpl() {
 		return new IosPaint();
 	}
 
 	@Override
-	public Bitmap getBitmap(int width, int height, int format) {
+	protected Bitmap newBitmapImpl(int width, int height, int format) {
 		return new IosBitmap(width, height, format);
 	}
 
 	@Override
-	public Bitmap decodeBitmap(InputStream inputStream) {
+	protected Bitmap decodeBitmapImpl(InputStream inputStream) {
 		try {
 			return new IosBitmap(inputStream);
 		} catch (IOException e) {
@@ -45,16 +46,11 @@ public class IosGraphics extends CanvasAdapter {
 		}
 	}
 
-	@Override
-	public Bitmap loadBitmapAsset(String fileName) {
-		return new IosBitmap(fileName);
 
-		//		try {
-		//			return createBitmap(fileName);
-		//		} catch (IOException e) {
-		//			e.printStackTrace();
-		//		}
-		//		return null;
+
+	@Override
+	protected Bitmap loadBitmapAssetImpl(String fileName) {
+		return new IosBitmap(fileName);
 	}
 
 }
