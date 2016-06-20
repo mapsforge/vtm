@@ -18,9 +18,6 @@ import org.robovm.apple.uikit.UIApplication;
 
 public class RobovmLauncher extends IOSApplication.Delegate {
 
-    static {
-        new SharedLibraryLoader().load("vtm-jni");
-    }
 
 
     @Override
