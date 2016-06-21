@@ -41,15 +41,15 @@ public class IOSMapApp extends GdxMap {
 //		GLAdapter.GDX_DESKTOP_QUIRKS = true;
     }
 
-    @Override
-    public void create() {
-
-    }
-
-    @Override
-    public void resize(int w, int h) {
-
-    }
+//    @Override
+//    public void create() {
+//
+//    }
+//
+//    @Override
+//    public void resize(int w, int h) {
+//
+//    }
 
 
     @Override

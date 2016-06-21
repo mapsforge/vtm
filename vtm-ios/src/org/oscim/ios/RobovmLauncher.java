@@ -2,13 +2,13 @@ package org.oscim.ios;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.badlogic.gdx.utils.SharedLibraryLoader;
 import org.oscim.backend.GLAdapter;
 import org.oscim.ios.backend.IosGL;
 import org.oscim.ios.backend.IosGraphics;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.map.Map;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
@@ -19,7 +19,6 @@ import org.robovm.apple.uikit.UIApplication;
 public class RobovmLauncher extends IOSApplication.Delegate {
 
 
-
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
@@ -27,24 +26,26 @@ public class RobovmLauncher extends IOSApplication.Delegate {
         config.orientationPortrait = true;
         config.stencilFormat = GLKViewDrawableStencilFormat._8;
 
-        return new IOSApplication(new IOSMapApp() {
+
+        IOSMapApp iosMapApp = new IOSMapApp() {
             @Override
             public void createLayers() {
-                TileSource tileSource = new OSciMap4TileSource();
+                Map map = getMap();
 
-                //initDefaultLayers(tileSource, false,true, false);
-                VectorTileLayer l = mMap.setBaseMap(tileSource);
-                mMap.setTheme(VtmThemes.NEWTRON);
-                mMap.layers().add(new BuildingLayer(mMap, l));
-                mMap.layers().add(new LabelLayer(mMap, l));
+                VectorTileLayer l = map.setBaseMap(new OSciMap4TileSource());
 
-                // mMap.getLayers().add(new GenericLayer(mMap, new
-                // GridRenderer(1,new Line(Color.LTGRAY, 1.2f),null)));
+                map.layers().add(new BuildingLayer(map, l));
+                map.layers().add(new LabelLayer(map, l));
 
-                mMap.setMapPosition(53.1, 8.8, 1 << 14);
+                map.setTheme(VtmThemes.DEFAULT);
+                map.setMapPosition(53.075, 8.808, 1 << 17);
             }
 
-        }, config);
+        };
+
+        iosMapApp.init();
+
+        return new IOSApplication(iosMapApp, config);
     }
 
     public static void main(String[] argv) {

@@ -16,6 +16,7 @@ public class JniBuilder {
 		        "libtess2/Source/priorityq.c",
 		        "libtess2/Source/sweep.c",
 		        "libtess2/Source/tess.c",
+				"libtess2/Source/org.oscim.utils.TessJNI.cpp"
 		};
 
 		String cflags = " -Wall -std=c99 -O2 -ffast-math";
@@ -81,17 +82,17 @@ public class JniBuilder {
 		ios.cFlags += cflags;
 		ios.cppFlags += cflags;
 
-		new NativeCodeGenerator().generate();
+	//	new NativeCodeGenerator().generate();
 
 		new AntScriptGenerator()
 		    .generate(new BuildConfig("vtm-jni"),
-		              android,
-		              lin64,
-		              lin32,
-		              mac,
+//		              android,
+//		              lin64,
+//		              lin32,
+//		              mac,
 		              ios,
 		              //win32home, 
-		              win32,
+//		              win32,
 		              win64
 		    );
 
