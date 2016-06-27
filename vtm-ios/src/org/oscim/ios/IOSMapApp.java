@@ -16,12 +16,18 @@
  */
 package org.oscim.ios;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 import org.oscim.backend.GLAdapter;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
+import org.oscim.gdx.InputHandler;
+import org.oscim.gdx.MotionHandler;
 import org.oscim.ios.backend.IosGL;
 import org.oscim.ios.backend.IosGraphics;
+import org.oscim.renderer.MapRenderer;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 import org.slf4j.Logger;
@@ -35,15 +41,36 @@ public class IOSMapApp extends GdxMap {
         // load native library
         new SharedLibraryLoader().load("vtm-jni");
         // init globals
-		IosGraphics.init();
-		GdxAssets.init("assets/");
+        IosGraphics.init();
+        GdxAssets.init("assets/");
         GLAdapter.init(new IosGL());
 //		GLAdapter.GDX_DESKTOP_QUIRKS = true;
     }
 
 //    @Override
 //    public void create() {
+//        mMap = new MapAdapter();
+//        mMapRenderer = new MapRenderer(mMap);
 //
+//        Gdx.graphics.setContinuousRendering(false);
+//        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+//
+//        int w = Gdx.graphics.getWidth()/2;
+//        int h = Gdx.graphics.getHeight()/2;
+//
+//        mMap.viewport().setScreenSize(w, h);
+//        mMapRenderer.onSurfaceCreated();
+//        mMapRenderer.onSurfaceChanged(w, h);
+//
+//        InputMultiplexer mux = new InputMultiplexer();
+//        mux.addProcessor(new InputHandler(this));
+//        //mux.addProcessor(new GestureDetector(20, 0.5f, 2, 0.05f,
+//        //                                     new MapController(mMap)));
+//        mux.addProcessor(new MotionHandler(mMap));
+//
+//        Gdx.input.setInputProcessor(mux);
+//
+//        createLayers();
 //    }
 //
 //    @Override

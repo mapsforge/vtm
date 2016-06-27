@@ -3,77 +3,61 @@ package org.oscim.ios.backend;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
-
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.Glyph;
+import org.robovm.apple.coregraphics.CGBitmapContext;
+import org.robovm.apple.coregraphics.CGBlendMode;
+import org.robovm.apple.coregraphics.CGRect;
+import org.robovm.apple.coretext.CTFont;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IosCanvas implements Canvas {
 
-	IosBitmap bitmap;
-	static BitmapFont font = new BitmapFont();
-
-	public IosCanvas() {
-		// canvas comes with gdx pixmap
-	}
-
-	@Override
-	public void setBitmap(Bitmap bitmap) {
-		this.bitmap = (IosBitmap) bitmap;
-		this.bitmap.pixmap.setColor(0);
-		this.bitmap.pixmap.fill();
-	}
-
-	@Override
-	public void drawText(String string, float x, float y, Paint fill, Paint stroke) {
-		if (bitmap == null) {
-			// log.debug("no bitmap set");
-			return;
-		}
-
-		// IosPaint p = (IosPaint) paint;
-
-		Pixmap pixmap = bitmap.pixmap;
-
-		TextureData td = font.getRegion().getTexture().getTextureData();
-		if (!td.isPrepared())
-			td.prepare();
-
-		Pixmap f = td.consumePixmap();
-
-		int adv = (int) x;
-		Glyph last = null;
-
-		int ch = (int) font.getCapHeight();
-		int h = (int) font.getLineHeight();
-		int yy = (int) (y - font.getLineHeight());
-		if (y < 0)
-			y = 0;
-
-		// pixmap.setColor(0xff0000ff);
-		// int w = (int) font.getBounds(string).width;
-		// pixmap.drawRectangle((int) x - 4, (int) y - 4, w + 8, h + 8);
-
-		for (int i = 0; i < string.length(); i++) {
-			char c = string.charAt(i);
-			Glyph g = font.getData().getGlyph(c);
-			if (g == null)
-				g = font.getData().getGlyph(' ');
-
-			if (i > 0)
-				adv += last.getKerning(c);
-			pixmap.drawPixmap(f, adv, //- g.xoffset,
-					yy - (g.height + g.yoffset) - (h - ch),
-					g.srcX, g.srcY,
-					g.width, g.height);
-			adv += g.width;
-			last = g;
-		}
-	}
+    static final Logger log = LoggerFactory.getLogger(IosCanvas.class);
 
 
-	@Override
-	public void drawBitmap(Bitmap bitmap, float x, float y) {
-	}
+    private CGBitmapContext cgBitmapContext;
+
+    @Override
+    public void setBitmap(Bitmap bitmap) {
+        cgBitmapContext = ((IosBitmap) bitmap).cgBitmapContext;
+    }
+
+    @Override
+    public void drawText(String string, float x, float y, Paint fill, Paint stroke) {
+
+        y = this.cgBitmapContext.getHeight() - y;
+
+        IosPaint iosFill = (IosPaint) fill;
+        if (stroke != null) {
+            IosPaint iosStroke = (IosPaint) stroke;
+            iosFill.setStrokeWidth(iosStroke.strokeWidth);
+            iosFill.setStrokeColor(iosStroke.getColor());
+        }
+
+
+        this.cgBitmapContext.saveGState();
+
+
+        {// clear old content under Text
+            float measure = fill.measureText(string);
+            CGRect rect = new CGRect(x, y, measure, fill.getFontHeight());
+            this.cgBitmapContext.setBlendMode(CGBlendMode.Clear);
+            this.cgBitmapContext.fillRect(rect);
+            this.cgBitmapContext.setBlendMode(CGBlendMode.Normal);
+        }
+
+
+        iosFill.drawLine(this.cgBitmapContext, string, x, y);
+
+        this.cgBitmapContext.restoreGState();
+    }
+
+    @Override
+    public void drawBitmap(Bitmap bitmap, float x, float y) {
+        this.cgBitmapContext.saveGState();
+        this.cgBitmapContext.translateCTM(x, y);
+        this.cgBitmapContext.drawImage(new CGRect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
+                ((IosBitmap) bitmap).cgBitmapContext.toImage());
+        this.cgBitmapContext.restoreGState();
+    }
 }

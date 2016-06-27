@@ -7,8 +7,12 @@ import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IosGraphics extends CanvasAdapter {
+
+	static final Logger log = LoggerFactory.getLogger(IosGraphics.class);
 
 	private static final IosGraphics INSTANCE = new IosGraphics();
 
@@ -41,7 +45,7 @@ public class IosGraphics extends CanvasAdapter {
 		try {
 			return new IosBitmap(inputStream);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("decodeBitmapImpl",e);
 			return null;
 		}
 	}
@@ -50,7 +54,12 @@ public class IosGraphics extends CanvasAdapter {
 
 	@Override
 	protected Bitmap loadBitmapAssetImpl(String fileName) {
-		return new IosBitmap(fileName);
+		try {
+			return new IosBitmap(fileName);
+		} catch (IOException e) {
+			log.error("loadBitmapAssetImpl",e);
+			return null;
+		}
 	}
 
 }
