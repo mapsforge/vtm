@@ -11,19 +11,26 @@ import org.robovm.apple.foundation.NSAttributedString;
 import org.robovm.apple.uikit.NSAttributedStringAttributes;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIFont;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
 
 public class IosPaint implements Paint {
+    static final Logger log = LoggerFactory.getLogger(IosPaint.class);
 
+    public IosPaint() {
+        log.info("create new Paint");
+    }
 
     CGLineCap cap = CGLineCap.Butt;
     float strokeWidth;
     Style style;
     float textSize;
-    CTFont font;
     FontFamily fontFamily;
     FontStyle fontStyle;
-    UIColor color;
-    UIColor strokeColor;
+    //    UIColor color;
+//    UIColor strokeColor;
     int colorInt;
     int strokeColorInt;
 
@@ -37,15 +44,17 @@ public class IosPaint implements Paint {
     public void setColor(int color) {
         if (colorInt == color) return;
         this.colorInt = color;
-        this.color = getUiColor(color);
-        this.ctLineIsDirty = true;
+        synchronized (attribs){
+            attribs.setForegroundColor(getUiColor(color));
+        }
     }
 
     public void setStrokeColor(int color) {
         if (strokeColorInt == color) return;
         this.strokeColorInt = color;
-        this.strokeColor = getUiColor(color);
-        this.ctLineIsDirty = true;
+        synchronized (attribs){
+            attribs.setStrokeColor(getUiColor(color));
+        }
     }
 
     private UIColor getUiColor(int color) {
@@ -109,19 +118,30 @@ public class IosPaint implements Paint {
         return (float) fillLine.getWidth();
     }
 
-    CTLine strokeLine;
+
     CTLine fillLine;
     boolean ctLineIsDirty = true;
     String lastText = "";
 
+    private final NSAttributedStringAttributes attribs = new NSAttributedStringAttributes();
+
     private void createCTLine(String text) {
         if (ctLineIsDirty) {
-            NSAttributedStringAttributes attribs = new NSAttributedStringAttributes();
-            attribs.setFont(font.as(UIFont.class));
-            attribs.setForegroundColor(this.color);
-            attribs.setStrokeWidth(0);
 
-            fillLine = CTLine.create(new NSAttributedString(text, attribs));
+
+
+
+            synchronized (attribs) {
+
+//                if (fillLine != null) fillLine.dispose();
+
+                float strokeWidthPercent = -(this.strokeWidth / this.textSize * 50);
+                attribs.setStrokeWidth(strokeWidthPercent);
+                NSAttributedString attributedString = new NSAttributedString(text, attribs);
+                fillLine = CTLine.create(attributedString);
+                attributedString.dispose();
+            }
+
 
 
             /*
@@ -133,25 +153,16 @@ public class IosPaint implements Paint {
             !!!!!
             NOTE: The value of NSStrokeWidthAttributeName is interpreted as a percentage of the font point size.
              */
-            if (strokeColor != null) {
-                NSAttributedStringAttributes strokeAttribs = new NSAttributedStringAttributes();
-                strokeAttribs.setFont(font.as(UIFont.class));
-                strokeAttribs.setForegroundColor(this.color);
-                float strokeWidthPercent = -(this.strokeWidth / this.textSize * 100);
-                strokeAttribs.setStrokeWidth(strokeWidthPercent);
-                strokeAttribs.setStrokeColor(this.strokeColor);
-                strokeLine = CTLine.create(new NSAttributedString(text, strokeAttribs));
-            } else {
-                strokeLine = null;
-            }
+
+
             lastText = text;
             ctLineIsDirty = false;
         }
     }
 
-    static final String DEFAULT_FONT_NAME = UIFont.getSystemFont(1).getFamilyName();
-    static final String DEFAULT_FONT_NAME_BOLD = UIFont.getBoldSystemFont(1).getFamilyName();
-    static final String DEFAULT_FONT_NAME_ITALIC = UIFont.getItalicSystemFont(1).getFamilyName();
+    static final String DEFAULT_FONT_NAME = UIFont.getSystemFont(1).getFontDescriptor().getPostscriptName();
+    static final String DEFAULT_FONT_NAME_BOLD = UIFont.getBoldSystemFont(1).getFontDescriptor().getPostscriptName();
+    static final String DEFAULT_FONT_NAME_ITALIC = UIFont.getItalicSystemFont(1).getFontDescriptor().getPostscriptName();
 
     void createIosFont() {
 
@@ -161,6 +172,7 @@ public class IosPaint implements Paint {
          * SANS_SERIF     = [iOS == 'Verdena'], [Android == 'Droid Sans']
          * SERIF          = [iOS == 'Georgia'], [Android == 'Droid Serif']
          */
+
 
         String fontname = DEFAULT_FONT_NAME;
         switch (this.fontFamily) {
@@ -189,16 +201,16 @@ public class IosPaint implements Paint {
                 // set Style
                 switch (this.fontStyle) {
                     case NORMAL:
-                        fontname = "CourierNewPSMT";
+                        fontname = "CourierNewPS-BoldMT";
                         break;
                     case BOLD:
                         fontname = "CourierNewPS-BoldMT";
                         break;
                     case BOLD_ITALIC:
-                        fontname = "CourierNewPS-BoldItalicMT";
+                        fontname = "CourierNewPS-BoldMT";
                         break;
                     case ITALIC:
-                        fontname = "CourierNewPS-ItalicMT";
+                        fontname = "CourierNewPS-BoldMT";
                         break;
                 }
                 break;
@@ -237,8 +249,40 @@ public class IosPaint implements Paint {
                 }
                 break;
         }
-        this.font = CTFont.create(fontname, this.textSize, CGAffineTransform.Identity());
+
+        synchronized (attribs) {
+
+            String key = fontname + this.textSize;
+
+            //try to get buffered font
+            UIFont font = fontHashMap.get(key);
+
+            if (font == null) {
+
+                CTFont ctFont = CTFont.create(fontname, this.textSize, CGAffineTransform.Identity());
+
+                descent = (float) ctFont.getDescent();
+                fontHeight = (float) ctFont.getBoundingBox().getHeight();
+
+                font = ctFont.as(UIFont.class);
+                log.info("Put Font to buffer :" + key);
+                fontHashMap.put(key, font);
+            }
+
+            CTFont ctFont = font.as(CTFont.class);
+            descent = (float) ctFont.getDescent();
+            fontHeight = (float) ctFont.getBoundingBox().getHeight();
+
+            attribs.setFont(font);
+        }
     }
+
+    private float descent;
+    private float fontHeight;
+
+
+    private final static HashMap<String, UIFont> fontHashMap = new HashMap<>();
+
 
     public void drawLine(CGBitmapContext bctx, String text, float x, float y) {
         if (ctLineIsDirty || !text.equals(lastText)) {
@@ -247,25 +291,23 @@ public class IosPaint implements Paint {
         }
         bctx.saveGState();
         bctx.setShouldAntialias(true);
-        bctx.setTextPosition(x, y + this.font.getDescent());
+        bctx.setTextPosition(x, y + descent);
         bctx.setBlendMode(CGBlendMode.Overlay);
 
-        if (strokeLine != null) {
-            strokeLine.draw(bctx);
-        } else {
-            fillLine.draw(bctx);
-        }
+
+        fillLine.draw(bctx);
+
         bctx.restoreGState();
     }
 
     @Override
     public float getFontHeight() {
-        return (float) this.font.getBoundingBox().getHeight() + 4;
+        return fontHeight;
     }
 
     @Override
     public float getFontDescent() {
-        return (float) this.font.getDescent();
+        return descent;
     }
 
 

@@ -25,6 +25,7 @@ public class IosCanvas implements Canvas {
     @Override
     public void drawText(String string, float x, float y, Paint fill, Paint stroke) {
 
+        //flip Y-axis
         y = this.cgBitmapContext.getHeight() - y;
 
         IosPaint iosFill = (IosPaint) fill;
@@ -33,23 +34,7 @@ public class IosCanvas implements Canvas {
             iosFill.setStrokeWidth(iosStroke.strokeWidth);
             iosFill.setStrokeColor(iosStroke.getColor());
         }
-
-
-        this.cgBitmapContext.saveGState();
-
-
-        {// clear old content under Text
-            float measure = fill.measureText(string);
-            CGRect rect = new CGRect(x, y, measure, fill.getFontHeight());
-            this.cgBitmapContext.setBlendMode(CGBlendMode.Clear);
-            this.cgBitmapContext.fillRect(rect);
-            this.cgBitmapContext.setBlendMode(CGBlendMode.Normal);
-        }
-
-
         iosFill.drawLine(this.cgBitmapContext, string, x, y);
-
-        this.cgBitmapContext.restoreGState();
     }
 
     @Override

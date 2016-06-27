@@ -31,28 +31,21 @@ public class RobovmLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
 
-
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
         config.orientationLandscape = true;
         config.orientationPortrait = true;
         config.stencilFormat = GLKViewDrawableStencilFormat._8;
-        config.multisample = GLKViewDrawableMultisample._4X;
-        config.colorFormat = GLKViewDrawableColorFormat.RGBA8888;
-//        config.displayScaleLargeScreenIfRetina = 2.0f;
-//        config.displayScaleLargeScreenIfNonRetina = 2.0f;
-//        config.displayScaleSmallScreenIfNonRetina = 2.0f;
-//        config.displayScaleSmallScreenIfRetina = 2.0f;
-
 
         float scale = (float)(getIosVersion() >= 8 ? UIScreen.getMainScreen().getNativeScale() : UIScreen.getMainScreen()
                 .getScale());
 
-       // CanvasAdapter.dpi *= scale;
+        CanvasAdapter.dpi *= scale;
 
         IOSMapApp iosMapApp = new IOSMapApp() {
             @Override
             public void createLayers() {
                 Map map = getMap();
+
 
                 VectorTileLayer l = map.setBaseMap(new OSciMap4TileSource());
 

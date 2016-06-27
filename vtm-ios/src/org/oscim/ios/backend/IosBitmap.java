@@ -2,14 +2,17 @@ package org.oscim.ios.backend;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
+
 import org.oscim.backend.AssetAdapter;
 import org.oscim.backend.GL;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Color;
+
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.NSData;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIImage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,9 +135,14 @@ public class IosBitmap implements Bitmap {
     public void eraseColor(int color) {
         CGRect rect = new CGRect(0, 0, this.width, this.height);
         this.cgBitmapContext.setFillColor(getCGColor(color));
+        this.cgBitmapContext.setBlendMode(CGBlendMode.Clear);
+        this.cgBitmapContext.fillRect(rect);
+        this.cgBitmapContext.setBlendMode(CGBlendMode.Normal);
         this.cgBitmapContext.fillRect(rect);
     }
 
+
+    Pixmap pixmap;
 
     @Override
     public void uploadToTexture(boolean replace) {
@@ -143,17 +151,22 @@ public class IosBitmap implements Bitmap {
         UIImage uiImage = new UIImage(cgBitmapContext.toImage());
         NSData data = uiImage.toPNGData();
         byte[] encodedData = data.getBytes();
-        Pixmap pixmap = new Pixmap(encodedData, 0, encodedData.length);
 
+        if(pixmap!=null){
+            pixmap.dispose();
+        }
 
+        pixmap = new Pixmap(encodedData, 0, encodedData.length);
 
-//TODO try to upload encodet data without create Pixmap
         Gdx.gl.glTexImage2D(GL.TEXTURE_2D, 0, pixmap.getGLInternalFormat(),
                 pixmap.getWidth(), pixmap.getHeight(), 0,
                 pixmap.getGLFormat(), pixmap.getGLType(),
                 pixmap.getPixels());
 
-      //  pixmap.dispose();
+        data.dispose();
+        uiImage.dispose();
+        encodedData=null;
+
     }
 
     @Override
