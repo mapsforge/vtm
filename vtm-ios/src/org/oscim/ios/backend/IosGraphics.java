@@ -34,16 +34,9 @@ public class IosGraphics extends CanvasAdapter {
 
 	static final Logger log = LoggerFactory.getLogger(IosGraphics.class);
 
-	private static final IosGraphics INSTANCE = new IosGraphics();
-
-	public static CanvasAdapter get() {
-		return INSTANCE;
-	}
-
 	public static void init() {
-		g = INSTANCE;
+		CanvasAdapter.init(new IosGraphics());
 	}
-
 
 	@Override
 	protected Canvas newCanvasImpl() {
