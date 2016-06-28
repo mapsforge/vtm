@@ -40,3 +40,16 @@ dependencies {
   compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
   compile files('vtm-natives-ios.jar')
 }
+
+
+
+
+
+task copyLibs(type: Copy){
+  from (zipTree("vtm-natives-ios.jar"))
+  into ("${buildDir}/natives")
+}
+
+tasks.withType(org.gradle.api.tasks.compile.JavaCompile){
+  compileTask -> compileTask.dependsOn copyLibs
+}
