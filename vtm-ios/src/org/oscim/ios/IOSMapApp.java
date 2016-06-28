@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -16,55 +17,21 @@
  */
 package org.oscim.ios;
 
-import com.badlogic.gdx.utils.SharedLibraryLoader;
+
 import org.oscim.backend.GLAdapter;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
 import org.oscim.ios.backend.IosGL;
 import org.oscim.ios.backend.IosGraphics;
-import org.oscim.tiling.TileSource;
-import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 public class IOSMapApp extends GdxMap {
 
-    public static final Logger log = LoggerFactory.getLogger(IOSMapApp.class);
-
     public static void init() {
-        // load native library
-        new SharedLibraryLoader().load("vtm-jni");
+
         // init globals
-		IosGraphics.init();
-		GdxAssets.init("assets/");
+        IosGraphics.init();
+        GdxAssets.init("assets/");
         GLAdapter.init(new IosGL());
-//		GLAdapter.GDX_DESKTOP_QUIRKS = true;
-    }
-
-//    @Override
-//    public void create() {
-//
-//    }
-//
-//    @Override
-//    public void resize(int w, int h) {
-//
-//    }
-
-
-    @Override
-    public void createLayers() {
-        TileSource tileSource = new OSciMap4TileSource();
-
-        // TileSource tileSource = new MapFileTileSource();
-        // tileSource.setOption("file", "/home/jeff/germany.map");
-
-        initDefaultLayers(tileSource, false, true, true);
-
-        //mMap.getLayers().add(new BitmapTileLayer(mMap, new ImagicoLandcover(), 20));
-        //mMap.getLayers().add(new BitmapTileLayer(mMap, new OSMTileSource(), 20));
-        //mMap.getLayers().add(new BitmapTileLayer(mMap, new ArcGISWorldShaded(), 20));
-
-        mMap.setMapPosition(0, 0, 1 << 2);
     }
 }

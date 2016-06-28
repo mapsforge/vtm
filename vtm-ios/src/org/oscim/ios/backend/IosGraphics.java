@@ -1,3 +1,17 @@
+/*
+ * Copyright 2016 Longri
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.oscim.ios.backend;
 
 import java.io.IOException;
@@ -8,7 +22,17 @@ import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * iOS specific implementation of {@link CanvasAdapter}<br>
+ * <br>
+ * Created by Longri on 25.06.16.
+ */
 public class IosGraphics extends CanvasAdapter {
+
+	static final Logger log = LoggerFactory.getLogger(IosGraphics.class);
 
 	private static final IosGraphics INSTANCE = new IosGraphics();
 
@@ -41,16 +65,18 @@ public class IosGraphics extends CanvasAdapter {
 		try {
 			return new IosBitmap(inputStream);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("decodeBitmapImpl",e);
 			return null;
 		}
 	}
 
-
-
 	@Override
 	protected Bitmap loadBitmapAssetImpl(String fileName) {
-		return new IosBitmap(fileName);
+		try {
+			return new IosBitmap(fileName);
+		} catch (IOException e) {
+			log.error("loadBitmapAssetImpl",e);
+			return null;
+		}
 	}
-
 }
