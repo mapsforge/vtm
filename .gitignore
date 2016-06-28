@@ -3,6 +3,7 @@
 */obj/*
 target/
 build/
+robovm-build
 *.o
 *.so
 *.class

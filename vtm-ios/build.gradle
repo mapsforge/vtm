@@ -1,69 +1,52 @@
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath 'com.github.jtakakura:gradle-robovm-plugin:0.0.4'
-  }
-}
-
-repositories {
-  maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-}
-
 apply plugin: 'java'
 apply plugin: 'robovm'
+
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    jcenter()
+  }
+  dependencies {
+    classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+    classpath 'com.android.tools.build:gradle:1.5.0'
+    classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.1.0'
+  }
+}
+
+
+apply plugin: "java"
+apply plugin: "robovm"
+
+sourceSets.main.java.srcDirs = ["src/"]
+
+sourceCompatibility = '1.7'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 ext {
   // Configure your application main class
   mainClassName = "org.oscim.ios.RoboVmLauncher"
-  //roboVMVersion = "0.0.9"
+  roboVMVersion = "2.1.0"
 }
 
+launchIPhoneSimulator.dependsOn build
+launchIPadSimulator.dependsOn build
+launchIOSDevice.dependsOn build
+createIPA.dependsOn build
+
+
 dependencies {
+
+  compile project(':vtm')
   compile project(':vtm-gdx')
   compile project(':vtm-themes')
   compile 'org.slf4j:slf4j-simple:1.7.5'
+  compile "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
+  compile "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
   compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+  compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+  compile files('vtm-jni-natives.jar')
 }
 
 
-sourceCompatibility = '1.7'
-//[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-robovm {
-  // Configure robovm
-  iosSignIdentity = ""
-  iosProvisioningProfile = ""
-}
-
-sourceSets {
-  main {
-    java.srcDirs = ['src/']
-    //resources.srcDirs = ['src/', 'data']
-  }
-  output.resourcesDir = 'assets'
-}
-
-// compile bytecode to llvm and run in the ios simulator
-// task run (dependsOn: compileJava){
-//   doFirst {
-//     println(">> Running RoboVM")
-//     String cmd = "$project.robovm_home/bin/robovm -verbose -arch x86 -os ios -cp $project.robovm_home/lib/robovm-objc.jar:$project.robovm_home/lib/robovm-cocoatouch.jar:$projectDir/build/classes/main/ -run $mainClass"
-//     def proc = cmd.execute()
-
-//     proc.in.eachLine {line -> println line}
-//     proc.err.eachLine {line -> System.err.println( 'ERROR: ' + line)}
-//     proc.waitFor()
-//   }
-// }
-
-
-eclipse {
-  project {
-    natures = [  'org.eclipse.jdt.core.javanature',
-		 'org.robovm.eclipse.RoboVMNature']
-    buildCommand 'org.robovm.eclipse.RoboVMClassBuilder'
-  }
-}
