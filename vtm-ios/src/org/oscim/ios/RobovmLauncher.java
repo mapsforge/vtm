@@ -66,13 +66,11 @@ public class RobovmLauncher extends IOSApplication.Delegate {
 
     private int getIosVersion () {
         String systemVersion = UIDevice.getCurrentDevice().getSystemVersion();
-        int version = Integer.parseInt(systemVersion.split("\\.")[0]);
-        return version;
+        return Integer.parseInt(systemVersion.split("\\.")[0]);
     }
 
 
     public static void main(String[] argv) {
-
         NSAutoreleasePool pool = new NSAutoreleasePool();
         System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE");
         IosGraphics.init();
