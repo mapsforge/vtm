@@ -38,7 +38,6 @@ dependencies {
   compile "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
   compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
   compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
-  compile files('vtm-natives-ios.jar')
 }
 
 
@@ -50,6 +49,24 @@ task copyLibs(type: Copy){
   into ("${buildDir}/natives")
 }
 
+task copyVtmResources(type: Copy){
+    from ("../vtm/resources")
+    into ("${buildDir}")
+}
+
+task copyVtmThemesResources(type: Copy){
+    from ("../vtm-themes/resources")
+    into ("${buildDir}")
+}
+
 tasks.withType(org.gradle.api.tasks.compile.JavaCompile){
   compileTask -> compileTask.dependsOn copyLibs
+}
+
+tasks.withType(org.gradle.api.tasks.compile.JavaCompile){
+    compileTask -> compileTask.dependsOn copyVtmResources
+}
+
+tasks.withType(org.gradle.api.tasks.compile.JavaCompile){
+    compileTask -> compileTask.dependsOn copyVtmThemesResources
 }
