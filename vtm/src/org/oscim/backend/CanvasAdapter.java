@@ -29,7 +29,7 @@ import org.oscim.backend.canvas.Paint;
 public abstract class CanvasAdapter {
 
 	/** The instance provided by backend */
-	static CanvasAdapter g;
+	protected static CanvasAdapter g;
 
 	/** The dpi. */
 	public static float dpi = 240;
