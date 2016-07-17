@@ -25,6 +25,7 @@ import org.oscim.backend.canvas.Bitmap;
 import org.oscim.renderer.bucket.TextureBucket;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -150,5 +151,16 @@ public class AwtBitmap implements Bitmap {
     @Override
     public boolean isValid() {
         return true;
+    }
+
+    @Override
+    public byte[] getPngEncodedData(){
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(this.bitmap, "png", outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outputStream.toByteArray();
     }
 }

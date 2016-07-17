@@ -62,4 +62,6 @@ public interface Bitmap {
     void uploadToTexture(boolean replace);
 
     boolean isValid();
+
+    byte[] getPngEncodedData();
 }
