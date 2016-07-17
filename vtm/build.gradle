@@ -5,6 +5,7 @@ configurations { providedCompile }
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     providedCompile 'com.google.code.findbugs:annotations:2.0.1'
     providedCompile 'com.squareup.okhttp:okhttp:1.5.2'
 }

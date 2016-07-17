@@ -20,7 +20,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
+import com.badlogic.gdx.graphics.Pixmap;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import static android.graphics.Bitmap.Config.ARGB_8888;
@@ -41,6 +43,14 @@ public class AndroidBitmap implements org.oscim.backend.canvas.Bitmap {
     @Override
     public boolean isValid() {
         return mBitmap != null;
+    }
+
+    @Override
+    public Pixmap getPixmap() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        this.mBitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        byte[] encodedData = outputStream.toByteArray();
+        return new Pixmap(encodedData, 0, encodedData.length);
     }
 
     /**

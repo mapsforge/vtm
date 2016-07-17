@@ -189,6 +189,14 @@ public class IosBitmap implements Bitmap {
         return this.cgBitmapContext != null;
     }
 
+    @Override
+    public Pixmap getPixmap() {
+        UIImage uiImage = new UIImage(cgBitmapContext.toImage());
+        NSData data = uiImage.toPNGData();
+        byte[] encodedData = data.getBytes();
+        return new Pixmap(encodedData, 0, encodedData.length);
+    }
+
 
     /**
      * Returns a ByteArray from InputStream

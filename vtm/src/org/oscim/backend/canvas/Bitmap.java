@@ -16,6 +16,8 @@
  */
 package org.oscim.backend.canvas;
 
+import com.badlogic.gdx.graphics.Pixmap;
+
 /**
  * The Interface Bitmap.
  */
@@ -62,4 +64,6 @@ public interface Bitmap {
     void uploadToTexture(boolean replace);
 
     boolean isValid();
+
+    Pixmap getPixmap();
 }
