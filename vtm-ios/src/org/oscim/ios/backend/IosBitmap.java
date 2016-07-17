@@ -190,11 +190,10 @@ public class IosBitmap implements Bitmap {
     }
 
     @Override
-    public Pixmap getPixmap() {
+    public byte[] getPngEncodedData() {
         UIImage uiImage = new UIImage(cgBitmapContext.toImage());
         NSData data = uiImage.toPNGData();
-        byte[] encodedData = data.getBytes();
-        return new Pixmap(encodedData, 0, encodedData.length);
+        return data.getBytes();
     }
 
 

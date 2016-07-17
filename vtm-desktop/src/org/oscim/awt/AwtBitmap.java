@@ -18,7 +18,6 @@
 package org.oscim.awt;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.BufferUtils;
 
 import org.oscim.backend.GL;
@@ -155,14 +154,13 @@ public class AwtBitmap implements Bitmap {
     }
 
     @Override
-    public Pixmap getPixmap() {
+    public byte[] getPngEncodedData(){
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             ImageIO.write(this.bitmap, "png", outputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        byte[] encodedData = outputStream.toByteArray();
-        return new Pixmap(encodedData, 0, encodedData.length);
+        return outputStream.toByteArray();
     }
 }

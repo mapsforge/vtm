@@ -16,8 +16,6 @@
  */
 package org.oscim.backend.canvas;
 
-import com.badlogic.gdx.graphics.Pixmap;
-
 /**
  * The Interface Bitmap.
  */
@@ -65,5 +63,5 @@ public interface Bitmap {
 
     boolean isValid();
 
-    Pixmap getPixmap();
+    byte[] getPngEncodedData();
 }
