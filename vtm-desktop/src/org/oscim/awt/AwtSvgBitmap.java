@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.net.URI;
 
 public class AwtSvgBitmap extends AwtBitmap {
-    private static final float DEFAULT_SIZE = 400f;
 
     private static BufferedImage getResourceBitmap(InputStream inputStream) throws IOException {
         synchronized (SVGCache.getSVGUniverse()) {
@@ -36,7 +35,7 @@ public class AwtSvgBitmap extends AwtBitmap {
                 SVGDiagram diagram = SVGCache.getSVGUniverse().getDiagram(uri);
 
                 float scaleFactor = CanvasAdapter.dpi / 240;
-                double scale = scaleFactor / Math.sqrt((diagram.getHeight() * diagram.getWidth()) / DEFAULT_SIZE);
+                double scale = 1/(13 * scaleFactor);
 
                 float bitmapWidth = (float) (diagram.getWidth() * scale);
                 float bitmapHeight = (float) (diagram.getHeight() * scale);
