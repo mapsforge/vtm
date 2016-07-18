@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class AndroidSvgBitmap extends AndroidBitmap {
-    private static final float DEFAULT_SIZE = 400f;
 
     private static android.graphics.Bitmap getResourceBitmap(InputStream inputStream) throws IOException {
         synchronized (SVG.getVersion()) {
@@ -36,7 +35,7 @@ public class AndroidSvgBitmap extends AndroidBitmap {
                 Picture picture = svg.renderToPicture();
 
                 float scaleFactor = CanvasAdapter.dpi / 160;
-                double scale = scaleFactor / Math.sqrt((picture.getHeight() * picture.getWidth()) / DEFAULT_SIZE);
+                double scale = 1/(13 * scaleFactor);
 
                 float bitmapWidth = (float) (picture.getWidth() * scale);
                 float bitmapHeight = (float) (picture.getHeight() * scale);
