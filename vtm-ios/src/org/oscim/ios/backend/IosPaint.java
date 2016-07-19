@@ -269,7 +269,6 @@ public class IosPaint implements Paint {
                 fontHeight = (float) ctFont.getBoundingBox().getHeight();
 
                 font = ctFont.as(UIFont.class);
-                log.debug("Put Font to buffer :" + key);
                 fontHashMap.put(key, font);
             }
 

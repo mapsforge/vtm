@@ -122,6 +122,25 @@ public class IosBitmap implements Bitmap {
         image.dispose();
     }
 
+    /**
+     * protected constructor for create IosBitmap from IosSvgBitmap
+     * @param image
+     */
+    protected IosBitmap(UIImage image){
+        CGImage cgiIimage = image.getCGImage();
+        this.width = (int) cgiIimage.getWidth();
+        this.height = (int) cgiIimage.getHeight();
+        this.cgBitmapContext = CGBitmapContext.create(width, height, 8, 4 * width,
+                CGColorSpace.createDeviceRGB(), CGImageAlphaInfo.PremultipliedLast);
+
+        this.cgBitmapContext.drawImage(new CGRect(0, 0, width, height), cgiIimage);
+
+        // can dispose helper images for release memory
+        image.dispose();
+        cgiIimage.dispose();
+
+    }
+
 
     @Override
     public int getWidth() {

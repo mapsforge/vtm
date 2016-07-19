@@ -63,8 +63,12 @@ public class IosGraphics extends CanvasAdapter {
 
     @Override
     protected Bitmap decodeSvgBitmapImpl(InputStream inputStream) {
-        // TODO
-        return null;
+        try {
+            return new IosSvgBitmap(inputStream);
+        } catch (IOException e) {
+            log.error("decodeSvgImpl", e);
+            return null;
+        }
     }
 
     @Override

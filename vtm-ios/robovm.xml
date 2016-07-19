@@ -36,7 +36,11 @@
     <libs>
         <lib>natives/libvtm-jni.a</lib>
     </libs>
+    <frameworkPaths>
+        <path>natives</path>
+    </frameworkPaths>
     <frameworks>
+        <framework>SVGgh</framework>
         <framework>UIKit</framework>
         <framework>OpenGLES</framework>
         <framework>QuartzCore</framework>
