@@ -26,6 +26,7 @@ import org.oscim.event.EventListener;
 import org.oscim.event.Gesture;
 import org.oscim.event.GestureDetector;
 import org.oscim.event.MotionEvent;
+import org.oscim.layers.Layer;
 import org.oscim.layers.MapEventLayer;
 import org.oscim.layers.tile.TileLayer;
 import org.oscim.layers.tile.vector.OsmTileLayer;
@@ -182,6 +183,12 @@ public abstract class Map implements TaskQueue {
             log.warn("No base layer set.");
         } else if (mBaseLayer instanceof VectorTileLayer) {
             ((VectorTileLayer) mBaseLayer).setRenderTheme(theme);
+        }
+
+        for (Layer layer : mLayers) {
+            if (layer instanceof  VectorTileLayer) {
+                ((VectorTileLayer) layer).setRenderTheme(theme);
+            }
         }
 
         MapRenderer.setBackgroundColor(theme.getMapBackground());
