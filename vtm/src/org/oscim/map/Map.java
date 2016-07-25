@@ -26,6 +26,7 @@ import org.oscim.event.EventListener;
 import org.oscim.event.Gesture;
 import org.oscim.event.GestureDetector;
 import org.oscim.event.MotionEvent;
+import org.oscim.layers.Layer;
 import org.oscim.layers.MapEventLayer;
 import org.oscim.layers.tile.TileLayer;
 import org.oscim.layers.tile.vector.OsmTileLayer;
@@ -166,14 +167,26 @@ public abstract class Map implements TaskQueue {
      * use map background color from theme.
      */
     public void setTheme(ThemeFile theme) {
+        setTheme(theme, false);
+    }
+
+    /**
+     * Utility function to set theme of base vector-layer, optionally
+     * to all vector layers and use map background color from theme.
+     */
+    public void setTheme(ThemeFile theme, boolean applyToLayers) {
         if (mBaseLayer == null) {
             log.error("No base layer set");
             throw new IllegalStateException();
         }
-        setTheme(ThemeLoader.load(theme));
+        setTheme(ThemeLoader.load(theme), applyToLayers);
     }
 
     public void setTheme(IRenderTheme theme) {
+        setTheme(theme, false);
+    }
+
+    public void setTheme(IRenderTheme theme, boolean applyToLayers) {
         if (theme == null) {
             throw new IllegalArgumentException("Theme cannot be null.");
         }
@@ -182,6 +195,14 @@ public abstract class Map implements TaskQueue {
             log.warn("No base layer set.");
         } else if (mBaseLayer instanceof VectorTileLayer) {
             ((VectorTileLayer) mBaseLayer).setRenderTheme(theme);
+        }
+
+        if (applyToLayers) {
+            for (Layer layer : mLayers) {
+                if (layer instanceof VectorTileLayer) {
+                    ((VectorTileLayer) layer).setRenderTheme(theme);
+                }
+            }
         }
 
         MapRenderer.setBackgroundColor(theme.getMapBackground());
