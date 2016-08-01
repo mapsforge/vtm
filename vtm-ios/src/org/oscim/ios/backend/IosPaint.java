@@ -16,11 +16,7 @@
 package org.oscim.ios.backend;
 
 import org.oscim.backend.canvas.Paint;
-import org.robovm.apple.coregraphics.CGAffineTransform;
-import org.robovm.apple.coregraphics.CGBitmapContext;
-import org.robovm.apple.coregraphics.CGBlendMode;
-import org.robovm.apple.coregraphics.CGLineCap;
-import org.robovm.apple.coregraphics.CGLineJoin;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coretext.CTFont;
 import org.robovm.apple.coretext.CTLine;
 import org.robovm.apple.foundation.NSAttributedString;
@@ -119,9 +115,17 @@ public class IosPaint implements Paint {
         this.cap = getLineCap(cap);
     }
 
+    public CGLineCap getIosStrokeCap() {
+        return this.cap;
+    }
+
     @Override
     public void setStrokeJoin(Join join) {
         this.join = getLineJoin(join);
+    }
+
+    public CGLineJoin getIosLineJoin() {
+        return this.join;
     }
 
     @Override
@@ -337,12 +341,16 @@ public class IosPaint implements Paint {
 
     @Override
     public float getTextHeight(String text) {
-        // TODO
-        return 0;
+        return this.fontHeight;
     }
 
     @Override
     public float getTextWidth(String text) {
         return measureText(text);
+    }
+
+
+    public int getIosStrokeColor() {
+        return 0;
     }
 }
