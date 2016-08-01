@@ -322,7 +322,7 @@ public class IosPaint implements Paint {
         cgBitmapContext.saveGState();
         cgBitmapContext.setShouldAntialias(true);
         cgBitmapContext.setTextPosition(x, y + descent);
-        cgBitmapContext.setBlendMode(CGBlendMode.Overlay);
+        cgBitmapContext.setBlendMode(CGBlendMode.Normal);
 
         ctLine.draw(cgBitmapContext);
 
