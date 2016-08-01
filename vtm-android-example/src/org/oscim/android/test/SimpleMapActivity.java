@@ -37,6 +37,10 @@ import org.oscim.theme.ThemeLoader;
 import org.oscim.theme.VtmThemes;
 
 public class SimpleMapActivity extends BaseMapActivity {
+    private final static int GROUP_MAPS = 1;
+    private final static int GROUP_3D_OBJECTS = 2;
+    private final static int GROUP_OVERLAYS = 3;
+
     private DefaultMapScaleBar mapScaleBar;
 
     @Override
@@ -44,8 +48,11 @@ public class SimpleMapActivity extends BaseMapActivity {
         super.onCreate(savedInstanceState);
 
         Layers layers = mMap.layers();
-        layers.add(new BuildingLayer(mMap, mBaseLayer));
-        layers.add(new LabelLayer(mMap, mBaseLayer));
+        layers.addGroup(GROUP_MAPS);
+        layers.add(new LabelLayer(mMap, mBaseLayer), GROUP_MAPS);
+        layers.addGroup(GROUP_3D_OBJECTS);
+        layers.add(new BuildingLayer(mMap, mBaseLayer), GROUP_3D_OBJECTS);
+        layers.addGroup(GROUP_OVERLAYS);
 
         mapScaleBar = new DefaultMapScaleBar(mMap);
         mapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
@@ -57,7 +64,7 @@ public class SimpleMapActivity extends BaseMapActivity {
         BitmapRenderer renderer = (BitmapRenderer) mapScaleBarLayer.getRenderer();
         renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
         renderer.setOffset(5 * CanvasAdapter.dpi / 160, 0);
-        layers.add(mapScaleBarLayer);
+        layers.add(mapScaleBarLayer, GROUP_OVERLAYS);
 
         mMap.setTheme(VtmThemes.DEFAULT);
     }
