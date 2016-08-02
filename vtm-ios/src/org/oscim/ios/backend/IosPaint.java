@@ -349,8 +349,4 @@ public class IosPaint implements Paint {
         return measureText(text);
     }
 
-
-    public int getIosStrokeColor() {
-        return 0;
-    }
 }
