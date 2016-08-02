@@ -19,6 +19,7 @@ import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
 import org.robovm.apple.coregraphics.CGBitmapContext;
+import org.robovm.apple.coregraphics.CGBlendMode;
 import org.robovm.apple.coregraphics.CGRect;
 
 /**
@@ -54,6 +55,7 @@ public class IosCanvas implements Canvas {
             IosPaint iosStroke = (IosPaint) stroke;
             iosFill.setStrokeWidth(iosStroke.strokeWidth);
             iosFill.setStrokeColor(iosStroke.getColor());
+            ((IosPaint)stroke).drawLine(this.cgBitmapContext, string, x, y);
         }
         iosFill.drawLine(this.cgBitmapContext, string, x, y);
     }
@@ -69,12 +71,33 @@ public class IosCanvas implements Canvas {
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2, Paint paint) {
-        // TODO
+
+        //flip Y-axis
+        y1 = (int) (this.cgBitmapContext.getHeight() - y1);
+        y2 = (int) (this.cgBitmapContext.getHeight() - y2);
+
+        // set Stroke properties
+        this.cgBitmapContext.setLineWidth(((IosPaint) paint).strokeWidth);
+        this.cgBitmapContext.setLineCap(((IosPaint) paint).getIosStrokeCap());
+        this.cgBitmapContext.setLineJoin(((IosPaint) paint).getIosLineJoin());
+        setStrokeColor(this.cgBitmapContext, (paint.getColor()));
+
+        //draw line
+        this.cgBitmapContext.beginPath();
+        this.cgBitmapContext.moveToPoint(x1, y1);
+        this.cgBitmapContext.addLineToPoint(x2, y2);
+        this.cgBitmapContext.strokePath();
     }
+
 
     @Override
     public void fillColor(int color) {
-        // TODO
+        CGRect rect = new CGRect(0, 0, this.cgBitmapContext.getWidth(), this.cgBitmapContext.getHeight());
+        setFillColor(this.cgBitmapContext, (color));
+        this.cgBitmapContext.setBlendMode(CGBlendMode.Clear);
+        this.cgBitmapContext.fillRect(rect);
+        this.cgBitmapContext.setBlendMode(CGBlendMode.Normal);
+        this.cgBitmapContext.fillRect(rect);
     }
 
     @Override
@@ -86,4 +109,28 @@ public class IosCanvas implements Canvas {
     public int getWidth() {
         return this.cgBitmapContext != null ? (int) this.cgBitmapContext.getWidth() : 0;
     }
+
+    static void setStrokeColor(CGBitmapContext bctx, int color) {
+        float blue = (color & 0xFF) / 255f;
+        color >>= 8;
+        float green = (color & 0xFF) / 255f;
+        color >>= 8;
+        float red = (color & 0xFF) / 255f;
+        color >>= 8;
+        float alpha = (color & 0xFF) / 255f;
+        bctx.setRGBStrokeColor(red, green, blue, alpha);
+    }
+
+    static void setFillColor(CGBitmapContext bctx, int color) {
+        float blue = (color & 0xFF) / 255f;
+        color >>= 8;
+        float green = (color & 0xFF) / 255f;
+        color >>= 8;
+        float red = (color & 0xFF) / 255f;
+        color >>= 8;
+        float alpha = (color & 0xFF) / 255f;
+        bctx.setRGBFillColor(red, green, blue, alpha);
+    }
+
+
 }
