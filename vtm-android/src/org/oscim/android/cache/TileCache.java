@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -105,7 +106,7 @@ public class TileCache implements ITileCache {
         if (dbg)
             log.debug("open cache {}, {}", cacheDirectory, dbName);
 
-        dbHelper = new SQLiteHelper(context, dbName);
+        dbHelper = new SQLiteHelper(context, new File(cacheDirectory, dbName).getAbsolutePath());
 
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN)
             dbHelper.setWriteAheadLoggingEnabled(true);
