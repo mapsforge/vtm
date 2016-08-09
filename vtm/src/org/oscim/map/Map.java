@@ -198,7 +198,7 @@ public abstract class Map implements TaskQueue {
         }
 
         if (allLayers) {
-            for (Layer layer : mLayers) {
+            for (Layer layer : mLayers.getLayers()) {
                 if (layer instanceof VectorTileLayer) {
                     ((VectorTileLayer) layer).setRenderTheme(theme);
                 }
