@@ -31,7 +31,7 @@ public class AndroidAssets extends AssetAdapter {
     }
 
     private AndroidAssets(Context ctx) {
-        mContext = ctx;
+        mContext = ctx.getApplicationContext();
     }
 
     @Override
