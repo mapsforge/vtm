@@ -27,13 +27,14 @@ import org.oscim.map.Map.InputListener;
 import org.oscim.map.Map.UpdateListener;
 import org.oscim.renderer.LayerRenderer;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public final class Layers extends AbstractList<Layer> {
+public final class Layers {
 
     private final Map mMap;
 
@@ -49,17 +50,39 @@ public final class Layers extends AbstractList<Layer> {
         mMap = map;
     }
 
-    @Override
+    public synchronized List<Layer> getLayers() {
+        return mLayerList;
+    }
+
     public synchronized Layer get(int index) {
         return mLayerList.get(index);
     }
 
-    @Override
     public synchronized int size() {
         return mLayerList.size();
     }
 
-    @Override
+    public synchronized void add(Layer layer) {
+        add(size(), layer);
+    }
+
+    public synchronized Layer remove(Layer layer) {
+        int index = mLayerList.indexOf(layer);
+        if (index > 0)
+            return remove(index);
+        else
+            return null;
+    }
+
+    public synchronized boolean removeAll(Collection<Layer> layers) {
+        boolean changed = false;
+        Iterator<Layer> it = layers.iterator();
+        while (it.hasNext()) {
+            changed |= (remove(it.next()) != null);
+        }
+        return changed;
+    }
+
     public synchronized void add(int index, Layer layer) {
         if (mLayerList.contains(layer))
             throw new IllegalArgumentException("layer added twice");
@@ -96,9 +119,9 @@ public final class Layers extends AbstractList<Layer> {
             throw new IllegalArgumentException("layer added twice");
 
         index++;
-        if (index == mGroupList.size())
+        if (index == mGroupList.size()) {
             add(layer);
-        else {
+        } else {
             add(mGroupIndex.get(mGroupList.get(index)), layer);
             for (int i = index; i < mGroupList.size(); i++) {
                 group = mGroupList.get(i);
@@ -107,7 +130,6 @@ public final class Layers extends AbstractList<Layer> {
         }
     }
 
-    @Override
     public synchronized Layer remove(int index) {
         mDirtyLayers = true;
 
@@ -140,7 +162,6 @@ public final class Layers extends AbstractList<Layer> {
         return remove;
     }
 
-    @Override
     public synchronized Layer set(int index, Layer layer) {
         if (mLayerList.contains(layer))
             throw new IllegalArgumentException("layer added twice");
