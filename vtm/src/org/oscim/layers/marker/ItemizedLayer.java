@@ -3,6 +3,7 @@
  * 
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Stephan Leuschner 
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -51,6 +52,21 @@ public class ItemizedLayer<Item extends MarkerItem> extends MarkerLayer<Item>
                          OnItemGestureListener<Item> listener) {
 
         super(map, defaultMarker);
+
+        mItemList = list;
+        mOnItemGestureListener = listener;
+        populate();
+    }
+
+    public ItemizedLayer(Map map, MarkerRendererFactory markerRendererFactory) {
+        this(map, new ArrayList<Item>(), markerRendererFactory, null);
+    }
+
+    public ItemizedLayer(Map map, List<Item> list,
+                         MarkerRendererFactory markerRendererFactory,
+                         OnItemGestureListener<Item> listener) {
+
+        super(map, markerRendererFactory);
 
         mItemList = list;
         mOnItemGestureListener = listener;

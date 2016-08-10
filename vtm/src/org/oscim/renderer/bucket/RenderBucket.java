@@ -1,5 +1,6 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
+ * Copyright 2016 Stephan Leuschner 
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -91,6 +92,10 @@ public abstract class RenderBucket extends Inlist<RenderBucket> {
      */
     public int getVertexOffset() {
         return vertexOffset;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     /**
