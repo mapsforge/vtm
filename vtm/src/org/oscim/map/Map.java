@@ -92,6 +92,8 @@ public abstract class Map implements TaskQueue {
 
     public static final Event ANIM_END = new Event();
 
+    public static final Event ANIM_START = new Event();
+
     public final EventDispatcher<InputListener, MotionEvent> input;
     public final EventDispatcher<UpdateListener, MapPosition> events;
 

@@ -193,6 +193,8 @@ public class Animator {
     }
 
     private void animStart(float duration, int state) {
+        if (!isActive())
+            mMap.events.fire(Map.ANIM_START, mMap.mMapPosition);
         mCurPos.copy(mStartPos);
         mState = state;
         mDuration = duration;
