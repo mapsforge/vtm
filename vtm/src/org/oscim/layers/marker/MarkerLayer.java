@@ -5,6 +5,7 @@
  * Copyright 2012 Fred Eisele
  * 
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 Stephan Leuschner
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -53,6 +54,13 @@ public abstract class MarkerLayer<Item extends MarkerItem> extends Layer {
         super(map);
 
         mMarkerRenderer = new MarkerRenderer((MarkerLayer<MarkerItem>) this, defaultSymbol);
+        mRenderer = mMarkerRenderer;
+    }
+
+    public MarkerLayer(Map map, MarkerRendererFactory markerRendererFactory) {
+        super(map);
+
+        mMarkerRenderer = markerRendererFactory.create((MarkerLayer<MarkerItem>) this);
         mRenderer = mMarkerRenderer;
     }
 
