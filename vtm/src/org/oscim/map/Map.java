@@ -108,8 +108,6 @@ public abstract class Map implements TaskQueue {
     protected final MapEventLayer mEventLayer;
     protected GestureDetector mGestureDetector;
 
-    private TileLayer mBaseLayer;
-
     protected boolean mClearMap = true;
 
     public Map() {
@@ -161,7 +159,6 @@ public abstract class Map implements TaskQueue {
 
     public TileLayer setBaseMap(TileLayer tileLayer) {
         mLayers.add(1, tileLayer);
-        mBaseLayer = tileLayer;
         return tileLayer;
     }
 
@@ -178,10 +175,6 @@ public abstract class Map implements TaskQueue {
      * to all vector layers and use map background color from theme.
      */
     public void setTheme(ThemeFile theme, boolean allLayers) {
-        if (mBaseLayer == null) {
-            log.error("No base layer set");
-            throw new IllegalStateException();
-        }
         setTheme(ThemeLoader.load(theme), allLayers);
     }
 
@@ -194,20 +187,20 @@ public abstract class Map implements TaskQueue {
             throw new IllegalArgumentException("Theme cannot be null.");
         }
 
-        if (mBaseLayer == null) {
-            log.warn("No base layer set.");
-        } else if (mBaseLayer instanceof VectorTileLayer) {
-            ((VectorTileLayer) mBaseLayer).setRenderTheme(theme);
-        }
+        boolean themeSet = false;
 
-        if (allLayers) {
-            for (Layer layer : mLayers) {
-                if (layer instanceof VectorTileLayer) {
-                    ((VectorTileLayer) layer).setRenderTheme(theme);
-                }
+        for (Layer layer : mLayers) {
+            if (layer instanceof VectorTileLayer) {
+                ((VectorTileLayer) layer).setRenderTheme(theme);
+                themeSet = true;
+                if (!allLayers)
+                    break;
             }
         }
-
+        if (!themeSet) {
+            log.error("No base layer set");
+            throw new IllegalStateException();
+        }
         MapRenderer.setBackgroundColor(theme.getMapBackground());
 
         clearMap();
