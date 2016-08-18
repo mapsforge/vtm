@@ -1,6 +1,7 @@
 /*
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -291,10 +292,10 @@ public class Viewport {
 
     protected void unprojectScreen(double x, double y, float[] out) {
         /* scale to -1..1 */
-        float mx = (float) (1 - (x / mWidth * 2));
-        float my = (float) (1 - (y / mHeight * 2));
+        float mx = (float) (x / mWidth * 2);
+        float my = (float) (y / mHeight * 2);
 
-        unproject(-mx, my, out, 0);
+        unproject(mx, -my, out, 0);
     }
 
     /**
