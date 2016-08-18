@@ -1297,7 +1297,7 @@
               </m>
             </m>-->
             <m v="viewpoint" zoom-min="15">
-                <symbol src="assets:symbols/tourist/viewpoint.svg" />
+                <symbol src="assets:symbols/tourist/view_point.svg" />
             </m>
 
             <m zoom-min="17">

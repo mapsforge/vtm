@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -31,7 +32,7 @@ public abstract class TileLayer extends Layer implements UpdateListener {
 
     static final Logger log = LoggerFactory.getLogger(TileLayer.class);
 
-    private static final int NUM_LOADERS = 4;
+    private int mNumLoaders = 4;
 
     /**
      * TileManager responsible for adding visible tiles
@@ -76,10 +77,17 @@ public abstract class TileLayer extends Layer implements UpdateListener {
     }
 
     /**
-     * Override to set number of loader threads. Default is 4.
+     * Get number of loader threads. Default is 4.
      */
     protected int getNumLoaders() {
-        return NUM_LOADERS;
+        return mNumLoaders;
+    }
+
+    /**
+     * Set number of loader threads. Should be called before attaching layer to map.
+     */
+    public void setNumLoaders(int num) {
+        mNumLoaders = num;
     }
 
     @Override

@@ -1290,7 +1290,7 @@
                <symbol src="assets:symbols/tourist/information.svg" />
              </m> -->
             <m v="viewpoint" zoom-min="15">
-                <symbol src="assets:symbols/tourist/viewpoint.svg" />
+                <symbol src="assets:symbols/tourist/view_point.svg" />
             </m>
 
             <m select="when-matched" zoom-min="17">
