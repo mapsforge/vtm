@@ -1,6 +1,7 @@
 /*
  * Copyright 2014 Charles Greb
  * Copyright 2014 Hannes Janetzek
+ * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -57,7 +58,7 @@ public class OkHttpEngine implements HttpEngine {
         }
     }
 
-    private InputStream inputStream;
+    private InputOutputStream inputStream;
 
     public OkHttpEngine(OkHttpClient client, UrlTileSource tileSource) {
         mClient = client;
@@ -81,7 +82,7 @@ public class OkHttpEngine implements HttpEngine {
             conn.addRequestProperty(opt.getKey(), opt.getValue());
 
         try {
-            inputStream = conn.getInputStream();
+            inputStream = new InputOutputStream(conn.getInputStream());
         } catch (FileNotFoundException e) {
             throw new IOException("ERROR " + conn.getResponseCode()
                     + ": " + conn.getResponseMessage());
@@ -105,7 +106,7 @@ public class OkHttpEngine implements HttpEngine {
 
     @Override
     public void setCache(OutputStream os) {
-        // OkHttp cache implented through tileSource setResponseCache
+        inputStream.setOutputStream(os);
     }
 
     @Override
@@ -114,5 +115,58 @@ public class OkHttpEngine implements HttpEngine {
         inputStream = null;
 
         return success;
+    }
+
+    class InputOutputStream extends InputStream {
+        InputStream mInputStream;
+        OutputStream mOutputStream;
+
+        InputOutputStream(InputStream inputStream) {
+            mInputStream = inputStream;
+        }
+
+        public void setOutputStream(OutputStream outputStream) {
+            mOutputStream = outputStream;
+        }
+
+        @Override
+        public int read() throws IOException {
+            int data = mInputStream.read();
+            if (mOutputStream != null)
+                mOutputStream.write(data);
+            return data;
+        }
+
+        @Override
+        public int read(byte[] b) throws IOException {
+            return read(b, 0, b.length);
+        }
+
+        @Override
+        public int read(byte[] b, int off, int len) throws IOException {
+            int num = mInputStream.read(b, off, len);
+            if (mOutputStream != null)
+                mOutputStream.write(b, off, num);
+            return num;
+        }
+
+        @Override
+        public long skip(long len) throws IOException {
+            return mInputStream.skip(len);
+        }
+
+        @Override
+        public void close() throws IOException {
+            mInputStream.close();
+            if (mOutputStream != null) {
+                mOutputStream.flush();
+                mOutputStream.close();
+            }
+        }
+
+        @Override
+        public synchronized void reset() throws IOException {
+            mInputStream.reset();
+        }
     }
 }
