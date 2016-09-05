@@ -389,6 +389,8 @@ public class Viewport {
     }
 
     protected boolean copy(Viewport viewport) {
+        boolean sizeChanged = mHeight != viewport.mHeight || mWidth != viewport.mWidth;
+
         mHeight = viewport.mHeight;
         mWidth = viewport.mWidth;
         mProjMatrix.copy(viewport.mProjMatrix);
@@ -399,7 +401,7 @@ public class Viewport {
         mRotationMatrix.copy(viewport.mRotationMatrix);
         mViewMatrix.copy(viewport.mViewMatrix);
         mViewProjMatrix.copy(viewport.mViewProjMatrix);
-        return viewport.getMapPosition(mPos);
+        return viewport.getMapPosition(mPos) || sizeChanged;
     }
 
     public double getMaxScale() {
