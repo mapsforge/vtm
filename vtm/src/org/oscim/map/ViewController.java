@@ -136,9 +136,6 @@ public class ViewController extends Viewport {
      * Scale map by scale width center at pivot in pixel relative to
      * screen center. Map scale is clamp to MIN_SCALE and MAX_SCALE.
      *
-     * @param scale
-     * @param pivotX
-     * @param pivotY
      * @return true if scale was changed
      */
     public boolean scaleMap(float scale, float pivotX, float pivotY) {
@@ -172,10 +169,6 @@ public class ViewController extends Viewport {
     /**
      * Rotate map by radians around pivot. Pivot is in pixel relative
      * to screen center.
-     *
-     * @param radians
-     * @param pivotX
-     * @param pivotY
      */
     public void rotateMap(double radians, float pivotX, float pivotY) {
         ThreadUtils.assertMainThread();
@@ -267,6 +260,12 @@ public class ViewController extends Viewport {
      */
     public final Viewport getSyncViewport() {
         return mNextFrame;
+    }
+
+    boolean sizeChanged() {
+        synchronized (mNextFrame) {
+            return mNextFrame.sizeChanged(this);
+        }
     }
 
     void syncViewport() {

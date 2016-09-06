@@ -1181,13 +1181,13 @@
 
 
         <m k="highway">
-            <m k="highway" v="bus_stop" zoom-min="16">
-                <symbol src="assets:symbols/transport/bus_stop.svg" />
+            <m v="bus_stop" zoom-min="16">
+                <symbol src="assets:symbols/dot_blue.svg" />
             </m>
-            <m k="highway" v="traffic_signals" zoom-min="17">
+            <m v="traffic_signals" zoom-min="17">
                 <symbol src="assets:symbols/traffic_signal.svg" />
             </m>
-            <m k="highway" v="turning_circle">
+            <m v="turning_circle">
                 <circle fill="#ffffff" radius="1.4" scale-radius="true" />
             </m>
         </m>

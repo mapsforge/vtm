@@ -956,11 +956,11 @@
         </m>
 
         <m k="highway">
-            <m v="traffic_signals">
-                <symbol src="assets:symbols/traffic_signal.svg" />
+            <m v="bus_stop" zoom-min="16">
+                <symbol src="assets:symbols/dot_blue.svg" />
             </m>
-            <m v="bus_stop">
-                <symbol src="assets:symbols/transport/bus_stop.svg" />
+            <m v="traffic_signals" zoom-min="17">
+                <symbol src="assets:symbols/traffic_signal.svg" />
             </m>
             <m v="turning_circle">
                 <circle fill="#ffffff" radius="1.4" scale-radius="true" />

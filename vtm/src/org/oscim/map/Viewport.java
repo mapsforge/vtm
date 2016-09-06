@@ -1,6 +1,7 @@
 /*
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Erik Duisters
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -25,19 +26,15 @@ import org.oscim.core.Point;
 import org.oscim.core.Tile;
 import org.oscim.renderer.GLMatrix;
 import org.oscim.utils.FastMath;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The Viewport class contains a MapPosition and the projection matrices.
  * It provides functions to modify the MapPosition and translate between
  * map and screen coordinates.
- * <p/>
+ * <p>
  * Public methods are thread safe.
  */
 public class Viewport {
-
-    static final Logger log = LoggerFactory.getLogger(Viewport.class);
 
     private final static int MAX_ZOOMLEVEL = 20;
     private final static int MIN_ZOOMLEVEL = 2;
@@ -388,8 +385,12 @@ public class Viewport {
         }
     }
 
+    boolean sizeChanged(Viewport viewport) {
+        return mHeight != viewport.mHeight || mWidth != viewport.mWidth;
+    }
+
     protected boolean copy(Viewport viewport) {
-        boolean sizeChanged = mHeight != viewport.mHeight || mWidth != viewport.mWidth;
+        boolean sizeChanged = sizeChanged(viewport);
 
         mHeight = viewport.mHeight;
         mWidth = viewport.mWidth;
