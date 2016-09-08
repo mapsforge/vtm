@@ -1,6 +1,7 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * 
+ * Copyright 2016 devemux86
+ *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  * 
  * This program is free software: you can redistribute it and/or modify it under the
@@ -49,6 +50,7 @@ public class Rule {
     public final Rule[] subRules;
     public final RenderStyle[] styles;
 
+    public String cat;
     public final int zoom;
     public final int element;
     public final boolean selectFirstMatch;
@@ -125,6 +127,11 @@ public class Rule {
 
         for (Rule subRule : subRules)
             subRule.scaleTextSize(scaleFactor);
+    }
+
+    public Rule setCat(String cat) {
+        this.cat = cat;
+        return this;
     }
 
     public void updateStyles() {

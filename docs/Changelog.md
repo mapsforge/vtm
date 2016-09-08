@@ -6,6 +6,7 @@
 
 - Render theme SVG resources [#60](https://github.com/mapsforge/vtm/issues/60)
 - Mapsforge multilingual maps [#34](https://github.com/mapsforge/vtm/issues/34)
+- Render theme styles [#93](https://github.com/mapsforge/vtm/issues/93)
 - vtm-ios update module [#29](https://github.com/mapsforge/vtm/issues/29)
 - Native libraries for all platforms [#14](https://github.com/mapsforge/vtm/issues/14)
 - Line stipple and texture rendering [#105](https://github.com/mapsforge/vtm/issues/105)

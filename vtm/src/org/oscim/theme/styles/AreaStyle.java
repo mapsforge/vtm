@@ -27,7 +27,7 @@ import static org.oscim.backend.canvas.Color.parseColor;
  * - add custom shaders
  * - create distance field per tile?
  */
-public class AreaStyle extends RenderStyle {
+public class AreaStyle extends RenderStyle<AreaStyle> {
 
     private static final float FADE_START = 0.25f;
 

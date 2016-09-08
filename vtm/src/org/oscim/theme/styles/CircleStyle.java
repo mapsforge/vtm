@@ -1,6 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -20,7 +21,7 @@ package org.oscim.theme.styles;
 /**
  * Represents a round area on the map.
  */
-public final class CircleStyle extends RenderStyle {
+public final class CircleStyle extends RenderStyle<CircleStyle> {
 
     public final int level;
 
@@ -35,7 +36,7 @@ public final class CircleStyle extends RenderStyle {
                        float strokeWidth, int level) {
         super();
 
-        this.radius = radius.floatValue();
+        this.radius = radius;
         this.scaleRadius = scaleRadius;
 
         this.fill = fill;

@@ -19,6 +19,7 @@
 package org.oscim.theme;
 
 import org.oscim.backend.AssetAdapter;
+import org.oscim.theme.IRenderTheme.ThemeException;
 
 import java.io.InputStream;
 
@@ -28,9 +29,9 @@ import java.io.InputStream;
 public enum VtmThemes implements ThemeFile {
 
     DEFAULT("styles/default.xml"),
-    TRONRENDER("styles/tronrender.xml"),
     NEWTRON("styles/newtron.xml"),
-    OSMARENDER("styles/osmarender.xml");
+    OSMARENDER("styles/osmarender.xml"),
+    TRONRENDER("styles/tronrender.xml");
 
     private final String mPath;
 
@@ -39,12 +40,17 @@ public enum VtmThemes implements ThemeFile {
     }
 
     @Override
+    public XmlRenderThemeMenuCallback getMenuCallback() {
+        return null;
+    }
+
+    @Override
     public String getRelativePathPrefix() {
         return "";
     }
 
     @Override
-    public InputStream getRenderThemeAsStream() {
+    public InputStream getRenderThemeAsStream() throws ThemeException {
         return AssetAdapter.readFileAsStream(mPath);
     }
 }

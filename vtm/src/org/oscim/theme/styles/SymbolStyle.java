@@ -24,7 +24,7 @@ import org.oscim.renderer.atlas.TextureRegion;
 /**
  * Represents an icon on the map.
  */
-public final class SymbolStyle extends RenderStyle {
+public final class SymbolStyle extends RenderStyle<SymbolStyle> {
 
     public Bitmap bitmap;
     public TextureRegion texture;

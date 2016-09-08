@@ -24,7 +24,7 @@ import org.oscim.renderer.bucket.TextureItem;
 
 import static org.oscim.backend.canvas.Color.parseColor;
 
-public final class LineStyle extends RenderStyle {
+public final class LineStyle extends RenderStyle<LineStyle> {
 
     final int level;
     public final String style;

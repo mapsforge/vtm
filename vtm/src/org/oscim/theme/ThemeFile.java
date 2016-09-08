@@ -18,11 +18,17 @@
  */
 package org.oscim.theme;
 
-import java.io.FileNotFoundException;
+import org.oscim.theme.IRenderTheme.ThemeException;
+
 import java.io.InputStream;
 import java.io.Serializable;
 
 public interface ThemeFile extends Serializable {
+    /**
+     * @return the interface callback to create a settings menu on the fly.
+     */
+    XmlRenderThemeMenuCallback getMenuCallback();
+
     /**
      * @return the prefix for all relative resource paths.
      */
@@ -30,7 +36,7 @@ public interface ThemeFile extends Serializable {
 
     /**
      * @return an InputStream to read the render theme data from.
-     * @throws FileNotFoundException if the render theme file cannot be found.
+     * @throws ThemeException if an error occurs while reading the render theme XML.
      */
-    InputStream getRenderThemeAsStream() throws FileNotFoundException;
+    InputStream getRenderThemeAsStream() throws ThemeException;
 }

@@ -15,18 +15,15 @@
  */
 package org.oscim.app.filefilter;
 
+import org.oscim.theme.ExternalRenderTheme;
+import org.oscim.theme.ThemeFile;
 import org.oscim.theme.XmlThemeBuilder;
 import org.oscim.tiling.TileSource.OpenResult;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 /**
@@ -37,31 +34,16 @@ public final class ValidRenderTheme implements ValidFileFilter {
 
     @Override
     public boolean accept(File file) {
-        InputStream inputStream = null;
-
         try {
-            inputStream = new FileInputStream(file);
-            XmlThemeBuilder renderThemeHandler = new XmlThemeBuilder(file.getParent());
+            ThemeFile theme = new ExternalRenderTheme(file.getAbsolutePath());
+            XmlThemeBuilder renderThemeHandler = new XmlThemeBuilder(theme);
             XMLReader xmlReader = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
             xmlReader.setContentHandler(renderThemeHandler);
-            xmlReader.parse(new InputSource(inputStream));
+            xmlReader.parse(new InputSource(theme.getRenderThemeAsStream()));
             this.openResult = OpenResult.SUCCESS;
-        } catch (ParserConfigurationException e) {
+        } catch (Exception e) {
             this.openResult = new OpenResult(e.getMessage());
-        } catch (SAXException e) {
-            this.openResult = new OpenResult(e.getMessage());
-        } catch (IOException e) {
-            this.openResult = new OpenResult(e.getMessage());
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException e) {
-                this.openResult = new OpenResult(e.getMessage());
-            }
         }
-
         return this.openResult.isSuccess();
     }
 

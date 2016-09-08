@@ -26,7 +26,7 @@ import org.oscim.backend.canvas.Paint.FontFamily;
 import org.oscim.backend.canvas.Paint.FontStyle;
 import org.oscim.renderer.atlas.TextureRegion;
 
-public final class TextStyle extends RenderStyle {
+public final class TextStyle extends RenderStyle<TextStyle> {
 
     public static class TextBuilder<T extends TextBuilder<T>> extends StyleBuilder<T> {
 

@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -18,7 +19,7 @@ package org.oscim.theme.styles;
 
 import org.oscim.backend.canvas.Color;
 
-public class ExtrusionStyle extends RenderStyle {
+public class ExtrusionStyle extends RenderStyle<ExtrusionStyle> {
 
     public ExtrusionStyle(int level, int colorSides, int colorTop, int colorLine, int defaultHeight) {
 

@@ -33,14 +33,23 @@ public class ExternalRenderTheme implements ThemeFile {
     private static final long serialVersionUID = 1L;
 
     private final long mFileModificationDate;
+    private final XmlRenderThemeMenuCallback mMenuCallback;
     private final String mPath;
 
     /**
      * @param fileName the path to the XML render theme file.
      * @throws ThemeException if the file does not exist or cannot be read.
      */
-    public ExternalRenderTheme(String fileName) {
+    public ExternalRenderTheme(String fileName) throws ThemeException {
+        this(fileName, null);
+    }
 
+    /**
+     * @param fileName     the path to the XML render theme file.
+     * @param menuCallback the interface callback to create a settings menu on the fly.
+     * @throws ThemeException if the file does not exist or cannot be read.
+     */
+    public ExternalRenderTheme(String fileName, XmlRenderThemeMenuCallback menuCallback) throws ThemeException {
         File themeFile = new File(fileName);
         if (!themeFile.exists()) {
             throw new ThemeException("file does not exist: " + themeFile.getAbsolutePath());
@@ -55,6 +64,7 @@ public class ExternalRenderTheme implements ThemeFile {
             throw new ThemeException("cannot read last modification time");
         }
         mPath = fileName;
+        mMenuCallback = menuCallback;
     }
 
     @Override
@@ -76,12 +86,17 @@ public class ExternalRenderTheme implements ThemeFile {
     }
 
     @Override
+    public XmlRenderThemeMenuCallback getMenuCallback() {
+        return mMenuCallback;
+    }
+
+    @Override
     public String getRelativePathPrefix() {
         return new File(mPath).getParent();
     }
 
     @Override
-    public InputStream getRenderThemeAsStream() {
+    public InputStream getRenderThemeAsStream() throws ThemeException {
         InputStream is;
 
         try {

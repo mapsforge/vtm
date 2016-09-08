@@ -1,3 +1,19 @@
+/*
+ * Copyright 2016 devemux86
+ *
+ * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.oscim.test;
 
 import com.badlogic.gdx.Input;
@@ -8,10 +24,9 @@ import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.IRenderTheme;
+import org.oscim.theme.IRenderTheme.ThemeException;
 import org.oscim.theme.ThemeLoader;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
-
-import java.io.FileNotFoundException;
 
 public class ExternalRenderThemeTest extends GdxMap {
 
@@ -34,7 +49,7 @@ public class ExternalRenderThemeTest extends GdxMap {
             IRenderTheme theme = ThemeLoader.load(name);
             mapLayer.setRenderTheme(theme);
             MapRenderer.setBackgroundColor(theme.getMapBackground());
-        } catch (FileNotFoundException e) {
+        } catch (ThemeException e) {
             e.printStackTrace();
         }
 
@@ -67,7 +82,7 @@ public class ExternalRenderThemeTest extends GdxMap {
             // IRenderTheme theme = ThemeLoader.load("themes/vmap/theme.xml");
             l.setRenderTheme(theme);
             MapRenderer.setBackgroundColor(theme.getMapBackground());
-        } catch (FileNotFoundException e) {
+        } catch (ThemeException e) {
             e.printStackTrace();
         }
 

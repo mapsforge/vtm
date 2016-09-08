@@ -40,6 +40,7 @@ public class RuleBuilder {
         EXCLUDE
     }
 
+    public String cat;
     int zoom;
     int element;
     int selector;
@@ -153,7 +154,8 @@ public class RuleBuilder {
         int numVals = values.length;
 
         if (numKeys == 0 && numVals == 0)
-            return new Rule(element, zoom, selector, rules, styles);
+            return new Rule(element, zoom, selector, rules, styles)
+                    .setCat(cat);
 
         for (int i = 0; i < numVals; i++)
             values[i] = values[i].intern();
@@ -162,24 +164,23 @@ public class RuleBuilder {
             keys[i] = keys[i].intern();
 
         if (type != RuleType.POSITIVE)
-            return new NegativeRule(type, element, zoom, selector,
-                    keys, values, rules, styles);
+            return new NegativeRule(type, element, zoom, selector, keys, values, rules, styles)
+                    .setCat(cat);
 
         if (numKeys == 1 && numVals == 0)
-            return new PositiveRuleK(element, zoom, selector, keys[0],
-                    rules, styles);
+            return new PositiveRuleK(element, zoom, selector, keys[0], rules, styles)
+                    .setCat(cat);
 
         if (numKeys == 0 && numVals == 1)
-            return new PositiveRuleV(element, zoom, selector, values[0],
-                    rules, styles);
+            return new PositiveRuleV(element, zoom, selector, values[0], rules, styles)
+                    .setCat(cat);
 
         if (numKeys == 1 && numVals == 1)
-            return new PositiveRuleKV(element, zoom, selector,
-                    keys[0], values[0], rules, styles);
+            return new PositiveRuleKV(element, zoom, selector, keys[0], values[0], rules, styles)
+                    .setCat(cat);
 
-        return new PositiveRuleMultiKV(element, zoom, selector,
-                keys, values, rules, styles);
-
+        return new PositiveRuleMultiKV(element, zoom, selector, keys, values, rules, styles)
+                .setCat(cat);
     }
 
     public RuleBuilder addStyle(RenderStyle style) {
@@ -214,6 +215,11 @@ public class RuleBuilder {
 
     public RuleBuilder element(int element) {
         this.element = element;
+        return this;
+    }
+
+    public RuleBuilder cat(String cat) {
+        this.cat = cat;
         return this;
     }
 }
