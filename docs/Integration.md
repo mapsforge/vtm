@@ -31,9 +31,9 @@ compile 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]'
 compile 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-linux'
 compile 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-osx'
 compile 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-windows'
-compile 'com.badlogicgames.gdx:gdx:1.9.3'
-compile 'com.badlogicgames.gdx:gdx-platform:1.9.3:natives-desktop'
-compile 'com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.3'
+compile 'com.badlogicgames.gdx:gdx:1.9.4'
+compile 'com.badlogicgames.gdx:gdx-platform:1.9.4:natives-desktop'
+compile 'com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.4'
 compile 'org.lwjgl.lwjgl:lwjgl:2.9.3'
 compile 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-linux'
 compile 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-osx'
@@ -53,9 +53,16 @@ The dependencies for Maven are declared in a similar way. For example:
 </dependency>
 ```
 
+## Snapshots
+
+We publish regularly SNAPSHOT builds to Sonatype OSS Repository Hosting. To use `master-SNAPSHOT` version add as repository, e.g. in Gradle:
+```groovy
+maven { url "https://oss.sonatype.org/content/groups/public/" }
+```
+
 ## JitPack
 
-We support also [JitPack](https://jitpack.io/#mapsforge/vtm) for publishing. This can be used for the releases, but it's also useful for integrating SNAPSHOT builds in your application (not available in Maven Central).
+We support also [JitPack](https://jitpack.io/#mapsforge/vtm) for releases or SNAPSHOT builds.
 
 For example in order to include the `vtm` module `master-SNAPSHOT` with Gradle.
 
