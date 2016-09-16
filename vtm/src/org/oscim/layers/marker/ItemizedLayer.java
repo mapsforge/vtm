@@ -268,6 +268,7 @@ public class ItemizedLayer<Item extends MarkerItem> extends MarkerLayer<Item>
         return false;
     }
 
+    /*
     public Item getByUid(Object uid) {
         for (Item it : mItemList)
             if (it.getUid() == uid)
@@ -275,4 +276,5 @@ public class ItemizedLayer<Item extends MarkerItem> extends MarkerLayer<Item>
 
         return null;
     }
+    */
 }

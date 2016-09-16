@@ -28,7 +28,7 @@ import org.oscim.tiling.source.bitmap.DefaultSources;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
+public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerLayerTest.MyMarkerItem> {
 
     private static final boolean BILLBOARDS = true;
     private MarkerSymbol mFocusMarker;
@@ -54,13 +54,13 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
         else
             mFocusMarker = new MarkerSymbol(bitmapFocus, MarkerItem.HotspotPlace.CENTER, false);
 
-        ItemizedLayer<MarkerItem> markerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+        ItemizedLayer<MyMarkerItem> markerLayer = new ItemizedLayer<>(mMap, new ArrayList<MyMarkerItem>(), symbol, this);
         mMap.layers().add(markerLayer);
 
-        List<MarkerItem> pts = new ArrayList<>();
+        List<MyMarkerItem> pts = new ArrayList<>();
         for (double lat = -90; lat <= 90; lat += 5) {
             for (double lon = -180; lon <= 180; lon += 5)
-                pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
+                pts.add(new MyMarkerItem(lat + "/" + lon, new GeoPoint(lat, lon)));
         }
         markerLayer.addItems(pts);
 
@@ -68,7 +68,7 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
     }
 
     @Override
-    public boolean onItemSingleTapUp(int index, MarkerItem item) {
+    public boolean onItemSingleTapUp(int index, MyMarkerItem item) {
         if (item.getMarker() == null)
             item.setMarker(mFocusMarker);
         else
@@ -79,12 +79,37 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
     }
 
     @Override
-    public boolean onItemLongPress(int index, MarkerItem item) {
+    public boolean onItemLongPress(int index, MyMarkerItem item) {
         return false;
     }
 
     public static void main(String[] args) {
         GdxMapApp.init();
         GdxMapApp.run(new MarkerLayerTest(), null, 400);
+    }
+
+    public static class MyMarkerItem implements MarkerItem {
+        String mTitle;
+        GeoPoint mPoint;
+        MarkerSymbol mMarkerSymbol;
+
+        public MyMarkerItem(String title, GeoPoint point) {
+            mTitle = title;
+            mPoint = point;
+        }
+
+        public String getTitle() { return mTitle; }
+
+        @Override
+        public GeoPoint getPoint() {
+            return mPoint;
+        }
+
+        @Override
+        public MarkerSymbol getMarker() {
+            return mMarkerSymbol;
+        }
+
+        public void setMarker(MarkerSymbol symbol) { mMarkerSymbol = symbol; }
     }
 }

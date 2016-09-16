@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 
 import org.oscim.core.GeoPoint;
 import org.oscim.layers.marker.MarkerItem;
+import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.map.Map;
 
 /**
@@ -20,7 +21,7 @@ import org.oscim.map.Map;
  * @author M.Kergall
  * @see ItemizedOverlayWithBubble
  */
-public class ExtendedMarkerItem extends MarkerItem {
+public class ExtendedMarkerItem implements MarkerItem {
 
     // now, they are modifiable
     private String mTitle, mDescription;
@@ -32,15 +33,17 @@ public class ExtendedMarkerItem extends MarkerItem {
     private String mSubDescription;
     private Drawable mImage;
     private Object mRelatedObject; // reference to an object (of any kind)
+    private GeoPoint mGeopoint;
+    private MarkerSymbol mMarkerSymbol;
     // linked to this item.
 
     public ExtendedMarkerItem(String aTitle, String aDescription, GeoPoint aGeoPoint) {
-        super(aTitle, aDescription, aGeoPoint);
         mTitle = aTitle;
         mDescription = aDescription;
         mSubDescription = null;
         mImage = null;
         mRelatedObject = null;
+        mGeopoint=aGeoPoint;
     }
 
     public void setTitle(String aTitle) {
@@ -63,7 +66,6 @@ public class ExtendedMarkerItem extends MarkerItem {
         mRelatedObject = o;
     }
 
-    @Override
     public String getTitle() {
         return mTitle;
     }
@@ -120,4 +122,11 @@ public class ExtendedMarkerItem extends MarkerItem {
 
         bubble.open(this, 0, 0);
     }
+
+    @Override
+    public GeoPoint getPoint() { return mGeopoint; }
+
+    public void setMarker(MarkerSymbol marker) { mMarkerSymbol = marker; }
+    @Override
+    public MarkerSymbol getMarker() { return mMarkerSymbol; }
 }
