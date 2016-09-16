@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'maven'
-apply plugin: 'application'
 
 dependencies {
     compile project(':vtm-gdx')
@@ -43,9 +42,6 @@ task fatJar(type: Jar, dependsOn: classes) {
 artifacts {
     archives fatJar
 }
-
-mainClassName = 'org.oscim.gdx.GdxMapApp'
-run { ignoreExitValue = true }
 
 if (project.hasProperty("SONATYPE_USERNAME")) {
     afterEvaluate {

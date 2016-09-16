@@ -6,9 +6,11 @@
 
 VTM was developed within the [OpenScienceMap](http://opensciencemap.org) project.
 
-**This fork is for continue VTM development. And make it compatible with latest [Mapsforge](https://github.com/mapsforge/mapsforge).**
+**This fork continues VTM development. And provides compatibility with latest [Mapsforge](https://github.com/mapsforge/mapsforge).**
 
-See the [integration guide](docs/Integration.md) and [changelog](docs/Changelog.md). If you have any questions or problems, don't hesitate to ask our public [mailing list](https://groups.google.com/group/mapsforge-dev) for help. You can also report bugs and improvement requests via our [issue tracker](https://github.com/mapsforge/vtm/issues). And read through [how to contribute](.github/CONTRIBUTING.md) guidelines.
+If you have any questions or problems, don't hesitate to ask our public [mailing list](https://groups.google.com/group/mapsforge-dev) for help.
+
+See the [integration guide](docs/Integration.md) and [changelog](docs/Changelog.md). And read through [how to contribute](.github/CONTRIBUTING.md) guidelines.
 
 ## Features
 - Java map library
@@ -41,19 +43,19 @@ The libGDX backend for GWT is experimental.
 ## Applications
 - VTM is used by many [applications](docs/Applications.md).
 
-## Master build downloads
-- [Latest jars and samples](http://ci.mapsforge.org/job/vtm/)
+## Downloads
+- [Latest builds from CI server](http://ci.mapsforge.org/job/vtm/).
 
 ## WebGL Demo
 [OpenScienceMap](http://opensciencemap.org/s3db/#scale=17,rot=61,tilt=51,lat=53.075,lon=8.807) view of Bremen.
-- hold right mouse button to change view direction
+- Hold right mouse button to change view direction.
 
 ## Credits
 This library contains code from several projects:
+- **Android**: some Matrix code, TimSort (http://source.android.com)
+- **libGDX**: AsyncTask, MathUtils and Interpolation classes (https://github.com/libgdx)
 - **mapsforge**: based on 0.2.4 (https://github.com/mapsforge/mapsforge)
 - **osmdroid**: some overlay classes (https://github.com/osmdroid/osmdroid)
-- **libGDX**: AsyncTask, MathUtils and Interpolation classes (https://github.com/libgdx)
-- **Android**: some Matrix code, TimSort (http://source.android.com)
 - **tessellate**: (https://github.com/cscheid/tessellate)
 
 ## Screenshots

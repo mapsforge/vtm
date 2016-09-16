@@ -218,7 +218,6 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-
         mPosX = screenX;
         mPosY = screenY;
         return false;
@@ -226,18 +225,10 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-
-        if (amount > 0) {
-
-            mMap.animator().animateZoom(250, 0.75f, 0, 0);
-        } else {
-            float fx = mPosX - mMap.getWidth() / 2;
-            float fy = mPosY - mMap.getHeight() / 2;
-
-            mMap.animator().animateZoom(250, 1.333f, fx, fy);
-        }
+        float fx = mPosX - mMap.getWidth() / 2;
+        float fy = mPosY - mMap.getHeight() / 2;
+        mMap.animator().animateZoom(250, amount > 0 ? 0.75f : 1.333f, fx, fy);
         mMap.updateMap(false);
-
         return true;
     }
 }

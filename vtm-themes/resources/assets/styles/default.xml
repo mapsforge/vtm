@@ -977,9 +977,10 @@
         </m>
 
         <!-- house numbers -->
-        <!-- <m k="addr:housenumber" zoom-min="18"> <caption
-          k="addr:housenumber" style="bold" size="10" fill="#606060" stroke="#ffffff"
-          width="2.0" /> </m> -->
+        <m k="addr:housenumber" zoom-min="18">
+            <caption style="bold" fill="#606060" k="addr:housenumber" size="10" stroke="#ffffff"
+                stroke-width="2.0" />
+        </m>
 
         <!-- place -->
         <m k="place">
