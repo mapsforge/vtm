@@ -21,11 +21,7 @@ import org.oscim.map.Map;
  * @author M.Kergall
  * @see ItemizedOverlayWithBubble
  */
-public class ExtendedMarkerItem implements MarkerItem {
-
-    // now, they are modifiable
-    private String mTitle, mDescription;
-    // now, they are modifiable
+public class ExtendedMarkerItem extends MarkerItem {
     // a third field that can be displayed in
     // the infowindow, on a third line
     // that will be shown in the infowindow.
@@ -33,25 +29,21 @@ public class ExtendedMarkerItem implements MarkerItem {
     private String mSubDescription;
     private Drawable mImage;
     private Object mRelatedObject; // reference to an object (of any kind)
-    private GeoPoint mGeopoint;
-    private MarkerSymbol mMarkerSymbol;
     // linked to this item.
 
     public ExtendedMarkerItem(String aTitle, String aDescription, GeoPoint aGeoPoint) {
-        mTitle = aTitle;
-        mDescription = aDescription;
+        super(aTitle, aDescription, aGeoPoint);
         mSubDescription = null;
         mImage = null;
         mRelatedObject = null;
-        mGeopoint=aGeoPoint;
     }
 
     public void setTitle(String aTitle) {
-        mTitle = aTitle;
+        title = aTitle;
     }
 
     public void setDescription(String aDescription) {
-        mDescription = aDescription;
+        description = aDescription;
     }
 
     public void setSubDescription(String aSubDescription) {
@@ -66,12 +58,8 @@ public class ExtendedMarkerItem implements MarkerItem {
         mRelatedObject = o;
     }
 
-    public String getTitle() {
-        return mTitle;
-    }
-
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     public String getSubDescription() {
@@ -122,11 +110,4 @@ public class ExtendedMarkerItem implements MarkerItem {
 
         bubble.open(this, 0, 0);
     }
-
-    @Override
-    public GeoPoint getPoint() { return mGeopoint; }
-
-    public void setMarker(MarkerSymbol marker) { mMarkerSymbol = marker; }
-    @Override
-    public MarkerSymbol getMarker() { return mMarkerSymbol; }
 }

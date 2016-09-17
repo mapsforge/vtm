@@ -6,6 +6,7 @@
  *
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Erik Duisters
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -27,20 +28,49 @@ import org.oscim.core.GeoPoint;
 /**
  * Immutable class describing a GeoPoint with a Title and a Description.
  */
-public interface MarkerItem {
+public class MarkerItem implements MarkerInterface {
+    public final Object uid;
+    public String title;
+    public String description;
+    public GeoPoint geoPoint;
+    protected MarkerSymbol mMarker;
+
     /**
-     * Indicates a hotspot for an area. This is where the origin (0,0) of a
-     * point will be located relative to the area. In otherwords this acts as an
-     * offset. NONE indicates that no adjustment should be made.
+     * @param title       this should be <b>singleLine</b> (no <code>'\n'</code> )
+     * @param description a <b>multiLine</b> description ( <code>'\n'</code> possible)
      */
-    enum HotspotPlace {
-        NONE, CENTER, BOTTOM_CENTER,
-        TOP_CENTER, RIGHT_CENTER, LEFT_CENTER,
-        UPPER_RIGHT_CORNER, LOWER_RIGHT_CORNER,
-        UPPER_LEFT_CORNER, LOWER_LEFT_CORNER
+    public MarkerItem(String title, String description, GeoPoint geoPoint) {
+        this(null, title, description, geoPoint);
     }
 
-    GeoPoint getPoint();
+    public MarkerItem(Object uid, String title, String description, GeoPoint geoPoint) {
+        this.title = title;
+        this.description = description;
+        this.geoPoint = geoPoint;
+        this.uid = uid;
+    }
 
-    MarkerSymbol getMarker();
+    public Object getUid() {
+        return uid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSnippet() {
+        return description;
+    }
+
+    public GeoPoint getPoint() {
+        return geoPoint;
+    }
+
+    public MarkerSymbol getMarker() {
+        return mMarker;
+    }
+
+    public void setMarker(MarkerSymbol marker) {
+        mMarker = marker;
+    }
 }

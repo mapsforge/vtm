@@ -23,12 +23,11 @@ import android.widget.Toast;
 
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.GeoPoint;
-import org.oscim.core.Point;
 import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
-import org.oscim.layers.marker.MarkerItem.HotspotPlace;
 import org.oscim.layers.marker.MarkerSymbol;
+import org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ import static org.oscim.android.canvas.AndroidGraphics.drawableToBitmap;
 import static org.oscim.tiling.source.bitmap.DefaultSources.STAMEN_TONER;
 
 public class MarkerOverlayActivity extends BitmapTileMapActivity
-        implements ItemizedLayer.OnItemGestureListener<MarkerOverlayActivity.MyMarkerItem> {
+        implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
 
     private static final boolean BILLBOARDS = true;
     private MarkerSymbol mFocusMarker;
@@ -67,17 +66,17 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
         else
             mFocusMarker = new MarkerSymbol(drawableToBitmap(d), HotspotPlace.CENTER, false);
 
-        ItemizedLayer<MyMarkerItem> markerLayer =
-                new ItemizedLayer<>(mMap, new ArrayList<MyMarkerItem>(),
+        ItemizedLayer<MarkerItem> markerLayer =
+                new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(),
                         symbol, this);
 
         mMap.layers().add(markerLayer);
 
-        List<MyMarkerItem> pts = new ArrayList<>();
+        List<MarkerItem> pts = new ArrayList<>();
 
         for (double lat = -90; lat <= 90; lat += 5) {
             for (double lon = -180; lon <= 180; lon += 5)
-                pts.add(new MyMarkerItem(lat + "/" + lon, new GeoPoint(lat, lon)));
+                pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
         }
 
         markerLayer.addItems(pts);
@@ -94,7 +93,7 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
     }
 
     @Override
-    public boolean onItemSingleTapUp(int index, MyMarkerItem item) {
+    public boolean onItemSingleTapUp(int index, MarkerItem item) {
         if (item.getMarker() == null)
             item.setMarker(mFocusMarker);
         else
@@ -106,28 +105,7 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
     }
 
     @Override
-    public boolean onItemLongPress(int index, MyMarkerItem item) {
+    public boolean onItemLongPress(int index, MarkerItem item) {
         return false;
-    }
-
-    public static class MyMarkerItem implements MarkerItem {
-        private GeoPoint mPoint;
-        private MarkerSymbol mMarkerSymbol;
-        private String mTitle;
-
-        public MyMarkerItem(String title, GeoPoint point) {
-            mTitle=title;
-            mPoint=point;
-        }
-
-        public void setMarker(MarkerSymbol marker) { mMarkerSymbol=marker; }
-
-        public String getTitle() { return mTitle; }
-
-        @Override
-        public GeoPoint getPoint() { return mPoint; }
-
-        @Override
-        public MarkerSymbol getMarker() { return mMarkerSymbol; }
     }
 }

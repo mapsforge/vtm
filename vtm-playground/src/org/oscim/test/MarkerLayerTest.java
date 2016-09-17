@@ -28,7 +28,9 @@ import org.oscim.tiling.source.bitmap.DefaultSources;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerLayerTest.MyMarkerItem> {
+import static org.oscim.layers.marker.MarkerSymbol.*;
+
+public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
 
     private static final boolean BILLBOARDS = true;
     private MarkerSymbol mFocusMarker;
@@ -44,23 +46,23 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
         Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
         MarkerSymbol symbol;
         if (BILLBOARDS)
-            symbol = new MarkerSymbol(bitmapPoi, MarkerItem.HotspotPlace.BOTTOM_CENTER);
+            symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.BOTTOM_CENTER);
         else
-            symbol = new MarkerSymbol(bitmapPoi, MarkerItem.HotspotPlace.CENTER, false);
+            symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.CENTER, false);
 
         Bitmap bitmapFocus = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_focus.png"));
         if (BILLBOARDS)
-            mFocusMarker = new MarkerSymbol(bitmapFocus, MarkerItem.HotspotPlace.BOTTOM_CENTER);
+            mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.BOTTOM_CENTER);
         else
-            mFocusMarker = new MarkerSymbol(bitmapFocus, MarkerItem.HotspotPlace.CENTER, false);
+            mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.CENTER, false);
 
-        ItemizedLayer<MyMarkerItem> markerLayer = new ItemizedLayer<>(mMap, new ArrayList<MyMarkerItem>(), symbol, this);
+        ItemizedLayer<MarkerItem> markerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
         mMap.layers().add(markerLayer);
 
-        List<MyMarkerItem> pts = new ArrayList<>();
+        List<MarkerItem> pts = new ArrayList<>();
         for (double lat = -90; lat <= 90; lat += 5) {
             for (double lon = -180; lon <= 180; lon += 5)
-                pts.add(new MyMarkerItem(lat + "/" + lon, new GeoPoint(lat, lon)));
+                pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
         }
         markerLayer.addItems(pts);
 
@@ -68,7 +70,7 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
     }
 
     @Override
-    public boolean onItemSingleTapUp(int index, MyMarkerItem item) {
+    public boolean onItemSingleTapUp(int index, MarkerItem item) {
         if (item.getMarker() == null)
             item.setMarker(mFocusMarker);
         else
@@ -79,37 +81,12 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
     }
 
     @Override
-    public boolean onItemLongPress(int index, MyMarkerItem item) {
+    public boolean onItemLongPress(int index, MarkerItem item) {
         return false;
     }
 
     public static void main(String[] args) {
         GdxMapApp.init();
         GdxMapApp.run(new MarkerLayerTest(), null, 400);
-    }
-
-    public static class MyMarkerItem implements MarkerItem {
-        String mTitle;
-        GeoPoint mPoint;
-        MarkerSymbol mMarkerSymbol;
-
-        public MyMarkerItem(String title, GeoPoint point) {
-            mTitle = title;
-            mPoint = point;
-        }
-
-        public String getTitle() { return mTitle; }
-
-        @Override
-        public GeoPoint getPoint() {
-            return mPoint;
-        }
-
-        @Override
-        public MarkerSymbol getMarker() {
-            return mMarkerSymbol;
-        }
-
-        public void setMarker(MarkerSymbol symbol) { mMarkerSymbol = symbol; }
     }
 }
