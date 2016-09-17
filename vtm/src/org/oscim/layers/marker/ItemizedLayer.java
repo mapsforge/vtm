@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemizedLayer<Item extends MarkerItem> extends MarkerLayer<Item>
+public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Item>
         implements GestureListener {
 
     static final Logger log = LoggerFactory.getLogger(ItemizedLayer.class);
@@ -266,13 +266,5 @@ public class ItemizedLayer<Item extends MarkerItem> extends MarkerLayer<Item>
             return activateSelectedItems(e, mActiveItemLongPress);
 
         return false;
-    }
-
-    public Item getByUid(Object uid) {
-        for (Item it : mItemList)
-            if (it.getUid() == uid)
-                return it;
-
-        return null;
     }
 }

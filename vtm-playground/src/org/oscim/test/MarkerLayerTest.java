@@ -28,6 +28,8 @@ import org.oscim.tiling.source.bitmap.DefaultSources;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.oscim.layers.marker.MarkerSymbol.*;
+
 public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
 
     private static final boolean BILLBOARDS = true;
@@ -44,15 +46,15 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
         Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
         MarkerSymbol symbol;
         if (BILLBOARDS)
-            symbol = new MarkerSymbol(bitmapPoi, MarkerItem.HotspotPlace.BOTTOM_CENTER);
+            symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.BOTTOM_CENTER);
         else
-            symbol = new MarkerSymbol(bitmapPoi, MarkerItem.HotspotPlace.CENTER, false);
+            symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.CENTER, false);
 
         Bitmap bitmapFocus = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_focus.png"));
         if (BILLBOARDS)
-            mFocusMarker = new MarkerSymbol(bitmapFocus, MarkerItem.HotspotPlace.BOTTOM_CENTER);
+            mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.BOTTOM_CENTER);
         else
-            mFocusMarker = new MarkerSymbol(bitmapFocus, MarkerItem.HotspotPlace.CENTER, false);
+            mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.CENTER, false);
 
         ItemizedLayer<MarkerItem> markerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
         mMap.layers().add(markerLayer);

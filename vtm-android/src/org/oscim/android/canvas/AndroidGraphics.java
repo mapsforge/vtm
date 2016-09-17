@@ -26,8 +26,8 @@ import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
-import org.oscim.layers.marker.MarkerItem.HotspotPlace;
 import org.oscim.layers.marker.MarkerSymbol;
+import org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 
 import java.io.IOException;
 import java.io.InputStream;

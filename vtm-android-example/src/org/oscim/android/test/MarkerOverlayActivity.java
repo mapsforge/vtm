@@ -26,8 +26,8 @@ import org.oscim.core.GeoPoint;
 import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
-import org.oscim.layers.marker.MarkerItem.HotspotPlace;
 import org.oscim.layers.marker.MarkerSymbol;
+import org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +76,7 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
 
         for (double lat = -90; lat <= 90; lat += 5) {
             for (double lon = -180; lon <= 180; lon += 5)
-                pts.add(new MarkerItem(lat + "/" + lon, "",
-                        new GeoPoint(lat, lon)));
+                pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
         }
 
         markerLayer.addItems(pts);

@@ -19,9 +19,20 @@ package org.oscim.layers.marker;
 
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.PointF;
-import org.oscim.layers.marker.MarkerItem.HotspotPlace;
 
 public class MarkerSymbol {
+    /**
+     * Indicates a hotspot for an area. This is where the origin (0,0) of a
+     * point will be located relative to the area. In otherwords this acts as an
+     * offset. NONE indicates that no adjustment should be made.
+     */
+    public enum HotspotPlace {
+        NONE, CENTER, BOTTOM_CENTER,
+        TOP_CENTER, RIGHT_CENTER, LEFT_CENTER,
+        UPPER_RIGHT_CORNER, LOWER_RIGHT_CORNER,
+        UPPER_LEFT_CORNER, LOWER_LEFT_CORNER
+    }
+
     final Bitmap mBitmap;
     /**
      * Hotspot offset
