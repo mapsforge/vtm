@@ -80,6 +80,6 @@ The same syntax applies for all modules. And with similar way you can declare th
 
 ## Jars
 
-You can find jars (regular and with dependencies) in our [Jenkins CI server](http://ci.mapsforge.org/).
+You can find jars (regular and with dependencies) in Maven Central or Snapshots repositories.
 
 Third party jars can be found at their respective sites or in Maven Central repository.

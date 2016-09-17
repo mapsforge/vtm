@@ -70,7 +70,7 @@ task fatJar(type: Jar, dependsOn: classes) {
 
 artifacts {
     archives nativesJar
-    archives fatJar
+    //archives fatJar
 }
 
 if (project.hasProperty("SONATYPE_USERNAME")) {

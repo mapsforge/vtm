@@ -21,10 +21,6 @@ import org.oscim.map.Map;
  * @see ItemizedOverlayWithBubble
  */
 public class ExtendedMarkerItem extends MarkerItem {
-
-    // now, they are modifiable
-    private String mTitle, mDescription;
-    // now, they are modifiable
     // a third field that can be displayed in
     // the infowindow, on a third line
     // that will be shown in the infowindow.
@@ -36,19 +32,17 @@ public class ExtendedMarkerItem extends MarkerItem {
 
     public ExtendedMarkerItem(String aTitle, String aDescription, GeoPoint aGeoPoint) {
         super(aTitle, aDescription, aGeoPoint);
-        mTitle = aTitle;
-        mDescription = aDescription;
         mSubDescription = null;
         mImage = null;
         mRelatedObject = null;
     }
 
     public void setTitle(String aTitle) {
-        mTitle = aTitle;
+        title = aTitle;
     }
 
     public void setDescription(String aDescription) {
-        mDescription = aDescription;
+        description = aDescription;
     }
 
     public void setSubDescription(String aSubDescription) {
@@ -63,13 +57,8 @@ public class ExtendedMarkerItem extends MarkerItem {
         mRelatedObject = o;
     }
 
-    @Override
-    public String getTitle() {
-        return mTitle;
-    }
-
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     public String getSubDescription() {

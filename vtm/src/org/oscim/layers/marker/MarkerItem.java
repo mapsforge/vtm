@@ -6,6 +6,7 @@
  *
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Erik Duisters
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -27,24 +28,7 @@ import org.oscim.core.GeoPoint;
 /**
  * Immutable class describing a GeoPoint with a Title and a Description.
  */
-public class MarkerItem {
-
-    public static final int ITEM_STATE_FOCUSED_MASK = 4;
-    public static final int ITEM_STATE_PRESSED_MASK = 1;
-    public static final int ITEM_STATE_SELECTED_MASK = 2;
-
-    /**
-     * Indicates a hotspot for an area. This is where the origin (0,0) of a
-     * point will be located relative to the area. In otherwords this acts as an
-     * offset. NONE indicates that no adjustment should be made.
-     */
-    public enum HotspotPlace {
-        NONE, CENTER, BOTTOM_CENTER,
-        TOP_CENTER, RIGHT_CENTER, LEFT_CENTER,
-        UPPER_RIGHT_CORNER, LOWER_RIGHT_CORNER,
-        UPPER_LEFT_CORNER, LOWER_LEFT_CORNER
-    }
-
+public class MarkerItem implements MarkerInterface {
     public final Object uid;
     public String title;
     public String description;
@@ -78,10 +62,12 @@ public class MarkerItem {
         return description;
     }
 
+    @Override
     public GeoPoint getPoint() {
         return geoPoint;
     }
 
+    @Override
     public MarkerSymbol getMarker() {
         return mMarker;
     }

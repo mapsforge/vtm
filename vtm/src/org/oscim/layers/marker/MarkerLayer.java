@@ -33,7 +33,7 @@ import org.oscim.map.Map;
  * gets checked for onTap first. This class is generic, because you then you get
  * your custom item-class passed back in onTap(). << TODO
  */
-public abstract class MarkerLayer<Item extends MarkerItem> extends Layer {
+public abstract class MarkerLayer<Item extends MarkerInterface> extends Layer {
 
     protected final MarkerRenderer mMarkerRenderer;
     protected Item mFocusedItem;

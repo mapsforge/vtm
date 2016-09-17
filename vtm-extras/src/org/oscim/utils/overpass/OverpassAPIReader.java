@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -14,7 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.oscim.utils.overpass;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -173,7 +173,7 @@ public class OverpassAPIReader {
     public void parse(InputStream in) throws IOException {
         JsonFactory jsonFactory = new JsonFactory();
         try {
-            JsonParser jp = jsonFactory.createJsonParser(in);
+            JsonParser jp = jsonFactory.createParser(in);
 
             JsonToken t;
             while ((t = jp.nextToken()) != null) {

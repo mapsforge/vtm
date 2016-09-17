@@ -50,7 +50,7 @@ uploadArchives {
                 packaging 'jar'
 
                 name 'vtm'
-                description 'A vector-tile map library written in Java - running on Android, iOS, Desktop and within the browser.'
+                description 'OpenGL vector map library written in Java - running on Android, iOS, Desktop and within the browser.'
                 url 'https://github.com/mapsforge/vtm'
 
                 licenses {

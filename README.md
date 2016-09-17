@@ -43,9 +43,6 @@ The libGDX backend for GWT is experimental.
 ## Applications
 - VTM is used by many [applications](docs/Applications.md).
 
-## Downloads
-- [Latest builds from CI server](http://ci.mapsforge.org/job/vtm/).
-
 ## WebGL Demo
 [OpenScienceMap](http://opensciencemap.org/s3db/#scale=17,rot=61,tilt=51,lat=53.075,lon=8.807) view of Bremen.
 - Hold right mouse button to change view direction.
