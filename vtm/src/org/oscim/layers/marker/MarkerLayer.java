@@ -53,7 +53,7 @@ public abstract class MarkerLayer<Item extends MarkerInterface> extends Layer {
     public MarkerLayer(Map map, MarkerSymbol defaultSymbol) {
         super(map);
 
-        mMarkerRenderer = new MarkerRenderer((MarkerLayer<MarkerItem>) this, defaultSymbol);
+        mMarkerRenderer = new MarkerRenderer((MarkerLayer<MarkerInterface>) this, defaultSymbol);
         mRenderer = mMarkerRenderer;
     }
 

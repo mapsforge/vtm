@@ -43,8 +43,8 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
     protected OnItemGestureListener<Item> mOnItemGestureListener;
     protected int mDrawnItemsLimit = Integer.MAX_VALUE;
 
-    public ItemizedLayer(Map map, MarkerSymbol defaulMarker) {
-        this(map, new ArrayList<Item>(), defaulMarker, null);
+    public ItemizedLayer(Map map, MarkerSymbol defaultMarker) {
+        this(map, new ArrayList<Item>(), defaultMarker, null);
     }
 
     public ItemizedLayer(Map map, List<Item> list,
