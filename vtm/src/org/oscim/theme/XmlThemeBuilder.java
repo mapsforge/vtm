@@ -2,6 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -34,15 +35,9 @@ import org.oscim.theme.rule.Rule;
 import org.oscim.theme.rule.Rule.Closed;
 import org.oscim.theme.rule.Rule.Selector;
 import org.oscim.theme.rule.RuleBuilder;
-import org.oscim.theme.styles.AreaStyle;
+import org.oscim.theme.styles.*;
 import org.oscim.theme.styles.AreaStyle.AreaBuilder;
-import org.oscim.theme.styles.CircleStyle;
-import org.oscim.theme.styles.ExtrusionStyle;
-import org.oscim.theme.styles.LineStyle;
 import org.oscim.theme.styles.LineStyle.LineBuilder;
-import org.oscim.theme.styles.RenderStyle;
-import org.oscim.theme.styles.SymbolStyle;
-import org.oscim.theme.styles.TextStyle;
 import org.oscim.theme.styles.TextStyle.TextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,11 +47,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Float.parseFloat;
@@ -132,12 +123,15 @@ public class XmlThemeBuilder extends DefaultHandler {
     private final ThemeFile mTheme;
     private RenderTheme mRenderTheme;
 
+    private final float mScaleValue;
+
     private Set<String> mCategories;
     private XmlRenderThemeStyleLayer mCurrentLayer;
     private XmlRenderThemeStyleMenu mRenderThemeStyleMenu;
 
     public XmlThemeBuilder(ThemeFile theme) {
         mTheme = theme;
+        mScaleValue = CanvasAdapter.dpi / 160;
     }
 
     @Override
@@ -474,7 +468,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 b.color(value);
 
             else if ("width".equals(name) || "stroke-width".equals(name)) {
-                b.strokeWidth = parseFloat(value);
+                b.strokeWidth = parseFloat(value) * mScaleValue;
                 if (line == null) {
                     if (!isOutline)
                         validateNonNegative("width", b.strokeWidth);
@@ -578,7 +572,7 @@ public class XmlThemeBuilder extends DefaultHandler {
             else if ("stroke-width".equals(name)) {
                 float strokeWidth = Float.parseFloat(value);
                 validateNonNegative("stroke-width", strokeWidth);
-                b.strokeWidth = strokeWidth;
+                b.strokeWidth = strokeWidth * mScaleValue;
 
             } else if ("fade".equals(name))
                 b.fadeScale = Integer.parseInt(value);
@@ -761,7 +755,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 mapBackground = Color.parseColor(value);
 
             else if ("base-stroke-width".equals(name))
-                baseStrokeWidth = Float.parseFloat(value);
+                baseStrokeWidth = Float.parseFloat(value) * mScaleValue;
 
             else if ("base-text-scale".equals(name))
                 baseTextScale = Float.parseFloat(value);
@@ -851,7 +845,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 b.strokeColor = Color.parseColor(value);
 
             else if ("stroke-width".equals(name))
-                b.strokeWidth = Float.parseFloat(value);
+                b.strokeWidth = Float.parseFloat(value) * mScaleValue;
 
             else if ("caption".equals(name))
                 b.caption = Boolean.parseBoolean(value);
@@ -861,7 +855,7 @@ public class XmlThemeBuilder extends DefaultHandler {
 
             else if ("dy".equals(name))
                 // NB: minus..
-                b.dy = -Float.parseFloat(value) * CanvasAdapter.dpi / 160;
+                b.dy = -Float.parseFloat(value) * mScaleValue;
 
             else if ("symbol".equals(name)) {
                 String lowValue = value.toLowerCase(Locale.ENGLISH);
@@ -890,7 +884,7 @@ public class XmlThemeBuilder extends DefaultHandler {
      * @param level the drawing level of this instruction.
      * @return a new Circle with the given rendering attributes.
      */
-    private static CircleStyle createCircle(String elementName, Attributes attributes, int level) {
+    private CircleStyle createCircle(String elementName, Attributes attributes, int level) {
         String cat = null;
         Float radius = null;
         boolean scaleRadius = false;
@@ -903,7 +897,7 @@ public class XmlThemeBuilder extends DefaultHandler {
             String value = attributes.getValue(i);
 
             if ("r".equals(name) || "radius".equals(name))
-                radius = Float.parseFloat(value);
+                radius = Float.parseFloat(value) * mScaleValue;
 
             else if ("cat".equals(name))
                 cat = value;
@@ -918,7 +912,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 stroke = Color.parseColor(value);
 
             else if ("stroke-width".equals(name))
-                strokeWidth = Float.parseFloat(value);
+                strokeWidth = Float.parseFloat(value) * mScaleValue;
 
             else
                 logUnknownAttribute(elementName, name, value, i);
