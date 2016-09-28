@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -36,18 +37,19 @@ public class LList<T> extends Inlist<LList<T>> {
             return list.next;
 
         LList<T> prev = list;
-        for (LList<T> l = list.next; l != null; l = l.next)
+        for (LList<T> l = list.next; l != null; l = l.next) {
             if (l.data == item) {
                 prev.next = l.next;
                 break;
             }
-
+            prev = l;
+        }
         return list;
     }
 
-    public static <T extends LList<T>> LList<T> push(LList<T> list, T item) {
-        item.next = list;
-        return item;
+    public static <E extends LList<T>, T> LList<T> push(LList<T> list, T item) {
+        LList<T> prev = new LList<T>(item);
+        prev.next = list;
+        return prev;
     }
-
 }
