@@ -89,41 +89,41 @@ public class S3DBLayer extends TileLayer {
         }
 
         if (roof) {
-            if ("brown" == color)
+            if ("brown".equals(color))
                 return Color.get(120, 110, 110);
-            if ("red" == color)
+            if ("red".equals(color))
                 return Color.get(235, 140, 130);
-            if ("green" == color)
+            if ("green".equals(color))
                 return Color.get(150, 200, 130);
-            if ("blue" == color)
+            if ("blue".equals(color))
                 return Color.get(100, 50, 200);
         }
-        if ("white" == color)
+        if ("white".equals(color))
             return Color.get(240, 240, 240);
-        if ("black" == color)
+        if ("black".equals(color))
             return Color.get(86, 86, 86);
-        if ("grey" == color || "gray" == color)
+        if ("grey".equals(color) || "gray".equals(color))
             return Color.get(120, 120, 120);
-        if ("red" == color)
+        if ("red".equals(color))
             return Color.get(255, 190, 190);
-        if ("green" == color)
+        if ("green".equals(color))
             return Color.get(190, 255, 190);
-        if ("blue" == color)
+        if ("blue".equals(color))
             return Color.get(190, 190, 255);
-        if ("yellow" == color)
+        if ("yellow".equals(color))
             return Color.get(255, 255, 175);
-        if ("darkgray" == color || "darkgrey" == color)
+        if ("darkgray".equals(color) || "darkgrey".equals(color))
             return Color.DKGRAY;
-        if ("lightgray" == color || "lightgrey" == color)
+        if ("lightgray".equals(color) || "lightgrey".equals(color))
             return Color.LTGRAY;
 
-        if ("transparent" == color)
+        if ("transparent".equals(color))
             return Color.get(0, 1, 1, 1);
 
         Integer css = ColorsCSS.get(color);
 
         if (css != null)
-            return ColorUtil.modHsv(css.intValue(), 1.0, HSV_S, HSV_V, true);
+            return ColorUtil.modHsv(css, 1.0, HSV_S, HSV_V, true);
 
         log.debug("unknown color:{}", color);
         return 0;
@@ -132,52 +132,52 @@ public class S3DBLayer extends TileLayer {
     static int getMaterialColor(String material, boolean roof) {
 
         if (roof) {
-            if ("glass" == material)
+            if ("glass".equals(material))
                 return Color.fade(Color.get(130, 224, 255), 0.9f);
         }
-        if ("roof_tiles" == material)
+        if ("roof_tiles".equals(material))
             return Color.get(216, 167, 111);
-        if ("tile" == material)
+        if ("tile".equals(material))
             return Color.get(216, 167, 111);
 
-        if ("concrete" == material ||
-                "cement_block" == material)
+        if ("concrete".equals(material) ||
+                "cement_block".equals(material))
             return Color.get(210, 212, 212);
 
-        if ("metal" == material)
+        if ("metal".equals(material))
             return 0xFFC0C0C0;
-        if ("tar_paper" == material)
+        if ("tar_paper".equals(material))
             return 0xFF969998;
-        if ("eternit" == material)
+        if ("eternit".equals(material))
             return Color.get(216, 167, 111);
-        if ("tin" == material)
+        if ("tin".equals(material))
             return 0xFFC0C0C0;
-        if ("asbestos" == material)
+        if ("asbestos".equals(material))
             return Color.get(160, 152, 141);
-        if ("glass" == material)
+        if ("glass".equals(material))
             return Color.get(130, 224, 255);
-        if ("slate" == material)
+        if ("slate".equals(material))
             return 0xFF605960;
-        if ("zink" == material)
+        if ("zink".equals(material))
             return Color.get(180, 180, 180);
-        if ("gravel" == material)
+        if ("gravel".equals(material))
             return Color.get(170, 130, 80);
-        if ("copper" == material)
+        if ("copper".equals(material))
             // same as roof color:green
             return Color.get(150, 200, 130);
-        if ("wood" == material)
+        if ("wood".equals(material))
             return Color.get(170, 130, 80);
-        if ("grass" == material)
+        if ("grass".equals(material))
             return 0xFF50AA50;
-        if ("stone" == material)
+        if ("stone".equals(material))
             return Color.get(206, 207, 181);
-        if ("plaster" == material)
+        if ("plaster".equals(material))
             return Color.get(236, 237, 181);
-        if ("brick" == material)
+        if ("brick".equals(material))
             return Color.get(255, 217, 191);
-        if ("stainless_steel" == material)
+        if ("stainless_steel".equals(material))
             return Color.get(153, 157, 160);
-        if ("gold" == material)
+        if ("gold".equals(material))
             return 0xFFFFD700;
 
         log.debug("unknown material:{}", material);
