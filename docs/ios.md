@@ -1,19 +1,40 @@
 ### iOS implementation
 
 RoboVm needs the native libs / frameworks to create a build.
-Copy those files from `vtm-ios-[CURRENT-VERSION]-natives.jar` into a temp folder.
 
-Create a copy task into your **build.gradle**.
+Create a copy task into your iOS-**build.gradle** and add the dependencies.
 
 ```groovy
-task copyFrameWorks(type: Copy) {
-    from(zipTree("./libs/vtm-ios-[CURRENT-VERSION]-natives.jar"))
-    into("${buildDir}/native")
+
+
+configurations { natives }
+
+    dependencies {
+        compile ........
+        
+        //vtm
+        compile "org.mapsforge:vtm-ios:[CURRENT-VERSION]"
+        natives "org.mapsforge:vtm-ios:[CURRENT-VERSION]:natives"
+    }
+
+// called every time gradle gets executed, takes the native dependencies of
+// the natives configuration, and extracts them to the proper build/ folders
+// so they get packed with the IPA.
+task copyNatives() {
+    file("build/native/").mkdirs();
+    configurations.natives.files.each { jar ->
+        def outputDir = null
+        if (jar.name.endsWith("natives.jar")) outputDir = file("build/native/")
+        if (outputDir != null) {
+            copy {
+                from zipTree(jar)
+                into outputDir
+            }
+        }
+    }
 }
 
-tasks.withType(org.gradle.api.tasks.compile.JavaCompile) {
-    compileTask -> compileTask.dependsOn copyFrameWorks
-}
+
 ```
 
 Now you can configure your `robovm.xml` to implement the vtm-natives and the SVG-Framework.
