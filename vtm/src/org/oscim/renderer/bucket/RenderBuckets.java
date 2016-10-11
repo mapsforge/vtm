@@ -22,12 +22,14 @@ import org.oscim.layers.tile.MapTile.TileData;
 import org.oscim.renderer.BufferObject;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.styles.AreaStyle;
+import org.oscim.theme.styles.CircleStyle;
 import org.oscim.theme.styles.LineStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ShortBuffer;
 
+import static org.oscim.renderer.bucket.RenderBucket.CIRCLE;
 import static org.oscim.renderer.bucket.RenderBucket.HAIRLINE;
 import static org.oscim.renderer.bucket.RenderBucket.LINE;
 import static org.oscim.renderer.bucket.RenderBucket.MESH;
@@ -52,6 +54,7 @@ public class RenderBuckets extends TileData {
             2, // HAIRLINE_VERTEX
             6, // SYMBOL
             6, // BITMAP
+            2, // CIRCLE
     };
 
     private final static int SHORT_BYTES = 2;
@@ -118,6 +121,14 @@ public class RenderBuckets extends TileData {
         return ll;
     }
 
+    public CircleBucket addCircleBucket(int level, CircleStyle style) {
+        CircleBucket l = (CircleBucket) getBucket(level, CIRCLE);
+        if (l == null)
+            return null;
+        l.circle = style;
+        return l;
+    }
+
     /**
      * Get or add the LineBucket for a level. Levels are ordered from
      * bottom (0) to top
@@ -156,6 +167,14 @@ public class RenderBuckets extends TileData {
      */
     public HairLineBucket getHairLineBucket(int level) {
         return (HairLineBucket) getBucket(level, HAIRLINE);
+    }
+
+    /**
+     * Get or add the CircleBucket for a level. Levels are ordered from
+     * bottom (0) to top
+     */
+    public CircleBucket getCircleBucket(int level) {
+        return (CircleBucket) getBucket(level, CIRCLE);
     }
 
     /**
@@ -225,6 +244,8 @@ public class RenderBuckets extends TileData {
                 bucket = new MeshBucket(level);
             else if (type == HAIRLINE)
                 bucket = new HairLineBucket(level);
+            else if (type == CIRCLE)
+                bucket = new CircleBucket(level);
 
             if (bucket == null)
                 throw new IllegalArgumentException();
@@ -360,6 +381,14 @@ public class RenderBuckets extends TileData {
             }
         }
 
+        for (RenderBucket l = buckets; l != null; l = l.next) {
+            if (l.type == CIRCLE) {
+                l.compile(vboData, iboData);
+                l.vertexOffset = pos;
+                pos += l.numVertices;
+            }
+        }
+
         offset[LINE] = vboData.position() * SHORT_BYTES;
         pos = 0;
         for (RenderBucket l = buckets; l != null; l = l.next) {
@@ -425,5 +454,6 @@ public class RenderBuckets extends TileData {
         BitmapBucket.Renderer.init();
         MeshBucket.Renderer.init();
         HairLineBucket.Renderer.init();
+        CircleBucket.Renderer.init();
     }
 }

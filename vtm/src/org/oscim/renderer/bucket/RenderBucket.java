@@ -31,7 +31,7 @@ public abstract class RenderBucket extends Inlist<RenderBucket> {
     public static final int HAIRLINE = 5;
     public static final int SYMBOL = 6;
     public static final int BITMAP = 7;
-    public static final int SDF = 8;
+    public static final int CIRCLE = 8;
 
     public final int type;
 
