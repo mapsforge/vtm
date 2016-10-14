@@ -33,6 +33,8 @@ public class MapElement extends GeometryBuffer {
 
     public final TagSet tags = new TagSet();
 
+    public PointF labelPosition;
+
     public MapElement() {
         super(1024, 16);
     }
@@ -43,6 +45,10 @@ public class MapElement extends GeometryBuffer {
 
     public void setLayer(int layer) {
         this.layer = layer;
+    }
+
+    public void setLabelPosition(float x, float y) {
+        labelPosition = new PointF(x, y);
     }
 
     @Override
