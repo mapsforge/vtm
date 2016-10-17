@@ -39,6 +39,13 @@ public class PolyLabel {
         // find the bounding box of the outer ring
         float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE, maxX = Float.MIN_VALUE, maxY = Float.MIN_VALUE;
 
+        // take centroid as the first best guess
+        Cell bestCell = getCentroidCell(polygon);
+
+        // if polygon is clipped to a line, return invalid label point
+        if (Float.isNaN(bestCell.x) || Float.isNaN(bestCell.y))
+            return new PointF(-1f, -1f);
+
         int n = polygon.index[0];
 
         for (int i = 0; i < n; ) {
@@ -64,9 +71,6 @@ public class PolyLabel {
                 cellQueue.add(new Cell(x + h, y + h, h, polygon));
             }
         }
-
-        // take centroid as the first best guess
-        Cell bestCell = getCentroidCell(polygon);
 
         // special case for rectangular polygons
         Cell bboxCell = new Cell(minX + width / 2, minY + height / 2, 0, polygon);
