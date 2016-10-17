@@ -77,6 +77,11 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
                 if (value == null || value.length() == 0)
                     return false;
 
+                PointF label = element.labelPosition;
+                // skip unnecessary calculations if label is outside of visible area
+                if (label != null && (label.x < 0 || label.x > Tile.SIZE || label.y < 0 || label.y > Tile.SIZE))
+                    return false;
+
                 if (text.areaSize > 0f) {
                     float area = element.area();
                     float ratio = area / (Tile.SIZE * Tile.SIZE); // we can't use static as it's recalculated based on dpi
@@ -84,12 +89,8 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
                         return false;
                 }
 
-                PointF label = element.labelPosition;
                 if (label == null)
                     label = PolyLabel.get(element, 5f);
-
-                if (label.x < 0 || label.x > Tile.SIZE || label.y < 0 || label.y > Tile.SIZE)
-                    return false;
 
                 ld.labels.push(TextItem.pool.get().set(label.x, label.y, value, text));
             } else if (element.type == POINT) {
