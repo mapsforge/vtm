@@ -37,7 +37,7 @@ public abstract class TileRenderer extends LayerRenderer {
      * fade-in time
      */
     protected static final float FADE_TIME = 500;
-    protected static final int MAX_TILE_LOAD = 8;
+    protected static final int MAX_TILE_LOAD = 20;
 
     private TileManager mTileManager;
 

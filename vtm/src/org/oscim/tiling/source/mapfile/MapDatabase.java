@@ -79,7 +79,7 @@ public class MapDatabase implements ITileDataSource {
     /**
      * Maximum way nodes sequence length which is considered as valid.
      */
-    private static final int MAXIMUM_WAY_NODES_SEQUENCE_LENGTH = 8192;
+    private static final int MAXIMUM_WAY_NODES_SEQUENCE_LENGTH = 8192 * 10;
 
     /**
      * Maximum number of map objects in the zoom table which is considered as
@@ -232,19 +232,6 @@ public class MapDatabase implements ITileDataSource {
             //mTile = tile;
 
             /* size of tile in map coordinates; */
-            double size = 1.0 / (1 << tile.zoomLevel);
-
-            /* simplification tolerance */
-            int pixel = (tile.zoomLevel > 11) ? 1 : 2;
-
-            int simplify = Tile.SIZE / pixel;
-
-            /* translate screen pixel for tile to latitude and longitude
-             * tolerance for point reduction before projection. */
-            minDeltaLat = (int) (Math.abs(MercatorProjection.toLatitude(tile.y + size)
-                    - MercatorProjection.toLatitude(tile.y)) * 1e6) / simplify;
-            minDeltaLon = (int) (Math.abs(MercatorProjection.toLongitude(tile.x + size)
-                    - MercatorProjection.toLongitude(tile.x)) * 1e6) / simplify;
 
             QueryParameters queryParameters = new QueryParameters();
             queryParameters.queryZoomLevel =
@@ -634,31 +621,126 @@ public class MapDatabase implements ITileDataSource {
             /* each way node consists of latitude and longitude */
             int len = numWayNodes * 2;
 
-            wayLengths[coordinateBlock] = decodeWayNodes(doubleDeltaEncoding,
-                    e, len, isLine);
+            /*if (doubleDeltaEncoding)
+            {
+                wayLengths[coordinateBlock] = decodeWayNodesDoubleDelta(e, len, isLine);
+            } else {
+                wayLengths[coordinateBlock] = decodeWayNodesSingleDelta(e, len, isLine);
+            }*/
+            wayLengths[coordinateBlock] = decodeWayNodes(doubleDeltaEncoding, e, len, isLine);
         }
 
         return true;
+    }
+
+
+    private int decodeWayNodesDoubleDelta(MapElement e, int length, boolean isLine) {
+        // get the first way node latitude offset (VBE-S)
+        int firstLatitude = mTileLatitude + mReadBuffer.readSignedInt();
+
+        // get the first way node longitude offset (VBE-S)
+        int firstLongitude = this.mTileLongitude + this.mReadBuffer.readSignedInt();
+
+        double[] outBuffer = e.ensurePointSize(e.pointPos + length, true);
+        int outPos = e.pointPos;
+        // store the first way node
+        int currentLat = firstLatitude;
+        int currentLon = firstLongitude;
+        outBuffer[outPos++] = currentLon;
+        outBuffer[outPos++] = currentLat;
+        int cnt = 2;
+
+        int previousSingleDeltaLatitude = 0;
+        int previousSingleDeltaLongitude = 0;
+        for (int wayNodesIndex = 2; wayNodesIndex < length; wayNodesIndex += 2) {
+            // get the way node latitude double-delta offset (VBE-S)
+            int doubleDeltaLatitude = mReadBuffer.readSignedInt();
+
+            // get the way node longitude double-delta offset (VBE-S)
+            int doubleDeltaLongitude = mReadBuffer.readSignedInt();
+
+            int singleDeltaLatitude = doubleDeltaLatitude + previousSingleDeltaLatitude;
+            int singleDeltaLongitude = doubleDeltaLongitude + previousSingleDeltaLongitude;
+
+            currentLat = currentLat + singleDeltaLatitude;
+            currentLon = currentLon + singleDeltaLongitude;
+
+            boolean line = isLine || (currentLon != firstLongitude && currentLat != firstLatitude);
+
+            if (line)
+            {
+                outBuffer[outPos++] = currentLon;
+                outBuffer[outPos++] = currentLat;
+                cnt += 2;
+            }
+
+            previousSingleDeltaLatitude = singleDeltaLatitude;
+            previousSingleDeltaLongitude = singleDeltaLongitude;
+        }
+        if (e.type == GeometryType.NONE)
+            e.type = isLine ? LINE : POLY;
+
+        e.pointPos = outPos;
+        return cnt;
+    }
+
+    private int decodeWayNodesSingleDelta(MapElement e, int length, boolean isLine) {
+        // get the first way node latitude single-delta offset (VBE-S)
+        int firstLatitude = mTileLatitude + mReadBuffer.readSignedInt();
+
+        // get the first way node longitude single-delta offset (VBE-S)
+        int firstLongitude = mTileLongitude + mReadBuffer.readSignedInt();
+
+        double[] outBuffer = e.ensurePointSize(e.pointPos + length, true);
+        int outPos = e.pointPos;
+        // store the first way node
+        int currentLat = firstLatitude;
+        int currentLon = firstLongitude;
+        outBuffer[outPos++] = currentLon;
+        outBuffer[outPos++] = currentLat;
+        int cnt = 2;
+
+        for (int wayNodesIndex = 2; wayNodesIndex < length; wayNodesIndex += 2) {
+            // get the way node latitude offset (VBE-S)
+            currentLat = currentLat + mReadBuffer.readSignedInt();
+
+            // get the way node longitude offset (VBE-S)
+            currentLon = currentLon + mReadBuffer.readSignedInt();
+
+
+            boolean line = isLine || (currentLon != firstLongitude && currentLat != firstLatitude);
+            if (line)
+            {
+                outBuffer[outPos++] = currentLon;
+                outBuffer[outPos++] = currentLat;
+                cnt += 2;
+            }
+        }
+        if (e.type == GeometryType.NONE)
+            e.type = isLine ? LINE : POLY;
+
+        e.pointPos = outPos;
+        return cnt;
     }
 
     private int decodeWayNodes(boolean doubleDelta, MapElement e, int length, boolean isLine) {
         int[] buffer = mIntBuffer;
         mReadBuffer.readSignedInt(buffer, length);
 
-        float[] outBuffer = e.ensurePointSize(e.pointPos + length, true);
+        double[] outBuffer = e.ensurePointSize(e.pointPos + length, true);
         int outPos = e.pointPos;
-        int lat, lon;
+        double lat, lon;
 
         /* first node latitude single-delta offset */
-        int firstLat = lat = mTileLatitude + buffer[0];
-        int firstLon = lon = mTileLongitude + buffer[1];
+        double firstLat = lat = mTileLatitude + buffer[0];
+        double firstLon = lon = mTileLongitude + buffer[1];
 
         outBuffer[outPos++] = lon;
         outBuffer[outPos++] = lat;
         int cnt = 2;
 
-        int deltaLat = 0;
-        int deltaLon = 0;
+        double deltaLat = 0;
+        double deltaLon = 0;
 
         for (int pos = 2; pos < length; pos += 2) {
             if (doubleDelta) {
@@ -700,6 +782,7 @@ public class MapDatabase implements ITileDataSource {
     }
 
     private int stringOffset = -1;
+
 
     /**
      * Processes the given number of ways.
@@ -860,14 +943,14 @@ public class MapDatabase implements ITileDataSource {
             boolean linearFeature = !OSMUtils.isArea(e);
 
             for (int wayDataBlock = 0; wayDataBlock < wayDataBlocks; wayDataBlock++) {
-                e.clear();
+                 e.clear();
 
                 if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, linearFeature))
                     return false;
 
                 /* drop invalid outer ring */
                 if (e.isPoly() && e.index[0] < 6) {
-                    continue;
+                   continue;
                 }
 
                 mTileProjection.project(e);
@@ -876,7 +959,8 @@ public class MapDatabase implements ITileDataSource {
                     if (!mTileClipper.clip(e)) {
                         continue;
                     }
-                e.simplify(1, true);
+
+                e.simplify(0, true);
 
                 e.setLayer(layer);
                 mapDataSink.process(e);
@@ -978,7 +1062,7 @@ public class MapDatabase implements ITileDataSource {
 
         void project(MapElement e) {
 
-            float[] coords = e.points;
+            double[] coords = e.points;
             int[] indices = e.index;
 
             int inPos = 0;
@@ -1007,8 +1091,10 @@ public class MapDatabase implements ITileDataSource {
                             continue;
                         }
                     }
-                    coords[outPos++] = pLon = lon;
-                    coords[outPos++] = pLat = lat;
+                    pLon = lon;
+                    pLat = lat;
+                    coords[outPos++] = (int)pLon;
+                    coords[outPos++] = (int)pLat;
                     cnt += 2;
                 }
 

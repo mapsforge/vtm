@@ -30,7 +30,7 @@ public class Tessellator {
      * Special version for ExtrusionLayer to match indices with vertex
      * positions.
      */
-    public static int tessellate(float[] points, int ppos, int numPoints, int[] index,
+    public static int tessellate(double[] points, int ppos, int numPoints, int[] index,
                                  int ipos, int numRings, int vertexOffset, VertexData outTris) {
 
         int buckets = FastMath.log2(MathUtils.nextPowerOfTwo(numPoints));

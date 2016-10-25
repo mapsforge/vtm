@@ -26,7 +26,7 @@ import org.oscim.theme.styles.LineStyle;
 
 class Debug {
 
-    private final static float[] mDebugPoints = new float[8];
+    private final static double[] mDebugPoints = new double[8];
     // TODO Auto-generated method stub
     static RenderBuckets dbg;
 
@@ -51,9 +51,9 @@ class Debug {
             else
                 ll = dbg.getLineBucket(2);
         }
-        float[] points = mDebugPoints;
-        float width = (ti.x2 - ti.x1) / 2f;
-        float height = (ti.y2 - ti.y1) / 2f;
+        double[] points = mDebugPoints;
+        double width = (ti.x2 - ti.x1) / 2f;
+        double height = (ti.y2 - ti.y1) / 2f;
         points[0] = (l.x - width * scale);
         points[1] = (l.y - height * scale);
         points[2] = (l.x + width * scale);

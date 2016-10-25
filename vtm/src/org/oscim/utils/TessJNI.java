@@ -59,11 +59,11 @@ public class TessJNI {
         addContour(inst, 2, points, 8, offset, length);
     }
 
-    public void addContour2D(int[] index, float[] contour) {
+    public void addContour2D(int[] index, double[] contour) {
         addMultiContour2D(inst, index, contour, 0, index.length);
     }
 
-    public void addContour2D(int[] index, float[] contour, int idxStart, int idxEnd) {
+    public void addContour2D(int[] index, double[] contour, int idxStart, int idxEnd) {
         addMultiContour2D(inst, index, contour, idxStart, idxEnd);
     }
 
@@ -167,7 +167,7 @@ public class TessJNI {
         tessAddContour((TESStesselator*) inst, size, contour + (offset * stride), stride, count);
     } */
 
-    static native void addMultiContour2D(long inst, int[] index, float[] contour, int idxStart, int idxCount);/* {
+    static native void addMultiContour2D(long inst, int[] index, double[] contour, int idxStart, int idxCount);/* {
         TESStesselator* tess = (TESStesselator*) inst;
         int offset = 0;
         // start at 0 to get the correct offset in contour..

@@ -301,7 +301,7 @@ public class TileDecoder extends PbfDecoder {
         // read repeated sint32
         int lastX = 0;
         int lastY = 0;
-        float[] coords = mElem.ensurePointSize(numNodes, false);
+        double[] coords = mElem.ensurePointSize(numNodes, false);
 
         while (position() < end && cnt < numNodes) {
             int lon = deZigZag(decodeVarint32());
@@ -385,7 +385,7 @@ public class TileDecoder extends PbfDecoder {
     }
 
     //@Override
-    protected int decodeInterleavedPoints(float[] coords, float scale)
+    protected int decodeInterleavedPoints(double[] coords, float scale)
             throws IOException {
 
         int bytes = decodeVarint32();

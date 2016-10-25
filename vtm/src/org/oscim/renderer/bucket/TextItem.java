@@ -57,7 +57,7 @@ public class TextItem extends Inlist<TextItem> {
         return ti;
     }
 
-    public TextItem set(float x, float y, String string, TextStyle text) {
+    public TextItem set(double x, double y, String string, TextStyle text) {
         this.x = x;
         this.y = y;
         this.string = string;
@@ -71,7 +71,7 @@ public class TextItem extends Inlist<TextItem> {
     }
 
     // center
-    public float x, y;
+    public double x, y;
 
     // label text
     public String string;
@@ -83,7 +83,7 @@ public class TextItem extends Inlist<TextItem> {
     public float width;
 
     // left and right corner of segment
-    public float x1, y1, x2, y2;
+    public double x1, y1, x2, y2;
 
     // segment length
     public short length;

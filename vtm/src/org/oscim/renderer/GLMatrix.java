@@ -114,7 +114,7 @@ public class GLMatrix {
      *
      * @param vec2 Vector to project
      */
-    public void prj2D(float[] src, int src_offset, float[] dst, int dst_offset, int length) {
+    public void prj2D(double[] src, int src_offset, double[] dst, int dst_offset, int length) {
         if (src == null || src_offset < 0 || length + src_offset * 2 > src.length)
             throw new IllegalArgumentException(INVALID_INPUT);
 
@@ -281,8 +281,8 @@ public class GLMatrix {
 
     private native static void prj2D(long self, float[] vec2, int start, int cnt);
 
-    private native static void prj2D2(long self, float[] vec2, int src_offset,
-                                      float[] dst_vec, int dst_offset, int length);
+    private native static void prj2D2(long self, double[] vec2, int src_offset,
+                                      double[] dst_vec, int dst_offset, int length);
 
     private native static void setRotation(long self, float a, float x, float y, float z);
 

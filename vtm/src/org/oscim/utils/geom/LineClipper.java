@@ -48,15 +48,15 @@ public class LineClipper {
     }
 
     private int mPrevOutcode;
-    private float mPrevX;
-    private float mPrevY;
+    private double mPrevX;
+    private double mPrevY;
 
-    public float outX1;
-    public float outY1;
-    public float outX2;
-    public float outY2;
+    public double outX1;
+    public double outY1;
+    public double outX2;
+    public double outY2;
 
-    public boolean clipStart(float x0, float y0) {
+    public boolean clipStart(double x0, double y0) {
         mPrevX = x0;
         mPrevY = y0;
 
@@ -73,7 +73,7 @@ public class LineClipper {
         return mPrevOutcode == INSIDE;
     }
 
-    public int outcode(float x, float y) {
+    public int outcode(double x, double y) {
 
         int outcode = INSIDE;
         if (x < xmin)
@@ -92,7 +92,7 @@ public class LineClipper {
      * @return 0 if not intersection, 1 fully within, -1 clipped (and 'out' set
      * to new points)
      */
-    public int clipNext(float x1, float y1) {
+    public int clipNext(double x1, double y1) {
         int accept;
 
         int outcode = INSIDE;
@@ -122,7 +122,7 @@ public class LineClipper {
         return accept;
     }
 
-    public int clipSegment(float x1, float y1, float x2, float y2) {
+    public int clipSegment(double x1, double y1, double x2, double y2) {
         clipStart(x1, y1);
         return clipNext(x2, y2);
     }
@@ -131,7 +131,7 @@ public class LineClipper {
      * P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
      * diagonal from (xmin, ymin) to (xmax, ymax).
      * based on en.wikipedia.org/wiki/Cohen-Sutherland */
-    private boolean clip(float x0, float y0, float x1, float y1, int outcode0, int outcode1) {
+    private boolean clip(double x0, double y0, double x1, double y1, int outcode0, int outcode1) {
         boolean accept = false;
 
         while (true) {
@@ -145,8 +145,8 @@ public class LineClipper {
             } else {
                 /* failed both tests, so calculate the line segment to clip
                  * from an outside point to an intersection with clip edge */
-                float x = 0;
-                float y = 0;
+                double x = 0;
+                double y = 0;
 
                 /* At least one endpoint is outside the clip rectangle; pick it. */
                 int outcodeOut = (outcode0 == 0) ? outcode1 : outcode0;
@@ -203,9 +203,9 @@ public class LineClipper {
         return accept;
     }
 
-    public float[] getLine(float out[], int offset) {
+    public double[] getLine(double out[], int offset) {
         if (out == null)
-            return new float[]{outX1, outY1, outX2, outY2};
+            return new double[]{outX1, outY1, outX2, outY2};
 
         out[offset + 0] = outX1;
         out[offset + 1] = outY1;
@@ -236,8 +236,8 @@ public class LineClipper {
             int inPos = pointPos;
             int end = inPos + len;
 
-            float x = in.points[inPos++];
-            float y = in.points[inPos++];
+            double x = in.points[inPos++];
+            double y = in.points[inPos++];
 
             boolean inside = clipStart(x, y);
 

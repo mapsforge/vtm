@@ -57,7 +57,7 @@ public class LineBucket extends RenderBucket {
      * not quite right.. need to go back so that additional
      * bevel vertices are at least MIN_DIST apart
      */
-    private static final float BEVEL_MIN = MIN_DIST * 4;
+    private static final double BEVEL_MIN = MIN_DIST * 4;
 
     /**
      * mask for packing last two bits of extrusion vector with texture
@@ -116,12 +116,12 @@ public class LineBucket extends RenderBucket {
             log.debug("geometry must be LINE or POLYGON");
     }
 
-    public void addLine(float[] points, int numPoints, boolean closed) {
+    public void addLine(double[] points, int numPoints, boolean closed) {
         if (numPoints >= 4)
             addLine(points, null, numPoints, closed);
     }
 
-    void addLine(float[] points, int[] index, int numPoints, boolean closed) {
+    void addLine(double[] points, int[] index, int numPoints, boolean closed) {
 
         boolean rounded = false;
         boolean squared = false;
@@ -193,12 +193,12 @@ public class LineBucket extends RenderBucket {
     }
 
     private void addVertex(VertexData vi,
-                           float x, float y,
-                           float vNextX, float vNextY,
-                           float vPrevX, float vPrevY) {
+                           double x, double y,
+                           double vNextX, double vNextY,
+                           double vPrevX, double vPrevY) {
 
-        float ux = vNextX + vPrevX;
-        float uy = vNextY + vPrevY;
+        double ux = vNextX + vPrevX;
+        double uy = vNextY + vPrevY;
 
         /* vPrev times perpendicular of sum(vNext, vPrev) */
         double a = uy * vPrevX - ux * vPrevY;
@@ -226,14 +226,14 @@ public class LineBucket extends RenderBucket {
                 (short) (1 | -ddy & DIR_MASK));
     }
 
-    private void addLine(VertexData vertices, float[] points, int start, int length,
+    private void addLine(VertexData vertices, double[] points, int start, int length,
                          boolean rounded, boolean squared, boolean closed) {
 
-        float ux, uy;
-        float vPrevX, vPrevY;
-        float vNextX, vNextY;
-        float curX, curY;
-        float nextX, nextY;
+        double ux, uy;
+        double vPrevX, vPrevY;
+        double vNextX, vNextY;
+        double curX, curY;
+        double nextX, nextY;
         double a;
 
         /* amount of vertices used
@@ -304,8 +304,8 @@ public class LineBucket extends RenderBucket {
             /* outside means line is probably clipped
              * TODO should align ending with tile boundary
              * for now, just extend the line a little */
-            float tx = vPrevX;
-            float ty = vPrevY;
+            double tx = vPrevX;
+            double ty = vPrevY;
 
             if (squared) {
                 tx = 0;
@@ -381,7 +381,7 @@ public class LineBucket extends RenderBucket {
                 //log.debug("cos " + Math.toDegrees(cos));
                 //log.debug("back " + (mMinDist * 2 / Math.sin(cos + Math.PI / 2)));
 
-                float px, py;
+                double px, py;
                 if (dotp > 0.999) {
                     /* 360 degree angle, set points aside */
                     ux = vPrevX + vNextX;

@@ -61,7 +61,7 @@ public class SimplifyDP {
         }
     }
 
-    public int simplify(float[] points, int inPos, int length, int out, float sqTolerance) {
+    public int simplify(double[] points, int inPos, int length, int out, float sqTolerance) {
 
         if ((length >> 1) >= markers.length)
             markers = new boolean[length >> 1];
@@ -72,8 +72,8 @@ public class SimplifyDP {
         int last = inPos + length - 2;
         int index = 0;
 
-        float maxSqDist;
-        float sqDist;
+        double maxSqDist;
+        double sqDist;
         int sp = 0;
 
         while (true) {

@@ -37,7 +37,7 @@ class S3DBTileLoader extends TileLoader {
         mTilePlane = new MapElement();
         GeometryBuffer g = mTilePlane;
         g.type = GeometryType.TRIS;
-        g.points = new float[]{
+        g.points = new double[]{
                 0, 0, 0,
                 4096, 0, 0,
                 0, 4096, 0,

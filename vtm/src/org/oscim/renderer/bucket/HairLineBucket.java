@@ -26,7 +26,7 @@ public class HairLineBucket extends RenderBucket {
     public void addLine(GeometryBuffer geom) {
         short id = (short) numVertices;
 
-        float pts[] = geom.points;
+        double pts[] = geom.points;
 
         boolean poly = geom.isPoly();
         int inPos = 0;
