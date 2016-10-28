@@ -2,6 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013, 2014 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -840,9 +841,11 @@ public class MapDatabase implements ITileDataSource {
                     e.tags.add(new Tag(Tag.KEY_REF, str, false));
                 }
             }
-            if ((featureByte & WAY_FEATURE_LABEL_POSITION) != 0)
-                // labelPosition =
-                readOptionalLabelPosition();
+
+            int[] labelPosition = null;
+            if ((featureByte & WAY_FEATURE_LABEL_POSITION) != 0) {
+                labelPosition = readOptionalLabelPosition();
+            }
 
             if ((featureByte & WAY_FEATURE_DATA_BLOCKS_BYTE) != 0) {
                 wayDataBlocks = mReadBuffer.readUnsignedInt();
@@ -870,6 +873,8 @@ public class MapDatabase implements ITileDataSource {
                     continue;
                 }
 
+                if (labelPosition != null && wayDataBlock == 0)
+                    e.setLabelPosition(e.points[0] + labelPosition[0], e.points[1] + labelPosition[1]);
                 mTileProjection.project(e);
 
                 if (!e.tags.containsKey("building"))
@@ -879,6 +884,7 @@ public class MapDatabase implements ITileDataSource {
                 e.simplify(1, true);
 
                 e.setLayer(layer);
+
                 mapDataSink.process(e);
             }
         }
@@ -886,14 +892,14 @@ public class MapDatabase implements ITileDataSource {
         return true;
     }
 
-    private float[] readOptionalLabelPosition() {
-        float[] labelPosition = new float[2];
+    private int[] readOptionalLabelPosition() {
+        int[] labelPosition = new int[2];
 
         /* get the label position latitude offset (VBE-S) */
-        labelPosition[1] = mTileLatitude + mReadBuffer.readSignedInt();
+        labelPosition[1] = mReadBuffer.readSignedInt();
 
         /* get the label position longitude offset (VBE-S) */
-        labelPosition[0] = mTileLongitude + mReadBuffer.readSignedInt();
+        labelPosition[0] = mReadBuffer.readSignedInt();
 
         return labelPosition;
     }
@@ -1020,6 +1026,10 @@ public class MapDatabase implements ITileDataSource {
                 } else {
                     indices[idx] = (short) cnt;
                 }
+            }
+            if (e.labelPosition != null) {
+                e.labelPosition.x = projectLon(e.labelPosition.x);
+                e.labelPosition.y = projectLat(e.labelPosition.y);
             }
         }
     }

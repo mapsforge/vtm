@@ -260,6 +260,7 @@
                 -->
                 <m v="parking" zoom-min="15">
                     <area fill="#f4f4f4" stroke="#d4d4d4" stroke-width="0.2" />
+                    <symbol src="assets:symbols/transport/parking.svg" />
                 </m>
                 <m closed="yes" v="fountain">
                     <area fill="#b4cbdc" stroke="#000080" stroke-width="0.15" />
@@ -401,6 +402,7 @@
     <m e="way">
         <m closed="yes" k="natural" v="water">
             <area use="water" />
+            <caption k="name" fill="#777744" size="16" stroke="#aaffffff" stroke-width="2.0" area-size="0.4" />
             <!--<line use="water:outline" />-->
         </m>
 
@@ -521,7 +523,18 @@
         <!-- runways areas -->
         <m k="aeroway">
             <m closed="yes" v="aerodrome">
-                <area fill="#e8ecde" />
+                <m zoom-min="12">
+                    <area fill="#e8ecde" />
+                </m>
+                <m zoom-min="12">
+                    <caption dy="18" fill="#000000" k="name" priority="5" size="19" stroke="#ffffff"
+                        stroke-width="2.0" area-size="0.1"/>
+                </m>
+                <m zoom-max="11">
+                    <caption dy="18" fill="#000000" k="ref" priority="5" size="19" stroke="#ffffff"
+                        stroke-width="2.0" />
+                </m>
+                <symbol src="assets:symbols/transport/airport.svg" />
             </m>
             <!-- A place where planes are parked -->
             <m v="apron">
@@ -554,7 +567,7 @@
             <m zoom-min="17">
                 <caption style="bold" fill="#4040ff" k="name" priority="9" size="14"
                     stroke="#ffffff" stroke-width="2.0" />
-                <caption style="bold" fill="#606060" k="addr:housenumber" priority="10" size="10"
+                <caption style="bold" fill="#606060" k="addr:housenumber" priority="10" size="16"
                     stroke="#ffffff" stroke-width="2.0" />
             </m>
         </m>
@@ -929,7 +942,7 @@
         </m>
 
         <m k="highway" v="track">
-            <m k="areay" v="yes">
+            <m k="area" v="yes">
                 <area fill="#aaff0000" />
             </m>
         </m>
@@ -984,6 +997,7 @@
 
         <!-- place -->
         <m k="place">
+            <circle radius="5.0" fill="#ff0000"/>
             <m v="suburb" zoom-max="14">
                 <caption style="italic" fill="#606060" k="name" priority="4" size="17"
                     stroke="#ffffff" stroke-width="2.0" />
@@ -998,7 +1012,7 @@
             </m>
             <m v="town">
                 <caption dy="14" fill="#000000" k="name" priority="2" size="19" stroke="#ffffff"
-                    stroke-width="2.0" symbol="assets:symbols/dot_white.svg" />
+                    stroke-width="2.0" />
             </m>
             <m v="city">
                 <m zoom-min="7">
@@ -1039,7 +1053,7 @@
             <m k="aeroway" v="helipad" zoom-min="16">
                 <symbol src="assets:symbols/transport/helicopter_pad.svg" />
             </m>
-            <m k="aeroway" v="aerodrome|airport">
+            <m k="aeroway" v="aerodrome|airport" zoom-min="9">
                 <symbol src="assets:symbols/transport/airport.svg" />
             </m>
         </m>
