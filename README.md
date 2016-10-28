@@ -4,7 +4,7 @@
 
 # V™
 
-VTM was developed within the [OpenScienceMap](http://opensciencemap.org) project.
+VTM was developed within the [OpenScienceMap](https://github.com/opensciencemap) project.
 
 **This fork continues VTM development. And provides compatibility with latest [Mapsforge](https://github.com/mapsforge/mapsforge).**
 
