@@ -69,7 +69,7 @@
 
     <xs:simpleType name="src">
         <xs:restriction base="xs:string">
-            <xs:pattern value="(file|assets):.+" />
+            <xs:pattern value="((file|assets):)?.+" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -143,9 +143,10 @@
         <xs:attribute name="fill" default="#000000" type="tns:color" use="optional" />
         <xs:attribute name="stroke" default="#000000" type="tns:color" use="optional" />
         <xs:attribute name="stroke-width" default="0" type="tns:nonNegativeFloat" use="optional" />
+        <!-- polygon area expressed as a ratio to tile area, e.g. 0.1 for 10% of tile area -->
+        <xs:attribute name="area-size" default="0" type="tns:nonNegativeFloat" use="optional" />
         <!-- priority for label placement, 0 = highest priority -->
         <xs:attribute name="priority" default="0" type="xs:integer" use="optional" />
-
         <!-- symbol src name in atlas -->
         <xs:attribute name="symbol" type="tns:src" use="optional" />
     </xs:complexType>
@@ -219,6 +220,8 @@
         <xs:attribute name="stroke" default="#000000" type="tns:color" use="optional" />
         <xs:attribute name="stroke-width" default="0" type="tns:nonNegativeFloat" use="optional" />
         <xs:attribute name="caption" default="false" type="xs:boolean" use="optional" />
+        <!-- polygon area expressed as a ratio to tile area, e.g. 0.1 for 10% of tile area -->
+        <xs:attribute name="area-size" default="0" type="tns:nonNegativeFloat" use="optional" />
         <!-- priority for label placement, 0 = highest priority -->
         <xs:attribute name="priority" default="0" type="xs:integer" use="optional" />
     </xs:complexType>

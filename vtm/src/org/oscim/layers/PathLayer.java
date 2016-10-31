@@ -2,6 +2,7 @@
  * Copyright 2012 osmdroid authors: Viesturs Zarins, Martin Pearman
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Bezzu
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -390,10 +391,18 @@ public class PathLayer extends Layer {
                         /* add line segment */
                         segment = mClipper.getLine(segment, 0);
                         ll.addLine(segment, 4, false);
-                        prevX = mClipper.outX2;
-                        prevY = mClipper.outY2;
+                        // the prev point is the real point not the clipped point
+                        //prevX = mClipper.outX2;
+                        //prevY = mClipper.outY2;
+                        prevX = x;
+                        prevY = y;
                     }
                     i = 0;
+                    // if the end point is inside, add it
+                    if (mClipper.getPrevOutcode() == 0) {
+                        projected[i++] = prevX;
+                        projected[i++] = prevY;
+                    }
                     continue;
                 }
 
