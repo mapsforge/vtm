@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Item>
@@ -87,17 +88,17 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
         return Math.min(mItemList.size(), mDrawnItemsLimit);
     }
 
-    public boolean addItem(Item item) {
+    public <T extends Item> boolean addItem(T item) {
         final boolean result = mItemList.add(item);
         populate();
         return result;
     }
 
-    public void addItem(int location, Item item) {
+    public <T extends Item> void addItem(int location, T item) {
         mItemList.add(location, item);
     }
 
-    public boolean addItems(List<Item> items) {
+    public boolean addItems(Collection<? extends Item> items) {
         final boolean result = mItemList.addAll(items);
         populate();
         return result;
@@ -118,7 +119,7 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
         }
     }
 
-    public boolean removeItem(Item item) {
+    public <T extends Item> boolean removeItem(T item) {
         final boolean result = mItemList.remove(item);
         populate();
         return result;
@@ -141,7 +142,7 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
     //    public boolean onTap(MotionEvent event, MapPosition pos) {
     //        return activateSelectedItems(event, mActiveItemSingleTap);
     //    }
-    protected boolean onSingleTapUpHelper(int index, Item item) {
+    protected <T extends Item> boolean onSingleTapUpHelper(int index, T item) {
         return mOnItemGestureListener.onItemSingleTapUp(index, item);
     }
 
