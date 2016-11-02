@@ -5,7 +5,7 @@ configurations { providedCompile }
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
-    providedCompile 'com.google.code.findbugs:annotations:2.0.1'
+   	compile 'com.google.code.findbugs:jsr305:3.0.1'
 }
 
 sourceSets {
