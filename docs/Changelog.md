@@ -1,14 +1,29 @@
 # Changelog
 
-## New since 0.6.0-rc1
+## New since 0.6.0
 
-- Minor improvements and bug fixes
+- Polygon label position enhancements [#80](https://github.com/mapsforge/vtm/issues/80)
+- PathLayer (regular) fix disappearing segments [#108](https://github.com/mapsforge/vtm/issues/108)
+- MapFileTileSource zoom level improvements [#219](https://github.com/mapsforge/vtm/issues/219)
+- Many other minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aissue+is%3Aclosed+milestone%3A0.7.0)
 
 ## Version 0.6.X
 
-**Version 0.6.0-rc1 (2016-10-08)**
+### Version 0.6.0 (2016-10-28) -- VTM revive
 
-**Revive of VTM vector map library**
+- Same as 0.6.0-rc3
+
+#### Version 0.6.0-rc3 (2016-10-22)
+
+- Minor improvements and bug fixes
+
+#### Version 0.6.0-rc2 (2016-10-16)
+
+- Location layer [#171](https://github.com/mapsforge/vtm/issues/171)
+- Minor improvements and bug fixes
+
+#### Version 0.6.0-rc1 (2016-10-08)
 
 - Render theme SVG resources [#60](https://github.com/mapsforge/vtm/issues/60)
 - Mapsforge multilingual maps [#34](https://github.com/mapsforge/vtm/issues/34)

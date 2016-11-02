@@ -110,12 +110,12 @@
     <style-line fade="15" id="building" stroke="#eeb7b6b3" use="fix" />
     <style-area fade="15" fill="#f2f0eb" id="building" stroke="#b7b6b3" stroke-width="1.0" />
 
-    <m e="way" k="natural" v="issea|sea">
+    <m closed="yes" e="way" k="layer" v="water">
         <area use="water" />
     </m>
 
-    <m e="way" k="natural" v="nosea">
-        <area fill="#f8f8f8" mesh="true" />
+    <m closed="no" e="way" k="layer" v="water">
+        <line use="water" />
     </m>
 
     <!-- all closed ways that are not 'highway' or 'building' -->

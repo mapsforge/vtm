@@ -3,6 +3,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
  * Copyright 2016 Longri
+ * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -862,6 +863,9 @@ public class XmlThemeBuilder extends DefaultHandler {
 
             else if ("priority".equals(name))
                 b.priority = Integer.parseInt(value);
+
+            else if ("area-size".equals(name))
+                b.areaSize = Float.parseFloat(value);
 
             else if ("dy".equals(name))
                 // NB: minus..

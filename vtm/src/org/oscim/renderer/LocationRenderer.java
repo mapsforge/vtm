@@ -2,6 +2,7 @@
  * Copyright 2013 Ahmad Saleem
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 ocsike
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -265,7 +266,7 @@ public class LocationRenderer extends LayerRenderer {
     }
 
     private static final String vShaderStr = ""
-            + "precision highp float;"
+            + "precision mediump float;"
             + "uniform mat4 u_mvp;"
             + "uniform float u_phase;"
             + "uniform float u_scale;"
@@ -277,7 +278,7 @@ public class LocationRenderer extends LayerRenderer {
             + "}";
 
     private static final String fShaderStr1 = ""
-            + "precision highp float;"
+            + "precision mediump float;"
             + "varying vec2 v_tex;"
             + "uniform float u_scale;"
             + "uniform float u_phase;"
@@ -306,7 +307,7 @@ public class LocationRenderer extends LayerRenderer {
             + "}}";
 
     private static final String fShaderStr2 = ""
-            + "precision highp float;"
+            + "precision mediump float;"
             + "varying vec2 v_tex;"
             + "uniform float u_scale;"
             + "uniform float u_phase;"

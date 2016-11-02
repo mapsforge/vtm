@@ -60,6 +60,7 @@ public class GdxMapApp extends GdxMap {
     }
 
     static protected LwjglApplicationConfiguration getConfig() {
+        LwjglApplicationConfiguration.disableAudio = true;
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "vtm-gdx";
         cfg.width = 800;

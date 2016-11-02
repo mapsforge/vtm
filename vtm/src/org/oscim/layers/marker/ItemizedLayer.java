@@ -4,6 +4,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
  * Copyright 2016 Stephan Leuschner 
+ * Copyright 2016 Pedinel
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -31,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Item>
@@ -97,7 +99,7 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
         mItemList.add(location, item);
     }
 
-    public boolean addItems(List<Item> items) {
+    public boolean addItems(Collection<Item> items) {
         final boolean result = mItemList.addAll(items);
         populate();
         return result;

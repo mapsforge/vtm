@@ -194,6 +194,9 @@
                 </m>
                 <m v="parking" zoom-min="14">
                     <area fill="#444434" stroke="#d4d4d4" stroke-width="0.2" />
+                    <m zoom-min="17">
+                        <symbol src="assets:symbols/transport/parking.svg" />
+                    </m>
                 </m>
 
                 <m closed="yes" v="fountain">
@@ -331,6 +334,8 @@
 
         <m k="natural" v="water">
             <area use="water" />
+            <caption area-size="0.4" fill="#777744" k="name" size="16" stroke="#aaffffff"
+                stroke-width="2.0" />
             <!--<line use="water:outline" width="0.5" fix="true" />-->
         </m>
 
@@ -470,12 +475,23 @@
 
         <!-- runways areas -->
         <m k="aeroway">
-            <!-- <m v="aerodrome" closed="yes">
-              <area fill="#050008" />
-              </m>
-              <m v="apron">
-              <area fill="#050008" />
-              </m> -->
+            <m closed="yes" v="aerodrome">
+                <m zoom-min="12">
+                    <area fill="#050008" />
+                </m>
+                <m zoom-max="11">
+                    <caption dy="18" fill="#000000" k="ref" priority="5" size="19" stroke="#ffffff"
+                        stroke-width="2.0" />
+                </m>
+                <m zoom-min="12">
+                    <caption area-size="0.1" dy="18" fill="#000000" k="name" priority="5" size="19"
+                        stroke="#ffffff" stroke-width="2.0" />
+                </m>
+                <symbol src="assets:symbols/transport/airport.svg" />
+            </m>
+            <m v="apron">
+                <area fill="#050008" />
+            </m>
             <!-- Airport passenger building -->
             <m v="terminal|hangar">
                 <area use="building" />
@@ -503,8 +519,8 @@
             <m zoom-min="17">
                 <caption style="bold" fill="#4040ff" k="name" priority="9" size="14"
                     stroke="#ffffff" stroke-width="2.0" />
-                <caption style="bold" fill="#606060" k="addr:housenumber" priority="10" size="10"
-                    stroke="#ffffff" stroke-width="2.0" />
+                <caption style="bold" fill="#ffffff" k="addr:housenumber" priority="10" size="14"
+                    stroke="#606060" stroke-width="2.0" />
             </m>
         </m>
 
@@ -985,7 +1001,7 @@
 
       house numbers
       <m k="addr:housenumber" zoom-min="18"> <caption
-      k="addr:housenumber" style="bold" size="10" fill="#606060" stroke="#ffffff"
+      k="addr:housenumber" style="bold" size="14" fill="#ffffff" stroke="#606060"
       width="2.0" /> </m>
 
       place
@@ -1018,7 +1034,7 @@
       </m>
       <m v="halt|tram_stop" zoom-min="17">
       <symbol src="assets:symbols/transport/train_station2.svg" />
-      <caption k="name" dy="-15" style="bold" size="13" fill="#ec2d2d"
+      <caption k="name" dy="-15" style="bold" size="14" fill="#ec2d2d"
       stroke="#ffffff" stroke-width="2.0" />
       </m>
       </m>
@@ -1036,7 +1052,7 @@
             <m k="aeroway" v="helipad" zoom-min="17">
                 <symbol src="assets:symbols/transport/helicopter_pad.svg" />
             </m>
-            <m k="aeroway" v="aerodrome|airport" zoom-max="13">
+            <m k="aeroway" v="aerodrome|airport" zoom-max="13" zoom-min="9">
                 <symbol src="assets:symbols/transport/airport.svg" />
             </m>
         </m>
@@ -1172,7 +1188,7 @@
 
 
         <m k="addr:housenumber" zoom-min="18">
-            <caption style="bold" fill="#606060" k="addr:housenumber" size="10" stroke="#ffffff"
+            <caption style="bold" fill="#ffffff" k="addr:housenumber" size="14" stroke="#606060"
                 stroke-width="2.0" />
         </m>
 
@@ -1212,6 +1228,7 @@
 
 
         <m k="place" select="first">
+            <circle fill="#ff0000" radius="5.0" />
             <m v="hamlet" zoom-min="13">
                 <caption style="bold" fill="#000000" k="name" size="13" stroke="#ffffff"
                     stroke-width="2.0" />
@@ -1250,7 +1267,7 @@
             </m>
             <m k="railway" v="halt|tram_stop" zoom-min="15">
                 <symbol src="assets:symbols/transport/train_station2.svg" />
-                <caption style="bold" dy="-15" fill="#ec2d2d" k="name" size="13" stroke="#ffffff"
+                <caption style="bold" dy="-15" fill="#ec2d2d" k="name" size="14" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
         </m>

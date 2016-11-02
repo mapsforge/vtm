@@ -16,40 +16,22 @@
  */
 package org.oscim.app.location;
 
-import org.oscim.core.MercatorProjection;
-import org.oscim.layers.Layer;
+import org.oscim.layers.LocationLayer;
 import org.oscim.map.Map;
-import org.oscim.renderer.LocationRenderer;
 
-public class LocationOverlay extends Layer {
+class LocationLayerImpl extends LocationLayer {
     private final Compass mCompass;
-    private final LocationRenderer mLocationRenderer;
 
-    public LocationOverlay(Map map, Compass compass) {
+    LocationLayerImpl(Map map, Compass compass) {
         super(map);
         mCompass = compass;
 
-        mRenderer = mLocationRenderer = new LocationRenderer(mMap, this);
-        mLocationRenderer.setCallback(compass);
-    }
-
-    public void setPosition(double latitude, double longitude, double accuracy) {
-        double x = MercatorProjection.longitudeToX(longitude);
-        double y = MercatorProjection.latitudeToY(latitude);
-        double radius = accuracy / MercatorProjection.groundResolution(latitude, 1);
-        mLocationRenderer.setLocation(x, y, radius);
-        mLocationRenderer.animate(true);
+        locationRenderer.setCallback(compass);
     }
 
     @Override
     public void setEnabled(boolean enabled) {
-        if (enabled == isEnabled())
-            return;
-
         super.setEnabled(enabled);
-
-        if (!enabled)
-            mLocationRenderer.animate(false);
 
         mCompass.setEnabled(enabled);
     }

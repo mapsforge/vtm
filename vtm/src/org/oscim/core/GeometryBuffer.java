@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -408,6 +409,27 @@ public class GeometryBuffer {
             }
             index[idx] = cnt;
         }
+    }
+
+    /**
+     * Calculates geometry area, only polygon outer ring is taken into account.
+     *
+     * @return polygon area, 0 for other geometries
+     */
+    public float area() {
+        if (isPoint() || isLine() || getNumPoints() < 3)
+            return 0f;
+
+        float area = 0f;
+        // use only outer ring
+        int n = index[0];
+
+        for (int i = 0; i < n - 2; i += 2) {
+            area = area + (points[i] * points[i + 3]) - (points[i + 1] * points[i + 2]);
+        }
+        area = area + (points[n - 2] * points[1]) - (points[n - 1] * points[0]);
+
+        return 0.5f * area;
     }
 
     public String toString() {

@@ -25,13 +25,17 @@ import org.oscim.utils.Utils;
 
 public class OsmTileLayer extends VectorTileLayer {
 
-    protected final static int MAX_ZOOMLEVEL = 17;
-    protected final static int MIN_ZOOMLEVEL = 2;
-    protected final static int CACHE_LIMIT = 150;
+    private static final int MAX_ZOOMLEVEL = 17;
+    private static final int MIN_ZOOMLEVEL = 2;
+    private static final int CACHE_LIMIT = 150;
 
     public OsmTileLayer(Map map) {
+        this(map, MIN_ZOOMLEVEL, MAX_ZOOMLEVEL);
+    }
+
+    public OsmTileLayer(Map map, int zoomMin, int zoomMax) {
         super(map, CACHE_LIMIT);
-        mTileManager.setZoomLevel(MIN_ZOOMLEVEL, MAX_ZOOMLEVEL);
+        mTileManager.setZoomLevel(zoomMin, zoomMax);
     }
 
     @Override
@@ -39,10 +43,10 @@ public class OsmTileLayer extends VectorTileLayer {
         return new OsmTileLoader(this);
     }
 
-    static class OsmTileLoader extends VectorTileLoader {
+    private static class OsmTileLoader extends VectorTileLoader {
         private final TagSet mFilteredTags;
 
-        public OsmTileLoader(VectorTileLayer tileLayer) {
+        OsmTileLoader(VectorTileLayer tileLayer) {
             super(tileLayer);
             mFilteredTags = new TagSet();
         }

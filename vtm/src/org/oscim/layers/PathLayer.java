@@ -2,6 +2,8 @@
  * Copyright 2012 osmdroid authors: Viesturs Zarins, Martin Pearman
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Bezzu
+ * Copyright 2016 Pedinel
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -35,6 +37,7 @@ import org.oscim.utils.async.SimpleWorker;
 import org.oscim.utils.geom.LineClipper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -86,7 +89,7 @@ public class PathLayer extends Layer {
         updatePoints();
     }
 
-    public void setPoints(List<GeoPoint> pts) {
+    public void setPoints(Collection<? extends GeoPoint> pts) {
         synchronized (mPoints) {
             mPoints.clear();
             mPoints.addAll(pts);
@@ -104,6 +107,13 @@ public class PathLayer extends Layer {
     public void addPoint(int latitudeE6, int longitudeE6) {
         synchronized (mPoints) {
             mPoints.add(new GeoPoint(latitudeE6, longitudeE6));
+        }
+        updatePoints();
+    }
+
+    public void addPoints(Collection<? extends GeoPoint> pts) {
+        synchronized (mPoints) {
+            mPoints.addAll(pts);
         }
         updatePoints();
     }
@@ -382,10 +392,18 @@ public class PathLayer extends Layer {
                         /* add line segment */
                         segment = mClipper.getLine(segment, 0);
                         ll.addLine(segment, 4, false);
-                        prevX = mClipper.outX2;
-                        prevY = mClipper.outY2;
+                        // the prev point is the real point not the clipped point
+                        //prevX = mClipper.outX2;
+                        //prevY = mClipper.outY2;
+                        prevX = x;
+                        prevY = y;
                     }
                     i = 0;
+                    // if the end point is inside, add it
+                    if (mClipper.getPrevOutcode() == 0) {
+                        projected[i++] = prevX;
+                        projected[i++] = prevY;
+                    }
                     continue;
                 }
 

@@ -1,5 +1,6 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
+ * Copyright 2016 Bezzu
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -212,6 +213,10 @@ public class LineClipper {
         out[offset + 2] = outX2;
         out[offset + 3] = outY2;
         return out;
+    }
+
+    public int getPrevOutcode() {
+        return mPrevOutcode;
     }
 
     public int clipLine(GeometryBuffer in, GeometryBuffer out) {

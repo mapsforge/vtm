@@ -29,6 +29,7 @@ import java.io.InputStream;
 public enum VtmThemes implements ThemeFile {
 
     DEFAULT("styles/default.xml"),
+    MAPZEN("styles/mapzen.xml"),
     NEWTRON("styles/newtron.xml"),
     OSMARENDER("styles/osmarender.xml"),
     TRONRENDER("styles/tronrender.xml");

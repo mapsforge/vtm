@@ -1,6 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2012 Hannes Janetzek
+ * Copyright 2016 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -16,6 +17,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.oscim.core;
+
+import org.oscim.utils.FastMath;
 
 /**
  * An implementation of the spherical Mercator projection.
@@ -68,14 +71,14 @@ public final class MercatorProjection {
     }
 
     /**
-     * Projects a longitude coordinate (in degrees) to the range [0.0,1.0]
+     * Projects a latitude coordinate (in degrees) to the range [0.0,1.0]
      *
      * @param latitude the latitude coordinate that should be converted.
-     * @return the position .
+     * @return the position.
      */
     public static double latitudeToY(double latitude) {
         double sinLatitude = Math.sin(latitude * (Math.PI / 180));
-        return 0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Math.PI);
+        return FastMath.clamp(0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Math.PI), 0.0, 1.0);
     }
 
     public static double toLatitude(double y) {
@@ -86,7 +89,7 @@ public final class MercatorProjection {
      * Projects a longitude coordinate (in degrees) to the range [0.0,1.0]
      *
      * @param longitude the longitude coordinate that should be converted.
-     * @return the position .
+     * @return the position.
      */
     public static double longitudeToX(double longitude) {
         return (longitude + 180.0) / 360.0;

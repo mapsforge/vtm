@@ -2,6 +2,7 @@
  * Copyright 2012 osmdroid authors: Viesturs Zarins, Martin Pearman
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Pedinel
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -27,6 +28,7 @@ import org.oscim.map.Map;
 import org.oscim.utils.geom.GeomBuilder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -68,7 +70,7 @@ public class PathLayer extends VectorLayer {
         updatePoints();
     }
 
-    public void setPoints(List<GeoPoint> pts) {
+    public void setPoints(Collection<? extends GeoPoint> pts) {
         mPoints.clear();
         mPoints.addAll(pts);
         updatePoints();
@@ -81,6 +83,11 @@ public class PathLayer extends VectorLayer {
 
     public void addPoint(int latitudeE6, int longitudeE6) {
         mPoints.add(new GeoPoint(latitudeE6, longitudeE6));
+        updatePoints();
+    }
+
+    public void addPoints(Collection<? extends GeoPoint> pts) {
+        mPoints.addAll(pts);
         updatePoints();
     }
 

@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -36,6 +37,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
         public boolean caption;
         public float dy;
         public int priority;
+        public float areaSize;
         public Bitmap bitmap;
         public TextureRegion texture;
         public FontFamily fontFamily;
@@ -49,6 +51,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             fontSize = 0;
             caption = false;
             priority = Integer.MAX_VALUE;
+            areaSize = 0f;
             bitmap = null;
             texture = null;
             fillColor = Color.BLACK;
@@ -98,6 +101,11 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             return self();
         }
 
+        public T areaSize(float areaSize) {
+            this.areaSize = areaSize;
+            return self();
+        }
+
         public T bitmap(Bitmap bitmap) {
             this.bitmap = bitmap;
             return self();
@@ -126,6 +134,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             fontSize = other.fontSize;
             caption = other.caption;
             priority = other.priority;
+            areaSize = other.areaSize;
             bitmap = other.bitmap;
             texture = other.texture;
             fillColor = other.fillColor;
@@ -141,6 +150,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             this.caption = style.caption;
             this.dy = style.dy;
             this.priority = style.priority;
+            this.areaSize = style.areaSize;
             this.bitmap = style.bitmap;
             this.texture = style.texture;
             this.fillColor = style.paint.getColor();
@@ -159,6 +169,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
         this.caption = tb.caption;
         this.dy = tb.dy;
         this.priority = tb.priority;
+        this.areaSize = tb.areaSize;
         this.bitmap = tb.bitmap;
         this.texture = tb.texture;
 
@@ -193,6 +204,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
     public final boolean caption;
     public final float dy;
     public final int priority;
+    public final float areaSize;
 
     public float fontHeight;
     public float fontDescent;

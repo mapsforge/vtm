@@ -6,9 +6,8 @@ android:
   components:
   - platform-tools
   - tools
-  - build-tools-24.0.3
-  - android-24
-  - extra-android-m2repository
+  - build-tools-25.0.0
+  - android-25
 env:
   global:
   - GRADLE_OPTS="-Xmx2048m"

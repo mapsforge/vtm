@@ -4,23 +4,24 @@
 
 # V™
 
-VTM was developed within the [OpenScienceMap](http://opensciencemap.org) project.
+VTM was developed within the [OpenScienceMap](https://github.com/opensciencemap) project.
 
 **This fork continues VTM development. And provides compatibility with latest [Mapsforge](https://github.com/mapsforge/mapsforge).**
 
-If you have any questions or problems, don't hesitate to ask our public [mailing list](https://groups.google.com/group/mapsforge-dev) for help.
+See the **[integration guide](docs/Integration.md)** and [changelog](docs/Changelog.md). And read through [how to contribute](.github/CONTRIBUTING.md) guidelines.
 
-See the [integration guide](docs/Integration.md) and [changelog](docs/Changelog.md). And read through [how to contribute](.github/CONTRIBUTING.md) guidelines.
+If you have any questions or problems, don't hesitate to ask our public [mailing list](https://groups.google.com/group/mapsforge-dev) for help.
 
 ## Features
 - Java map library
 - OpenGL vector-tile rendering
 - Themeable vector layers
 - Support for multiple tile sources:
-  - primary opensciencemap (.vtm)
-  - mapsforge files
+  - OpenScienceMap (.vtm)
+  - Mapsforge (.map)
+  - Mapbox tiles (.mvt)
   - GeoJSON tiles
-  - bitmap: any quadtree-scheme tiles as texture
+  - Raster tiles: any quadtree-scheme tiles as texture
 - Backends:
   - Android (optional libGDX)
   - iOS (using libGDX/RoboVM, [instructions](docs/ios.md))

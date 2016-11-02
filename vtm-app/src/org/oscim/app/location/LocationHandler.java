@@ -2,6 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2013 Ahmad Al-saleem
+ * Copyright 2016 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -31,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LocationHandler implements LocationListener {
-    final static Logger log = LoggerFactory.getLogger(LocationHandler.class);
+    private final static Logger log = LoggerFactory.getLogger(LocationHandler.class);
 
     public enum Mode {
         OFF,
@@ -43,7 +44,7 @@ public class LocationHandler implements LocationListener {
     private final static int SHOW_LOCATION_ZOOM = 14;
 
     private final LocationManager mLocationManager;
-    private final LocationOverlay mLocationOverlay;
+    private final LocationLayerImpl mLocationLayer;
 
     private Mode mMode = Mode.OFF;
 
@@ -54,7 +55,7 @@ public class LocationHandler implements LocationListener {
         mLocationManager = (LocationManager) tileMap
                 .getSystemService(Context.LOCATION_SERVICE);
 
-        mLocationOverlay = new LocationOverlay(App.map, compass);
+        mLocationLayer = new LocationLayerImpl(App.map, compass);
 
         mMapPosition = new MapPosition();
     }
@@ -115,13 +116,13 @@ public class LocationHandler implements LocationListener {
         if (location == null)
             return false;
 
-        mLocationOverlay.setEnabled(true);
-        mLocationOverlay.setPosition(location.getLatitude(),
+        mLocationLayer.setEnabled(true);
+        mLocationLayer.setPosition(location.getLatitude(),
                 location.getLongitude(),
                 location.getAccuracy());
 
         // FIXME -> implement LayerGroup
-        App.map.layers().add(4, mLocationOverlay);
+        App.map.layers().add(4, mLocationLayer);
 
         App.map.updateMap(true);
         return true;
@@ -133,9 +134,9 @@ public class LocationHandler implements LocationListener {
     private boolean disableShowMyLocation() {
 
         mLocationManager.removeUpdates(this);
-        mLocationOverlay.setEnabled(false);
+        mLocationLayer.setEnabled(false);
 
-        App.map.layers().remove(mLocationOverlay);
+        App.map.layers().remove(mLocationLayer);
         App.map.updateMap(true);
 
         return true;
@@ -199,7 +200,7 @@ public class LocationHandler implements LocationListener {
             App.map.setMapPosition(mMapPosition);
         }
 
-        mLocationOverlay.setPosition(lat, lon, location.getAccuracy());
+        mLocationLayer.setPosition(lat, lon, location.getAccuracy());
     }
 
     @Override
