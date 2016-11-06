@@ -27,9 +27,9 @@ dependencies {
     providedCompile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
     providedCompile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
     providedCompile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-    providedCompile 'ru.finam:slf4j-gwt:1.2.1'
-    providedCompile 'org.slf4j:slf4j-api:1.7.5'
-    providedCompile 'org.timepedia.exporter:gwtexporter:2.5.0-SNAPSHOT'
+    providedCompile 'org.slf4j:slf4j-api:1.7.21'
+    providedCompile 'org.timepedia.exporter:gwtexporter:2.5.1'
+    providedCompile 'ru.finam:slf4j-gwt:1.7.7.1'
 }
 
 // explicit dependencies for org.gradle.configureondemand=true

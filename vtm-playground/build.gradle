@@ -7,7 +7,6 @@ dependencies {
     compile project(':vtm-jeo')
     compile project(':vtm-jts')
     compile 'org.slf4j:slf4j-simple:1.7.21'
-    runtime 'com.squareup.okhttp:okhttp:1.5.2'
 }
 
 sourceSets {

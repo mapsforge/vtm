@@ -1,17 +1,14 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 
-configurations { providedCompile }
-
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
-    providedCompile 'com.google.code.findbugs:annotations:2.0.1'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.1'
 }
 
 sourceSets {
     main.java.srcDirs = ['src']
     main.resources.srcDirs = ['resources']
-    main.compileClasspath += configurations.providedCompile
 }
 
 if (project.hasProperty("SONATYPE_USERNAME")) {

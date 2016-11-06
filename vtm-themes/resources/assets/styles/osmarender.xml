@@ -1215,7 +1215,7 @@
         </m>
 
 
-        <m k="addr:housenumber" zoom-min="18">
+        <m k="addr:housenumber" zoom-min="17">
             <caption style="bold" fill="#606060" k="addr:housenumber" size="14" stroke="#ffffff"
                 stroke-width="2.0" />
         </m>
