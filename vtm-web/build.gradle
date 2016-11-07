@@ -28,8 +28,8 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
     compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
     compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-    compile 'ru.finam:slf4j-gwt:1.2.1'
-    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'ru.finam:slf4j-gwt:1.7.7.1'
 }
 
 // explicit dependencies for org.gradle.configureondemand=true

@@ -217,6 +217,10 @@ public class MapDatabase implements ITileDataSource {
         mTileClipper = new TileClipper(0, 0, 0, 0);
     }
 
+    public MapFileTileSource getTileSource() {
+        return mTileSource;
+    }
+
     @Override
     public void query(MapTile tile, ITileDataSink sink) {
 

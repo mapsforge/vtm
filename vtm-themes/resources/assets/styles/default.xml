@@ -111,7 +111,7 @@
     <style-area fade="15" fill="#f2f0eb" id="building" stroke="#b7b6b3" stroke-width="1.0" />
 
     <m e="way" k="natural" v="issea|sea">
-        <area use="water" />
+        <area mesh="true" use="water" />
     </m>
 
     <m e="way" k="natural" v="nosea">
@@ -993,7 +993,7 @@
         </m>
 
         <!-- house numbers -->
-        <m k="addr:housenumber" zoom-min="18">
+        <m k="addr:housenumber" zoom-min="17">
             <caption style="bold" fill="#606060" k="addr:housenumber" size="14" stroke="#ffffff"
                 stroke-width="2.0" />
         </m>

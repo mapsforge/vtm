@@ -3,10 +3,10 @@ apply plugin: 'maven'
 
 dependencies {
     compile project(':vtm')
-    compile 'com.fasterxml.jackson.core:jackson-core:2.3.0'
-    compile 'com.google.protobuf:protobuf-java:2.4.1'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.8.4'
+    compile 'com.google.protobuf:protobuf-java:2.6.1'
     compile 'com.vividsolutions:jts:1.13'
-    compile 'org.openstreetmap.osmosis:osmosis-osm-binary:0.44.1'
+    compile 'org.openstreetmap.osmosis:osmosis-osm-binary:0.45'
 }
 
 sourceSets {

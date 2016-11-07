@@ -46,7 +46,7 @@ public class GdxMapApp extends GdxMap {
 
     public static void main(String[] args) {
         init();
-        new LwjglApplication(new GdxMapApp(), getConfig());
+        new LwjglApplication(new GdxMapApp(), getConfig(null));
     }
 
     public static void run(GdxMap map) {
@@ -56,13 +56,13 @@ public class GdxMapApp extends GdxMap {
     public static void run(GdxMap map, LwjglApplicationConfiguration config, int tileSize) {
         Tile.SIZE = FastMath.clamp(tileSize, 128, 512);
 
-        new LwjglApplication(map, (config == null ? getConfig() : config));
+        new LwjglApplication(map, (config == null ? getConfig(map.getClass().getSimpleName()) : config));
     }
 
-    static protected LwjglApplicationConfiguration getConfig() {
+    protected static LwjglApplicationConfiguration getConfig(String title) {
         LwjglApplicationConfiguration.disableAudio = true;
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "vtm-gdx";
+        cfg.title = title != null ? title : "vtm-gdx";
         cfg.width = 800;
         cfg.height = 600;
         cfg.stencil = 8;
@@ -76,14 +76,7 @@ public class GdxMapApp extends GdxMap {
     public void createLayers() {
         TileSource tileSource = new OSciMap4TileSource();
 
-        // TileSource tileSource = new MapFileTileSource();
-        // tileSource.setOption("file", "/home/jeff/germany.map");
-
         initDefaultLayers(tileSource, false, true, true);
-
-        //mMap.getLayers().add(new BitmapTileLayer(mMap, new ImagicoLandcover(), 20));
-        //mMap.getLayers().add(new BitmapTileLayer(mMap, new OSMTileSource(), 20));
-        //mMap.getLayers().add(new BitmapTileLayer(mMap, new ArcGISWorldShaded(), 20));
 
         mMap.setMapPosition(0, 0, 1 << 2);
     }

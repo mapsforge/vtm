@@ -18,7 +18,7 @@
         stroke-width="2.0" />
 
     <m e="way" k="natural" v="issea|sea">
-        <area fill="#b5d6f1" />
+        <area fill="#b5d6f1" mesh="true" />
     </m>
 
     <m e="way" k="natural" v="nosea">
@@ -1215,7 +1215,7 @@
         </m>
 
 
-        <m k="addr:housenumber" zoom-min="18">
+        <m k="addr:housenumber" zoom-min="17">
             <caption style="bold" fill="#606060" k="addr:housenumber" size="14" stroke="#ffffff"
                 stroke-width="2.0" />
         </m>

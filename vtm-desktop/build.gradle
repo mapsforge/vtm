@@ -8,7 +8,7 @@ dependencies {
     }
     compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-    compile 'com.kitfox.svg:svg-salamander:1.0'
+    compile 'com.metsci.ext.com.kitfox.svg:svg-salamander:0.1.19'
 }
 
 sourceSets {

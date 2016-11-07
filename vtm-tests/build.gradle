@@ -4,9 +4,9 @@ dependencies {
     compile project(':vtm-http')
     compile 'com.squareup.okhttp:okhttp:1.5.2'
     testCompile 'com.squareup.okhttp:mockwebserver:1.5.2'
-    testCompile 'junit:junit:4.11'
+    testCompile 'junit:junit:4.12'
     testCompile 'org.easytesting:fest-assert-core:2.0M10'
-    testCompile 'org.mockito:mockito-all:1.9.5'
+    testCompile 'org.mockito:mockito-all:1.10.19'
     testCompile 'org.slf4j:slf4j-simple:1.7.21'
 }
 

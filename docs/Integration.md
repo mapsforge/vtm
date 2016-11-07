@@ -40,7 +40,7 @@ compile 'org.lwjgl.lwjgl:lwjgl:2.9.3'
 compile 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-linux'
 compile 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-osx'
 compile 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-windows'
-compile 'com.kitfox.svg:svg-salamander:1.0'
+compile 'com.metsci.ext.com.kitfox.svg:svg-salamander:0.1.19'
 ```
 
 ## Snapshots

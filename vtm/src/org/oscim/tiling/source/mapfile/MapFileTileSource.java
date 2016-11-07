@@ -30,7 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class MapFileTileSource extends TileSource {
+public class MapFileTileSource extends TileSource implements IMapFileTileSource {
     private static final Logger log = LoggerFactory.getLogger(MapFileTileSource.class);
 
     /**
@@ -70,6 +70,7 @@ public class MapFileTileSource extends TileSource {
         return MapFileUtils.extract(s, preferredLanguage);
     }
 
+    @Override
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
@@ -90,6 +91,7 @@ public class MapFileTileSource extends TileSource {
         return true;
     }
 
+    @Override
     public void setPreferredLanguage(String preferredLanguage) {
         this.preferredLanguage = preferredLanguage;
     }

@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.1.0'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.2.0'
     }
 }
 
@@ -19,7 +19,7 @@ sourceCompatibility = '1.7'
 ext {
     // Configure your application main class
     mainClassName = "org.oscim.ios.RoboVmLauncher"
-    roboVMVersion = "2.1.0"
+    roboVMVersion = "2.2.0"
 }
 
 launchIPhoneSimulator.dependsOn build
