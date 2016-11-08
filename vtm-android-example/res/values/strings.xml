@@ -15,5 +15,6 @@
     <string name="styler_mode_outline">Outline</string>
     <string name="styler_controls_toggle">Controls</string>
     <string name="menu_gridlayer">Gridlayer</string>
+    <string name="menu_add_fragment">Add fragment</string>
 
 </resources>
