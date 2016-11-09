@@ -57,7 +57,7 @@
             android:name=".MultiMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".MultiMapFragmentActivity"
+            android:name=".MapFragmentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".OsmJsonMapActivity"
