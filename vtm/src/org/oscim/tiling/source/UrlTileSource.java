@@ -134,11 +134,12 @@ public abstract class UrlTileSource extends TileSource {
     }
 
     public String getTileUrl(Tile tile) {
-        String tileUrl = mUrl + mTileUrlFormatter.formatTilePath(this, tile);
+        StringBuilder sb = new StringBuilder();
+        sb.append(mUrl).append(mTileUrlFormatter.formatTilePath(this, tile));
         if (mApiKey != null) {
-            tileUrl += String.format("?api_key=%s", mApiKey);
+            sb.append("?api_key=").append(mApiKey);
         }
-        return tileUrl;
+        return sb.toString();
     }
 
     public void setHttpEngine(HttpEngine.Factory httpFactory) {
