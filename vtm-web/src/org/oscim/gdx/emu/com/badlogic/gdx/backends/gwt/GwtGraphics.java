@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright 2011 See libgdx AUTHORS file.
- * <p/>
+ * Copyright 2011 See AUTHORS file.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,15 +16,20 @@
 
 package com.badlogic.gdx.backends.gwt;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.glutils.GLVersion;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.webgl.client.WebGLContextAttributes;
 import com.google.gwt.webgl.client.WebGLRenderingContext;
@@ -36,20 +41,39 @@ import org.slf4j.LoggerFactory;
 public class GwtGraphics implements Graphics {
     static final Logger log = LoggerFactory.getLogger(GwtGraphics.class);
 
+    /* Enum values from http://www.w3.org/TR/screen-orientation. Filtered based on what the browsers actually support. */
+    public enum OrientationLockType {
+        LANDSCAPE("landscape"), PORTRAIT("portrait"), PORTRAIT_PRIMARY("portrait-primary"), PORTRAIT_SECONDARY(
+                "portrait-secondary"), LANDSCAPE_PRIMARY("landscape-primary"), LANDSCAPE_SECONDARY("landscape-secondary");
+
+        private final String name;
+
+        private OrientationLockType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    ;
+
     CanvasElement canvas;
     WebGLRenderingContext context;
+    GLVersion glVersion;
     GL20 gl;
     String extensions;
     float fps = 0;
     long lastTimeStamp = System.currentTimeMillis();
+    long frameId = -1;
     float deltaTime = 0;
     float time = 0;
     int frames;
     GwtApplicationConfiguration config;
-    boolean inFullscreenMode = false;
     double pixelRatio;
 
-    public GwtGraphics(Panel root, final GwtApplicationConfiguration config) {
+    public GwtGraphics(Panel root, GwtApplicationConfiguration config) {
         this.pixelRatio = getDevicePixelRatioJSNI();
 
         if (config.canvasId == null) {
@@ -64,10 +88,9 @@ public class GwtGraphics implements Graphics {
             canvas.setWidth((int) (config.width * pixelRatio));
             canvas.setHeight((int) (config.height * pixelRatio));
 
-            canvas.getStyle().setWidth(config.width, Unit.PX);
-            canvas.getStyle().setHeight(config.height, Unit.PX);
+            canvas.getStyle().setWidth(config.width, Style.Unit.PX);
+            canvas.getStyle().setHeight(config.height, Style.Unit.PX);
         }
-
         this.config = config;
 
         WebGLContextAttributes attributes = WebGLContextAttributes.create();
@@ -75,11 +98,11 @@ public class GwtGraphics implements Graphics {
         attributes.setStencil(config.stencil);
         attributes.setAlpha(false);
         attributes.setPremultipliedAlpha(false);
+        attributes.setPreserveDrawingBuffer(false);
 
         context = WebGLRenderingContext.getContext(canvas, attributes);
         if (context == null)
             throw new GdxRuntimeException("Could not create Canvas for " + attributes);
-
         context.viewport(0, 0, config.width, config.height);
 
         // this actually *enables* the option to use std derivatives in shader..
@@ -92,6 +115,11 @@ public class GwtGraphics implements Graphics {
         }
 
         this.gl = config.useDebugGL ? new GwtGL20Debug(context) : new GdxGL(context);
+
+        String versionString = gl.glGetString(GL20.GL_VERSION);
+        String vendorString = gl.glGetString(GL20.GL_VENDOR);
+        String rendererString = gl.glGetString(GL20.GL_RENDERER);
+        glVersion = new GLVersion(Application.ApplicationType.WebGL, versionString, vendorString, rendererString);
     }
 
     public static native double getDevicePixelRatioJSNI() /*-{
@@ -126,6 +154,21 @@ public class GwtGraphics implements Graphics {
     }
 
     @Override
+    public int getBackBufferWidth() {
+        return canvas.getWidth();
+    }
+
+    @Override
+    public int getBackBufferHeight() {
+        return canvas.getHeight();
+    }
+
+    @Override
+    public long getFrameId() {
+        return frameId;
+    }
+
+    @Override
     public float getDeltaTime() {
         return deltaTime;
     }
@@ -138,6 +181,11 @@ public class GwtGraphics implements Graphics {
     @Override
     public GraphicsType getType() {
         return GraphicsType.WebGL;
+    }
+
+    @Override
+    public GLVersion getGLVersion() {
+        return glVersion;
     }
 
     @Override
@@ -162,13 +210,28 @@ public class GwtGraphics implements Graphics {
 
     @Override
     public boolean supportsDisplayModeChange() {
-        return true;
+        return supportsFullscreenJSNI();
     }
+
+    private native boolean supportsFullscreenJSNI() /*-{
+        if ("fullscreenEnabled" in $doc) {
+            return $doc.fullscreenEnabled;
+        }
+        if ("webkitFullscreenEnabled" in $doc) {
+            return $doc.webkitFullscreenEnabled;
+        }
+        if ("mozFullScreenEnabled" in $doc) {
+            return $doc.mozFullScreenEnabled;
+        }
+        if ("msFullscreenEnabled" in $doc) {
+            return $doc.msFullscreenEnabled;
+        }
+        return false;
+    }-*/;
 
     @Override
     public DisplayMode[] getDisplayModes() {
-        return new DisplayMode[]{new DisplayMode(getScreenWidthJSNI(), getScreenHeightJSNI(), 60,
-                8) {
+        return new DisplayMode[]{new DisplayMode(getScreenWidthJSNI(), getScreenHeightJSNI(), 60, 8) {
         }};
     }
 
@@ -181,6 +244,21 @@ public class GwtGraphics implements Graphics {
     }-*/;
 
     private native boolean isFullscreenJSNI() /*-{
+        // Standards compliant check for fullscreen
+        if ("fullscreenElement" in $doc) {
+            return $doc.fullscreenElement != null;
+        }
+        // Vendor prefixed versions of standard check
+        if ("msFullscreenElement" in $doc) {
+            return $doc.msFullscreenElement != null;
+        }
+        if ("webkitFullscreenElement" in $doc) {
+            return $doc.webkitFullscreenElement != null;
+        }
+        if ("mozFullScreenElement" in $doc) { // Yes, with a capital 'S'
+            return $doc.mozFullScreenElement != null;
+        }
+        // Older, non-standard ways of checking for fullscreen
         if ("webkitIsFullScreen" in $doc) {
             return $doc.webkitIsFullScreen;
         }
@@ -194,10 +272,28 @@ public class GwtGraphics implements Graphics {
         if (!isFullscreen()) {
             canvas.setWidth(config.width);
             canvas.setHeight(config.height);
+            if (config.fullscreenOrientation != null) unlockOrientation();
+        } else {
+            /* We just managed to go full-screen. Check if the user has requested a specific orientation. */
+            if (config.fullscreenOrientation != null) lockOrientation(config.fullscreenOrientation);
         }
     }
 
     private native boolean setFullscreenJSNI(GwtGraphics graphics, CanvasElement element) /*-{
+        // Attempt to use the non-prefixed standard API (https://fullscreen.spec.whatwg.org)
+        if (element.requestFullscreen) {
+            element.width = $wnd.screen.width;
+            element.height = $wnd.screen.height;
+            element.requestFullscreen();
+            $doc
+                    .addEventListener(
+                            "fullscreenchange",
+                            function() {
+                                graphics.@com.badlogic.gdx.backends.gwt.GwtGraphics::fullscreenChanged()();
+                            }, false);
+            return true;
+        }
+        // Attempt to the vendor specific variants of the API
         if (element.webkitRequestFullScreen) {
             element.width = $wnd.screen.width;
             element.height = $wnd.screen.height;
@@ -222,46 +318,140 @@ public class GwtGraphics implements Graphics {
                             }, false);
             return true;
         }
+        if (element.msRequestFullscreen) {
+            element.width = $wnd.screen.width;
+            element.height = $wnd.screen.height;
+            element.msRequestFullscreen();
+            $doc
+                    .addEventListener(
+                            "msfullscreenchange",
+                            function() {
+                                graphics.@com.badlogic.gdx.backends.gwt.GwtGraphics::fullscreenChanged()();
+                            }, false);
+            return true;
+        }
+
         return false;
     }-*/;
 
     private native void exitFullscreen() /*-{
+        if ($doc.exitFullscreen)
+            $doc.exitFullscreen();
+        if ($doc.msExitFullscreen)
+            $doc.msExitFullscreen();
         if ($doc.webkitExitFullscreen)
             $doc.webkitExitFullscreen();
         if ($doc.mozExitFullscreen)
             $doc.mozExitFullscreen();
+        if ($doc.webkitCancelFullScreen) // Old WebKit
+            $doc.webkitCancelFullScreen();
     }-*/;
 
     @Override
-    public DisplayMode getDesktopDisplayMode() {
+    public DisplayMode getDisplayMode() {
         return new DisplayMode(getScreenWidthJSNI(), getScreenHeightJSNI(), 60, 8) {
         };
     }
 
     @Override
-    public boolean setDisplayMode(DisplayMode displayMode) {
-        if (displayMode.width != getScreenWidthJSNI()
-                && displayMode.height != getScreenHeightJSNI())
+    public boolean setFullscreenMode(DisplayMode displayMode) {
+        if (displayMode.width != getScreenWidthJSNI() && displayMode.height != getScreenHeightJSNI())
             return false;
         return setFullscreenJSNI(this, canvas);
     }
 
     @Override
-    public boolean setDisplayMode(int width, int height, boolean fullscreen) {
-        if (fullscreen) {
-            if (width != getScreenWidthJSNI() && height != getScreenHeightJSNI())
-                return false;
-            return setFullscreenJSNI(this, canvas);
-        } else {
-            if (isFullscreenJSNI())
-                exitFullscreen();
-            canvas.setWidth(width);
-            canvas.setHeight(height);
-            canvas.getStyle().setWidth(width, Unit.PX);
-            canvas.getStyle().setHeight(height, Unit.PX);
+    public boolean setWindowedMode(int width, int height) {
+        if (isFullscreenJSNI()) exitFullscreen();
+        canvas.setWidth(width);
+        canvas.setHeight(height);
+        return true;
+    }
+
+
+    @Override
+    public Monitor getPrimaryMonitor() {
+        return new GwtMonitor(0, 0, "Primary Monitor");
+    }
+
+    @Override
+    public Monitor getMonitor() {
+        return getPrimaryMonitor();
+    }
+
+    @Override
+    public Monitor[] getMonitors() {
+        return new Monitor[]{getPrimaryMonitor()};
+    }
+
+    @Override
+    public DisplayMode[] getDisplayModes(Monitor monitor) {
+        return getDisplayModes();
+    }
+
+    @Override
+    public DisplayMode getDisplayMode(Monitor monitor) {
+        return getDisplayMode();
+    }
+
+    /**
+     * Attempt to lock the orientation. Typically only supported when in full-screen mode.
+     *
+     * @param orientation the orientation to attempt locking
+     * @return did the locking succeed
+     */
+    public boolean lockOrientation(OrientationLockType orientation) {
+        return lockOrientationJSNI(orientation.getName());
+    }
+
+    /**
+     * Attempt to unlock the orientation.
+     *
+     * @return did the unlocking succeed
+     */
+    public boolean unlockOrientation() {
+        return unlockOrientationJSNI();
+    }
+
+    private native boolean lockOrientationJSNI(String orientationEnumValue) /*-{
+        var screen = $wnd.screen;
+
+        // Attempt to find the lockOrientation function
+        screen.gdxLockOrientation = screen.lockOrientation
+                || screen.mozLockOrientation || screen.msLockOrientation
+                || screen.webkitLockOrientation;
+
+        if (screen.gdxLockOrientation) {
+            return screen.gdxLockOrientation(orientationEnumValue);
+        }
+        // Actually, the Chrome guys do things a little different for now
+        else if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock(orientationEnumValue);
+            // The Chrome API is async, so we can't at this point tell if we succeeded
             return true;
         }
-    }
+        return false;
+    }-*/;
+
+    private native boolean unlockOrientationJSNI() /*-{
+        var screen = $wnd.screen;
+
+        // Attempt to find the lockOrientation function
+        screen.gdxUnlockOrientation = screen.unlockOrientation
+                || screen.mozUnlockOrientation || screen.msUnlockOrientation
+                || screen.webkitUnlockOrientation;
+
+        if (screen.gdxUnlockOrientation) {
+            return screen.gdxUnlockOrientation();
+        }
+        // Actually, the Chrome guys do things a little different for now
+        else if (screen.orientation && screen.orientation.unlock) {
+            screen.orientation.unlock();
+            // The Chrome API is async, so we can't at this point tell if we succeeded
+            return true;
+        }
+        return false;
+    }-*/;
 
     @Override
     public BufferFormat getBufferFormat() {
@@ -269,10 +459,12 @@ public class GwtGraphics implements Graphics {
     }
 
     @Override
-    public boolean supportsExtension(String extension) {
-        if (extensions == null)
-            extensions = Gdx.gl.glGetString(GL20.GL_EXTENSIONS);
-        return extensions.contains(extension);
+    public boolean supportsExtension(String extensionName) {
+        // Contrary to regular OpenGL, WebGL extensions need to be explicitly enabled before they can be used. See
+        // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Using_Extensions
+        // Thus, it is not safe to use an extension just because context.getSupportedExtensions() tells you it is available.
+        // We need to call getExtension() to enable it.
+        return context.getExtension(extensionName) != null;
     }
 
     public void update() {
@@ -290,6 +482,14 @@ public class GwtGraphics implements Graphics {
 
     @Override
     public void setTitle(String title) {
+    }
+
+    @Override
+    public void setUndecorated(boolean undecorated) {
+    }
+
+    @Override
+    public void setResizable(boolean resizable) {
     }
 
     @Override
@@ -335,8 +535,23 @@ public class GwtGraphics implements Graphics {
     }
 
     @Override
-    public long getFrameId() {
-        // TODO Auto-generated method stub
-        return 0;
+    public Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot) {
+        return new GwtCursor(pixmap, xHotspot, yHotspot);
+    }
+
+    @Override
+    public void setCursor(Cursor cursor) {
+        ((GwtApplication) Gdx.app).graphics.canvas.getStyle().setProperty("cursor", ((GwtCursor) cursor).cssCursorProperty);
+    }
+
+    @Override
+    public void setSystemCursor(SystemCursor systemCursor) {
+        ((GwtApplication) Gdx.app).graphics.canvas.getStyle().setProperty("cursor", GwtCursor.getNameForSystemCursor(systemCursor));
+    }
+
+    static class GwtMonitor extends Monitor {
+        protected GwtMonitor(int virtualX, int virtualY, String name) {
+            super(virtualX, virtualY, name);
+        }
     }
 }

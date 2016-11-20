@@ -27,6 +27,8 @@ import org.oscim.gdx.client.MapConfig;
 
 public class GwtLauncher extends GwtApplication {
 
+    private ApplicationListener applicationListener;
+
     @Override
     public GwtApplicationConfiguration getConfig() {
 
@@ -36,7 +38,6 @@ public class GwtLauncher extends GwtApplication {
 
         cfg.canvasId = "map-canvas";
         cfg.stencil = true;
-        cfg.fps = 120;
 
         return cfg;
     }
@@ -45,6 +46,14 @@ public class GwtLauncher extends GwtApplication {
     public ApplicationListener getApplicationListener() {
         Tile.SIZE = MapConfig.get().getTileSize();
 
+        if (applicationListener == null) {
+            applicationListener = createApplicationListener();
+        }
+        return applicationListener;
+    }
+
+    @Override
+    public ApplicationListener createApplicationListener() {
         return new GwtMap();
     }
 

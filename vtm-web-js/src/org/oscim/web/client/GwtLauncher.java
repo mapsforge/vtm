@@ -28,6 +28,8 @@ import org.timepedia.exporter.client.ExporterUtil;
 
 public class GwtLauncher extends GwtApplication {
 
+    private ApplicationListener applicationListener;
+
     @Override
     public void onModuleLoad() {
         //GWT.create(GwtGdxMap.class);
@@ -46,7 +48,6 @@ public class GwtLauncher extends GwtApplication {
 
         cfg.canvasId = "map-canvas";
         cfg.stencil = true;
-        cfg.fps = 120;
 
         return cfg;
     }
@@ -55,6 +56,14 @@ public class GwtLauncher extends GwtApplication {
     public ApplicationListener getApplicationListener() {
         Tile.SIZE = MapConfig.get().getTileSize();
 
+        if (applicationListener == null) {
+            applicationListener = createApplicationListener();
+        }
+        return applicationListener;
+    }
+
+    @Override
+    public ApplicationListener createApplicationListener() {
         return new GwtMap();
     }
 

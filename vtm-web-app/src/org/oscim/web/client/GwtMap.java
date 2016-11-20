@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 Izumi Kawashima
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -63,6 +64,7 @@ class GwtMap extends GdxMap {
         GdxAssets.init("");
         CanvasAdapter.textScale = 0.7f;
 
+        log.debug("GLAdapter.init");
         GLAdapter.init((GL) Gdx.graphics.getGL20());
         GLAdapter.GDX_WEBGL_QUIRKS = true;
         MapRenderer.setBackgroundColor(0xffffff);
@@ -92,12 +94,18 @@ class GwtMap extends GdxMap {
                 ts = DefaultSources.STAMEN_TONER.build();
             else if ("osm".equals(mapName))
                 ts = DefaultSources.OPENSTREETMAP.build();
+            else if ("osm-transport".equals(mapName))
+                ts = DefaultSources.OSM_TRANSPORT.build();
             else if ("watercolor".equals(mapName))
                 ts = DefaultSources.STAMEN_WATERCOLOR.build();
-            else if ("arcgis-shaded".equals(mapName))
-                ts = DefaultSources.ARCGIS_RELIEF.build();
             else if ("imagico".equals(mapName))
                 ts = DefaultSources.IMAGICO_LANDCOVER.build();
+            else if ("ne-landcover".equals(mapName))
+                ts = DefaultSources.NE_LANDCOVER.build();
+            else if ("hikebike".equals(mapName))
+                ts = DefaultSources.HIKEBIKE.build();
+            else if ("hikebike-hillshade".equals(mapName))
+                ts = DefaultSources.HIKEBIKE_HILLSHADE.build();
             else
                 ts = DefaultSources.STAMEN_TONER.build();
 
