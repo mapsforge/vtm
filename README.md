@@ -1,6 +1,6 @@
+[![Maven Central](https://img.shields.io/maven-central/v/org.mapsforge/vtm.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.mapsforge%22)
 [![Build Status](https://travis-ci.org/mapsforge/vtm.svg?branch=master)](https://travis-ci.org/mapsforge/vtm)
-[![GitHub license](https://img.shields.io/badge/license-LGPL3-blue.svg)](COPYING.LESSER)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.mapsforge/vtm/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.mapsforge/vtm)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0)
 
 # V™
 
