@@ -5,7 +5,7 @@ buildscript {
         maven { url 'http://dl.bintray.com/steffenschaefer/maven' }
     }
     dependencies {
-        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.5'
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
     }
 }
 
@@ -38,7 +38,7 @@ evaluationDependsOn(':vtm-gdx')
 evaluationDependsOn(':vtm-web')
 
 gwt {
-    gwtVersion = '2.6.1'
+    gwtVersion = project.ext.gwtVersion
     modules 'org.oscim.web.VtmWebApp'
 
     superDev {

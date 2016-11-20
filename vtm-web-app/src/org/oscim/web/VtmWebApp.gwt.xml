@@ -6,8 +6,6 @@
 
     <set-property name='gwt.logging.enabled' value='TRUE' />
     <set-property name='gwt.logging.consoleHandler' value='ENABLED' />
-    <set-property name='gwt.logging.firebugHandler' value='DISABLED' />
-    <set-property name='gwt.logging.popupHandler' value='DISABLED' />
     <set-property name="gwt.logging.logLevel" value="FINE" />
 
     <!-- super dev mode -->
@@ -23,4 +21,5 @@
     <set-configuration-property name="gdx.assetoutputpath" value="build/gwt/draftOut" />
 
     <set-property name="user.agent" value="safari" />
+
 </module>

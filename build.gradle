@@ -15,6 +15,7 @@ allprojects {
 
     ext.androidBuildVersionTools = "25.0.0"
     ext.gdxVersion = "1.9.4"
+    ext.gwtVersion = '2.7.0'
 
     if (JavaVersion.current().isJava8Compatible()) {
         tasks.withType(Javadoc) {
