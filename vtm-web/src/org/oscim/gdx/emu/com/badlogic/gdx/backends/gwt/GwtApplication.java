@@ -128,6 +128,28 @@ public abstract class GwtApplication implements EntryPoint, Application {
                 root = panel;
             }
         }
+
+        final PreloaderCallback callback = getPreloaderCallback();
+        preloader = createPreloader();
+        preloader.preload("assets.txt", new PreloaderCallback() {
+            @Override
+            public void error (String file) {
+                callback.error(file);
+            }
+
+            @Override
+            public void update (PreloaderState state) {
+                callback.update(state);
+                if (state.hasEnded()) {
+                    getRootPanel().clear();
+                    if(loadingListener != null)
+                        loadingListener.beforeSetup();
+                    setupLoop();
+                    if(loadingListener != null)
+                        loadingListener.afterSetup();
+                }
+            }
+        });
     }
 
     /**
