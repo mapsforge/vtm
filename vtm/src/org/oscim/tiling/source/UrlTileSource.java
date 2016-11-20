@@ -137,7 +137,7 @@ public abstract class UrlTileSource extends TileSource {
     public String getTileUrl(Tile tile) {
         String tileUrl = mUrl + mTileUrlFormatter.formatTilePath(this, tile);
         if (mApiKey != null) {
-            tileUrl += "?api_key=" + mApiKey;
+            tileUrl += String.format("?api_key=%s", mApiKey);
         }
         return tileUrl;
     }
