@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Stephan Leuschner
  * Copyright 2016 devemux86
+ * Copyright 2016 Izumi Kawashima
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -25,6 +26,7 @@ import org.oscim.core.MapPosition;
 import org.oscim.core.Point;
 import org.oscim.core.Tile;
 import org.oscim.renderer.MapRenderer;
+import org.oscim.utils.Easing;
 import org.oscim.utils.ThreadUtils;
 import org.oscim.utils.async.Task;
 import org.slf4j.Logger;
@@ -56,6 +58,7 @@ public class Animator {
 
     private float mDuration = 500;
     private long mAnimEnd = -1;
+    private Easing.Type mEasingType = Easing.Type.LINEAR;
 
     private int mState = ANIM_NONE;
 
@@ -63,7 +66,7 @@ public class Animator {
         mMap = map;
     }
 
-    public synchronized void animateTo(long duration, BoundingBox bbox) {
+    public synchronized void animateTo(long duration, BoundingBox bbox, Easing.Type easingType) {
         ThreadUtils.assertMainThread();
 
         mMap.getMapPosition(mStartPos);
@@ -90,11 +93,16 @@ public class Animator {
                 -mStartPos.bearing,
                 -mStartPos.tilt);
 
-        animStart(duration, ANIM_MOVE | ANIM_SCALE | ANIM_ROTATE | ANIM_TILT);
+        animStart(duration, ANIM_MOVE | ANIM_SCALE | ANIM_ROTATE | ANIM_TILT, easingType);
     }
 
     public void animateTo(BoundingBox bbox) {
-        animateTo(1000, bbox);
+        animateTo(1000, bbox, Easing.Type.LINEAR);
+    }
+
+    public void animateTo(long duration, GeoPoint geoPoint,
+                          double scale, boolean relative) {
+        animateTo(duration, geoPoint, scale, relative, Easing.Type.LINEAR);
     }
 
     /**
@@ -106,7 +114,7 @@ public class Animator {
      * @param relative alter scale relative to current scale
      */
     public void animateTo(long duration, GeoPoint geoPoint,
-                          double scale, boolean relative) {
+                          double scale, boolean relative, Easing.Type easingType) {
         ThreadUtils.assertMainThread();
 
         mMap.getMapPosition(mStartPos);
@@ -121,14 +129,14 @@ public class Animator {
                 scale - mStartPos.scale,
                 0, 0);
 
-        animStart(duration, ANIM_MOVE | ANIM_SCALE);
+        animStart(duration, ANIM_MOVE | ANIM_SCALE, easingType);
     }
 
     public void animateTo(GeoPoint p) {
-        animateTo(500, p, 1, true);
+        animateTo(500, p, 1, true, Easing.Type.LINEAR);
     }
 
-    public void animateTo(long duration, MapPosition pos) {
+    public void animateTo(long duration, MapPosition pos, Easing.Type easingType) {
         ThreadUtils.assertMainThread();
 
         mMap.getMapPosition(mStartPos);
@@ -141,11 +149,16 @@ public class Animator {
                 pos.bearing - mStartPos.bearing,
                 mMap.viewport().limitTilt(pos.tilt) - mStartPos.tilt);
 
-        animStart(duration, ANIM_MOVE | ANIM_SCALE | ANIM_ROTATE | ANIM_TILT);
+        animStart(duration, ANIM_MOVE | ANIM_SCALE | ANIM_ROTATE | ANIM_TILT, easingType);
     }
 
     public void animateZoom(long duration, double scaleBy,
                             float pivotX, float pivotY) {
+        animateZoom(duration, scaleBy, pivotX, pivotY, Easing.Type.LINEAR);
+    }
+
+    public void animateZoom(long duration, double scaleBy,
+                            float pivotX, float pivotY, Easing.Type easingType) {
         ThreadUtils.assertMainThread();
 
         mMap.getMapPosition(mCurPos);
@@ -163,7 +176,7 @@ public class Animator {
         mPivot.x = pivotX;
         mPivot.y = pivotY;
 
-        animStart(duration, ANIM_SCALE);
+        animStart(duration, ANIM_SCALE, easingType);
     }
 
     public void animateFling(float velocityX, float velocityY,
@@ -191,16 +204,17 @@ public class Animator {
             return;
         }
 
-        animStart(duration, ANIM_FLING);
+        animStart(duration, ANIM_FLING, Easing.Type.LINEAR);
     }
 
-    private void animStart(float duration, int state) {
+    private void animStart(float duration, int state, Easing.Type easingType) {
         if (!isActive())
             mMap.events.fire(Map.ANIM_START, mMap.mMapPosition);
         mCurPos.copy(mStartPos);
         mState = state;
         mDuration = duration;
         mAnimEnd = System.currentTimeMillis() + (long) duration;
+        mEasingType = easingType;
         mMap.render();
     }
 
@@ -224,6 +238,7 @@ public class Animator {
         }
 
         float adv = clamp(1.0f - millisLeft / mDuration, 0, 1);
+        adv = Easing.ease(0, (long) (adv * Long.MAX_VALUE), Long.MAX_VALUE, mEasingType);
 
         double scaleAdv = 1;
         if ((mState & ANIM_SCALE) != 0) {

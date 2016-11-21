@@ -34,6 +34,7 @@ import org.oscim.scalebar.MetricUnitAdapter;
 import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.ThemeLoader;
 import org.oscim.theme.VtmThemes;
+import org.oscim.utils.Easing;
 
 public class SimpleMapActivity extends BaseMapActivity {
     private DefaultMapScaleBar mapScaleBar;
@@ -91,7 +92,7 @@ public class SimpleMapActivity extends BaseMapActivity {
                 if (i == 1) {
                     mMapView.map().getMapPosition(p);
                     p.setScale(4);
-                    mMapView.map().animator().animateTo(time, p);
+                    mMapView.map().animator().animateTo(time, p, Easing.Type.LINEAR);
                 } else {
                     //mMapView.map().setMapPosition(p);
 
@@ -105,7 +106,7 @@ public class SimpleMapActivity extends BaseMapActivity {
                     p.setBearing((float) (Math.random() * 360));
                     //mMapView.map().setMapPosition(p);
 
-                    mMapView.map().animator().animateTo(time, p);
+                    mMapView.map().animator().animateTo(time, p, Easing.Type.LINEAR);
                 }
                 loooop((i + 1) % 2);
 

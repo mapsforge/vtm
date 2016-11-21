@@ -26,6 +26,7 @@ import org.oscim.layers.TileGridLayer;
 import org.oscim.map.Map;
 import org.oscim.map.ViewController;
 import org.oscim.theme.VtmThemes;
+import org.oscim.utils.Easing;
 
 public class InputHandler implements InputProcessor {
 
@@ -95,11 +96,11 @@ public class InputHandler implements InputProcessor {
                 mMap.updateMap(true);
                 break;
             case Input.Keys.NUM_1:
-                mMap.animator().animateZoom(500, 0.5, 0, 0);
+                mMap.animator().animateZoom(500, 0.5, 0, 0, Easing.Type.LINEAR);
                 mMap.updateMap(false);
                 break;
             case Input.Keys.NUM_2:
-                mMap.animator().animateZoom(500, 2, 0, 0);
+                mMap.animator().animateZoom(500, 2, 0, 0, Easing.Type.LINEAR);
                 mMap.updateMap(false);
                 break;
 
@@ -227,7 +228,7 @@ public class InputHandler implements InputProcessor {
     public boolean scrolled(int amount) {
         float fx = mPosX - mMap.getWidth() / 2;
         float fy = mPosY - mMap.getHeight() / 2;
-        mMap.animator().animateZoom(250, amount > 0 ? 0.75f : 1.333f, fx, fy);
+        mMap.animator().animateZoom(250, amount > 0 ? 0.75f : 1.333f, fx, fy, Easing.Type.LINEAR);
         mMap.updateMap(false);
         return true;
     }

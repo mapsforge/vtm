@@ -27,6 +27,7 @@ import org.oscim.event.MotionEvent;
 import org.oscim.map.Map;
 import org.oscim.map.Map.InputListener;
 import org.oscim.map.ViewController;
+import org.oscim.utils.Easing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -177,7 +178,7 @@ public class MapEventLayer extends Layer implements InputListener, GestureListen
                 }
 
                 /* handle double tap zoom */
-                mMap.animator().animateZoom(300, 2, pivotX, pivotY);
+                mMap.animator().animateZoom(300, 2, pivotX, pivotY, Easing.Type.LINEAR);
 
             } else if (mStartMove > 0) {
                 /* handle fling gesture */
