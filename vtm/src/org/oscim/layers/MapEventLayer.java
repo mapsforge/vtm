@@ -117,8 +117,6 @@ public class MapEventLayer extends Layer implements InputListener {
 
     @Override
     public void onInputEvent(Event e, MotionEvent motionEvent) {
-        if (motionEvent.getAction() != MotionEvent.ACTION_MOVE)
-            log.error("{} {}", motionEvent.getX(), motionEvent.getY());
         onTouchEvent(motionEvent);
     }
 
