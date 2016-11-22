@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -20,10 +21,10 @@ import org.oscim.event.MotionEvent;
 
 public class AndroidMotionEvent extends MotionEvent {
 
-    android.view.MotionEvent mEvent;
+    private android.view.MotionEvent mEvent;
 
     public MotionEvent wrap(android.view.MotionEvent e) {
-        mEvent = e;
+        mEvent = android.view.MotionEvent.obtain(e);
         return this;
     }
 
@@ -55,6 +56,16 @@ public class AndroidMotionEvent extends MotionEvent {
     @Override
     public int getPointerCount() {
         return mEvent.getPointerCount();
+    }
+
+    @Override
+    public MotionEvent copy() {
+        return new AndroidMotionEvent().wrap(mEvent);
+    }
+
+    @Override
+    public void recycle() {
+        mEvent.recycle();
     }
 
     @Override
