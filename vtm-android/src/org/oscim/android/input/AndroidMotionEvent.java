@@ -59,6 +59,16 @@ public class AndroidMotionEvent extends MotionEvent {
     }
 
     @Override
+    public MotionEvent copy() {
+        return new AndroidMotionEvent().wrap(mEvent);
+    }
+
+    @Override
+    public void recycle() {
+        mEvent.recycle();
+    }
+
+    @Override
     public long getTime() {
         return mEvent.getEventTime();
     }

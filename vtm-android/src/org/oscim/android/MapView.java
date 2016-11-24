@@ -113,6 +113,7 @@ public class MapView extends GLSurfaceView {
             return false;
 
         mMap.input.fire(null, mMotionEvent.wrap(motionEvent));
+        mMotionEvent.recycle();
         return true;
     }
 

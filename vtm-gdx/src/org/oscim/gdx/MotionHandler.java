@@ -22,6 +22,9 @@ import com.badlogic.gdx.InputProcessor;
 
 import org.oscim.event.MotionEvent;
 import org.oscim.map.Map;
+import org.oscim.utils.ArrayUtils;
+
+import java.util.Arrays;
 
 public class MotionHandler extends MotionEvent implements InputProcessor {
     private final Map mMap;
@@ -75,6 +78,25 @@ public class MotionHandler extends MotionEvent implements InputProcessor {
     @Override
     public int getPointerCount() {
         return mPointerDown;
+    }
+
+    @Override
+    public MotionEvent copy() {
+        MotionHandler handler = new MotionHandler(mMap);
+        handler.mPointerDown = mPointerDown;
+        handler.mDownTime = mDownTime;
+        handler.mType = mType;
+        handler.mPointer = mPointer;
+        handler.mCurX = mCurX;
+        handler.mCurY = mCurY;
+        handler.mPointerX = Arrays.copyOf(mPointerX, 10);
+        handler.mPointerY = Arrays.copyOf(mPointerY, 10);
+        handler.mTime = mTime;
+        return handler;
+    }
+
+    @Override
+    public void recycle() {
     }
 
     @Override

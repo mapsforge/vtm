@@ -139,5 +139,14 @@ public class MapEventLayerTest {
         public int getPointerCount() {
             return 0;
         }
+
+        @Override
+        public MotionEvent copy() {
+            return new TestMotionEvent(action, x, y);
+        }
+
+        @Override
+        public void recycle() {
+        }
     }
 }
