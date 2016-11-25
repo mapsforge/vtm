@@ -60,6 +60,9 @@
             android:name=".MultiMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".NewGesturesActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".OsmJsonMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity

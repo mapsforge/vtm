@@ -3,6 +3,7 @@
 ## New since 0.6.0
 
 - Mapsforge multiple map files [#208](https://github.com/mapsforge/vtm/issues/208)
+- New gestures implementation [#253](https://github.com/mapsforge/vtm/issues/253)
 - Polygon label position enhancements [#80](https://github.com/mapsforge/vtm/issues/80)
 - vtm-web modules update [#51](https://github.com/mapsforge/vtm/issues/51)
 - Mapbox vector tiles [#57](https://github.com/mapsforge/vtm/issues/57)

@@ -27,8 +27,10 @@ import org.oscim.event.EventDispatcher;
 import org.oscim.event.EventListener;
 import org.oscim.event.Gesture;
 import org.oscim.event.MotionEvent;
+import org.oscim.layers.AbstractMapEventLayer;
 import org.oscim.layers.Layer;
 import org.oscim.layers.MapEventLayer;
+import org.oscim.layers.MapEventLayer2;
 import org.oscim.layers.tile.TileLayer;
 import org.oscim.layers.tile.vector.OsmTileLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
@@ -45,7 +47,12 @@ import org.slf4j.LoggerFactory;
 
 public abstract class Map implements TaskQueue {
 
-    static final Logger log = LoggerFactory.getLogger(Map.class);
+    private static final Logger log = LoggerFactory.getLogger(Map.class);
+
+    /**
+     * If true the {@link MapEventLayer2} will be used instead of default {@link MapEventLayer}.
+     */
+    public static boolean NEW_GESTURES = false;
 
     /**
      * Listener interface for map update notifications.
@@ -105,7 +112,7 @@ public abstract class Map implements TaskQueue {
     protected final Animator mAnimator;
     protected final MapPosition mMapPosition;
 
-    protected final MapEventLayer mEventLayer;
+    protected final AbstractMapEventLayer mEventLayer;
 
     protected boolean mClearMap = true;
 
@@ -134,12 +141,15 @@ public abstract class Map implements TaskQueue {
         mAsyncExecutor = new AsyncExecutor(4, this);
         mMapPosition = new MapPosition();
 
-        mEventLayer = new MapEventLayer(this);
+        if (NEW_GESTURES)
+            mEventLayer = new MapEventLayer2(this);
+        else
+            mEventLayer = new MapEventLayer(this);
         mLayers.add(0, mEventLayer);
 
     }
 
-    public MapEventLayer getEventLayer() {
+    public AbstractMapEventLayer getEventLayer() {
         return mEventLayer;
     }
 

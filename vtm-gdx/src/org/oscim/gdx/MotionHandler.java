@@ -22,7 +22,6 @@ import com.badlogic.gdx.InputProcessor;
 
 import org.oscim.event.MotionEvent;
 import org.oscim.map.Map;
-import org.oscim.utils.ArrayUtils;
 
 import java.util.Arrays;
 

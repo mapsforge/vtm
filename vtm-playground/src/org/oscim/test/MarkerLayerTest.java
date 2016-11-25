@@ -47,7 +47,8 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
         mMap.setBaseMap(bitmapLayer);
 
         // Map events receiver
-        mMap.layers().add(new MapEventsReceiver(mMap));
+        if (!Map.NEW_GESTURES)
+            mMap.layers().add(new MapEventsReceiver(mMap));
 
         mMap.setMapPosition(0, 0, 1 << 2);
 

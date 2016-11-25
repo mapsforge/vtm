@@ -1,5 +1,6 @@
 /*
  * Copyright 2012 Hannes Janetzek
+ * Copyright 2016 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -21,11 +22,13 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.view.GestureDetector;
 
 import org.oscim.android.canvas.AndroidGraphics;
 import org.oscim.android.gl.AndroidGL;
 import org.oscim.android.gl.GlConfigChooser;
 import org.oscim.android.input.AndroidMotionEvent;
+import org.oscim.android.input.GestureHandler;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GLAdapter;
 import org.oscim.map.Map;
@@ -51,6 +54,7 @@ public class MapView extends GLSurfaceView {
     }
 
     protected final AndroidMap mMap;
+    protected GestureDetector mGestureDetector;
     protected final AndroidMotionEvent mMotionEvent;
 
     public MapView(Context context) {
@@ -91,6 +95,12 @@ public class MapView extends GLSurfaceView {
         mMap.clearMap();
         mMap.updateMap(false);
 
+        if (!Map.NEW_GESTURES) {
+            GestureHandler gestureHandler = new GestureHandler(mMap);
+            mGestureDetector = new GestureDetector(context, gestureHandler);
+            mGestureDetector.setOnDoubleTapListener(gestureHandler);
+        }
+
         mMotionEvent = new AndroidMotionEvent();
     }
 
@@ -111,6 +121,11 @@ public class MapView extends GLSurfaceView {
     public boolean onTouchEvent(android.view.MotionEvent motionEvent) {
         if (!isClickable())
             return false;
+
+        if (mGestureDetector != null) {
+            if (mGestureDetector.onTouchEvent(motionEvent))
+                return true;
+        }
 
         mMap.input.fire(null, mMotionEvent.wrap(motionEvent));
         mMotionEvent.recycle();

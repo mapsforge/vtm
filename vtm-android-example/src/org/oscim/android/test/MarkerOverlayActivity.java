@@ -56,7 +56,8 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
         mBitmapLayer.tileRenderer().setBitmapAlpha(0.5f);
 
         // Map events receiver
-        mMap.layers().add(new MapEventsReceiver(mMap));
+        if (!Map.NEW_GESTURES)
+            mMap.layers().add(new MapEventsReceiver(mMap));
 
         /* directly load bitmap from resources */
         Bitmap bitmap = drawableToBitmap(getResources(), R.drawable.marker_poi);
