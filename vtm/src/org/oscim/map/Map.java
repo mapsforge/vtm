@@ -3,6 +3,7 @@
  * Copyright 2016 Andrey Novikov
  * Copyright 2016 Stephan Leuschner
  * Copyright 2016 devemux86
+ * Copyright 2016 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -77,6 +78,21 @@ public abstract class Map implements TaskQueue {
      * UpdateListener event. Map was moved by user.
      */
     public static final Event MOVE_EVENT = new Event();
+
+    /**
+     * UpdateListener event. Map was scaled by user.
+     */
+    public static final Event SCALE_EVENT = new Event();
+
+    /**
+     * UpdateListener event. Map was rotated by user.
+     */
+    public static final Event ROTATE_EVENT = new Event();
+
+    /**
+     * UpdateListener event. Map was tilted by user.
+     */
+    public static final Event TILT_EVENT = new Event();
 
     /**
      * UpdateLister event. Delivered on main-thread when updateMap() was called
