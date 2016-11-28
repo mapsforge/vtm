@@ -187,6 +187,8 @@ public class Animator {
 
         mStartPos.copy(mCurPos);
         scaleBy = mMap.viewport().limitScale(scaleBy);
+        if (scaleBy == 0.0)
+            return;
 
         mDeltaPos.scale = scaleBy - mStartPos.scale;
 
@@ -254,7 +256,7 @@ public class Animator {
             return;
         }
 
-        float adv = clamp(1.0f - millisLeft / mDuration, 0, 1);
+        float adv = clamp(1.0f - millisLeft / mDuration, 1E-6f, 1);
         // Avoid redundant calculations in case of linear easing
         if (mEasingType != Easing.Type.LINEAR) {
             adv = Easing.ease(0, (long) (adv * Long.MAX_VALUE), Long.MAX_VALUE, mEasingType);
