@@ -26,9 +26,7 @@ import org.oscim.event.MotionEvent;
 import org.oscim.map.Map;
 import org.oscim.map.Map.InputListener;
 import org.oscim.map.ViewController;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import org.oscim.utils.async.Task;
 
 import static org.oscim.backend.CanvasAdapter.dpi;
 import static org.oscim.utils.FastMath.withinSquaredDist;
@@ -94,21 +92,13 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
     private static final long LONG_PRESS_THRESHOLD = 500;
 
     private final VelocityTracker mTracker;
-    private final Timer mTimer;
-    private TimerTask mTimerTask;
+    private Task mGestureTask;
 
     private final MapPosition mapPosition = new MapPosition();
 
     public MapEventLayer2(Map map) {
         super(map);
         mTracker = new VelocityTracker();
-        mTimer = new Timer();
-    }
-
-    @Override
-    public void onDetach() {
-        mTimer.cancel();
-        mTimer.purge();
     }
 
     @Override
@@ -169,10 +159,9 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
         final long time = e.getTime();
 
         if (action == MotionEvent.ACTION_DOWN) {
-            if (mTimerTask != null) {
-                mTimerTask.cancel();
-                mTimer.purge();
-                mTimerTask = null;
+            if (mGestureTask != null) {
+                mGestureTask.cancel();
+                mGestureTask = null;
             }
             mMap.handleGesture(Gesture.PRESS, e);
             mDown = true;
@@ -182,7 +171,6 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
                 float my = e.getY(0) - mLastTap.getY();
                 if (isMinimalMove(mx, my)) {
                     mTaps = 0;
-                    //log.debug("tap {} {}", mLastTap.getX(), mLastTap.getY());
                     mMap.handleGesture(Gesture.TAP, mLastTap);
                 }
             } else {
@@ -193,21 +181,16 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
                 mTwoFingers = false;
                 mTwoFingersDone = false;
 
-                mTimerTask = new TimerTask() {
+                mGestureTask = new Task() {
                     @Override
-                    public void run() {
-                        if (mTwoFingers || mStartMove != -1)
-                            return;
-                        mMap.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //log.debug("long press {} {}", e.getX(), e.getY());
-                                mMap.handleGesture(Gesture.LONG_PRESS, e);
-                            }
-                        });
+                    public int go(boolean canceled) {
+                        if (canceled || mTwoFingers || mStartMove != -1)
+                            return Task.DONE;
+                        mMap.handleGesture(Gesture.LONG_PRESS, e);
+                        return Task.DONE;
                     }
                 };
-                mTimer.schedule(mTimerTask, LONG_PRESS_THRESHOLD);
+                mMap.postDelayed(mGestureTask, LONG_PRESS_THRESHOLD);
             }
 
             mPrevX1 = e.getX(0);
@@ -226,10 +209,9 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
         }
         if (action == MotionEvent.ACTION_UP) {
             mDown = false;
-            if (mTimerTask != null) {
-                mTimerTask.cancel();
-                mTimer.purge();
-                mTimerTask = null;
+            if (mGestureTask != null) {
+                mGestureTask.cancel();
+                mGestureTask = null;
             }
             if (mStartMove > 0) {
                 /* handle fling gesture */
@@ -248,7 +230,6 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
             }
 
             if (time - mStartDown > LONG_PRESS_THRESHOLD) {
-                //log.debug("  not a tap");
                 // this was not a tap
                 mTaps = 0;
                 return true;
@@ -257,7 +238,6 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
             if (mTaps > 0) {
                 if ((time - mLastTap.getTime()) >= DOUBLE_TAP_THRESHOLD) {
                     mTaps = 1;
-                    //log.debug("tap {} {}", mLastTap.getX(), mLastTap.getY());
                     mMap.handleGesture(Gesture.TAP, mLastTap);
                 } else {
                     mTaps += 1;
@@ -273,47 +253,40 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
 
             if (mTaps == 3) {
                 mTaps = 0;
-                //log.debug("triple tap {} {}", e.getX(), e.getY());
                 mMap.handleGesture(Gesture.TRIPLE_TAP, e);
             } else if (mTaps == 2) {
-                mTimerTask = new TimerTask() {
+                mGestureTask = new Task() {
                     @Override
-                    public void run() {
+                    public int go(boolean canceled) {
+                        if (canceled)
+                            return Task.DONE;
                         mTaps = 0;
                         if (mDragZoom)
-                            return;
-                        mMap.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //log.debug("double tap {} {}", e.getX(), e.getY());
-                                if (!mMap.handleGesture(Gesture.DOUBLE_TAP, e)) {
-                                    /* handle double tap zoom */
-                                    final float pivotX = mFixOnCenter ? 0 : mPrevX1 - mMap.getWidth() / 2;
-                                    final float pivotY = mFixOnCenter ? 0 : mPrevY1 - mMap.getHeight() / 2;
-                                    mMap.animator().animateZoom(300, 2, pivotX, pivotY);
-                                }
-                            }
-                        });
+                            return Task.DONE;
+                        if (!mMap.handleGesture(Gesture.DOUBLE_TAP, e)) {
+                            /* handle double tap zoom */
+                            final float pivotX = mFixOnCenter ? 0 : mPrevX1 - mMap.getWidth() / 2;
+                            final float pivotY = mFixOnCenter ? 0 : mPrevY1 - mMap.getHeight() / 2;
+                            mMap.animator().animateZoom(300, 2, pivotX, pivotY);
+                        }
+                        return Task.DONE;
                     }
                 };
-                mTimer.schedule(mTimerTask, DOUBLE_TAP_THRESHOLD);
+                mMap.postDelayed(mGestureTask, DOUBLE_TAP_THRESHOLD);
             } else {
-                mTimerTask = new TimerTask() {
+                mGestureTask = new Task() {
                     @Override
-                    public void run() {
+                    public int go(boolean canceled) {
+                        if (canceled)
+                            return Task.DONE;
                         mTaps = 0;
                         if (!mTwoFingers && mStartMove == -1) {
-                            mMap.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //log.debug("tap {} {}", e.getX(), e.getY());
-                                    mMap.handleGesture(Gesture.TAP, e);
-                                }
-                            });
+                            mMap.handleGesture(Gesture.TAP, e);
                         }
+                        return Task.DONE;
                     }
                 };
-                mTimer.schedule(mTimerTask, DOUBLE_TAP_THRESHOLD);
+                mMap.postDelayed(mGestureTask, DOUBLE_TAP_THRESHOLD);
             }
             return true;
         }
@@ -328,7 +301,6 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
         }
         if (action == MotionEvent.ACTION_POINTER_UP) {
             if (e.getPointerCount() == 2 && !mTwoFingersDone) {
-                //log.debug("two finger tap");
                 if (!mMap.handleGesture(Gesture.TWO_FINGER_TAP, e)) {
                     mMap.animator().animateZoom(300, 0.5, 0f, 0f);
                 }
