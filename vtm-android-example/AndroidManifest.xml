@@ -57,6 +57,9 @@
             android:name=".MarkerOverlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".MapPositionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".MultiMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
