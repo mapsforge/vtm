@@ -22,56 +22,14 @@ import android.util.Log;
 
 import org.oscim.core.MapPosition;
 import org.oscim.core.MercatorProjection;
-import org.oscim.layers.GroupLayer;
-import org.oscim.layers.tile.buildings.BuildingLayer;
-import org.oscim.layers.tile.vector.labeling.LabelLayer;
-import org.oscim.renderer.BitmapRenderer;
-import org.oscim.renderer.GLViewport;
-import org.oscim.scalebar.DefaultMapScaleBar;
-import org.oscim.scalebar.ImperialUnitAdapter;
-import org.oscim.scalebar.MapScaleBar;
-import org.oscim.scalebar.MapScaleBarLayer;
-import org.oscim.scalebar.MetricUnitAdapter;
-import org.oscim.theme.IRenderTheme;
-import org.oscim.theme.ThemeLoader;
-import org.oscim.theme.VtmThemes;
 
-import java.text.DecimalFormat;
-
-public class MergeMapPositionAnimationsActivity extends BaseMapActivity {
-    private DefaultMapScaleBar mapScaleBar;
+public class MapPositionActivity extends SimpleMapActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GroupLayer groupLayer = new GroupLayer(mMap);
-        groupLayer.layers.add(new BuildingLayer(mMap, mBaseLayer));
-        groupLayer.layers.add(new LabelLayer(mMap, mBaseLayer));
-        mMap.layers().add(groupLayer);
-
-        mapScaleBar = new DefaultMapScaleBar(mMap);
-        mapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
-        mapScaleBar.setDistanceUnitAdapter(MetricUnitAdapter.INSTANCE);
-        mapScaleBar.setSecondaryDistanceUnitAdapter(ImperialUnitAdapter.INSTANCE);
-        mapScaleBar.setScaleBarPosition(MapScaleBar.ScaleBarPosition.BOTTOM_LEFT);
-
-        MapScaleBarLayer mapScaleBarLayer = new MapScaleBarLayer(mMap, mapScaleBar);
-        BitmapRenderer renderer = mapScaleBarLayer.getRenderer();
-        renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
-        renderer.setOffset(5 * getResources().getDisplayMetrics().density, 0);
-        mMap.layers().add(mapScaleBarLayer);
-
-        mMap.setTheme(VtmThemes.DEFAULT);
-
         runTest();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mapScaleBar.destroy();
-
-        super.onDestroy();
     }
 
     void runTest() {
@@ -118,7 +76,7 @@ public class MergeMapPositionAnimationsActivity extends BaseMapActivity {
             public void run() {
                 MapPosition p = mMapView.map().getMapPosition();
                 if (p.getBearing() != bearing) {
-                    Log.e(MergeMapPositionAnimationsActivity.class.getName(), "Bearing is not correct (expected:" + bearing + ", actual:" + p.getBearing() + ")");
+                    Log.e(MapPositionActivity.class.getName(), "Bearing is not correct (expected:" + bearing + ", actual:" + p.getBearing() + ")");
                 }
             }
         }, 3000);
