@@ -25,6 +25,7 @@ import org.oscim.core.TagSet;
 import org.oscim.core.Tile;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.TileLoader;
+import org.oscim.renderer.bucket.CircleBucket;
 import org.oscim.renderer.bucket.LineBucket;
 import org.oscim.renderer.bucket.LineTexBucket;
 import org.oscim.renderer.bucket.MeshBucket;
@@ -330,6 +331,10 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
 
     @Override
     public void renderCircle(CircleStyle circle, int level) {
+        int nLevel = mCurBucket + level;
+        CircleBucket cb = mBuckets.getCircleBucket(nLevel);
+        cb.circle = circle;
+        cb.addCircle(mElement);
     }
 
     @Override

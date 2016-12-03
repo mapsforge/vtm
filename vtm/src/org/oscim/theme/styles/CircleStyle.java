@@ -28,7 +28,6 @@ public final class CircleStyle extends RenderStyle<CircleStyle> {
     public final int fill;
     public final int outline;
     public final float radius;
-    public float renderRadius;
     public final boolean scaleRadius;
     public final float strokeWidth;
 

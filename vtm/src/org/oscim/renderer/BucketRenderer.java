@@ -20,6 +20,7 @@ package org.oscim.renderer;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
 import org.oscim.renderer.bucket.BitmapBucket;
+import org.oscim.renderer.bucket.CircleBucket;
 import org.oscim.renderer.bucket.HairLineBucket;
 import org.oscim.renderer.bucket.LineBucket;
 import org.oscim.renderer.bucket.LineTexBucket;
@@ -33,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.oscim.renderer.bucket.RenderBucket.BITMAP;
+import static org.oscim.renderer.bucket.RenderBucket.CIRCLE;
 import static org.oscim.renderer.bucket.RenderBucket.HAIRLINE;
 import static org.oscim.renderer.bucket.RenderBucket.LINE;
 import static org.oscim.renderer.bucket.RenderBucket.MESH;
@@ -139,6 +141,9 @@ public class BucketRenderer extends LayerRenderer {
                         setMatrix(v, project);
                     }
                     b = TextureBucket.Renderer.draw(b, v, div);
+                    break;
+                case CIRCLE:
+                    b = CircleBucket.Renderer.draw(b, v);
                     break;
                 default:
                     log.error("invalid bucket {}", b.type);
