@@ -214,7 +214,7 @@
             <m k="landuse" v="allotments" zoom-min="12">
                 <area use="allotments" />
             </m>
-            <m k="leisure" v="park|common|green|golf_course" zoom-min="11">
+            <m k="leisure" v="park|common|green|golf_course|natural_park" zoom-min="11">
                 <area use="park" />
                 <m zoom-min="14">
                     <line use="park" />
@@ -227,7 +227,7 @@
                 <area fade="10" fill="#fffad1" use="tex1" />
             </m>
 
-            <m k="landuse|natural" v="forest|wood">
+            <m k="landuse|natural" v="forest|wood|natural_forest|natural_wood">
                 <m zoom-max="13" zoom-min="8">
                     <area use="wood" />
                 </m>
@@ -583,7 +583,7 @@
         <outline-layer id="motorway" stroke="#aa805f2e" width="0.1" />
 
         <!-- highway -->
-        <m k="highway">
+        <m k="kind_detail">
             <m select="first" zoom-max="5" zoom-min="4">
                 <m k="area" v="~|no|false">
                     <!-- <m v="secondary|primary_link" zoom-min="9">
@@ -825,7 +825,7 @@
         </m><!-- end highway -->
 
         <!-- runways cores -->
-        <m k="aeroway">
+        <m k="kind_detail">
             <m v="runway">
                 <line use="aeroway:runway" />
             </m>
@@ -835,7 +835,7 @@
         </m>
 
         <!-- man_made features -->
-        <m k="man_made" v="pier">
+        <m k="kind_detail" v="pier">
             <m closed="no">
                 <line cap="butt" stroke="#d0d0d0" width="0.4" />
                 <line cap="butt" stroke="#e4e4e4" width="0.3" />
@@ -920,12 +920,12 @@
         -->
 
         <!--<m k="boundary" v="administrative"> -->
-        <m k="admin_level">
-            <m k="admin_level" v="4">
+        <m k="kind_detail">
+            <m k="kind_detail" v="4">
                 <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0"
                     stroke="#dadada" width="1.3" />
             </m>
-            <m k="admin_level" v="2">
+            <m k="kind_detail" v="2">
                 <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0"
                     stroke="#dadada" width="1.6" />
             </m>
