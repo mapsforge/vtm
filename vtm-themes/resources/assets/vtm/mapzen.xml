@@ -954,25 +954,22 @@
 
     <m e="node" select="first">
 
-        <!-- Barriers TODO draw actual symbols here -->
         <m k="kind">
             <m zoom-min="10">
                 <m v="bollard">
-                    <circle fill="#909090" radius="10" />
+                    <symbol src="assets:symbols/barrier/bollard.svg" />
                 </m>
                 <m v="block">
-                    <circle fill="#909090" radius="10" />
+                    <symbol src="assets:symbols/barrier/blocks.svg" />
                 </m>
                 <m v="gate">
-                    <circle fill="#909090" radius="10" />
+                    <symbol src="assets:symbols/barrier/gate.svg" />
                 </m>
                 <m v="lift_gate">
-                    <circle fill="#909090" radius="10" />
+                    <symbol src="assets:symbols/barrier/lift_gate.svg" />
                 </m>
             </m>
-        </m>
 
-        <m k="kind">
             <m v="bus_stop" zoom-min="16">
                 <symbol src="assets:symbols/dot_blue.svg" />
             </m>
@@ -982,15 +979,7 @@
             <m v="turning_circle">
                 <circle fill="#ffffff" radius="1.4" scale-radius="true" />
             </m>
-        </m>
 
-        <!-- historic -->
-        <m k="historic">
-            <symbol src="assets:symbols/tourist/monument.svg" />
-
-            <m zoom-min="17">
-                <text use="poi" />
-            </m>
         </m>
 
         <m k="kind">
@@ -1096,10 +1085,32 @@
         <!-- POIS -->
         <m k="kind">
 
-            <m select="first" zoom-min="16">
-                <m v="atm" zoom-min="17">
-                    <symbol src="assets:symbols/money/atm2.svg" />
+            <m select="first" zoom-min="15">
+                <m v="bakery">
+                    <symbol src="assets:symbols/shopping/bakery.svg" />
                 </m>
+                <!--<m v="florist">
+                    <symbol src="assets:symbols/shopping/florist.svg" />
+                </m>-->
+                <!--<m v="hairdresser" zoom-min="16">
+                    <symbol src="assets:symbols/shopping/hairdresser.svg" />
+                </m>-->
+                <m v="supermarket|organic">
+                    <symbol src="assets:symbols/shopping/supermarket.svg" />
+                </m>
+
+                <!-- This does not match anything any more
+                <m zoom-min="17">
+                    <symbol src="assets:symbols/dot_magenta.svg" />
+                </m>
+                -->
+
+                <m select="when-matched" zoom-min="17">
+                    <text use="poi" />
+                </m>
+            </m>
+
+            <m select="first" zoom-min="16">
                 <m v="cafe">
                     <symbol src="assets:symbols/food/cafe.svg" />
                 </m>
@@ -1118,6 +1129,15 @@
                 <m v="bus_station">
                     <symbol src="assets:symbols/transport/bus_station.svg" />
                 </m>
+                <m v="memorial">
+                    <symbol src="assets:symbols/tourist/memorial.svg" />
+                </m>
+                <m v="monument">
+                    <symbol src="assets:symbols/tourist/monument.svg" />
+                </m>
+                <m v="information">
+                    <symbol src="assets:symbols/tourist/information.svg" />
+                </m>
                 <m select="when-matched">
                     <text use="poi" />
                 </m>
@@ -1126,6 +1146,9 @@
             <m select="first" zoom-min="17">
                 <m v="bank">
                     <symbol src="assets:symbols/money/bank2.svg" />
+                </m>
+                <m v="atm">
+                    <symbol src="assets:symbols/money/atm2.svg" />
                 </m>
                 <!--<m k="amenity" v="bench">
                     <symbol src="assets:symbols/bench.svg" />
@@ -1205,31 +1228,7 @@
                     <symbol src="assets:symbols/amenity/toilets.svg" />
                 </m>
             </m>
-        </m>
 
-        <m k="kind">
-            <m select="first" zoom-min="15">
-                <m v="bakery">
-                    <symbol src="assets:symbols/shopping/bakery.svg" />
-                </m>
-                <!--<m v="florist">
-                    <symbol src="assets:symbols/shopping/florist.svg" />
-                </m>-->
-                <!--<m v="hairdresser" zoom-min="16">
-                    <symbol src="assets:symbols/shopping/hairdresser.svg" />
-                </m>-->
-                <m v="supermarket|organic">
-                    <symbol src="assets:symbols/shopping/supermarket.svg" />
-                </m>
-
-                <m zoom-min="17">
-                    <symbol src="assets:symbols/dot_magenta.svg" />
-                </m>
-
-                <m select="when-matched" zoom-min="17">
-                    <text use="poi" />
-                </m>
-            </m>
         </m>
 
         <m k="kind">
