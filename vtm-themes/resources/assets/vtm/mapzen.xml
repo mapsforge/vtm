@@ -277,7 +277,7 @@
             <!-- area outlines need to be above to avoid uggly pixelation where
              not aliased polygon overlaps the lines... -->
 
-            <m v="nature_reserve">
+            <m v="nature_reserve" zoom-min="14">
                 <line cap="butt" fix="true" stroke="#abe29c" width="1.0" />
             </m>
             <m v="military">
