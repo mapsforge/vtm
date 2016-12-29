@@ -120,10 +120,10 @@
 
     <!-- all closed ways that are not 'highway' or 'building' -->
 
-    <m closed="yes" e="way" k="highway|building" v="~">
+    <m closed="yes" e="way">
 
         <!-- landuse base -->
-        <m k="landuse">
+        <m k="kind">
             <m v="urban">
                 <area fill="#f4f3f0" />
             </m>
@@ -136,11 +136,11 @@
                 <area use="residential" />
             </m>
         </m>
-        <m k="natural" v="grassland|scrub">
+        <m k="kind" v="grassland|scrub">
             <area use="darkgreen" />
         </m>
 
-        <m k="landuse">
+        <m k="kind">
             <m v="farmland|farm|orchard|vineyard|greenhouse_horticulture|plant_nursery">
                 <area use="farmland" />
             </m>
@@ -160,9 +160,9 @@
               stroke="#e4e4e4" width="0.2" /> </m> -->
             <!-- <m k="landuse" v="garages"> <area fill="#d6d6e4" /> </m> -->
         </m>
-        <m k="landuse|natural|leisure|amenity|tourism">
+        <m k="kind">
             <!-- kind of more like landuse imho -->
-            <m k="leisure|landuse" v="nature_reserve">
+            <m v="nature_reserve">
                 <area use="greens2" />
                 <m zoom-min="14">
                     <line cap="butt" fix="true" stroke="#abe29c" width="1.0" />
@@ -172,16 +172,14 @@
             <!-- tourism areas
               Berlin Zoologischer Garten has lots of details that should be drawn above
             -->
-            <m k="tourism">
-                <!-- <m k="tourism" v="attraction"> <area fill="#f2caea" /> </m> -->
+            <!-- <m k="tourism" v="attraction"> <area fill="#f2caea" /> </m> -->
 
-                <m v="zoo|picnic_site|caravan_site|camp_site">
-                    <area fill="#c0d69a" />
-                </m>
+            <m v="zoo|picnic_site|caravan_site|camp_site">
+                <area fill="#c0d69a" />
             </m>
 
             <!-- amenity -->
-            <m k="amenity" zoom-min="14">
+            <m zoom-min="14">
                 <m v="kindergarten|school|college|university">
                     <!-- <area fill="#cdabde" /> -->
                     <area fade="14" fill="#e6e4c5" />
@@ -199,7 +197,7 @@
             </m>
 
             <!-- landuse -->
-            <m k="landuse" zoom-min="11">
+            <m zoom-min="11">
                 <!-- how about 'leisure' for this one? -->
                 <m v="cemetery">
                     <area use="park" />
@@ -208,13 +206,13 @@
                     </m>
                 </m>
             </m>
-            <m k="landuse" v="village_green|recreation_ground">
+            <m v="village_green|recreation_ground">
                 <area use="greens" />
             </m>
-            <m k="landuse" v="allotments" zoom-min="12">
+            <m v="allotments" zoom-min="12">
                 <area use="allotments" />
             </m>
-            <m k="leisure" v="park|common|green|golf_course" zoom-min="11">
+            <m v="park|common|green|golf_course" zoom-min="11">
                 <area use="park" />
                 <m zoom-min="14">
                     <line use="park" />
@@ -227,7 +225,7 @@
                 <area fade="10" fill="#fffad1" use="tex1" />
             </m>
 
-            <m k="landuse|natural" v="forest|wood">
+            <m v="forest|wood">
                 <m zoom-max="13" zoom-min="8">
                     <area use="wood" />
                 </m>
@@ -239,43 +237,41 @@
             <!-- keep grass above forest:wood and leisure:park! -->
             <!-- http://wiki.openstreetmap.org/wiki/Proposed_features/conservation,
               often serves as background for leisure=nature_reserve -->
-            <m k="landuse" v="grass">
+            <m v="grass">
                 <area use="lightgreen" />
             </m>
 
-            <m k="leisure" v="garden">
+            <m v="garden">
                 <area use="greens" />
             </m>
 
             <!-- amenity -->
-            <m k="amenity">
-                <!--<m v="kindergarten|school|college|university" zoom-min="15">
-                  <area fill="#cdbbca" fade="15"/>
-                  <line stroke="#9aabae" width="1.0" fix="true" cap="butt" fade="15"/>
-                  </m>
+            <!--<m v="kindergarten|school|college|university" zoom-min="15">
+              <area fill="#cdbbca" fade="15"/>
+              <line stroke="#9aabae" width="1.0" fix="true" cap="butt" fade="15"/>
+              </m>
 
-                  <m v="hospital" zoom-min="14">
-                  <area fill="#e6e4c5" />
-                  </m>
-                -->
-                <m v="parking" zoom-min="15">
-                    <area fill="#f4f4f4" stroke="#d4d4d4" stroke-width="0.2" />
-                    <m zoom-min="17">
-                        <symbol src="assets:symbols/transport/parking.svg" />
-                    </m>
+              <m v="hospital" zoom-min="14">
+              <area fill="#e6e4c5" />
+              </m>
+            -->
+            <m v="parking" zoom-min="15">
+                <area fill="#f4f4f4" stroke="#d4d4d4" stroke-width="0.2" />
+                <m zoom-min="17">
+                    <symbol src="assets:symbols/transport/parking.svg" />
                 </m>
-                <m closed="yes" v="fountain">
-                    <area fill="#b4cbdc" stroke="#000080" stroke-width="0.15" />
-                </m>
-
             </m>
+            <m closed="yes" v="fountain">
+                <area fill="#b4cbdc" stroke="#000080" stroke-width="0.15" />
+            </m>
+
 
             <!-- <m k="natural" v="coastline">
               <line stroke="#a4bbcc" width="1.2" fix="true" />
               </m> -->
 
             <!-- natural -->
-            <m k="natural" zoom-min="10">
+            <m zoom-min="10">
                 <m v="glacier">
                     <area fill="#fafaff" />
                 </m>
@@ -291,7 +287,7 @@
             </m>
 
             <!-- leisure -->
-            <m k="leisure" zoom-min="13">
+            <m zoom-min="13">
 
                 <m v="stadium">
                     <line cap="butt" fix="true" stroke="#c9c3c1" width="1.0" />
@@ -319,31 +315,31 @@
                   e="way" k="area" v="~|no|false"> <line stroke="#b7c690" width="0.75"
                   /> </m> </m> -->
             </m>
+        </m>
 
-            <!-- area outlines need to be above to avoid uggly pixelation where
-              not aliased polygon overlaps the lines... -->
-            <m k="leisure|landuse" zoom-min="14">
+        <!-- area outlines need to be above to avoid uggly pixelation where
+          not aliased polygon overlaps the lines... -->
+        <m zoom-min="14">
 
-                <m v="nature_reserve">
-                    <line cap="butt" fix="true" stroke="#abe29c" width="1.0" />
-                </m>
-                <m v="military">
-                    <line use="fence" />
-                </m>
+            <m v="nature_reserve">
+                <line cap="butt" fix="true" stroke="#abe29c" width="1.0" />
             </m>
-            <m k="landuse" v="reservoir|basin">
-                <area use="water" />
+            <m v="military">
+                <line use="fence" />
             </m>
+        </m>
+        <m v="reservoir|basin">
+            <area use="water" />
+        </m>
 
-            <!-- ...should rewrite tag to: highway=leisure/sport=* imho -->
-            <m k="leisure" v="track">
-                <line cap="butt" fix="true" stroke="#c1bcb6" width="1.3" />
-            </m>
-        </m><!-- end landuse|natural|leisure||amenity|tourism -->
+        <!-- ...should rewrite tag to: highway=leisure/sport=* imho -->
+        <m v="track">
+            <line cap="butt" fix="true" stroke="#c1bcb6" width="1.3" />
+        </m>
     </m>
 
     <!-- waterways -->
-    <m e="way" k="waterway">
+    <m e="way" k="kind">
         <m v="ditch|drain" zoom-min="14">
             <line fade="14" use="water" width="0.2" />
         </m>
@@ -386,10 +382,12 @@
                 <line fade="9" use="water" width="0.1" />
             </m>
         </m>
+        <!-- TODO this breaks the rendering
         <m v="riverbank|dock">
             <area use="water" />
             <line use="water:outline" />
         </m>
+        -->
         <m v="weir">
             <line stroke="#000088" use="fix" />
         </m>
@@ -402,7 +400,7 @@
     </m>
 
     <m e="way">
-        <m closed="yes" k="natural" v="water">
+        <m closed="yes" k="kind" v="water">
             <area use="water" />
             <caption area-size="0.4" fill="#404000" k="name" size="16" stroke="#aaffffff"
                 stroke-width="2.0" />
@@ -421,13 +419,13 @@
         <outline-layer id="0" stroke="#44000000" width="0.1" />
 
         <!-- match tunnel-tag (to ensure tunnel key is present) -->
-        <m k="tunnel" zoom-min="11">
+        <m k="is_tunnel" zoom-min="11">
             <!-- match tunnel-tag that are not 'no' or 'false' -->
-            <m k="tunnel" v="-|no|false">
+            <m k="is_tunnel" v="-|no|false">
                 <!-- match area-tag that are 'no' or 'false' or not present -->
                 <m k="area" v="~|no|false">
                     <!-- highway tunnels -->
-                    <m k="highway">
+                    <m k="kind_detail">
                         <m zoom-min="16">
                             <m v="steps">
                                 <line use="steps" />
@@ -514,7 +512,7 @@
         </m><!-- end tunnel -->
 
         <!-- platform cores -->
-        <m k="highway|railway|public_transport" v="platform">
+        <m k="kind" v="platform">
             <m closed="yes">
                 <area fill="#dbdbc9" />
             </m>
@@ -524,7 +522,7 @@
         </m>
 
         <!-- runways areas -->
-        <m k="aeroway">
+        <m k="kind_detail">
             <m closed="yes" v="aerodrome">
                 <m zoom-min="12">
                     <area fill="#e8ecde" />
@@ -555,7 +553,7 @@
           </m> -->
 
         <!-- building -->
-        <m k="building">
+        <m k="kind" v="building">
             <m zoom-min="14">
                 <m closed="yes">
                     <area fade="14" use="building" />
@@ -583,7 +581,7 @@
         <outline-layer id="motorway" stroke="#aa805f2e" width="0.1" />
 
         <!-- highway -->
-        <m k="highway">
+        <m k="kind_detail">
             <m select="first" zoom-max="5" zoom-min="4">
                 <m k="area" v="~|no|false">
                     <!-- <m v="secondary|primary_link" zoom-min="9">
@@ -825,7 +823,7 @@
         </m><!-- end highway -->
 
         <!-- runways cores -->
-        <m k="aeroway">
+        <m k="kind_detail">
             <m v="runway">
                 <line use="aeroway:runway" />
             </m>
@@ -835,7 +833,7 @@
         </m>
 
         <!-- man_made features -->
-        <m k="man_made" v="pier">
+        <m k="kind_detail" v="pier">
             <m closed="no">
                 <line cap="butt" stroke="#d0d0d0" width="0.4" />
                 <line cap="butt" stroke="#e4e4e4" width="0.3" />
@@ -846,7 +844,7 @@
         </m>
 
         <!-- barriers -->
-        <m k="barrier">
+        <m k="kind">
             <!-- <m v="fence|wall|city_wall" zoom-min="15"> <line
               stroke="#909090" width="0.1" cap="butt" /> </m> -->
             <m v="retaining_wall" zoom-min="15">
@@ -856,39 +854,39 @@
 
 
         <!-- railway (no tunnel) -->
-        <m k="railway" zoom-min="12">
-            <m k="tunnel" v="~|false|no">
+        <m k="kind" zoom-min="12">
+            <m k="is_tunnel" v="~|false|no">
 
-                <m k="railway" v="station">
+                <m v="station">
                     <area fill="#dbdbc9" stroke="#707070" stroke-width="0.3" />
                 </m>
 
                 <!-- railway bridge casings -->
                 <m zoom-min="14">
                     <m k="bridge" v="yes|true">
-                        <m k="railway" v="tram">
+                        <m v="tram">
                             <line cap="butt" fix="true" stroke="#777777" width="0.9" />
                         </m>
-                        <m k="railway" v="subway|light_rail|narrow_gauge">
+                        <m v="subway|light_rail|narrow_gauge">
                             <line cap="butt" fix="true" stroke="#777777" width="0.9" />
                         </m>
-                        <m k="railway" v="rail">
+                        <m v="rail">
                             <line cap="butt" fix="true" stroke="#777777" width="0.9" />
                         </m>
                     </m>
                 </m>
 
                 <!-- railway casings and cores -->
-                <m k="railway" v="tram" zoom-min="15">
+                <m v="tram" zoom-min="15">
                     <line fix="true" stroke="#887766" width="1.0" />
                 </m>
-                <m k="railway" v="light_rail|subway|narrow_gauge" zoom-min="14">
+                <m v="light_rail|subway|narrow_gauge" zoom-min="14">
                     <line cap="butt" fix="true" stroke="#a0a0a0" width="0.9" />
                 </m>
-                <m k="railway" v="rail|turntable" zoom-max="14">
+                <m v="rail|turntable" zoom-max="14">
                     <line cap="butt" fade="12" fix="true" stroke="#ddaa9988" width="1.0" />
                 </m>
-                <m k="railway" v="rail|turntable" zoom-min="15">
+                <m v="rail|turntable" zoom-min="15">
                     <line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#ffffff"
                         stipple-width="0.8" stroke="#aaa6a4" width="2.0" />
                 </m>
@@ -901,7 +899,7 @@
                   <line stroke="#bbbbcc" width="0.8" cap="butt" fix="true" />
                   </m> -->
                 <!-- whatever railway:spur means ... -->
-                <m k="railway" v="disused|spur|abandoned|preserved">
+                <m v="disused|spur|abandoned|preserved">
                     <line cap="butt" fade="12" fix="true" stroke="#cccccc" width="0.8" />
                 </m>
             </m>
@@ -920,12 +918,12 @@
         -->
 
         <!--<m k="boundary" v="administrative"> -->
-        <m k="admin_level">
-            <m k="admin_level" v="4">
+        <m k="kind_detail">
+            <m k="kind_detail" v="4">
                 <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0"
                     stroke="#dadada" width="1.3" />
             </m>
-            <m k="admin_level" v="2">
+            <m k="kind_detail" v="2">
                 <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0"
                     stroke="#dadada" width="1.6" />
             </m>
@@ -939,21 +937,21 @@
           </m> -->
 
         <!-- place -->
-        <m k="place" v="locality" zoom-min="17">
+        <m k="kind" v="locality" zoom-min="17">
             <caption style="bold" fill="#000000" k="name" size="12" stroke="#ffffff"
                 stroke-width="2.0" />
         </m>
 
-        <m k="highway" v="track">
+        <m k="kind_detail" v="track">
             <m k="area" v="yes">
                 <area fill="#aaff0000" />
             </m>
         </m>
 
         <!-- highway one-way markers -->
-        <m k="tunnel" v="~|false|no">
+        <m k="is_tunnel" v="~|false|no">
             <m k="area" v="~|false|no">
-                <m k="highway">
+                <m k="kind_detail">
                     <m k="oneway" v="yes|true" zoom-min="16">
                         <line fix="true" src="assets:patterns/oneway.svg" stipple="160"
                             stipple-stroke="#666666" width="6" />
@@ -966,7 +964,7 @@
 
     <m e="node" select="first">
 
-        <m k="barrier">
+        <m k="kind">
             <m zoom-min="10">
                 <m v="bollard">
                     <circle fill="#909090" radius="1.5" />
@@ -983,7 +981,7 @@
             </m>
         </m>
 
-        <m k="highway">
+        <m k="kind">
             <m v="bus_stop" zoom-min="16">
                 <symbol src="assets:symbols/dot_blue.svg" />
             </m>
@@ -997,15 +995,28 @@
 
         <!-- historic -->
         <m k="historic">
-            <symbol src="assets:symbols/tourist/monument.svg" />
-
+            <m v="memorial">
+                <symbol src="assets:symbols/tourist/memorial.svg" />
+            </m>
+            <m v="monument">
+                <symbol src="assets:symbols/tourist/monument.svg" />
+            </m>
+            <m v="information">
+                <symbol src="assets:symbols/tourist/information.svg" />
+            </m>
+            <m v="viewpoint">
+                <symbol src="assets:symbols/tourist/view_point.svg" />
+            </m>
+            <m v="museum">
+                <symbol src="assets:symbols/tourist/museum.svg" />
+            </m>
             <m zoom-min="17">
                 <text use="poi" />
             </m>
         </m>
 
         <!-- place -->
-        <m k="place">
+        <m k="kind">
             <m v="locality" zoom-min="13">
                 <caption style="bold" fill="#606060" k="name" priority="5" size="14"
                     stroke="#ffffff" stroke-width="2.0" />
@@ -1043,7 +1054,7 @@
         </m>
 
         <!-- railway -->
-        <m k="railway">
+        <m k="kind">
             <m v="station" zoom-min="14">
                 <symbol src="assets:symbols/transport/train_station2.svg" />
                 <caption style="bold" dy="-20" fill="#ec2d2d" k="name" size="14" stroke="#ffffff"
@@ -1061,31 +1072,31 @@
         </m>
 
         <!-- aeroway -->
-        <m k="aeroway">
-            <m k="aeroway" v="helipad" zoom-min="16">
+        <m k="kind">
+            <m v="helipad" zoom-min="16">
                 <symbol src="assets:symbols/transport/helicopter.svg" />
             </m>
-            <m k="aeroway" v="aerodrome|airport" zoom-min="9">
+            <m v="aerodrome|airport" zoom-min="9">
                 <symbol src="assets:symbols/transport/airport2.svg" />
             </m>
         </m>
 
-        <m k="amenity">
+        <m k="kind">
 
             <m select="first" zoom-min="15">
                 <m v="hospital">
                     <symbol src="assets:symbols/health/hospital.svg" />
                 </m>
-                <m k="amenity" v="school">
+                <m v="school">
                     <symbol src="assets:symbols/education/school.svg" />
                 </m>
-                <m k="amenity" v="university|college">
+                <m v="university|college">
                     <symbol src="assets:symbols/education/university.svg" />
                 </m>
-                <m k="amenity" v="library">
+                <m v="library">
                     <symbol src="assets:symbols/amenity/library.svg" />
                 </m>
-                <m k="amenity" v="cinema">
+                <m v="cinema">
                     <symbol src="assets:symbols/tourist/cinema2.svg" />
                 </m>
 
@@ -1113,7 +1124,7 @@
                 <m v="restaurant">
                     <symbol src="assets:symbols/food/restaurant.svg" />
                 </m>
-                <m k="amenity" v="bus_station">
+                <m v="bus_station">
                     <symbol src="assets:symbols/transport/bus_station.svg" />
                 </m>
                 <m select="when-matched">
@@ -1122,37 +1133,37 @@
             </m>
 
             <m select="first" zoom-min="17">
-                <m k="amenity" v="bank">
+                <m v="bank">
                     <symbol src="assets:symbols/money/bank2.svg" />
                 </m>
                 <!--<m k="amenity" v="bench">
                     <symbol src="assets:symbols/bench.svg" />
                 </m>-->
-                <m k="amenity" v="bicycle_rental">
+                <m v="bicycle_rental">
                     <symbol src="assets:symbols/transport/rental_bicycle.svg" />
                 </m>
-                <m k="amenity" v="drinking_water">
+                <m v="drinking_water">
                     <symbol src="assets:symbols/food/drinkingtap.svg" />
                 </m>
-                <m k="amenity" v="fire_station">
+                <m v="fire_station">
                     <symbol src="assets:symbols/amenity/firestation3.svg" />
                 </m>
-                <m k="amenity" v="fountain">
+                <m v="fountain">
                     <symbol src="assets:symbols/amenity/fountain2.svg" />
                 </m>
-                <m k="amenity" v="fuel">
+                <m v="fuel">
                     <symbol src="assets:symbols/transport/fuel.svg" />
                 </m>
-                <m k="amenity" v="kindergarten">
+                <m v="kindergarten">
                     <symbol src="assets:symbols/education/nursery3.svg" />
                 </m>
-                <m k="amenity" v="parking">
+                <m v="parking">
                     <symbol src="assets:symbols/transport/parking.svg" />
                 </m>
-                <m k="amenity" v="pharmacy">
+                <m v="pharmacy">
                     <symbol src="assets:symbols/health/pharmacy.svg" />
                 </m>
-                <m k="amenity" v="place_of_worship">
+                <m v="place_of_worship">
                     <m k="denomination|religion" v="buddhist">
                         <symbol src="assets:symbols/place_of_worship/buddhist.svg" />
                     </m>
@@ -1175,22 +1186,22 @@
                         <symbol src="assets:symbols/place_of_worship/unknown.svg" />
                     </m>
                 </m>
-                <m k="amenity" v="post_box">
+                <m v="post_box">
                     <symbol src="assets:symbols/amenity/post_box.svg" />
                 </m>
-                <m k="amenity" v="post_office">
+                <m v="post_office">
                     <symbol src="assets:symbols/amenity/post_office.svg" />
                 </m>
-                <m k="amenity" v="recycling">
+                <m v="recycling">
                     <symbol src="assets:symbols/amenity/recycling.svg" />
                 </m>
-                <m k="amenity" v="shelter">
+                <m v="shelter">
                     <symbol src="assets:symbols/accommodation/shelter2.svg" />
                 </m>
-                <m k="amenity" v="telephone">
+                <m v="telephone">
                     <symbol src="assets:symbols/amenity/telephone.svg" />
                 </m>
-                <m k="amenity" v="theatre">
+                <m v="theatre">
                     <symbol src="assets:symbols/tourist/theatre.svg" />
                 </m>
                 <m select="when-matched">
@@ -1199,13 +1210,13 @@
             </m>
 
             <m zoom-min="17">
-                <m k="amenity" v="toilets">
+                <m v="toilets">
                     <symbol src="assets:symbols/amenity/toilets.svg" />
                 </m>
             </m>
         </m>
 
-        <m k="shop">
+        <m k="kind">
             <m select="first" zoom-min="15">
                 <m v="bakery">
                     <symbol src="assets:symbols/shopping/bakery.svg" />
@@ -1220,17 +1231,13 @@
                     <symbol src="assets:symbols/shopping/supermarket.svg" />
                 </m>
 
-                <m zoom-min="17">
-                    <symbol src="assets:symbols/dot_magenta.svg" />
-                </m>
-
                 <m select="when-matched" zoom-min="17">
                     <text use="poi" />
                 </m>
             </m>
         </m>
 
-        <m k="tourism">
+        <m k="kind">
             <m select="first" zoom-min="15">
                 <m v="alpine_hut">
                     <symbol src="assets:symbols/accommodation/alpinehut.svg" />
@@ -1271,7 +1278,7 @@
 
         </m>
 
-        <m k="natural" v="peak" zoom-min="12">
+        <m k="kind" v="peak" zoom-min="12">
             <symbol src="assets:symbols/peak.svg" />
             <caption style="bold" dy="12" fill="#4D2F08" k="ele" size="12" stroke="#ffffff"
                 stroke-width="2.0" />
@@ -1280,7 +1287,7 @@
         </m>
 
         <!-- house numbers -->
-        <m k="addr:housenumber" zoom-min="17">
+        <m k="addr_housenumber" zoom-min="17">
             <caption style="bold" fill="#606060" k="addr:housenumber" size="12" stroke="#ffffff"
                 stroke-width="2.0" />
         </m>
