@@ -81,11 +81,11 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
 
         String v = element.tags.getValue(Tag.KEY_HEIGHT);
         if (v != null)
-            height = Integer.parseInt(v);
+            height = (int) Float.parseFloat(v);
 
         v = element.tags.getValue(Tag.KEY_MIN_HEIGHT);
         if (v != null)
-            minHeight = Integer.parseInt(v);
+            minHeight = (int) Float.parseFloat(v);
 
         /* 12m default */
         if (height == 0)
