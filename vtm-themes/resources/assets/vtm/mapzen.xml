@@ -1073,10 +1073,10 @@
 
         <!-- aeroway -->
         <m k="kind">
-            <m k="aeroway" v="helipad" zoom-min="16">
+            <m v="helipad" zoom-min="16">
                 <symbol src="assets:symbols/transport/helicopter.svg" />
             </m>
-            <m k="aeroway" v="aerodrome|airport" zoom-min="9">
+            <m v="aerodrome|airport" zoom-min="9">
                 <symbol src="assets:symbols/transport/airport2.svg" />
             </m>
         </m>
