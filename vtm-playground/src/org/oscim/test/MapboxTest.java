@@ -27,7 +27,7 @@ public class MapboxTest extends GdxMapApp {
     @Override
     public void createLayers() {
         UrlTileSource tileSource = MapboxTileSource.builder()
-                .apiKey("mapzen-9wXsDit") // Put a proper API key
+                .apiKey("mapzen-xxxxxxx") // Put a proper API key
                 .build();
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);
@@ -35,8 +35,6 @@ public class MapboxTest extends GdxMapApp {
 
         mMap.layers().add(new BuildingLayer(mMap, l));
         mMap.layers().add(new LabelLayer(mMap, l));
-
-        mMap.setMapPosition(48.747390, 9.107172, 1 << 14);
     }
 
     public static void main(String[] args) {
