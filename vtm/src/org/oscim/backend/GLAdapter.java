@@ -43,5 +43,6 @@ public class GLAdapter {
 
     public static void init(GL gl20) {
         gl = gl20;
+        GDX_DESKTOP_QUIRKS = CanvasAdapter.platform.GDX_DESKTOP_QUIRKS;
     }
 }
