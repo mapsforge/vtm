@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
  * Copyright 2016 Robin Boldt
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -18,6 +19,7 @@
  */
 package org.oscim.layers.tile.buildings;
 
+import org.oscim.backend.CanvasAdapter;
 import org.oscim.core.MapElement;
 import org.oscim.core.MercatorProjection;
 import org.oscim.core.Tag;
@@ -41,7 +43,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
     private final static int MAX_ZOOM = 17;
 
     private final static boolean POST_AA = false;
-    public static boolean TRANSLUCENT = true;
+    public static boolean TRANSLUCENT = CanvasAdapter.platform.BUILDING_LAYER_TRANSLUCENT;
 
     private static final Object BUILDING_DATA = BuildingLayer.class.getName();
 

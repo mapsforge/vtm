@@ -1,6 +1,7 @@
 /*
  * Copyright 2016 Longri
  * Copyright 2016 devemux86
+ * Copyright 2017 Longri
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -16,6 +17,7 @@
 package org.oscim.ios.backend;
 
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.backend.Platform;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
@@ -34,6 +36,7 @@ public class IosGraphics extends CanvasAdapter {
 
     public static void init() {
         CanvasAdapter.init(new IosGraphics());
+        CanvasAdapter.platform = Platform.IOS;
     }
 
     @Override
