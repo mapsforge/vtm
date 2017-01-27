@@ -1,5 +1,6 @@
 /*
  * Copyright 2016 devemux86
+ * Copyright 2017 Longri
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -15,6 +16,7 @@
 package org.oscim.test;
 
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.backend.Platform;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.GeoPoint;
 import org.oscim.event.Gesture;
@@ -28,9 +30,13 @@ import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.map.Map;
+import org.oscim.renderer.atlas.TextureAtlas;
+import org.oscim.renderer.atlas.TextureRegion;
 import org.oscim.tiling.source.bitmap.DefaultSources;
+import org.oscim.utils.TextureAtlasUtils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
@@ -52,17 +58,30 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
         mMap.setMapPosition(0, 0, 1 << 2);
 
         Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
+        Bitmap bitmapFocus = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_focus.png"));
+
+        //create Atlas from Bitmaps
+        java.util.Map<Object, Bitmap> inputMap = new LinkedHashMap<>();
+        java.util.Map<Object, TextureRegion> regionsMap = new LinkedHashMap<>();
+        List<TextureAtlas> atlasList = new ArrayList<>();
+
+        inputMap.put("poi", bitmapPoi);
+        inputMap.put("focus", bitmapFocus);
+
+        boolean disposeBitmaps = true; // Bitmaps will never used any more
+        boolean flipY = CanvasAdapter.platform == Platform.IOS; // with iOS we must flip the Y-Axis
+        TextureAtlasUtils.createTextureRegions(inputMap, regionsMap, atlasList, disposeBitmaps, flipY);
+
         MarkerSymbol symbol;
         if (BILLBOARDS)
-            symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.BOTTOM_CENTER);
+            symbol = new MarkerSymbol(regionsMap.get("poi"), HotspotPlace.BOTTOM_CENTER);
         else
-            symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.CENTER, false);
+            symbol = new MarkerSymbol(regionsMap.get("poi"), HotspotPlace.CENTER, false);
 
-        Bitmap bitmapFocus = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_focus.png"));
         if (BILLBOARDS)
-            mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.BOTTOM_CENTER);
+            mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.BOTTOM_CENTER);
         else
-            mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.CENTER, false);
+            mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.CENTER, false);
 
         ItemizedLayer<MarkerItem> markerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
         mMap.layers().add(markerLayer);
