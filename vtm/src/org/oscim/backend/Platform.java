@@ -34,4 +34,13 @@ public enum Platform {
     public boolean BUILDING_LAYER_TRANSLUCENT;
 
     public boolean GDX_DESKTOP_QUIRKS;
+
+    /**
+     * Returns true when This is WINDOWS, LINUX or MAC_OS other, false
+     *
+     * @return boolean
+     */
+    public boolean isAnyDesktop() {
+        return this == LINUX || this == WINDOWS || this == MAC_OS;
+    }
 }
