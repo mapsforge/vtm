@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -18,6 +19,7 @@
 package org.oscim.awt;
 
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.backend.Platform;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
@@ -34,6 +36,7 @@ public class AwtGraphics extends CanvasAdapter {
 
     public static void init() {
         CanvasAdapter.init(new AwtGraphics());
+        CanvasAdapter.platform = Platform.DESKTOP;
     }
 
     public static BufferedImage getBitmap(Bitmap bitmap) {
