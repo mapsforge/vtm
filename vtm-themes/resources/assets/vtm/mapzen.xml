@@ -1016,7 +1016,7 @@
 
         <!-- place -->
         <m k="kind">
-            <m v="locality" zoom-min="13">
+            <m v="locality">
                 <caption style="bold" fill="#606060" k="name" priority="5" size="14"
                     stroke="#ffffff" stroke-width="2.0" />
             </m>
