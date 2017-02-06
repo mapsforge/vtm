@@ -35,6 +35,9 @@ gwt {
     gwtVersion = project.ext.gwtVersion
     modules 'org.oscim.web.VtmWebApp'
 
+    minHeapSize = "512M"
+    maxHeapSize = "2048M"
+
     superDev {
         noPrecompile = true
     }
