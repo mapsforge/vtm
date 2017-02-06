@@ -18,6 +18,7 @@ package com.badlogic.gdx.backends.gwt;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.ApplicationLogger;
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
@@ -71,6 +72,7 @@ public abstract class GwtApplication implements EntryPoint, Application {
     private Panel root = null;
     private TextArea log = null;
     private int logLevel = LOG_ERROR;
+    private ApplicationLogger applicationLogger;
     private Array<Runnable> runnables = new Array<Runnable>();
     private Array<Runnable> runnablesHelper = new Array<Runnable>();
     private Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
@@ -413,6 +415,16 @@ public abstract class GwtApplication implements EntryPoint, Application {
     @Override
     public int getLogLevel() {
         return logLevel;
+    }
+
+    @Override
+    public void setApplicationLogger(ApplicationLogger applicationLogger) {
+        this.applicationLogger = applicationLogger;
+    }
+
+    @Override
+    public ApplicationLogger getApplicationLogger() {
+        return applicationLogger;
     }
 
     @Override

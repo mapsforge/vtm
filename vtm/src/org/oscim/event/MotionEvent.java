@@ -44,4 +44,7 @@ public abstract class MotionEvent {
 
     public abstract int getPointerCount();
 
+    public abstract MotionEvent copy();
+
+    public abstract void recycle();
 }

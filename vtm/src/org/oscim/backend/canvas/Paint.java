@@ -71,6 +71,8 @@ public interface Paint {
 
     float getFontDescent();
 
+    float getStrokeWidth();
+
     float getTextHeight(String text);
 
     float getTextWidth(String text);

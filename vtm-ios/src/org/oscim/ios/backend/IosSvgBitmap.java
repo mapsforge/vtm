@@ -89,11 +89,11 @@ public class IosSvgBitmap extends IosBitmap {
         return renderer.asImageWithSize(new CGSize(bitmapWidth, bitmapHeight), 1);
     }
 
-    private static UIImage getResourceBitmapImpl(InputStream inputStream) {
-        return getResourceBitmap(inputStream, CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI, DEFAULT_SIZE, 0, 0, 100);
+    private static UIImage getResourceBitmapImpl(InputStream inputStream, int width, int height, int percent) {
+        return getResourceBitmap(inputStream, CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI, DEFAULT_SIZE, width, height, percent);
     }
 
-    public IosSvgBitmap(InputStream inputStream) throws IOException {
-        super(getResourceBitmapImpl(inputStream));
+    public IosSvgBitmap(InputStream inputStream, int width, int height, int percent) throws IOException {
+        super(getResourceBitmapImpl(inputStream, width, height, percent));
     }
 }

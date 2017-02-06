@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Izumi Kawashima
+ * Copyright 2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -66,7 +67,6 @@ class GwtMap extends GdxMap {
 
         log.debug("GLAdapter.init");
         GLAdapter.init((GL) Gdx.graphics.getGL20());
-        GLAdapter.GDX_WEBGL_QUIRKS = true;
         MapRenderer.setBackgroundColor(0xffffff);
         //Gdx.app.setLogLevel(Application.LOG_DEBUG);
 

@@ -43,6 +43,10 @@ public final class TextStyle extends RenderStyle<TextStyle> {
         public FontFamily fontFamily;
         public FontStyle fontStyle;
 
+        public int symbolWidth;
+        public int symbolHeight;
+        public int symbolPercent;
+
         public T reset() {
             fontFamily = FontFamily.DEFAULT;
             fontStyle = FontStyle.NORMAL;
@@ -58,6 +62,11 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             strokeColor = Color.BLACK;
             strokeWidth = 0;
             dy = 0;
+
+            symbolWidth = 0;
+            symbolHeight = 0;
+            symbolPercent = 100;
+
             return self();
         }
 
@@ -126,6 +135,21 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             return self();
         }
 
+        public T symbolWidth(int symbolWidth) {
+            this.symbolWidth = symbolWidth;
+            return self();
+        }
+
+        public T symbolHeight(int symbolHeight) {
+            this.symbolHeight = symbolHeight;
+            return self();
+        }
+
+        public T symbolPercent(int symbolPercent) {
+            this.symbolPercent = symbolPercent;
+            return self();
+        }
+
         public T from(TextBuilder<?> other) {
             fontFamily = other.fontFamily;
             fontStyle = other.fontStyle;
@@ -141,62 +165,85 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             strokeColor = other.strokeColor;
             strokeWidth = other.strokeWidth;
             dy = other.dy;
+
+            symbolWidth = other.symbolWidth;
+            symbolHeight = other.symbolHeight;
+            symbolPercent = other.symbolPercent;
+
             return self();
         }
 
-        public TextBuilder<?> from(TextStyle style) {
-            this.style = style.style;
-            this.textKey = style.textKey;
-            this.caption = style.caption;
-            this.dy = style.dy;
-            this.priority = style.priority;
-            this.areaSize = style.areaSize;
-            this.bitmap = style.bitmap;
-            this.texture = style.texture;
-            this.fillColor = style.paint.getColor();
-            this.fontFamily = FontFamily.DEFAULT;
-            this.fontStyle = FontStyle.NORMAL;
-            this.strokeColor = style.stroke.getColor();
-            this.strokeWidth = 2;
-            this.fontSize = style.fontSize;
+        public TextBuilder<?> set(TextStyle text) {
+            if (text == null)
+                return reset();
+
+            this.style = text.style;
+            this.textKey = text.textKey;
+            this.caption = text.caption;
+            this.dy = text.dy;
+            this.priority = text.priority;
+            this.areaSize = text.areaSize;
+            this.bitmap = text.bitmap;
+            this.texture = text.texture;
+            this.fillColor = themeCallback != null ? themeCallback.getColor(text.paint.getColor()) : text.paint.getColor();
+            this.fontFamily = text.fontFamily;
+            this.fontStyle = text.fontStyle;
+            if (text.stroke != null) {
+                this.strokeColor = themeCallback != null ? themeCallback.getColor(text.stroke.getColor()) : text.stroke.getColor();
+                this.strokeWidth = text.stroke.getStrokeWidth();
+            }
+            this.fontSize = text.fontSize;
+
+            this.symbolWidth = text.symbolWidth;
+            this.symbolHeight = text.symbolHeight;
+            this.symbolPercent = text.symbolPercent;
+
             return self();
         }
     }
 
-    TextStyle(TextBuilder<?> tb) {
-        this.style = tb.style;
-        this.textKey = tb.textKey;
-        this.caption = tb.caption;
-        this.dy = tb.dy;
-        this.priority = tb.priority;
-        this.areaSize = tb.areaSize;
-        this.bitmap = tb.bitmap;
-        this.texture = tb.texture;
+    TextStyle(TextBuilder<?> b) {
+        this.style = b.style;
+        this.textKey = b.textKey;
+        this.caption = b.caption;
+        this.dy = b.dy;
+        this.priority = b.priority;
+        this.areaSize = b.areaSize;
+        this.bitmap = b.bitmap;
+        this.texture = b.texture;
 
         paint = CanvasAdapter.newPaint();
         paint.setTextAlign(Align.CENTER);
-        paint.setTypeface(tb.fontFamily, tb.fontStyle);
+        paint.setTypeface(b.fontFamily, b.fontStyle);
 
-        paint.setColor(tb.fillColor);
-        paint.setTextSize(tb.fontSize);
+        paint.setColor(b.themeCallback != null ? b.themeCallback.getColor(b.fillColor) : b.fillColor);
+        paint.setTextSize(b.fontSize);
 
-        if (tb.strokeWidth > 0) {
+        if (b.strokeWidth > 0) {
             stroke = CanvasAdapter.newPaint();
             stroke.setStyle(Paint.Style.STROKE);
             stroke.setTextAlign(Align.CENTER);
-            stroke.setTypeface(tb.fontFamily, tb.fontStyle);
-            stroke.setColor(tb.strokeColor);
-            stroke.setStrokeWidth(tb.strokeWidth);
-            stroke.setTextSize(tb.fontSize);
+            stroke.setTypeface(b.fontFamily, b.fontStyle);
+            stroke.setColor(b.themeCallback != null ? b.themeCallback.getColor(b.strokeColor) : b.strokeColor);
+            stroke.setStrokeWidth(b.strokeWidth);
+            stroke.setTextSize(b.fontSize);
         } else
             stroke = null;
 
-        this.fontSize = tb.fontSize;
+        this.fontFamily = b.fontFamily;
+        this.fontStyle = b.fontStyle;
+        this.fontSize = b.fontSize;
+
+        this.symbolWidth = b.symbolWidth;
+        this.symbolHeight = b.symbolHeight;
+        this.symbolPercent = b.symbolPercent;
     }
 
     public final String style;
 
-    public final float fontSize;
+    public final FontFamily fontFamily;
+    public final FontStyle fontStyle;
+    public float fontSize;
     public final Paint paint;
     public final Paint stroke;
     public final String textKey;
@@ -211,6 +258,10 @@ public final class TextStyle extends RenderStyle<TextStyle> {
 
     public final Bitmap bitmap;
     public final TextureRegion texture;
+
+    public final int symbolWidth;
+    public final int symbolHeight;
+    public final int symbolPercent;
 
     @Override
     public void dispose() {
@@ -235,9 +286,10 @@ public final class TextStyle extends RenderStyle<TextStyle> {
 
     @Override
     public void scaleTextSize(float scaleFactor) {
-        paint.setTextSize(fontSize * scaleFactor);
+        fontSize *= scaleFactor;
+        paint.setTextSize(fontSize);
         if (stroke != null)
-            stroke.setTextSize(fontSize * scaleFactor);
+            stroke.setTextSize(fontSize);
 
         fontHeight = paint.getFontHeight();
         fontDescent = paint.getFontDescent();

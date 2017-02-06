@@ -18,6 +18,7 @@
  */
 package org.oscim.map;
 
+import org.oscim.core.BoundingBox;
 import org.oscim.core.Box;
 import org.oscim.core.GeoPoint;
 import org.oscim.core.MapPosition;
@@ -499,5 +500,26 @@ public class Viewport {
 
     public void setMinY(double minY) {
         this.mMinY = minY;
+    }
+
+    public void setMapLimit(double minX, double minY, double maxX, double maxY) {
+        this.mMinX = minX;
+        this.mMinY = minY;
+        this.mMaxX = maxX;
+        this.mMaxY = maxY;
+    }
+
+    public BoundingBox getMapLimit() {
+        return new BoundingBox(
+                MercatorProjection.toLatitude(mMaxY), MercatorProjection.toLongitude(mMinX),
+                MercatorProjection.toLatitude(mMinY), MercatorProjection.toLongitude(mMaxX)
+        );
+    }
+
+    public void setMapLimit(BoundingBox mapLimit) {
+        this.mMinX = MercatorProjection.longitudeToX(mapLimit.getMinLongitude());
+        this.mMinY = MercatorProjection.latitudeToY(mapLimit.getMaxLatitude());
+        this.mMaxX = MercatorProjection.longitudeToX(mapLimit.getMaxLongitude());
+        this.mMaxY = MercatorProjection.latitudeToY(mapLimit.getMinLatitude());
     }
 }

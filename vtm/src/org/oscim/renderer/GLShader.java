@@ -1,3 +1,20 @@
+/*
+ * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 devemux86
+ *
+ * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.oscim.renderer;
 
 import org.oscim.backend.AssetAdapter;
@@ -16,12 +33,20 @@ public abstract class GLShader {
     public int program;
 
     protected boolean create(String vertexSource, String fragmentSource) {
-        program = createProgram(vertexSource, fragmentSource);
+        return createVersioned(vertexSource, fragmentSource, null);
+    }
+
+    protected boolean createVersioned(String vertexSource, String fragmentSource, String version) {
+        program = createProgramVersioned(vertexSource, fragmentSource, version);
         return program != 0;
     }
 
     protected boolean create(String fileName) {
-        program = loadShader(fileName);
+        return createVersioned(fileName, null);
+    }
+
+    protected boolean createVersioned(String fileName, String version) {
+        program = loadShaderVersioned(fileName, version);
         return program != 0;
     }
 
@@ -44,6 +69,10 @@ public abstract class GLShader {
     }
 
     public static int loadShader(String file) {
+        return loadShaderVersioned(file, null);
+    }
+
+    public static int loadShaderVersioned(String file, String version) {
         String path = "shaders/" + file + ".glsl";
         String vs = AssetAdapter.readTextFile(path);
 
@@ -58,7 +87,7 @@ public abstract class GLShader {
         String fs = vs.substring(fsStart + 2);
         vs = vs.substring(0, fsStart);
 
-        int shader = createProgram(vs, fs);
+        int shader = createProgramVersioned(vs, fs, version);
         if (shader == 0) {
             System.out.println(vs + " \n\n" + fs);
         }
@@ -86,7 +115,13 @@ public abstract class GLShader {
     }
 
     public static int createProgram(String vertexSource, String fragmentSource) {
+        return createProgramVersioned(vertexSource, fragmentSource, null);
+    }
+
+    public static int createProgramVersioned(String vertexSource, String fragmentSource, String version) {
         String defs = "";
+        if (version != null)
+            defs += "#version " + version + "\n";
         if (GLAdapter.GDX_DESKTOP_QUIRKS)
             defs += "#define DESKTOP_QUIRKS 1\n";
         else

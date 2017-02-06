@@ -16,56 +16,31 @@
  */
 package org.oscim.stuff;
 
-import com.badlogic.gdx.Input;
-
 import org.oscim.gdx.GdxMap;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
-import org.oscim.theme.IRenderTheme.ThemeException;
-import org.oscim.theme.StreamRenderTheme;
-import org.oscim.theme.ThemeLoader;
-import org.oscim.tiling.source.OkHttpEngine;
+import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 public class MapzenTest extends GdxMap {
 
     @Override
-    protected boolean onKeyDown(int keycode) {
-        if (keycode == Input.Keys.A) {
-            loadTheme();
-        }
-
-        return super.onKeyDown(keycode);
-    }
-
-    @Override
     public void createLayers() {
         UrlTileSource tileSource = OSciMap4TileSource.builder()
                 .url("https://vector.mapzen.com/osm/v0.8/all")
                 .apiKey("vector-tiles-xxxxxxx") // Put a proper API key
-                .zoomMax(18)
-                .httpFactory(new OkHttpEngine.OkHttpFactory())
                 .build();
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);
-
-        loadTheme();
+        mMap.setTheme(VtmThemes.DEFAULT);
 
         mMap.layers().add(new BuildingLayer(mMap, l));
         mMap.layers().add(new LabelLayer(mMap, l));
 
         mMap.setMapPosition(53.08, 8.82, 1 << 17);
-    }
-
-    private void loadTheme() {
-        try {
-            mMap.setTheme(ThemeLoader.load(new StreamRenderTheme("", getClass().getResourceAsStream("/assets/styles/mapzen.xml"))));
-        } catch (ThemeException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void main(String[] args) {

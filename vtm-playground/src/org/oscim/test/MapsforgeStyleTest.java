@@ -72,7 +72,7 @@ public class MapsforgeStyleTest extends GdxMap {
     }
 
     private void loadTheme(final String styleId) {
-        mMap.setTheme(new StreamRenderTheme("", getClass().getResourceAsStream("/assets/styles/style.xml"), new XmlRenderThemeMenuCallback() {
+        mMap.setTheme(new StreamRenderTheme("", getClass().getResourceAsStream("/assets/vtm/stylemenu.xml"), new XmlRenderThemeMenuCallback() {
             @Override
             public Set<String> getCategories(XmlRenderThemeStyleMenu renderThemeStyleMenu) {
                 // Use the selected style or the default

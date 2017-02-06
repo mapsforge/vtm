@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -22,6 +23,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.TextMetrics;
 
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.backend.Platform;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Paint;
 
@@ -48,19 +50,19 @@ public class GwtGdxGraphics extends CanvasAdapter {
     }
 
     @Override
-    public Bitmap decodeBitmapImpl(InputStream in) {
+    public Bitmap decodeBitmapImpl(InputStream inputStream) {
         // TODO
         return null;
     }
 
     @Override
-    public Bitmap decodeSvgBitmapImpl(InputStream in) {
+    public Bitmap decodeSvgBitmapImpl(InputStream inputStream, int width, int height, int percent) {
         // TODO
         return null;
     }
 
     @Override
-    public Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src) {
+    public Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, int width, int height, int percent) {
         String pathName = (relativePathPrefix == null || relativePathPrefix.length() == 0 ? "" : relativePathPrefix + File.separatorChar) + src;
         return new GwtBitmap(pathName);
     }
@@ -82,5 +84,6 @@ public class GwtGdxGraphics extends CanvasAdapter {
 
     public static void init() {
         CanvasAdapter.init(new GwtGdxGraphics());
+        CanvasAdapter.platform = Platform.WEBGL;
     }
 }

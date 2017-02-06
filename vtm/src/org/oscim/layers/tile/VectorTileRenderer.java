@@ -24,6 +24,7 @@ import org.oscim.renderer.GLMatrix;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.renderer.bucket.BitmapBucket;
+import org.oscim.renderer.bucket.CircleBucket;
 import org.oscim.renderer.bucket.HairLineBucket;
 import org.oscim.renderer.bucket.LineBucket;
 import org.oscim.renderer.bucket.LineTexBucket;
@@ -39,6 +40,7 @@ import static org.oscim.layers.tile.MapTile.PROXY_PARENT;
 import static org.oscim.layers.tile.MapTile.State.READY;
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 import static org.oscim.renderer.bucket.RenderBucket.BITMAP;
+import static org.oscim.renderer.bucket.RenderBucket.CIRCLE;
 import static org.oscim.renderer.bucket.RenderBucket.HAIRLINE;
 import static org.oscim.renderer.bucket.RenderBucket.LINE;
 import static org.oscim.renderer.bucket.RenderBucket.MESH;
@@ -218,6 +220,9 @@ public class VectorTileRenderer extends TileRenderer {
                     break;
                 case BITMAP:
                     b = BitmapBucket.Renderer.draw(b, v, 1, mLayerAlpha);
+                    break;
+                case CIRCLE:
+                    b = CircleBucket.Renderer.draw(b, v);
                     break;
                 default:
                     /* just in case */

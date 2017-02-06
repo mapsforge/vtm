@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
  * Copyright 2016 Andrey Novikov
+ * Copyright 2016 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -27,8 +28,6 @@ import org.oscim.event.MotionEvent;
 import org.oscim.map.Map;
 import org.oscim.map.Map.InputListener;
 import org.oscim.map.ViewController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.oscim.backend.CanvasAdapter.dpi;
 import static org.oscim.utils.FastMath.withinSquaredDist;
@@ -39,9 +38,7 @@ import static org.oscim.utils.FastMath.withinSquaredDist;
  * TODO rewrite using gesture primitives to build more complex gestures:
  * maybe something similar to this https://github.com/ucbvislab/Proton
  */
-public class MapEventLayer extends Layer implements InputListener, GestureListener {
-
-    static final Logger log = LoggerFactory.getLogger(MapEventLayer.class);
+public class MapEventLayer extends AbstractMapEventLayer implements InputListener, GestureListener {
 
     private boolean mEnableRotate = true;
     private boolean mEnableTilt = true;
@@ -75,18 +72,18 @@ public class MapEventLayer extends Layer implements InputListener, GestureListen
     /**
      * 2mm as minimal distance to start move: dpi / 25.4
      */
-    protected static final float MIN_SLOP = 25.4f / 2;
+    private static final float MIN_SLOP = 25.4f / 2;
 
-    protected static final float PINCH_ZOOM_THRESHOLD = MIN_SLOP / 2;
-    protected static final float PINCH_TILT_THRESHOLD = MIN_SLOP / 2;
-    protected static final float PINCH_TILT_SLOPE = 0.75f;
-    protected static final float PINCH_ROTATE_THRESHOLD = 0.2f;
-    protected static final float PINCH_ROTATE_THRESHOLD2 = 0.5f;
+    private static final float PINCH_ZOOM_THRESHOLD = MIN_SLOP / 2;
+    private static final float PINCH_TILT_THRESHOLD = MIN_SLOP / 2;
+    private static final float PINCH_TILT_SLOPE = 0.75f;
+    private static final float PINCH_ROTATE_THRESHOLD = 0.2f;
+    private static final float PINCH_ROTATE_THRESHOLD2 = 0.5f;
 
     /**
      * 100 ms since start of move to reduce fling scroll
      */
-    protected static final float FLING_MIN_THREHSHOLD = 100;
+    private static final float FLING_MIN_THREHSHOLD = 100;
 
     private final VelocityTracker mTracker;
 
@@ -102,34 +99,42 @@ public class MapEventLayer extends Layer implements InputListener, GestureListen
         onTouchEvent(motionEvent);
     }
 
+    @Override
     public void enableRotation(boolean enable) {
         mEnableRotate = enable;
     }
 
+    @Override
     public boolean rotationEnabled() {
         return mEnableRotate;
     }
 
+    @Override
     public void enableTilt(boolean enable) {
         mEnableTilt = enable;
     }
 
+    @Override
     public boolean tiltEnabled() {
         return mEnableTilt;
     }
 
+    @Override
     public void enableMove(boolean enable) {
         mEnableMove = enable;
     }
 
+    @Override
     public boolean moveEnabled() {
         return mEnableMove;
     }
 
+    @Override
     public void enableZoom(boolean enable) {
         mEnableScale = enable;
     }
 
+    @Override
     public boolean zoomEnabled() {
         return mEnableScale;
     }
@@ -137,11 +142,12 @@ public class MapEventLayer extends Layer implements InputListener, GestureListen
     /**
      * When enabled zoom- and rotation-gestures will not move the viewport.
      */
+    @Override
     public void setFixOnCenter(boolean enable) {
         mFixOnCenter = enable;
     }
 
-    public boolean onTouchEvent(MotionEvent e) {
+    boolean onTouchEvent(MotionEvent e) {
 
         int action = getAction(e);
 
@@ -399,6 +405,15 @@ public class MapEventLayer extends Layer implements InputListener, GestureListen
         mPrevY2 = y2;
 
         mMap.updateMap(true);
+
+        if (mMap.viewport().getMapPosition(mapPosition)) {
+            if (mDoScale)
+                mMap.events.fire(Map.SCALE_EVENT, mapPosition);
+            if (mDoRotate)
+                mMap.events.fire(Map.ROTATE_EVENT, mapPosition);
+            if (mDoTilt)
+                mMap.events.fire(Map.TILT_EVENT, mapPosition);
+        }
     }
 
     private void updateMulti(MotionEvent e) {
@@ -449,7 +464,7 @@ public class MapEventLayer extends Layer implements InputListener, GestureListen
         return false;
     }
 
-    static class VelocityTracker {
+    private static class VelocityTracker {
         /* sample window, 200ms */
         private static final int MAX_MS = 200;
         private static final int SAMPLES = 32;
@@ -512,11 +527,11 @@ public class MapEventLayer extends Layer implements InputListener, GestureListen
             return (float) ((amount * 1000) / duration);
         }
 
-        public float getVelocityY() {
+        float getVelocityY() {
             return getVelocity(mMeanY);
         }
 
-        public float getVelocityX() {
+        float getVelocityX() {
             return getVelocity(mMeanX);
         }
     }

@@ -1,5 +1,7 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2010, 2011, 2012, 2013 mapsforge.org
+ * Copyright 2015-2016 devemux86
+ * Copyright 2015-2016 lincomatic
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -50,7 +52,7 @@ public final class OSMUtils {
                 }
             }
             // as specified by http://wiki.openstreetmap.org/wiki/Key:area
-            if ("aeroway".equals(key) || "building".equals(key) || "landuse".equals(key) || "leisure".equals(key) || "natural".equals(key)) {
+            if ("aeroway".equals(key) || "building".equals(key) || "landuse".equals(key) || "leisure".equals(key) || "natural".equals(key) || "amenity".equals(key)) {
                 return true;
             }
             if ("highway".equals(key) || "barrier".equals(key)) {

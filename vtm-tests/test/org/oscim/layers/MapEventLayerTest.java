@@ -18,14 +18,13 @@ import static org.mockito.Mockito.when;
 
 public class MapEventLayerTest {
     private MapEventLayer layer;
-    private Map mockMap;
     private ViewController mockViewport;
     private Animator mockAnimator;
     private ArgumentCaptor<Float> argumentCaptor;
 
     @Before
     public void setUp() throws Exception {
-        mockMap = Mockito.mock(Map.class);
+        Map mockMap = Mockito.mock(Map.class);
         mockViewport = Mockito.mock(ViewController.class);
         mockAnimator = Mockito.mock(Animator.class);
         layer = new MapEventLayer(mockMap);
@@ -94,12 +93,12 @@ public class MapEventLayerTest {
         layer.onTouchEvent(new TestMotionEvent(MotionEvent.ACTION_UP, 1, 2));
     }
 
-    class TestMotionEvent extends MotionEvent {
+    private class TestMotionEvent extends MotionEvent {
         final int action;
         final float x;
         final float y;
 
-        public TestMotionEvent(int action, float x, float y) {
+        TestMotionEvent(int action, float x, float y) {
             this.action = action;
             this.x = x;
             this.y = y;
@@ -138,6 +137,15 @@ public class MapEventLayerTest {
         @Override
         public int getPointerCount() {
             return 0;
+        }
+
+        @Override
+        public MotionEvent copy() {
+            return new TestMotionEvent(action, x, y);
+        }
+
+        @Override
+        public void recycle() {
         }
     }
 }

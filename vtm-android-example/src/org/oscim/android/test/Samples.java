@@ -21,10 +21,12 @@ package org.oscim.android.test;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * A simple start screen for the sample activities.
@@ -38,21 +40,35 @@ public class Samples extends Activity {
         setContentView(R.layout.activity_samples);
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.samples);
         linearLayout.addView(createButton(SimpleMapActivity.class));
-        linearLayout.addView(createButton(MapboxMapActivity.class));
-        linearLayout.addView(createButton(BitmapTileMapActivity.class));
         linearLayout.addView(createButton(MapsforgeMapActivity.class));
+        linearLayout.addView(createButton(MapsforgeStyleActivity.class));
+        linearLayout.addView(createButton(MapboxMapActivity.class));
+        linearLayout.addView(createButton(OsmJsonMapActivity.class));
+
+        linearLayout.addView(createLabel("Raster Maps"));
+        linearLayout.addView(createButton(BitmapTileMapActivity.class));
+
+        linearLayout.addView(createLabel("Overlays"));
         linearLayout.addView(createButton(MarkerOverlayActivity.class));
+        linearLayout.addView(createButton(AtlasMarkerOverlayActivity.class));
         linearLayout.addView(createButton(PathOverlayActivity.class));
         linearLayout.addView(createButton(LineTexActivity.class));
-        linearLayout.addView(createButton(LayerGroupActivity.class));
-        linearLayout.addView(createButton(LocationActivity.class));
-        linearLayout.addView(createButton(ThemeStylerActivity.class));
-        linearLayout.addView(createButton(S3DBMapActivity.class));
-        linearLayout.addView(createButton(JeoIndoorMapActivity.class));
-        linearLayout.addView(createButton(OsmJsonMapActivity.class));
         linearLayout.addView(createButton(VectorLayerMapActivity.class));
-        linearLayout.addView(createButton(MultiMapActivity.class));
+        linearLayout.addView(createButton(LocationActivity.class));
+
+        linearLayout.addView(createLabel("User Interaction"));
+        linearLayout.addView(createButton(NewGesturesActivity.class));
+        linearLayout.addView(createButton(LayerGroupActivity.class));
         linearLayout.addView(createButton(MapFragmentActivity.class));
+
+        linearLayout.addView(createLabel("Dual Map Views"));
+        linearLayout.addView(createButton(MultiMapActivity.class));
+
+        linearLayout.addView(createLabel("Experiments"));
+        linearLayout.addView(createButton(MapPositionActivity.class));
+        linearLayout.addView(createButton(S3DBMapActivity.class));
+        linearLayout.addView(createButton(ThemeStylerActivity.class));
+        linearLayout.addView(createButton(JeoIndoorMapActivity.class));
     }
 
     private Button createButton(final Class<?> clazz) {
@@ -73,5 +89,16 @@ public class Samples extends Activity {
             }
         });
         return button;
+    }
+
+    private TextView createLabel(String text) {
+        TextView textView = new TextView(this);
+        textView.setGravity(Gravity.CENTER);
+        if (text == null) {
+            textView.setText("---------------");
+        } else {
+            textView.setText(text);
+        }
+        return textView;
     }
 }

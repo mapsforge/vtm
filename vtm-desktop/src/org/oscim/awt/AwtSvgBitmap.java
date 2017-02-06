@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2015-2016 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -77,13 +77,13 @@ public class AwtSvgBitmap extends AwtBitmap {
         }
     }
 
-    private static BufferedImage getResourceBitmapImpl(InputStream inputStream) throws IOException {
+    private static BufferedImage getResourceBitmapImpl(InputStream inputStream, int width, int height, int percent) throws IOException {
         synchronized (SVGCache.getSVGUniverse()) {
-            return getResourceBitmap(inputStream, CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI, DEFAULT_SIZE, 0, 0, 100);
+            return getResourceBitmap(inputStream, CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI, DEFAULT_SIZE, width, height, percent);
         }
     }
 
-    public AwtSvgBitmap(InputStream inputStream) throws IOException {
-        super(getResourceBitmapImpl(inputStream));
+    public AwtSvgBitmap(InputStream inputStream, int width, int height, int percent) throws IOException {
+        super(getResourceBitmapImpl(inputStream, width, height, percent));
     }
 }

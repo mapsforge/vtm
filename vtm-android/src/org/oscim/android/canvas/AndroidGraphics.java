@@ -1,6 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2016 devemux86
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -23,6 +24,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.backend.Platform;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
@@ -36,6 +38,7 @@ public final class AndroidGraphics extends CanvasAdapter {
 
     public static void init() {
         CanvasAdapter.init(new AndroidGraphics());
+        CanvasAdapter.platform = Platform.ANDROID;
     }
 
     public static android.graphics.Paint getAndroidPaint(Paint paint) {
@@ -56,9 +59,9 @@ public final class AndroidGraphics extends CanvasAdapter {
     }
 
     @Override
-    public Bitmap decodeSvgBitmapImpl(InputStream inputStream) {
+    public Bitmap decodeSvgBitmapImpl(InputStream inputStream, int width, int height, int percent) {
         try {
-            return new AndroidSvgBitmap(inputStream);
+            return new AndroidSvgBitmap(inputStream, width, height, percent);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -66,9 +69,9 @@ public final class AndroidGraphics extends CanvasAdapter {
     }
 
     @Override
-    public Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src) {
+    public Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, int width, int height, int percent) {
         try {
-            return createBitmap(relativePathPrefix, src);
+            return createBitmap(relativePathPrefix, src, width, height, percent);
         } catch (IOException e) {
             e.printStackTrace();
         }

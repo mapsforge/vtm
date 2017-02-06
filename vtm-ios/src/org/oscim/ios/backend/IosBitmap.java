@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Longri
+ * Copyright 2016-2017 Longri
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.Buffer;
 
 /**
  * iOS specific implementation of {@link Bitmap}.
@@ -48,7 +49,10 @@ public class IosBitmap implements Bitmap {
     final CGBitmapContext cgBitmapContext;
     final int width;
     final int height;
-    Pixmap pixmap;
+    private int glInternalFormat = Integer.MIN_VALUE;
+    private int glFormat = Integer.MIN_VALUE;
+    private int glType = Integer.MIN_VALUE;
+    private Buffer directPixelBuffer;
 
     /**
      * Constructor<br>
@@ -155,7 +159,10 @@ public class IosBitmap implements Bitmap {
     @Override
     public void recycle() {
         if (this.cgBitmapContext != null) this.cgBitmapContext.release();
-        if (this.pixmap != null) this.pixmap.dispose();
+        if (this.directPixelBuffer != null) {
+            //cgBitmapContext.release() will also release the directPixelBuffer
+            this.directPixelBuffer = null; //only hint for GC
+        }
     }
 
     @Override
@@ -180,27 +187,26 @@ public class IosBitmap implements Bitmap {
     @Override
     public void uploadToTexture(boolean replace) {
 
-        //create Pixmap from cgBitmapContext
-        UIImage uiImage = new UIImage(cgBitmapContext.toImage());
-        NSData data = uiImage.toPNGData();
-        byte[] encodedData = data.getBytes();
+        //create a pixel buffer for upload from direct memory pointer
+        if (directPixelBuffer == null) {
 
-        if (pixmap != null) {
-            // release outdated native pixel buffer
+            //create Pixmap from cgBitmapContext for extract glFormat info's
+            UIImage uiImage = new UIImage(cgBitmapContext.toImage());
+            NSData data = uiImage.toPNGData();
+            byte[] encodedData = data.getBytes();
+            Pixmap pixmap = new Pixmap(encodedData, 0, encodedData.length);
+
+            glInternalFormat = pixmap.getGLInternalFormat();
+            glFormat = pixmap.getGLFormat();
+            glType = pixmap.getGLType();
+
+            directPixelBuffer = cgBitmapContext.getData().asIntBuffer(encodedData.length / 4);
             pixmap.dispose();
+
         }
 
-        pixmap = new Pixmap(encodedData, 0, encodedData.length);
-
-        Gdx.gl.glTexImage2D(GL.TEXTURE_2D, 0, pixmap.getGLInternalFormat(),
-                pixmap.getWidth(), pixmap.getHeight(), 0,
-                pixmap.getGLFormat(), pixmap.getGLType(),
-                pixmap.getPixels());
-
-        data.dispose();
-        uiImage.dispose();
-        encodedData = null;
-
+        Gdx.gl.glTexImage2D(GL.TEXTURE_2D, 0, glInternalFormat, this.width, this.height, 0
+                , glFormat, glType, directPixelBuffer);
     }
 
     @Override

@@ -1,5 +1,6 @@
 /*
  * Copyright 2012 Hannes Janetzek
+ * Copyright 2016 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -53,7 +54,7 @@ public class MapView extends GLSurfaceView {
     }
 
     protected final AndroidMap mMap;
-    protected final GestureDetector mGestureDetector;
+    protected GestureDetector mGestureDetector;
     protected final AndroidMotionEvent mMotionEvent;
 
     public MapView(Context context) {
@@ -94,9 +95,11 @@ public class MapView extends GLSurfaceView {
         mMap.clearMap();
         mMap.updateMap(false);
 
-        GestureHandler gestureHandler = new GestureHandler(mMap);
-        mGestureDetector = new GestureDetector(context, gestureHandler);
-        mGestureDetector.setOnDoubleTapListener(gestureHandler);
+        if (!Map.NEW_GESTURES) {
+            GestureHandler gestureHandler = new GestureHandler(mMap);
+            mGestureDetector = new GestureDetector(context, gestureHandler);
+            mGestureDetector.setOnDoubleTapListener(gestureHandler);
+        }
 
         mMotionEvent = new AndroidMotionEvent();
     }
@@ -116,14 +119,16 @@ public class MapView extends GLSurfaceView {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(android.view.MotionEvent motionEvent) {
-
         if (!isClickable())
             return false;
 
-        if (mGestureDetector.onTouchEvent(motionEvent))
-            return true;
+        if (mGestureDetector != null) {
+            if (mGestureDetector.onTouchEvent(motionEvent))
+                return true;
+        }
 
         mMap.input.fire(null, mMotionEvent.wrap(motionEvent));
+        mMotionEvent.recycle();
         return true;
     }
 

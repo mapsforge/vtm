@@ -33,7 +33,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class TileDecoder extends PbfDecoder {
-    static final Logger log = LoggerFactory.getLogger(TileDecoder.class);
+    private static final Logger log = LoggerFactory.getLogger(TileDecoder.class);
 
     private static final int TAG_TILE_LAYERS = 3;
 
@@ -65,11 +65,19 @@ public class TileDecoder extends PbfDecoder {
     private short[] mTmpTags = new short[1024];
 
     private Tile mTile;
-    private final String mLocale = "en";
+    private final String mLocale;
     private ITileDataSink mMapDataCallback;
 
     private final static float REF_TILE_SIZE = 4096.0f;
     private float mScale;
+
+    public TileDecoder() {
+        this("");
+    }
+
+    public TileDecoder(String locale) {
+        mLocale = locale;
+    }
 
     @Override
     public boolean decode(Tile tile, ITileDataSink mapDataCallback, InputStream is)
@@ -115,12 +123,12 @@ public class TileDecoder extends PbfDecoder {
 
         int bytes = decodeVarint32();
 
-        ArrayList<String> keys = new ArrayList<String>();
-        ArrayList<String> values = new ArrayList<String>();
+        ArrayList<String> keys = new ArrayList<>();
+        ArrayList<String> values = new ArrayList<>();
 
         String name = null;
         int numFeatures = 0;
-        ArrayList<Feature> features = new ArrayList<Feature>();
+        ArrayList<Feature> features = new ArrayList<>();
 
         int end = position() + bytes;
         while (position() < end) {

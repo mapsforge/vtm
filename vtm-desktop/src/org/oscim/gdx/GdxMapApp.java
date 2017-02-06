@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -41,7 +41,6 @@ public class GdxMapApp extends GdxMap {
         AwtGraphics.init();
         GdxAssets.init("assets/");
         GLAdapter.init(new LwjglGL20());
-        GLAdapter.GDX_DESKTOP_QUIRKS = true;
     }
 
     public static void main(String[] args) {

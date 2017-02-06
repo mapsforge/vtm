@@ -18,6 +18,8 @@
  */
 package org.oscim.theme.styles;
 
+import org.oscim.theme.ThemeCallback;
+
 import static org.oscim.backend.canvas.Color.parseColor;
 
 /**
@@ -35,6 +37,8 @@ public abstract class RenderStyle<T extends RenderStyle<T>> {
 
         public int strokeColor;
         public float strokeWidth;
+
+        public ThemeCallback themeCallback;
 
         public T cat(String cat) {
             this.cat = cat;
@@ -79,6 +83,11 @@ public abstract class RenderStyle<T extends RenderStyle<T>> {
 
         public T color(String color) {
             this.fillColor = parseColor(color);
+            return self();
+        }
+
+        public T themeCallback(ThemeCallback themeCallback) {
+            this.themeCallback = themeCallback;
             return self();
         }
 

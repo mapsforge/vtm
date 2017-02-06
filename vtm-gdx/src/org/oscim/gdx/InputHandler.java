@@ -87,35 +87,40 @@ public class InputHandler implements InputProcessor {
                 mViewport.moveMap(50, 0);
                 mMap.updateMap(true);
                 break;
-            case Input.Keys.M:
+            case Input.Keys.D:
                 mViewport.scaleMap(1.05f, 0, 0);
                 mMap.updateMap(true);
                 break;
-            case Input.Keys.N:
+            case Input.Keys.A:
                 mViewport.scaleMap(0.95f, 0, 0);
                 mMap.updateMap(true);
                 break;
-            case Input.Keys.NUM_1:
+            case Input.Keys.S:
                 mMap.animator().animateZoom(500, 0.5, 0, 0);
                 mMap.updateMap(false);
                 break;
-            case Input.Keys.NUM_2:
+            case Input.Keys.W:
                 mMap.animator().animateZoom(500, 2, 0, 0);
                 mMap.updateMap(false);
                 break;
 
-            case Input.Keys.D:
+            case Input.Keys.NUM_1:
                 mMap.setTheme(VtmThemes.DEFAULT);
                 mMap.updateMap(false);
                 break;
 
-            case Input.Keys.T:
+            case Input.Keys.NUM_2:
+                mMap.setTheme(VtmThemes.OSMARENDER);
+                mMap.updateMap(false);
+                break;
+
+            case Input.Keys.NUM_3:
                 mMap.setTheme(VtmThemes.TRONRENDER);
                 mMap.updateMap(false);
                 break;
 
-            case Input.Keys.R:
-                mMap.setTheme(VtmThemes.OSMARENDER);
+            case Input.Keys.NUM_4:
+                mMap.setTheme(VtmThemes.NEWTRON);
                 mMap.updateMap(false);
                 break;
 

@@ -1,4 +1,5 @@
 /*
+ * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
  * Copyright 2016 Andrey Novikov
  *
@@ -56,7 +57,7 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
         if (style instanceof TextStyle) {
             LabelTileData ld = get(tile);
 
-            TextStyle text = (TextStyle) style;
+            TextStyle text = (TextStyle) style.current();
             if (element.type == LINE) {
                 String value = element.tags.getValue(text.textKey);
                 if (value == null || value.length() == 0)
@@ -104,7 +105,7 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
                 }
             }
         } else if (style instanceof SymbolStyle) {
-            SymbolStyle symbol = (SymbolStyle) style;
+            SymbolStyle symbol = (SymbolStyle) style.current();
 
             if (symbol.bitmap == null && symbol.texture == null)
                 return false;

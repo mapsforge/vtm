@@ -125,6 +125,11 @@ public class GwtPaint implements Paint {
     }
 
     @Override
+    public float getStrokeWidth() {
+        return strokeWidth;
+    }
+
+    @Override
     public float getTextHeight(String text) {
         // TODO
         return 0;

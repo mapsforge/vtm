@@ -13,13 +13,12 @@ apply plugin: 'robovm'
 
 sourceSets.main.java.srcDirs = ["src/"]
 
-sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 ext {
     // Configure your application main class
     mainClassName = "org.oscim.ios.RoboVmLauncher"
-    roboVMVersion = "2.2.0"
+    roboVMVersion = "2.3.0"
 }
 
 launchIPhoneSimulator.dependsOn build
@@ -47,11 +46,11 @@ task copyVtmThemesResources(type: Copy) {
 }
 
 
-tasks.withType(org.gradle.api.tasks.compile.JavaCompile) {
+tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn copyVtmResources
 }
 
-tasks.withType(org.gradle.api.tasks.compile.JavaCompile) {
+tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn copyVtmThemesResources
 }
 

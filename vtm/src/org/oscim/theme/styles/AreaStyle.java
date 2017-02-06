@@ -1,4 +1,5 @@
 /*
+ * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016 devemux86
  *
@@ -77,6 +78,10 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
      */
     public final boolean mesh;
 
+    public final int symbolWidth;
+    public final int symbolHeight;
+    public final int symbolPercent;
+
     public AreaStyle(int color) {
         this(0, color);
     }
@@ -92,19 +97,27 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
         this.strokeColor = color;
         this.strokeWidth = 1;
         this.mesh = false;
+
+        this.symbolWidth = 0;
+        this.symbolHeight = 0;
+        this.symbolPercent = 100;
     }
 
     public AreaStyle(AreaBuilder<?> b) {
         this.level = b.level;
         this.style = b.style;
         this.fadeScale = b.fadeScale;
-        this.blendColor = b.blendColor;
+        this.blendColor = b.themeCallback != null ? b.themeCallback.getColor(b.blendColor) : b.blendColor;
         this.blendScale = b.blendScale;
-        this.color = b.fillColor;
+        this.color = b.themeCallback != null ? b.themeCallback.getColor(b.fillColor) : b.fillColor;
         this.texture = b.texture;
-        this.strokeColor = b.strokeColor;
+        this.strokeColor = b.themeCallback != null ? b.themeCallback.getColor(b.strokeColor) : b.strokeColor;
         this.strokeWidth = b.strokeWidth;
         this.mesh = b.mesh;
+
+        this.symbolWidth = b.symbolWidth;
+        this.symbolHeight = b.symbolHeight;
+        this.symbolPercent = b.symbolPercent;
     }
 
     @Override
@@ -163,6 +176,10 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
 
         public TextureItem texture;
 
+        public int symbolWidth;
+        public int symbolHeight;
+        public int symbolPercent;
+
         public AreaBuilder() {
         }
 
@@ -173,13 +190,17 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
             this.level = area.level;
             this.style = area.style;
             this.fadeScale = area.fadeScale;
-            this.blendColor = area.blendColor;
+            this.blendColor = themeCallback != null ? themeCallback.getColor(area.blendColor) : area.blendColor;
             this.blendScale = area.blendScale;
-            this.fillColor = area.color;
+            this.fillColor = themeCallback != null ? themeCallback.getColor(area.color) : area.color;
             this.texture = area.texture;
-            this.strokeColor = area.strokeColor;
+            this.strokeColor = themeCallback != null ? themeCallback.getColor(area.strokeColor) : area.strokeColor;
             this.strokeWidth = area.strokeWidth;
             this.mesh = area.mesh;
+
+            this.symbolWidth = area.symbolWidth;
+            this.symbolHeight = area.symbolHeight;
+            this.symbolPercent = area.symbolPercent;
 
             return self();
         }
@@ -214,7 +235,23 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
             return self();
         }
 
+        public T symbolWidth(int symbolWidth) {
+            this.symbolWidth = symbolWidth;
+            return self();
+        }
+
+        public T symbolHeight(int symbolHeight) {
+            this.symbolHeight = symbolHeight;
+            return self();
+        }
+
+        public T symbolPercent(int symbolPercent) {
+            this.symbolPercent = symbolPercent;
+            return self();
+        }
+
         public T reset() {
+            level = -1;
             fillColor = Color.WHITE;
             strokeColor = Color.BLACK;
             strokeWidth = 0;
@@ -224,6 +261,11 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
             style = null;
             texture = null;
             mesh = false;
+
+            symbolWidth = 0;
+            symbolHeight = 0;
+            symbolPercent = 100;
+
             return self();
         }
 

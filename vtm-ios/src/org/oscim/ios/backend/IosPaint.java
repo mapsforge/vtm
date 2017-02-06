@@ -338,6 +338,11 @@ public class IosPaint implements Paint {
     }
 
     @Override
+    public float getStrokeWidth() {
+        return strokeWidth;
+    }
+
+    @Override
     public float getTextHeight(String text) {
         return this.fontHeight;
     }

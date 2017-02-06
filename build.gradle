@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.2.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
 }
@@ -13,9 +13,9 @@ allprojects {
     version = 'master-SNAPSHOT'
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
-    ext.androidBuildVersionTools = "25.0.0"
-    ext.gdxVersion = "1.9.4"
-    ext.gwtVersion = "2.7.0"
+    ext.androidBuildVersionTools = "25.0.2"
+    ext.gdxVersion = "1.9.5"
+    ext.gwtVersion = "2.8.0"
 
     if (JavaVersion.current().isJava8Compatible()) {
         tasks.withType(Javadoc) {

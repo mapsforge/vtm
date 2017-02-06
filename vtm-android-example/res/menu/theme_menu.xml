@@ -7,26 +7,21 @@
         <item
             android:id="@+id/theme_default"
             android:checked="true"
-            android:showAsAction="never"
-            android:title="@string/theme_default"></item>
+            android:title="@string/theme_default" />
         <item
             android:id="@+id/theme_tubes"
-            android:showAsAction="never"
-            android:title="@string/theme_tubes"></item>
+            android:title="@string/theme_tubes" />
         <item
             android:id="@+id/theme_osmarender"
-            android:showAsAction="never"
-            android:title="@string/theme_osmarender"></item>
+            android:title="@string/theme_osmarender" />
         <item
             android:id="@+id/theme_newtron"
-            android:showAsAction="never"
-            android:title="@string/theme_newtron"></item>
+            android:title="@string/theme_newtron" />
     </group>
 
     <item
         android:id="@+id/gridlayer"
-        android:showAsAction="never"
         android:checkable="true"
-        android:title="@string/menu_gridlayer"></item>
+        android:title="@string/menu_gridlayer" />
 
 </menu>

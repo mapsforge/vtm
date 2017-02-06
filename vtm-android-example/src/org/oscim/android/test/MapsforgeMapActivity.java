@@ -118,7 +118,7 @@ public class MapsforgeMapActivity extends MapActivity {
             if (tileSource.setMapFile(file)) {
 
                 VectorTileLayer l = mMap.setBaseMap(tileSource);
-                mMap.setTheme(VtmThemes.DEFAULT);
+                loadTheme(null);
 
                 mMap.layers().add(new BuildingLayer(mMap, l));
                 mMap.layers().add(new LabelLayer(mMap, l));
@@ -131,5 +131,9 @@ public class MapsforgeMapActivity extends MapActivity {
                 mPrefs.clear();
             }
         }
+    }
+
+    protected void loadTheme(final String styleId) {
+        mMap.setTheme(VtmThemes.DEFAULT);
     }
 }

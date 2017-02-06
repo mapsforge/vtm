@@ -135,6 +135,11 @@ class AndroidPaint implements Paint {
     }
 
     @Override
+    public float getStrokeWidth() {
+        return mPaint.getStrokeWidth();
+    }
+
+    @Override
     public float getTextHeight(String text) {
         mPaint.getTextBounds(text, 0, text.length(), rect);
         return rect.height();

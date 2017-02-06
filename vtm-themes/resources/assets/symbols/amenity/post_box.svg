@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.0" width="580" height="580">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="580" height="580">
  <metadata id="metadata2975"/>
- <g id="g1327">
-  <path d="M 66.275,1.768 C 24.94,1.768 1.704,23.139 1.704,66.804 L 1.704,516.927 C 1.704,557.771 22.599,579.156 63.896,579.156 L 515.92,579.156 C 557.227,579.156 578.149,558.841 578.149,516.927 L 578.149,66.804 C 578.149,24.203 557.227,1.768 514.628,1.768 C 514.624,1.768 66.133,1.625 66.275,1.768 z " id="path1329" fill="#734A08" stroke="#eee" stroke-width="3.408"/>
- </g>
- <path d="M 126.19975,188.66899 L 226.02765,288.98257 L 126.19975,388.81046 L 126.19975,188.66899 z M 436.76562,169.86019 L 313.80202,292.35284 C 307.68915,298.46559 299.97235,301.52189 290.6516,301.52176 C 281.0066,301.52189 272.96602,298.3037 266.52985,291.86715 L 144.52289,169.86019 L 436.76562,169.86019 z M 456.06009,388.81046 L 356.23219,288.98257 L 456.06009,188.66899 L 456.06009,388.81046 z M 144.03721,407.61925 L 244.35077,307.79135 L 248.69241,312.13298 C 260.26985,323.38697 274.25623,329.01391 290.6516,329.0138 C 307.04649,329.01391 320.87099,323.38697 332.12515,312.13298 L 336.46676,307.79135 L 436.76562,407.61925 L 144.03721,407.61925 z M 99.193389,434.62562 L 484.0378,434.62562 L 484.0378,142.36816 L 99.193389,142.36816 L 99.193389,434.62562 z" id="flowRoot3192" fill="#ffffff"/>
+ <path id="path4141" d="m 484,435 0,-292 -385,0 0,292 z" mix-blend-mode="normal" solid-color="#000000" opacity="0.8" color-interpolation-filters="linearRGB" filter-gaussianBlur-deviation="0" color="#000000" image-rendering="auto" color-rendering="auto" stroke-width="64" isolation="auto" color-interpolation="sRGB" solid-opacity="1" fill="none" stroke-linejoin="round" filter-blend-mode="normal" stroke="#ffffff" shape-rendering="auto"/>
+ <path d="m 484,435 0,-292 -385,0 0,292 z" id="flowRoot3192" fill="#734a08"/>
+ <path d="M 226,289 126,389 126,189 Z" id="path4156" opacity="0.9" fill="#ffffff"/>
+ <path d="m 314,292 c -6.1,6.1 -13.8,9.2 -23,9.2 -9.6,0 -17.7,-3.2 -24,-9.6 l -122,-122 292,0.2 z" id="path4154" opacity="0.9" fill="#ffffff"/>
+ <path d="m 356,289 100,-100 0,200 z" id="path4152" opacity="0.9" fill="#ffffff"/>
+ <path d="m 244,308 4.3,4.3 c 11.6,11.3 25.6,16.9 42,16.9 16.4,0 30,-5.6 41.5,-16.9 l 4.3,-4.3 100,100 -292.55,0 z" id="path4150" opacity="0.9" fill="#ffffff"/>
 </svg>

@@ -1,3 +1,20 @@
+/*
+ * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 devemux86
+ *
+ * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.oscim.renderer.bucket;
 
 import org.oscim.backend.GL;
@@ -120,8 +137,9 @@ public class HairLineBucket extends RenderBucket {
 
             for (; l != null && l.type == HAIRLINE; l = l.next) {
                 HairLineBucket ll = (HairLineBucket) l;
+                LineStyle line = ll.line.current();
 
-                GLUtils.setColor(s.uColor, ll.line.color, 1);
+                GLUtils.setColor(s.uColor, line.color, 1);
 
                 gl.vertexAttribPointer(s.aPos, 2, GL.SHORT,
                         false, 0, ll.vertexOffset);

@@ -33,6 +33,7 @@ class LocationLayerImpl extends LocationLayer {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
 
-        mCompass.setEnabled(enabled);
+        if (mCompass != null)
+            mCompass.setEnabled(enabled);
     }
 }

@@ -31,7 +31,7 @@ If you have any questions or problems, don't hesitate to ask our public [mailing
 ### Projects
 - **vtm** contains the core library
 - **vtm-android** Android backend (no libGDX required)
-- **vtm-android-example** provides examples using **vtm-android**
+- **vtm-android-example** provides examples using vtm-android
 - **vtm-gdx** common libGDX backend
 - **vtm-android-gdx** Android backend (with libGDX)
 - **vtm-desktop** Desktop backend
@@ -39,21 +39,23 @@ If you have any questions or problems, don't hesitate to ask our public [mailing
 - **vtm-web** HTML5/GWT backend
 - **vtm-web-app** HTML5/GWT application
 
-## Applications
-- VTM is used by many [applications](docs/Applications.md).
-
 ## WebGL Demo
 [OpenScienceMap](http://opensciencemap.org/s3db/#scale=17,rot=61,tilt=51,lat=53.075,lon=8.807) view of Bremen.
 - Hold right mouse button to change view direction.
 
+## Applications
+- VTM is used by many [applications](docs/Applications.md).
+
+## Maps
+- Mapsforge [map providers](docs/Mapsforge-Maps.md).
+
 ## Credits
 This library contains code from several projects:
-- **Android**: some Matrix code, TimSort (http://source.android.com)
-- **libGDX**: AsyncTask, MathUtils and Interpolation classes (https://github.com/libgdx)
-- **mapsforge**: based on 0.2.4 (https://github.com/mapsforge/mapsforge)
-- **osmdroid**: some overlay classes (https://github.com/osmdroid/osmdroid)
-- **tessellate**: (https://github.com/cscheid/tessellate)
+- **Android** (Apache 2.0): some Matrix code, TimSort (http://source.android.com)
+- **libGDX** (Apache 2.0): AsyncTask, MathUtils and Interpolation classes (https://github.com/libgdx)
+- **mapsforge** (LGPL3): based on 0.2.4 (https://github.com/mapsforge/mapsforge)
+- **osmdroid** (Apache 2.0): some overlay classes (https://github.com/osmdroid/osmdroid)
+- **tessellate** (SGI Free Software License B 2.0): (https://github.com/cscheid/tessellate)
 
 ## Screenshots
-![Screenshot Samples App Bremen 1](docs/images/screenshot-bremen-1.png)
-![Screenthot Samples App Bremen 2](docs/images/screenshot-bremen-2.png)
+![Screenshot Samples App Berlin 1](docs/images/screenshot-berlin-1.png)

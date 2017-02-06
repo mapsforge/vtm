@@ -18,32 +18,42 @@
  */
 package org.oscim.theme.styles;
 
+import org.oscim.backend.canvas.Color;
+
 /**
  * Represents a round area on the map.
  */
 public final class CircleStyle extends RenderStyle<CircleStyle> {
 
-    public final int level;
-
-    public final int fill;
-    public final int outline;
+    public final int fillColor;
+    private final int level;
     public final float radius;
-    public float renderRadius;
     public final boolean scaleRadius;
+    public final int strokeColor;
     public final float strokeWidth;
 
-    public CircleStyle(Float radius, boolean scaleRadius, int fill, int stroke,
+    public CircleStyle(float radius, boolean scaleRadius, int fillColor, int strokeColor,
                        float strokeWidth, int level) {
-        super();
-
         this.radius = radius;
         this.scaleRadius = scaleRadius;
-
-        this.fill = fill;
-        this.outline = stroke;
-
+        this.fillColor = fillColor;
+        this.strokeColor = strokeColor;
         this.strokeWidth = strokeWidth;
         this.level = level;
+    }
+
+    public CircleStyle(CircleBuilder<?> b) {
+        this.radius = b.radius;
+        this.scaleRadius = b.scaleRadius;
+        this.fillColor = b.themeCallback != null ? b.themeCallback.getColor(b.fillColor) : b.fillColor;
+        this.strokeColor = b.themeCallback != null ? b.themeCallback.getColor(b.strokeColor) : b.strokeColor;
+        this.strokeWidth = b.strokeWidth;
+        this.level = b.level;
+    }
+
+    @Override
+    public CircleStyle current() {
+        return (CircleStyle) mCurrent;
     }
 
     @Override
@@ -51,8 +61,55 @@ public final class CircleStyle extends RenderStyle<CircleStyle> {
         cb.renderCircle(this, this.level);
     }
 
-    @Override
-    public CircleStyle current() {
-        return (CircleStyle) mCurrent;
+    public static class CircleBuilder<T extends CircleBuilder<T>> extends StyleBuilder<T> {
+
+        public float radius;
+        public boolean scaleRadius;
+
+        public CircleBuilder() {
+        }
+
+        public T set(CircleStyle circle) {
+            if (circle == null)
+                return reset();
+
+            this.radius = circle.radius;
+            this.scaleRadius = circle.scaleRadius;
+            this.fillColor = themeCallback != null ? themeCallback.getColor(circle.fillColor) : circle.fillColor;
+            this.strokeColor = themeCallback != null ? themeCallback.getColor(circle.strokeColor) : circle.strokeColor;
+            this.strokeWidth = circle.strokeWidth;
+            this.level = circle.level;
+
+            return self();
+        }
+
+        public T radius(float radius) {
+            this.radius = radius;
+            return self();
+        }
+
+        public T scaleRadius(boolean scaleRadius) {
+            this.scaleRadius = scaleRadius;
+            return self();
+        }
+
+        public T reset() {
+            level = -1;
+            radius = 0;
+            scaleRadius = false;
+            fillColor = Color.TRANSPARENT;
+            strokeColor = Color.TRANSPARENT;
+            strokeWidth = 0;
+            return self();
+        }
+
+        public CircleStyle build() {
+            return new CircleStyle(this);
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static CircleBuilder<?> builder() {
+        return new CircleBuilder();
     }
 }

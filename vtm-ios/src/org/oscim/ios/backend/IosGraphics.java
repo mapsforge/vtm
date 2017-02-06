@@ -1,6 +1,7 @@
 /*
  * Copyright 2016 Longri
  * Copyright 2016 devemux86
+ * Copyright 2017 Longri
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -16,6 +17,7 @@
 package org.oscim.ios.backend;
 
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.backend.Platform;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
@@ -30,10 +32,11 @@ import java.io.InputStream;
  */
 public class IosGraphics extends CanvasAdapter {
 
-    static final Logger log = LoggerFactory.getLogger(IosGraphics.class);
+    private static final Logger log = LoggerFactory.getLogger(IosGraphics.class);
 
     public static void init() {
         CanvasAdapter.init(new IosGraphics());
+        CanvasAdapter.platform = Platform.IOS;
     }
 
     @Override
@@ -62,9 +65,9 @@ public class IosGraphics extends CanvasAdapter {
     }
 
     @Override
-    protected Bitmap decodeSvgBitmapImpl(InputStream inputStream) {
+    protected Bitmap decodeSvgBitmapImpl(InputStream inputStream, int width, int height, int percent) {
         try {
-            return new IosSvgBitmap(inputStream);
+            return new IosSvgBitmap(inputStream, width, height, percent);
         } catch (IOException e) {
             log.error("decodeSvgBitmapImpl", e);
             return null;
@@ -72,9 +75,9 @@ public class IosGraphics extends CanvasAdapter {
     }
 
     @Override
-    protected Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src) {
+    protected Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, int width, int height, int percent) {
         try {
-            return createBitmap(relativePathPrefix, src);
+            return createBitmap(relativePathPrefix, src, width, height, percent);
         } catch (IOException e) {
             log.error("loadBitmapAssetImpl", e);
             return null;

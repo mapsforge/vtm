@@ -35,6 +35,7 @@ public class LocationActivity extends SimpleMapActivity implements LocationListe
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         locationLayer = new LocationLayer(mMap);
+        locationLayer.setEnabled(false);
         mMap.layers().add(locationLayer);
     }
 

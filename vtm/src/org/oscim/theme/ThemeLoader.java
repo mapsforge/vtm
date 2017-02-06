@@ -30,8 +30,20 @@ public class ThemeLoader {
         return load(new ExternalRenderTheme(renderThemePath, menuCallback));
     }
 
+    public static IRenderTheme load(String renderThemePath, ThemeCallback themeCallback) throws ThemeException {
+        return load(new ExternalRenderTheme(renderThemePath), themeCallback);
+    }
+
+    public static IRenderTheme load(String renderThemePath, XmlRenderThemeMenuCallback menuCallback, ThemeCallback themeCallback) throws ThemeException {
+        return load(new ExternalRenderTheme(renderThemePath, menuCallback), themeCallback);
+    }
+
     public static IRenderTheme load(ThemeFile theme) throws ThemeException {
-        IRenderTheme t = XmlThemeBuilder.read(theme);
+        return load(theme, null);
+    }
+
+    public static IRenderTheme load(ThemeFile theme, ThemeCallback themeCallback) throws ThemeException {
+        IRenderTheme t = XmlThemeBuilder.read(theme, themeCallback);
         if (t != null)
             t.scaleTextSize(CanvasAdapter.textScale + (CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI - 1));
         return t;

@@ -50,6 +50,15 @@ public class GdxMotionEvent extends MotionEvent {
     }
 
     @Override
+    public MotionEvent copy() {
+        return new GdxMotionEvent(action, x, y, button);
+    }
+
+    @Override
+    public void recycle() {
+    }
+
+    @Override
     public long getTime() {
         return 0;
     }

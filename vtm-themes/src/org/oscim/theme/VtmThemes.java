@@ -28,11 +28,11 @@ import java.io.InputStream;
  */
 public enum VtmThemes implements ThemeFile {
 
-    DEFAULT("styles/default.xml"),
-    MAPZEN("styles/mapzen.xml"),
-    NEWTRON("styles/newtron.xml"),
-    OSMARENDER("styles/osmarender.xml"),
-    TRONRENDER("styles/tronrender.xml");
+    DEFAULT("vtm/default.xml"),
+    MAPZEN("vtm/mapzen.xml"),
+    NEWTRON("vtm/newtron.xml"),
+    OSMARENDER("vtm/osmarender.xml"),
+    TRONRENDER("vtm/tronrender.xml");
 
     private final String mPath;
 

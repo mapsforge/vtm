@@ -39,11 +39,14 @@ import org.oscim.theme.rule.RuleBuilder;
 import org.oscim.theme.styles.AreaStyle;
 import org.oscim.theme.styles.AreaStyle.AreaBuilder;
 import org.oscim.theme.styles.CircleStyle;
+import org.oscim.theme.styles.CircleStyle.CircleBuilder;
 import org.oscim.theme.styles.ExtrusionStyle;
+import org.oscim.theme.styles.ExtrusionStyle.ExtrusionBuilder;
 import org.oscim.theme.styles.LineStyle;
 import org.oscim.theme.styles.LineStyle.LineBuilder;
 import org.oscim.theme.styles.RenderStyle;
 import org.oscim.theme.styles.SymbolStyle;
+import org.oscim.theme.styles.SymbolStyle.SymbolBuilder;
 import org.oscim.theme.styles.TextStyle;
 import org.oscim.theme.styles.TextStyle.TextBuilder;
 import org.slf4j.Logger;
@@ -88,7 +91,17 @@ public class XmlThemeBuilder extends DefaultHandler {
      * @throws ThemeException if an error occurs while parsing the render theme XML.
      */
     public static IRenderTheme read(ThemeFile theme) throws ThemeException {
-        XmlThemeBuilder renderThemeHandler = new XmlThemeBuilder(theme);
+        return read(theme, null);
+    }
+
+    /**
+     * @param theme         an input theme containing valid render theme XML data.
+     * @param themeCallback the theme callback.
+     * @return a new RenderTheme which is created by parsing the XML data from the input theme.
+     * @throws ThemeException if an error occurs while parsing the render theme XML.
+     */
+    public static IRenderTheme read(ThemeFile theme, ThemeCallback themeCallback) throws ThemeException {
+        XmlThemeBuilder renderThemeHandler = new XmlThemeBuilder(theme, themeCallback);
 
         try {
             new XMLReaderAdapter().parse(renderThemeHandler, theme.getRenderThemeAsStream());
@@ -120,9 +133,12 @@ public class XmlThemeBuilder extends DefaultHandler {
 
     private final HashMap<String, TextStyle.TextBuilder<?>> mTextStyles = new HashMap<>(10);
 
-    private final TextBuilder<?> mTextBuilder = TextStyle.builder();
     private final AreaBuilder<?> mAreaBuilder = AreaStyle.builder();
+    private final CircleBuilder<?> mCircleBuilder = CircleStyle.builder();
+    private final ExtrusionBuilder<?> mExtrusionBuilder = ExtrusionStyle.builder();
     private final LineBuilder<?> mLineBuilder = LineStyle.builder();
+    private final SymbolBuilder<?> mSymbolBuilder = SymbolStyle.builder();
+    private final TextBuilder<?> mTextBuilder = TextStyle.builder();
 
     private RuleBuilder mCurrentRule;
     private TextureAtlas mTextureAtlas;
@@ -132,6 +148,7 @@ public class XmlThemeBuilder extends DefaultHandler {
     private float mTextScale = 1;
 
     private final ThemeFile mTheme;
+    private final ThemeCallback mThemeCallback;
     private RenderTheme mRenderTheme;
 
     private final float mScale, mScale2;
@@ -141,7 +158,12 @@ public class XmlThemeBuilder extends DefaultHandler {
     private XmlRenderThemeStyleMenu mRenderThemeStyleMenu;
 
     public XmlThemeBuilder(ThemeFile theme) {
+        this(theme, null);
+    }
+
+    public XmlThemeBuilder(ThemeFile theme, ThemeCallback themeCallback) {
         mTheme = theme;
+        mThemeCallback = themeCallback;
         mScale = CanvasAdapter.scale + (CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI - 1);
         mScale2 = CanvasAdapter.scale + (CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI - 1) * 0.5f;
     }
@@ -455,6 +477,8 @@ public class XmlThemeBuilder extends DefaultHandler {
         LineBuilder<?> b = mLineBuilder.set(line);
         b.isOutline(isOutline);
         b.level(level);
+        b.themeCallback(mThemeCallback);
+        String src = null;
 
         for (int i = 0; i < attributes.getLength(); i++) {
             String name = attributes.getLocalName(i);
@@ -466,11 +490,10 @@ public class XmlThemeBuilder extends DefaultHandler {
             else if ("cat".equals(name))
                 b.cat(value);
 
-            else if ("src".equals(name)) {
-                b.texture = loadTexture(value);
-                /*if (b.texture != null)
-                    b.texture.mipmap = true;*/
-            } else if ("use".equals(name))
+            else if ("src".equals(name))
+                src = value;
+
+            else if ("use".equals(name))
                 ;// ignore
 
             else if ("outline".equals(name))
@@ -520,9 +543,22 @@ public class XmlThemeBuilder extends DefaultHandler {
             else if ("dasharray".equals(name))
                 ; // TBD
 
+            else if ("symbol-width".equals(name))
+                b.symbolWidth = (int) (Integer.parseInt(value) * mScale);
+
+            else if ("symbol-height".equals(name))
+                b.symbolHeight = (int) (Integer.parseInt(value) * mScale);
+
+            else if ("symbol-percent".equals(name))
+                b.symbolPercent = Integer.parseInt(value);
+
             else
                 logUnknownAttribute(elementName, name, value, i);
         }
+
+        b.texture = loadTexture(src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+        /*if (b.texture != null)
+            b.texture.mipmap = true;*/
 
         return b.build();
     }
@@ -558,6 +594,8 @@ public class XmlThemeBuilder extends DefaultHandler {
                                  int level) {
         AreaBuilder<?> b = mAreaBuilder.set(area);
         b.level(level);
+        b.themeCallback(mThemeCallback);
+        String src = null;
 
         for (int i = 0; i < attributes.getLength(); i++) {
             String name = attributes.getLocalName(i);
@@ -573,7 +611,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 ;// ignore
 
             else if ("src".equals(name))
-                b.texture = loadTexture(value);
+                src = value;
 
             else if ("fill".equals(name))
                 b.color(value);
@@ -598,19 +636,30 @@ public class XmlThemeBuilder extends DefaultHandler {
             else if ("mesh".equals(name))
                 b.mesh(Boolean.parseBoolean(value));
 
+            else if ("symbol-width".equals(name))
+                b.symbolWidth = (int) (Integer.parseInt(value) * mScale);
+
+            else if ("symbol-height".equals(name))
+                b.symbolHeight = (int) (Integer.parseInt(value) * mScale);
+
+            else if ("symbol-percent".equals(name))
+                b.symbolPercent = Integer.parseInt(value);
+
             else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
+        b.texture = loadTexture(src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+
         return b.build();
     }
 
-    private TextureItem loadTexture(String src) {
-        if (src == null)
+    private TextureItem loadTexture(String src, int width, int height, int percent) {
+        if (src == null || src.length() == 0)
             return null;
 
         try {
-            Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), src);
+            Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), src, width, height, percent);
             if (bitmap != null) {
                 log.debug("loading {}", src);
                 return new TextureItem(bitmap, true);
@@ -763,10 +812,11 @@ public class XmlThemeBuilder extends DefaultHandler {
             if ("version".equals(name))
                 version = Integer.parseInt(value);
 
-            else if ("map-background".equals(name))
+            else if ("map-background".equals(name)) {
                 mapBackground = Color.parseColor(value);
-
-            else if ("base-stroke-width".equals(name))
+                if (mThemeCallback != null)
+                    mapBackground = mThemeCallback.getColor(mapBackground);
+            } else if ("base-stroke-width".equals(name))
                 baseStrokeWidth = Float.parseFloat(value);
 
             else if ("base-text-scale".equals(name))
@@ -827,6 +877,8 @@ public class XmlThemeBuilder extends DefaultHandler {
             b.caption = caption;
         } else
             b = mTextBuilder.from(style);
+        b.themeCallback(mThemeCallback);
+        String symbol = null;
 
         for (int i = 0; i < attributes.getLength(); i++) {
             String name = attributes.getLocalName(i);
@@ -872,18 +924,21 @@ public class XmlThemeBuilder extends DefaultHandler {
                 // NB: minus..
                 b.dy = -Float.parseFloat(value) * mScale;
 
-            else if ("symbol".equals(name)) {
-                String lowValue = value.toLowerCase(Locale.ENGLISH);
-                if (lowValue.endsWith(".png") || lowValue.endsWith(".svg")) {
-                    try {
-                        b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), value);
-                    } catch (Exception e) {
-                        log.debug(e.getMessage());
-                    }
-                } else
-                    b.texture = getAtlasRegion(value);
-            } else if ("use".equals(name))
+            else if ("symbol".equals(name))
+                symbol = value;
+
+            else if ("use".equals(name))
                 ;/* ignore */
+
+            else if ("symbol-width".equals(name))
+                b.symbolWidth = (int) (Integer.parseInt(value) * mScale);
+
+            else if ("symbol-height".equals(name))
+                b.symbolHeight = (int) (Integer.parseInt(value) * mScale);
+
+            else if ("symbol-percent".equals(name))
+                b.symbolPercent = Integer.parseInt(value);
+
             else
                 logUnknownAttribute(elementName, name, value, i);
         }
@@ -891,6 +946,18 @@ public class XmlThemeBuilder extends DefaultHandler {
         validateExists("k", b.textKey, elementName);
         validateNonNegative("size", b.fontSize);
         validateNonNegative("stroke-width", b.strokeWidth);
+
+        if (symbol != null && symbol.length() > 0) {
+            String lowValue = symbol.toLowerCase(Locale.ENGLISH);
+            if (lowValue.endsWith(".png") || lowValue.endsWith(".svg")) {
+                try {
+                    b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+                } catch (Exception e) {
+                    log.debug(e.getMessage());
+                }
+            } else
+                b.texture = getAtlasRegion(symbol);
+        }
 
         return b;
     }
@@ -900,52 +967,48 @@ public class XmlThemeBuilder extends DefaultHandler {
      * @return a new Circle with the given rendering attributes.
      */
     private CircleStyle createCircle(String elementName, Attributes attributes, int level) {
-        String cat = null;
-        Float radius = null;
-        boolean scaleRadius = false;
-        int fill = Color.TRANSPARENT;
-        int stroke = Color.TRANSPARENT;
-        float strokeWidth = 0;
+        CircleBuilder<?> b = mCircleBuilder.reset();
+        b.level(level);
+        b.themeCallback(mThemeCallback);
 
         for (int i = 0; i < attributes.getLength(); i++) {
             String name = attributes.getLocalName(i);
             String value = attributes.getValue(i);
 
             if ("r".equals(name) || "radius".equals(name))
-                radius = Float.parseFloat(value) * mScale2;
+                b.radius(Float.parseFloat(value) * mScale2);
 
             else if ("cat".equals(name))
-                cat = value;
+                b.cat(value);
 
             else if ("scale-radius".equals(name))
-                scaleRadius = Boolean.parseBoolean(value);
+                b.scaleRadius(Boolean.parseBoolean(value));
 
             else if ("fill".equals(name))
-                fill = Color.parseColor(value);
+                b.color(Color.parseColor(value));
 
             else if ("stroke".equals(name))
-                stroke = Color.parseColor(value);
+                b.strokeColor(Color.parseColor(value));
 
             else if ("stroke-width".equals(name))
-                strokeWidth = Float.parseFloat(value) * mScale2;
+                b.strokeWidth(Float.parseFloat(value) * mScale2);
 
             else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
-        validateExists("radius", radius, elementName);
-        validateNonNegative("radius", radius);
-        validateNonNegative("stroke-width", strokeWidth);
+        validateExists("radius", b.radius, elementName);
+        validateNonNegative("radius", b.radius);
+        validateNonNegative("stroke-width", b.strokeWidth);
 
-        return new CircleStyle(radius, scaleRadius, fill, stroke, strokeWidth, level)
-                .setCat(cat);
+        return b.build();
     }
 
     /**
      * @return a new Symbol with the given rendering attributes.
      */
     private SymbolStyle createSymbol(String elementName, Attributes attributes) {
-        String cat = null;
+        SymbolBuilder<?> b = mSymbolBuilder.reset();
         String src = null;
 
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -956,7 +1019,16 @@ public class XmlThemeBuilder extends DefaultHandler {
                 src = value;
 
             else if ("cat".equals(name))
-                cat = value;
+                b.cat(value);
+
+            else if ("symbol-width".equals(name))
+                b.symbolWidth = (int) (Integer.parseInt(value) * mScale);
+
+            else if ("symbol-height".equals(name))
+                b.symbolHeight = (int) (Integer.parseInt(value) * mScale);
+
+            else if ("symbol-percent".equals(name))
+                b.symbolPercent = Integer.parseInt(value);
 
             else
                 logUnknownAttribute(elementName, name, value, i);
@@ -967,51 +1039,46 @@ public class XmlThemeBuilder extends DefaultHandler {
         String lowSrc = src.toLowerCase(Locale.ENGLISH);
         if (lowSrc.endsWith(".png") || lowSrc.endsWith(".svg")) {
             try {
-                Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), src);
+                Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
                 if (bitmap != null)
-                    return new SymbolStyle(bitmap)
-                            .setCat(cat);
+                    return b.bitmap(bitmap).build();
             } catch (Exception e) {
                 log.debug(e.getMessage());
             }
             return null;
         }
-        return new SymbolStyle(getAtlasRegion(src))
-                .setCat(cat);
+        return b.texture(getAtlasRegion(src)).build();
     }
 
     private ExtrusionStyle createExtrusion(String elementName, Attributes attributes, int level) {
-        String cat = null;
-        int colorSide = 0;
-        int colorTop = 0;
-        int colorLine = 0;
-        int defaultHeight = 0;
+        ExtrusionBuilder<?> b = mExtrusionBuilder.reset();
+        b.level(level);
+        b.themeCallback(mThemeCallback);
 
         for (int i = 0; i < attributes.getLength(); ++i) {
             String name = attributes.getLocalName(i);
             String value = attributes.getValue(i);
 
             if ("cat".equals(name))
-                cat = value;
+                b.cat(value);
 
             else if ("side-color".equals(name))
-                colorSide = Color.parseColor(value);
+                b.colorSide(Color.parseColor(value));
 
             else if ("top-color".equals(name))
-                colorTop = Color.parseColor(value);
+                b.colorTop(Color.parseColor(value));
 
             else if ("line-color".equals(name))
-                colorLine = Color.parseColor(value);
+                b.colorLine(Color.parseColor(value));
 
             else if ("default-height".equals(name))
-                defaultHeight = Integer.parseInt(value);
+                b.defaultHeight(Integer.parseInt(value));
 
             else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
-        return new ExtrusionStyle(level, colorSide, colorTop, colorLine, defaultHeight)
-                .setCat(cat);
+        return b.build();
     }
 
     private String getStringAttribute(Attributes attributes, String name) {

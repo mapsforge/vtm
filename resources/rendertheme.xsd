@@ -124,6 +124,9 @@
         <xs:attribute name="id" default="0" type="xs:string" use="optional" />
         <xs:attribute name="use" default="0" type="xs:string" use="optional" />
         <xs:attribute name="src" type="tns:src" use="optional" />
+        <xs:attribute name="symbol-width" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-height" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-percent" type="xs:positiveInteger" use="optional" />
         <xs:attribute name="fill" default="#000000" type="tns:color" use="optional" />
         <xs:attribute name="stroke" default="#00000000" type="tns:color" use="optional" />
         <xs:attribute name="stroke-width" default="0" type="tns:nonNegativeFloat" use="optional" />
@@ -147,8 +150,11 @@
         <xs:attribute name="area-size" default="0" type="tns:nonNegativeFloat" use="optional" />
         <!-- priority for label placement, 0 = highest priority -->
         <xs:attribute name="priority" default="0" type="xs:integer" use="optional" />
-        <!-- symbol src name in atlas -->
+        <!-- symbol src name -->
         <xs:attribute name="symbol" type="tns:src" use="optional" />
+        <xs:attribute name="symbol-width" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-height" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-percent" type="xs:positiveInteger" use="optional" />
     </xs:complexType>
 
     <xs:complexType name="circle">
@@ -170,6 +176,9 @@
         <xs:attribute name="use" default="0" type="xs:string" use="optional" />
 
         <xs:attribute name="src" type="tns:src" use="optional" />
+        <xs:attribute name="symbol-width" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-height" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-percent" type="xs:positiveInteger" use="optional" />
         <xs:attribute name="stroke" default="#000000" type="tns:color" use="optional" />
         <xs:attribute name="width" default="0" type="xs:float" use="optional" />
         <!-- minimum scaled width to draw outline -->
@@ -194,6 +203,9 @@
         <xs:attribute name="cat" type="xs:string" use="optional" />
         <xs:attribute name="name" default="0" type="xs:string" use="optional" />
         <xs:attribute name="src" type="tns:src" use="optional" />
+        <xs:attribute name="symbol-width" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-height" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-percent" type="xs:positiveInteger" use="optional" />
         <xs:attribute name="stroke" default="#000000" type="tns:color" use="optional" />
         <xs:attribute name="stroke-width" default="0" type="tns:nonNegativeFloat" use="optional" />
     </xs:complexType>-->
@@ -201,6 +213,9 @@
     <xs:complexType name="lineSymbol">
         <xs:attribute name="cat" type="xs:string" use="optional" />
         <xs:attribute name="src" type="tns:src" use="required" />
+        <xs:attribute name="symbol-width" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-height" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-percent" type="xs:positiveInteger" use="optional" />
         <xs:attribute name="align-center" default="false" type="xs:boolean" use="optional" />
         <xs:attribute name="repeat" default="false" type="xs:boolean" use="optional" />
     </xs:complexType>
@@ -229,6 +244,9 @@
     <xs:complexType name="symbol">
         <xs:attribute name="cat" type="xs:string" use="optional" />
         <xs:attribute name="src" type="tns:src" use="required" />
+        <xs:attribute name="symbol-width" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-height" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="symbol-percent" type="xs:positiveInteger" use="optional" />
     </xs:complexType>
 
     <xs:complexType name="extrusion">

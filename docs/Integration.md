@@ -33,9 +33,9 @@ compile 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]'
 compile 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-linux'
 compile 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-osx'
 compile 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-windows'
-compile 'com.badlogicgames.gdx:gdx:1.9.4'
-compile 'com.badlogicgames.gdx:gdx-platform:1.9.4:natives-desktop'
-compile 'com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.4'
+compile 'com.badlogicgames.gdx:gdx:1.9.5'
+compile 'com.badlogicgames.gdx:gdx-platform:1.9.5:natives-desktop'
+compile 'com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.5'
 compile 'org.lwjgl.lwjgl:lwjgl:2.9.3'
 compile 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-linux'
 compile 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-osx'
@@ -49,6 +49,11 @@ We publish regularly SNAPSHOT builds to Sonatype OSS Repository Hosting.
 
 You need to add the repository:
 ```groovy
+configurations.all {
+    // check for latest snapshot on every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }

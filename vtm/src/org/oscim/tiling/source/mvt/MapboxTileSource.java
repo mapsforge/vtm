@@ -27,9 +27,15 @@ public class MapboxTileSource extends UrlTileSource {
     private final static String DEFAULT_PATH = "/{Z}/{X}/{Y}.mvt";
 
     public static class Builder<T extends Builder<T>> extends UrlTileSource.Builder<T> {
+        private String locale = "";
 
         public Builder() {
             super(DEFAULT_URL, DEFAULT_PATH, 1, 17);
+        }
+
+        public T locale(String locale) {
+            this.locale = locale;
+            return self();
         }
 
         public MapboxTileSource build() {
@@ -42,8 +48,11 @@ public class MapboxTileSource extends UrlTileSource {
         return new Builder();
     }
 
+    private final String locale;
+
     protected MapboxTileSource(Builder<?> builder) {
         super(builder);
+        this.locale = builder.locale;
     }
 
     public MapboxTileSource() {
@@ -56,6 +65,6 @@ public class MapboxTileSource extends UrlTileSource {
 
     @Override
     public ITileDataSource getDataSource() {
-        return new UrlTileDataSource(this, new TileDecoder(), getHttpEngine());
+        return new UrlTileDataSource(this, new TileDecoder(locale), getHttpEngine());
     }
 }

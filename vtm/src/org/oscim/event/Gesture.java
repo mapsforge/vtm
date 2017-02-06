@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -18,20 +19,28 @@ package org.oscim.event;
 
 public interface Gesture {
 
-    static final class Press implements Gesture {
+    final class Press implements Gesture {
     }
 
-    static final class LongPress implements Gesture {
+    final class LongPress implements Gesture {
     }
 
-    static final class Tap implements Gesture {
+    final class Tap implements Gesture {
     }
 
-    static final class DoubleTap implements Gesture {
+    final class DoubleTap implements Gesture {
     }
 
-    public static Gesture PRESS = new Press();
-    public static Gesture LONG_PRESS = new LongPress();
-    public static Gesture TAP = new Tap();
-    public static Gesture DOUBLE_TAP = new DoubleTap();
+    final class TripleTap implements Gesture {
+    }
+
+    final class TwoFingerTap implements Gesture {
+    }
+
+    Gesture PRESS = new Press();
+    Gesture LONG_PRESS = new LongPress();
+    Gesture TAP = new Tap();
+    Gesture DOUBLE_TAP = new DoubleTap();
+    Gesture TRIPLE_TAP = new TripleTap();
+    Gesture TWO_FINGER_TAP = new TwoFingerTap();
 }

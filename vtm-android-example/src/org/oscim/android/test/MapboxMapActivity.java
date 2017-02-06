@@ -30,7 +30,8 @@ public class MapboxMapActivity extends MapActivity {
         super.onCreate(savedInstanceState);
 
         UrlTileSource tileSource = MapboxTileSource.builder()
-                .apiKey("vector-tiles-xxxxxxx") // Put a proper API key
+                .apiKey("mapzen-xxxxxxx") // Put a proper API key
+                //.locale("en")
                 .build();
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);

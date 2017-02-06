@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2016 Robin Boldt
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -33,11 +34,8 @@ import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.theme.styles.ExtrusionStyle;
 import org.oscim.theme.styles.RenderStyle;
 import org.oscim.utils.pool.Inlist;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BuildingLayer extends Layer implements TileLoaderThemeHook {
-    static final Logger log = LoggerFactory.getLogger(BuildingLayer.class);
 
     private final static int MIN_ZOOM = 17;
     private final static int MAX_ZOOM = 17;
@@ -74,18 +72,18 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
         if (!(style instanceof ExtrusionStyle))
             return false;
 
-        ExtrusionStyle extrusion = (ExtrusionStyle) style;
+        ExtrusionStyle extrusion = (ExtrusionStyle) style.current();
 
         int height = 0;
         int minHeight = 0;
 
         String v = element.tags.getValue(Tag.KEY_HEIGHT);
         if (v != null)
-            height = Integer.parseInt(v);
+            height = (int) Float.parseFloat(v);
 
         v = element.tags.getValue(Tag.KEY_MIN_HEIGHT);
         if (v != null)
-            minHeight = Integer.parseInt(v);
+            minHeight = (int) Float.parseFloat(v);
 
         /* 12m default */
         if (height == 0)

@@ -27,6 +27,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".AtlasMarkerOverlayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".BitmapTileMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
@@ -48,16 +51,25 @@
             android:name=".MapFragmentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".MapPositionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".MapsforgeMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".MapsforgeMapActivity$MapFilePicker"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".MapsforgeStyleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".MarkerOverlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".MultiMapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".NewGesturesActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".OsmJsonMapActivity"
