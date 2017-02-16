@@ -1,6 +1,6 @@
 # Changelog
 
-## New since 0.6.0
+### Version 0.7.0-rc1 (2017-02-16)
 
 - Mapsforge multiple map files [#208](https://github.com/mapsforge/vtm/issues/208)
 - Improved gestures implementation [#253](https://github.com/mapsforge/vtm/issues/253)
