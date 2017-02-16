@@ -36,6 +36,9 @@ import org.oscim.map.Map;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.oscim.android.canvas.AndroidGraphics.drawableToBitmap;
 import static org.oscim.tiling.source.bitmap.DefaultSources.STAMEN_TONER;
@@ -45,6 +48,7 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
 
     protected static final boolean BILLBOARDS = true;
     protected MarkerSymbol mFocusMarker;
+    private ItemizedLayer<MarkerItem> markerLayer;
 
     public MarkerOverlayActivity() {
         super(STAMEN_TONER.build());
@@ -74,7 +78,7 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
         else
             mFocusMarker = new MarkerSymbol(drawableToBitmap(d), HotspotPlace.CENTER, false);
 
-        ItemizedLayer<MarkerItem> markerLayer =
+        markerLayer =
                 new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(),
                         symbol, this);
 
@@ -100,23 +104,63 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
         mMap.setMapPosition(0, 0, 1 << 2);
     }
 
+    Timer timer;
+    int markerCount = 0;
+
     @Override
-    public boolean onItemSingleTapUp(int index, MarkerItem item) {
-        if (item.getMarker() == null)
+    public boolean onItemSingleTapUp(int index,final MarkerItem item) {
+        if (item.getMarker() == null) {
             item.setMarker(mFocusMarker);
-        else
+            markerCount++;
+            final AtomicInteger rotValue = new AtomicInteger(0);
+            if(timer != null) timer.cancel();
+            timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    float value = (float)(rotValue.incrementAndGet() * 10);
+                    item.setRotation(value);
+                    if(rotValue.get()>36) rotValue.set(0);
+                    markerLayer.update();
+                    mMap.updateMap(true);
+                }
+            };
+            timer.schedule(timerTask,1000,1000);
+
+        }else {
             item.setMarker(null);
+            markerCount--;
+            if(timer != null && markerCount == 0) timer.cancel();
+        }
 
         Toast.makeText(this, "Marker tap\n" + item.getTitle(), Toast.LENGTH_SHORT).show();
         return true;
     }
 
     @Override
-    public boolean onItemLongPress(int index, MarkerItem item) {
-        if (item.getMarker() == null)
+    public boolean onItemLongPress(int index,final MarkerItem item) {
+        if (item.getMarker() == null) {
             item.setMarker(mFocusMarker);
-        else
+            markerCount++;
+            final AtomicInteger rotValue = new AtomicInteger(0);
+            if(timer != null) timer.cancel();
+            timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    float value = (float)(rotValue.incrementAndGet() * 10);
+                    item.setRotation(value);
+                    if(rotValue.get()>36) rotValue.set(0);
+                    markerLayer.update();
+                    mMap.updateMap(true);
+                }
+            };
+            timer.schedule(timerTask,300,300);
+        }else{
             item.setMarker(null);
+            markerCount--;
+            if(timer != null && markerCount == 0) timer.cancel();
+        }
 
         Toast.makeText(this, "Marker long press\n" + item.getTitle(), Toast.LENGTH_SHORT).show();
         return true;
