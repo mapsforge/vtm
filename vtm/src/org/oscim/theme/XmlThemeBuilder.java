@@ -894,10 +894,10 @@ public class XmlThemeBuilder extends DefaultHandler {
                 b.textKey = value.intern();
 
             else if ("font-family".equals(name))
-                b.fontFamily = FontFamily.valueOf(value.toUpperCase());
+                b.fontFamily = FontFamily.valueOf(value.toUpperCase(Locale.ENGLISH));
 
             else if ("style".equals(name))
-                b.fontStyle = FontStyle.valueOf(value.toUpperCase());
+                b.fontStyle = FontStyle.valueOf(value.toUpperCase(Locale.ENGLISH));
 
             else if ("size".equals(name))
                 b.fontSize = Float.parseFloat(value);
