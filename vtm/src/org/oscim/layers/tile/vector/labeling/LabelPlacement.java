@@ -127,9 +127,9 @@ public class LabelPlacement {
         return 0;
     }
 
-    private boolean isVisible(float x, float y) {
+    private boolean isVisible(double x, double y) {
         // rough filter
-        float dist = x * x + y * y;
+        double dist = x * x + y * y;
         if (dist > mSquareRadius)
             return false;
 
@@ -138,7 +138,7 @@ public class LabelPlacement {
 
     private boolean wayIsVisible(Label ti) {
         // rough filter
-        float dist = ti.x * ti.x + ti.y * ti.y;
+        double dist = ti.x * ti.x + ti.y * ti.y;
         if (dist < mSquareRadius)
             return true;
 
@@ -173,8 +173,8 @@ public class LabelPlacement {
     private void placeLabelFrom(Label l, TextItem ti) {
         // set line endpoints relative to view to be able to
         // check intersections with label from other tiles
-        float w = (ti.x2 - ti.x1) / 2f;
-        float h = (ti.y2 - ti.y1) / 2f;
+        double w = (ti.x2 - ti.x1) / 2f;
+        double h = (ti.y2 - ti.y1) / 2f;
 
         l.x1 = l.x - w;
         l.y1 = l.y - h;
@@ -442,7 +442,7 @@ public class LabelPlacement {
 
             /* flip way label orientation */
             if (cos * (ti.x2 - ti.x1) - sin * (ti.y2 - ti.y1) < 0) {
-                float tmp = ti.x1;
+                double tmp = ti.x1;
                 ti.x1 = ti.x2;
                 ti.x2 = tmp;
 

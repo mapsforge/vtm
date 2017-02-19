@@ -67,14 +67,14 @@ public final class PolygonBucket extends RenderBucket {
         addPolygon(geom.points, geom.index);
     }
 
-    float xmin = Short.MAX_VALUE;
-    float ymin = Short.MAX_VALUE;
-    float xmax = Short.MIN_VALUE;
-    float ymax = Short.MIN_VALUE;
+    double xmin = Short.MAX_VALUE;
+    double ymin = Short.MAX_VALUE;
+    double xmax = Short.MIN_VALUE;
+    double ymax = Short.MIN_VALUE;
 
-    final float[] bbox = new float[8];
+    final double[] bbox = new double[8];
 
-    public void addPolygon(float[] points, int[] index) {
+    public void addPolygon(double[] points, int[] index) {
         short center = (short) ((Tile.SIZE >> 1) * S);
 
         boolean outline = area.strokeWidth > 0;
@@ -96,8 +96,8 @@ public final class PolygonBucket extends RenderBucket {
             int inPos = pos;
 
             for (int j = 0; j < length; j += 2) {
-                float x = (points[inPos++] * S);
-                float y = (points[inPos++] * S);
+                double x = (points[inPos++] * S);
+                double y = (points[inPos++] * S);
                 xmax = Math.max(xmax, x);
                 xmin = Math.min(xmin, x);
                 ymax = Math.max(ymax, y);
@@ -285,7 +285,7 @@ public final class PolygonBucket extends RenderBucket {
             return shader;
         }
 
-        static float[] mBBox = new float[8];
+        static double[] mBBox = new double[8];
         static LineClipper mScreenClip = new LineClipper(-1, -1, 1, 1);
 
         /**
@@ -320,7 +320,7 @@ public final class PolygonBucket extends RenderBucket {
 
             byte stencilMask = 0;
 
-            float[] box = mBBox;
+            double[] box = mBBox;
 
             RenderBucket b = buckets;
             for (; b != null && b.type == POLYGON; b = b.next) {

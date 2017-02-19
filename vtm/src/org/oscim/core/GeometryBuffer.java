@@ -57,7 +57,7 @@ public class GeometryBuffer {
     /**
      * The points.
      */
-    public float[] points;
+    public double[] points;
 
     /**
      * The indexes.
@@ -79,7 +79,7 @@ public class GeometryBuffer {
      */
     public GeometryType type;
 
-    private PointF mTmpPoint = new PointF();
+    private Point mTmpPoint = new Point();
     private int pointLimit;
 
     public GeometryBuffer() {
@@ -93,7 +93,7 @@ public class GeometryBuffer {
      * @param numIndices the num of expected indices
      */
     public GeometryBuffer(int numPoints, int numIndices) {
-        this(new float[numPoints * 2], new int[numIndices]);
+        this(new double[numPoints * 2], new int[numIndices]);
     }
 
     /**
@@ -102,9 +102,9 @@ public class GeometryBuffer {
      * @param points the points
      * @param index  the index
      */
-    public GeometryBuffer(float[] points, int[] index) {
+    public GeometryBuffer(double[] points, int[] index) {
         if (points == null)
-            points = new float[GROW_POINTS];
+            points = new double[GROW_POINTS];
         if (index == null)
             index = new int[GROW_INDICES];
 
@@ -121,24 +121,24 @@ public class GeometryBuffer {
      * @return when out is null a temporary PointF is
      * returned which belongs to GeometryBuffer.
      */
-    public void getPoint(int i, PointF out) {
+    public void getPoint(int i, Point out) {
         out.x = points[(i << 1)];
         out.y = points[(i << 1) + 1];
     }
 
-    public float getPointX(int i) {
+    public double getPointX(int i) {
         return points[(i << 1)];
     }
 
-    public float getPointY(int i) {
+    public double getPointY(int i) {
         return points[(i << 1) + 1];
     }
 
     /**
      * @return PointF belongs to GeometryBuffer.
      */
-    public PointF getPoint(int i) {
-        PointF out = mTmpPoint;
+    public Point getPoint(int i) {
+        Point out = mTmpPoint;
         out.x = points[(i << 1)];
         out.y = points[(i << 1) + 1];
         return out;
@@ -165,7 +165,7 @@ public class GeometryBuffer {
      * @param x the x ordinate
      * @param y the y ordinate
      */
-    public GeometryBuffer addPoint(float x, float y) {
+    public GeometryBuffer addPoint(double x, double y) {
         if (pointPos > pointLimit)
             ensurePointSize((pointPos >> 1) + 1, true);
 
@@ -298,13 +298,13 @@ public class GeometryBuffer {
      * @param copy the the current data when array is reallocated
      * @return the float[] array holding current coordinates
      */
-    public float[] ensurePointSize(int size, boolean copy) {
+    public double[] ensurePointSize(int size, boolean copy) {
         if (size * 2 < points.length)
             return points;
 
         size = size * 2 + GROW_POINTS;
 
-        float[] newPoints = new float[size];
+        double[] newPoints = new double[size];
         if (copy)
             System.arraycopy(points, 0, newPoints, 0, points.length);
 
@@ -376,8 +376,8 @@ public class GeometryBuffer {
                 continue;
 
             int first = inPos;
-            float px = points[inPos++];
-            float py = points[inPos++];
+            double px = points[inPos++];
+            double py = points[inPos++];
 
             /* add first point */
             points[outPos++] = px;
@@ -385,11 +385,10 @@ public class GeometryBuffer {
             int cnt = 2;
 
             for (int pt = 2, end = index[idx]; pt < end; pt += 2) {
-                float cx = points[inPos++];
-                float cy = points[inPos++];
-                float dx = cx - px;
-                float dy = cy - py;
-
+                double cx = points[inPos++];
+                double cy = points[inPos++];
+                double dx = cx - px;
+                double dy = cy - py;
                 if ((dx * dx + dy * dy) < minSqDist) {
                     if (!keepLines || (pt < end - 2))
                         continue;

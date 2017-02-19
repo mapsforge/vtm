@@ -155,7 +155,7 @@ public class ArrayUtils {
      * xmax, ymax,
      * xmax, ymin,
      */
-    public static void setBox2D(float[] bbox, float xmin, float ymin, float xmax, float ymax) {
+    public static void setBox2D(double[] bbox, double xmin, double ymin, double xmax, double ymax) {
         bbox[0] = bbox[2] = xmin;
         bbox[4] = bbox[6] = xmax;
         bbox[1] = bbox[7] = ymin;

@@ -91,7 +91,7 @@ public class FastMath {
     /**
      * test if any absolute value is greater than 'cmp'
      */
-    public static boolean absMaxCmp(float value1, float value2, float cmp) {
+    public static boolean absMaxCmp(double value1, double value2, double cmp) {
         return value1 < -cmp || value1 > cmp || value2 < -cmp || value2 > cmp;
     }
 

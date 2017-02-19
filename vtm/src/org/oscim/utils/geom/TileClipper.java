@@ -81,7 +81,7 @@ public class TileClipper {
             System.arraycopy(out.index, 0, idx, 0, numLines);
             geom.index[numLines] = -1;
 
-            float pts[] = geom.ensurePointSize(out.pointPos >> 1, false);
+            double pts[] = geom.ensurePointSize(out.pointPos >> 1, false);
             System.arraycopy(out.points, 0, pts, 0, out.pointPos);
             geom.indexPos = out.indexPos;
             geom.pointPos = out.pointPos;
@@ -149,12 +149,12 @@ public class TileClipper {
 
     private void clipRingLeft(int indexPos, int pointPos, GeometryBuffer in, GeometryBuffer out) {
         int end = in.index[indexPos] + pointPos;
-        float px = in.points[end - 2];
-        float py = in.points[end - 1];
+        double px = in.points[end - 2];
+        double py = in.points[end - 1];
 
         for (int i = pointPos; i < end; ) {
-            float cx = in.points[i++];
-            float cy = in.points[i++];
+            double cx = in.points[i++];
+            double cy = in.points[i++];
             if (cx > xmin) {
                 /* current is inside */
                 if (px > xmin) {
@@ -179,12 +179,12 @@ public class TileClipper {
 
     private void clipRingRight(int indexPos, int pointPos, GeometryBuffer in, GeometryBuffer out) {
         int len = in.index[indexPos] + pointPos;
-        float px = in.points[len - 2];
-        float py = in.points[len - 1];
+        double px = in.points[len - 2];
+        double py = in.points[len - 1];
 
         for (int i = pointPos; i < len; ) {
-            float cx = in.points[i++];
-            float cy = in.points[i++];
+            double cx = in.points[i++];
+            double cy = in.points[i++];
 
             if (cx < xmax) {
                 if (px < xmax) {
@@ -205,12 +205,12 @@ public class TileClipper {
 
     private void clipRingTop(int indexPos, int pointPos, GeometryBuffer in, GeometryBuffer out) {
         int len = in.index[indexPos] + pointPos;
-        float px = in.points[len - 2];
-        float py = in.points[len - 1];
+        double px = in.points[len - 2];
+        double py = in.points[len - 1];
 
         for (int i = pointPos; i < len; ) {
-            float cx = in.points[i++];
-            float cy = in.points[i++];
+            double cx = in.points[i++];
+            double cy = in.points[i++];
 
             if (cy < ymax) {
                 if (py < ymax) {
@@ -231,12 +231,12 @@ public class TileClipper {
 
     private void clipRingBottom(int indexPos, int pointPos, GeometryBuffer in, GeometryBuffer out) {
         int len = in.index[indexPos] + pointPos;
-        float px = in.points[len - 2];
-        float py = in.points[len - 1];
+        double px = in.points[len - 2];
+        double py = in.points[len - 1];
 
         for (int i = pointPos; i < len; ) {
-            float cx = in.points[i++];
-            float cy = in.points[i++];
+            double cx = in.points[i++];
+            double cy = in.points[i++];
             if (cy > ymin) {
                 if (py > ymin) {
                     out.addPoint(cx, cy);

@@ -158,7 +158,7 @@ public class ExtrusionBucket extends RenderBucket {
             return;
 
         int[] index = element.index;
-        float[] points = element.points;
+        double[] points = element.points;
 
         int vertexCnt = numVertices;
         synchronized (vertexPool) {
@@ -178,29 +178,29 @@ public class ExtrusionBucket extends RenderBucket {
                 int vtx2 = index[k++] * 3;
                 int vtx3 = index[k++] * 3;
 
-                float vx1 = points[vtx1 + 0];
-                float vy1 = points[vtx1 + 1];
-                float vz1 = points[vtx1 + 2];
+                double vx1 = points[vtx1 + 0];
+                double vy1 = points[vtx1 + 1];
+                double vz1 = points[vtx1 + 2];
 
-                float vx2 = points[vtx2 + 0];
-                float vy2 = points[vtx2 + 1];
-                float vz2 = points[vtx2 + 2];
+                double vx2 = points[vtx2 + 0];
+                double vy2 = points[vtx2 + 1];
+                double vz2 = points[vtx2 + 2];
 
-                float vx3 = points[vtx3 + 0];
-                float vy3 = points[vtx3 + 1];
-                float vz3 = points[vtx3 + 2];
+                double vx3 = points[vtx3 + 0];
+                double vy3 = points[vtx3 + 1];
+                double vz3 = points[vtx3 + 2];
 
-                float ax = vx2 - vx1;
-                float ay = vy2 - vy1;
-                float az = vz2 - vz1;
+                double ax = vx2 - vx1;
+                double ay = vy2 - vy1;
+                double az = vz2 - vz1;
 
-                float bx = vx3 - vx1;
-                float by = vy3 - vy1;
-                float bz = vz3 - vz1;
+                double bx = vx3 - vx1;
+                double by = vy3 - vy1;
+                double bz = vz3 - vz1;
 
-                float cx = ay * bz - az * by;
-                float cy = az * bx - ax * bz;
-                float cz = ax * by - ay * bx;
+                double cx = ay * bz - az * by;
+                double cy = az * bx - ax * bz;
+                double cz = ax * by - ay * bx;
 
                 double len = Math.sqrt(cx * cx + cy * cy + cz * cz);
 
@@ -343,7 +343,7 @@ public class ExtrusionBucket extends RenderBucket {
     public void add(MapElement element, float height, float minHeight) {
 
         int[] index = element.index;
-        float[] points = element.points;
+        double[] points = element.points;
 
         /* 10 cm steps */
         float sfactor = 1 / 10f;
@@ -424,7 +424,7 @@ public class ExtrusionBucket extends RenderBucket {
      */
     private void addRoof(int startVertex, GeometryBuffer geom, int ipos, int ppos) {
         int[] index = geom.index;
-        float[] points = geom.points;
+        double[] points = geom.points;
 
         int numPoints = 0;
         int numRings = 0;
@@ -441,25 +441,25 @@ public class ExtrusionBucket extends RenderBucket {
                 mIndices[IND_ROOF]);
     }
 
-    private boolean extrudeOutline(float[] points, int pos, int len,
+    private boolean extrudeOutline(double[] points, int pos, int len,
                                    float minHeight, float height, boolean convex) {
 
         /* add two vertices for last face to make zigzag indices work */
         boolean addFace = (len % 4 != 0);
         int vertexCnt = len + (addFace ? 2 : 0);
 
-        float cx = points[pos + len - 2];
-        float cy = points[pos + len - 1];
-        float nx = points[pos + 0];
-        float ny = points[pos + 1];
+        double cx = points[pos + len - 2];
+        double cy = points[pos + len - 1];
+        double nx = points[pos + 0];
+        double ny = points[pos + 1];
 
         /* vector to next point */
-        float vx = nx - cx;
-        float vy = ny - cy;
+        double vx = nx - cx;
+        double vy = ny - cy;
         /* vector from previous point */
-        float ux, uy;
+        double ux, uy;
 
-        float a = (float) Math.sqrt(vx * vx + vy * vy);
+        double a = (double) Math.sqrt(vx * vx + vy * vy);
         short color1 = (short) ((1 + vx / a) * 127);
 
         short fcolor = color1, color2 = 0;
@@ -529,7 +529,7 @@ public class ExtrusionBucket extends RenderBucket {
                 if (changeX > 2 || changeY > 2)
                     convex = false;
 
-                float cross = ux * vy - uy * vy;
+                double cross = ux * vy - uy * vy;
 
                 if (cross > 0) {
                     if (angleSign == -1)

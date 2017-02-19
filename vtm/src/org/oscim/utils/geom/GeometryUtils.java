@@ -61,17 +61,17 @@ public final class GeometryUtils {
         return inside;
     }
 
-    public static float area(float ax, float ay, float bx, float by, float cx, float cy) {
+    public static double area(double ax, double ay, double bx, double by, double cx, double cy) {
 
-        float area = ((ax - cx) * (by - cy)
+        double area = ((ax - cx) * (by - cy)
                 - (bx - cx) * (ay - cy));
 
         return (area < 0 ? -area : area) * 0.5f;
     }
 
-    public static float area(float[] a, int p1, int p2, int p3) {
+    public static double area(double[] a, int p1, int p2, int p3) {
 
-        float area = ((a[p1] - a[p3]) * (a[p2 + 1] - a[p3 + 1])
+        double area = ((a[p1] - a[p3]) * (a[p2 + 1] - a[p3 + 1])
                 - (a[p2] - a[p3]) * (a[p1 + 1] - a[p3 + 1]));
 
         return (area < 0 ? -area : area) * 0.5f;
@@ -85,15 +85,15 @@ public final class GeometryUtils {
      * square distance from a point a to a segment b,c
      */
     // modified from https://github.com/ekeneijeoma/simplify-java
-    public static float squareSegmentDistance(float[] p, int a, int b, int c) {
-        float x = p[b];
-        float y = p[b + 1];
+    public static double squareSegmentDistance(double[] p, int a, int b, int c) {
+        double x = p[b];
+        double y = p[b + 1];
 
-        float dx = p[c] - x;
-        float dy = p[c + 1] - y;
+        double dx = p[c] - x;
+        double dy = p[c + 1] - y;
 
         if (dx != 0 || dy != 0) {
-            float t = ((p[a] - x) * dx + (p[a + 1] - y) * dy) / (dx * dx + dy * dy);
+            double t = ((p[a] - x) * dx + (p[a + 1] - y) * dy) / (dx * dx + dy * dy);
 
             if (t > 1) {
                 x = p[c];
@@ -110,13 +110,13 @@ public final class GeometryUtils {
         return dx * dx + dy * dy;
     }
 
-    public static double distance(float[] p, int a, int b) {
-        float dx = p[a] - p[b];
-        float dy = p[a + 1] - p[b + 1];
+    public static double distance(double[] p, int a, int b) {
+        double dx = p[a] - p[b];
+        double dy = p[a + 1] - p[b + 1];
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public static double dotProduct(float[] p, int a, int b, int c) {
+    public static double dotProduct(double[] p, int a, int b, int c) {
 
         double ux = (p[b] - p[a]);
         double uy = (p[b + 1] - p[a + 1]);
@@ -141,7 +141,7 @@ public final class GeometryUtils {
     }
 
     public static void main(String[] args) {
-        float[] p = {-1, 0, 0, 0, 0, 0};
+        double[] p = {-1, 0, 0, 0, 0, 0};
 
         for (int i = 0; i < 9; i++) {
             p[4] = (float) Math.cos(Math.toRadians(i * 45));

@@ -190,7 +190,7 @@ public abstract class PbfDecoder implements ITileDecoder {
     protected int decodeInterleavedPoints(GeometryBuffer geom, float scale)
             throws IOException {
 
-        float[] points = geom.points;
+        double[] points = geom.points;
         int bytes = decodeVarint32();
         fillBuffer(bytes);
 
@@ -250,7 +250,7 @@ public abstract class PbfDecoder implements ITileDecoder {
         return (cnt >> 1);
     }
 
-    protected int decodeInterleavedPoints3D(float[] coords, float scale)
+    protected int decodeInterleavedPoints3D(double[] coords, double scale)
             throws IOException {
 
         int bytes = decodeVarint32();
