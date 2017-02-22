@@ -16,25 +16,34 @@ package org.oscim.android.test;
 
 import android.os.Bundle;
 
+import org.oscim.android.cache.TileCache;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.theme.VtmThemes;
+import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.mvt.MapboxTileSource;
 
 public class MapboxMapActivity extends MapActivity {
 
+    private TileCache tileCache;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         UrlTileSource tileSource = MapboxTileSource.builder()
-                .apiKey("mapzen-xxxxxxx") // Put a proper API key
-                .httpFactory(new OkHttpEngine.OkHttpFactory())
+                .apiKey("mapzen-XPvZ3tH") // Put a proper API key
+                .httpFactory(new OkHttpEngine.OkHttpFactory(true)) // Use TileCache or provide a Cache for OkHttp
                 //.locale("en")
                 .build();
+
+        // Cache the tiles into a local sqlite database
+        tileCache = new TileCache(this, null, "tile_cache.db");
+        tileCache.setCacheSize(512 * (1 << 10));
+        tileSource.setCache(tileCache);
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);
         mMap.setTheme(VtmThemes.MAPZEN);
@@ -42,4 +51,13 @@ public class MapboxMapActivity extends MapActivity {
         mMap.layers().add(new BuildingLayer(mMap, l));
         mMap.layers().add(new LabelLayer(mMap, l));
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (tileCache != null)
+            tileCache.dispose();
+    }
+
 }
