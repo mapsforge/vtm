@@ -1,6 +1,7 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -42,7 +43,7 @@ public class TextureItem extends Inlist<TextureItem> {
     /**
      * texture ID
      */
-    private int id;
+    int id;
 
     /**
      * current settings
