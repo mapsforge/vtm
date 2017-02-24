@@ -80,6 +80,7 @@ public final class SymbolBucket extends TextureBucket {
         prevTextures = textures;
         textures = null;
         TextureItem t = null;
+        TextureItem lastTexture = null;
 
         for (SymbolItem it = mSymbols.head(); it != null; ) {
             int width = 0, height = 0;
@@ -88,12 +89,24 @@ public final class SymbolBucket extends TextureBucket {
 
             // FIXME Use simultaneously TextureAtlas and external symbols
             if (it.texRegion != null) {
-                /* FIXME This work only with one TextureAtlas per SymbolBucket */
-                if (textures == null) {
+                if (it.texRegion.texture.id == -1) {
+                    //upload texture for give correct texID
+                    it.texRegion.texture.upload();
+                }
+
+                if (textures == null || lastTexture == null || lastTexture.id != it.texRegion.texture.id) {
                     /* clone TextureItem to use same texID with
                      * multiple TextureItem */
+                    int nextOffset = 0;
+
+                    if (t != null) {
+                        nextOffset = t.offset + t.indices;
+                    }
+
                     t = TextureItem.clone(it.texRegion.texture);
+                    t.offset = nextOffset;
                     textures = Inlist.appendItem(textures, t);
+                    lastTexture = t;
                 }
 
                 TextureAtlas.Rect r = it.texRegion.rect;
