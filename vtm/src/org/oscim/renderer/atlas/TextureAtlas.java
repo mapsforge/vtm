@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -68,6 +69,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class TextureAtlas extends Inlist<TextureAtlas> {
     static final Logger log = LoggerFactory.getLogger(TextureAtlas.class);
@@ -96,6 +98,10 @@ public class TextureAtlas extends Inlist<TextureAtlas> {
     int mUsed;
 
     public TextureItem texture;
+
+    public Map<?, ? extends TextureRegion> getAllRegions() {
+        return mRegions;
+    }
 
     public static class Slot extends Inlist<Slot> {
         public int x, y, w;
