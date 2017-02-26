@@ -19,6 +19,7 @@
 package org.oscim.layers.tile.vector.labeling;
 
 import org.oscim.core.MapElement;
+import org.oscim.core.Point;
 import org.oscim.core.PointF;
 import org.oscim.core.Tile;
 import org.oscim.layers.tile.MapTile;
@@ -78,14 +79,14 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
                 if (value == null || value.length() == 0)
                     return false;
 
-                PointF label = element.labelPosition;
+                Point label = element.labelPosition;
                 // skip unnecessary calculations if label is outside of visible area
                 if (label != null && (label.x < 0 || label.x > Tile.SIZE || label.y < 0 || label.y > Tile.SIZE))
                     return false;
 
                 if (text.areaSize > 0f) {
-                    float area = element.area();
-                    float ratio = area / (Tile.SIZE * Tile.SIZE); // we can't use static as it's recalculated based on dpi
+                    double area = element.area();
+                    double ratio = area / (Tile.SIZE * Tile.SIZE); // we can't use static as it's recalculated based on dpi
                     if (ratio < text.areaSize)
                         return false;
                 }
@@ -100,7 +101,7 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
                     return false;
 
                 for (int i = 0, n = element.getNumPoints(); i < n; i++) {
-                    PointF p = element.getPoint(i);
+                    Point p = element.getPoint(i);
                     ld.labels.push(TextItem.pool.get().set(p.x, p.y, value, text));
                 }
             }
@@ -114,7 +115,7 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
 
             if (element.type == POINT) {
                 for (int i = 0, n = element.getNumPoints(); i < n; i++) {
-                    PointF p = element.getPoint(i);
+                    Point p = element.getPoint(i);
 
                     SymbolItem it = SymbolItem.pool.get();
                     if (symbol.bitmap != null)
@@ -126,7 +127,7 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
             } else if (element.type == LINE) {
                 //TODO: implement
             } else if (element.type == POLY) {
-                PointF centroid = element.labelPosition;
+                Point centroid = element.labelPosition;
                 if (centroid == null)
                     return false;
 

@@ -20,6 +20,7 @@
 package org.oscim.utils.geom;
 
 import org.oscim.core.GeometryBuffer;
+import org.oscim.core.Point;
 import org.oscim.core.PointF;
 
 import java.util.Comparator;
@@ -39,39 +40,39 @@ public class PolyLabel {
      * @param polygon polygon geometry
      * @return optimal label placement point
      */
-    public static PointF get(GeometryBuffer polygon) {
+    public static Point get(GeometryBuffer polygon) {
         // find the bounding box of the outer ring
-        float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE, maxX = Float.MIN_VALUE, maxY = Float.MIN_VALUE;
+        double minX = Float.MAX_VALUE, minY = Float.MAX_VALUE, maxX = Float.MIN_VALUE, maxY = Float.MIN_VALUE;
 
         // take centroid as the first best guess
         Cell bestCell = getCentroidCell(polygon);
 
         // if polygon is clipped to a line, return invalid label point
-        if (Float.isNaN(bestCell.x) || Float.isNaN(bestCell.y))
-            return new PointF(-1f, -1f);
+        if (Double.isNaN(bestCell.x) || Double.isNaN(bestCell.y))
+            return new Point(-1f, -1f);
 
         int n = polygon.index[0];
 
         for (int i = 0; i < n; ) {
-            float x = polygon.points[i++];
-            float y = polygon.points[i++];
+            double x = polygon.points[i++];
+            double y = polygon.points[i++];
             if (x < minX) minX = x;
             if (y < minY) minY = y;
             if (x > maxX) maxX = x;
             if (y > maxY) maxY = y;
         }
 
-        float width = maxX - minX;
-        float height = maxY - minY;
-        float cellSize = Math.min(width, height);
-        float h = cellSize / 2;
+        double width = maxX - minX;
+        double height = maxY - minY;
+        double cellSize = Math.min(width, height);
+        double h = cellSize / 2;
 
         // a priority queue of cells in order of their "potential" (max distance to polygon)
         PriorityQueue<Cell> cellQueue = new PriorityQueue<>(1, new MaxComparator());
 
         // cover polygon with initial cells
-        for (float x = minX; x < maxX; x += cellSize) {
-            for (float y = minY; y < maxY; y += cellSize) {
+        for (double x = minX; x < maxX; x += cellSize) {
+            for (double y = minY; y < maxY; y += cellSize) {
                 cellQueue.add(new Cell(x + h, y + h, h, polygon));
             }
         }
@@ -99,24 +100,24 @@ public class PolyLabel {
             cellQueue.add(new Cell(cell.x + h, cell.y + h, h, polygon));
         }
 
-        return new PointF(bestCell.x, bestCell.y);
+        return new Point(bestCell.x, bestCell.y);
     }
 
     private static class MaxComparator implements Comparator<Cell> {
         @Override
         public int compare(Cell a, Cell b) {
-            return Float.compare(b.max, a.max);
+            return Double.compare(b.max, a.max);
         }
     }
 
     private static class Cell {
-        final float x;
-        final float y;
-        final float h;
-        final float d;
-        final float max;
+        final double x;
+        final double y;
+        final double h;
+        final double d;
+        final double max;
 
-        Cell(float x, float y, float h, GeometryBuffer polygon) {
+        Cell(double x, double y, double h, GeometryBuffer polygon) {
             this.x = x; // cell center x
             this.y = y; // cell center y
             this.h = h; // half the cell size
@@ -126,9 +127,9 @@ public class PolyLabel {
     }
 
     // signed distance from point to polygon outline (negative if point is outside)
-    private static float pointToPolygonDist(float x, float y, GeometryBuffer polygon) {
+    private static float pointToPolygonDist(double x, double y, GeometryBuffer polygon) {
         boolean inside = false;
-        float minDistSq = Float.POSITIVE_INFINITY;
+        double minDistSq = Float.POSITIVE_INFINITY;
 
         int pos = 0;
 
@@ -139,10 +140,10 @@ public class PolyLabel {
                 continue;
 
             for (int i = 0, n = polygon.index[k], j = n - 2; i < n; j = i, i += 2) {
-                float ax = polygon.points[pos + i];
-                float ay = polygon.points[pos + i + 1];
-                float bx = polygon.points[pos + j];
-                float by = polygon.points[pos + j + 1];
+                double ax = polygon.points[pos + i];
+                double ay = polygon.points[pos + i + 1];
+                double bx = polygon.points[pos + j];
+                double by = polygon.points[pos + j + 1];
 
                 if (((ay > y) ^ (by > y)) &&
                         (x < (bx - ax) * (y - ay) / (by - ay) + ax)) inside = !inside;
@@ -158,16 +159,16 @@ public class PolyLabel {
 
     // get polygon centroid
     private static Cell getCentroidCell(GeometryBuffer polygon) {
-        float area = 0f;
-        float x = 0f;
-        float y = 0f;
+        double area = 0f;
+        double x = 0f;
+        double y = 0f;
 
         for (int i = 0, n = polygon.index[0], j = n - 2; i < n; j = i, i += 2) {
-            float ax = polygon.points[i];
-            float ay = polygon.points[i + 1];
-            float bx = polygon.points[j];
-            float by = polygon.points[j + 1];
-            float f = ax * by - bx * ay;
+            double ax = polygon.points[i];
+            double ay = polygon.points[i + 1];
+            double bx = polygon.points[j];
+            double by = polygon.points[j + 1];
+            double f = ax * by - bx * ay;
             x += (ax + bx) * f;
             y += (ay + by) * f;
             area += f * 3;
@@ -176,16 +177,16 @@ public class PolyLabel {
     }
 
     // get squared distance from a point to a segment
-    private static float getSegDistSq(float px, float py, float ax, float ay, float bx, float by) {
+    private static double getSegDistSq(double px, double py, double ax, double ay, double bx, double by) {
 
-        float x = ax;
-        float y = ay;
-        float dx = bx - x;
-        float dy = by - y;
+        double x = ax;
+        double y = ay;
+        double dx = bx - x;
+        double dy = by - y;
 
         if (dx != 0f || dy != 0f) {
 
-            float t = ((px - x) * dx + (py - y) * dy) / (dx * dx + dy * dy);
+            double t = ((px - x) * dx + (py - y) * dy) / (dx * dx + dy * dy);
 
             if (t > 1) {
                 x = bx;

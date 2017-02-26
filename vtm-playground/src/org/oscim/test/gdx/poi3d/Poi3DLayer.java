@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 
 import org.oscim.core.MapElement;
 import org.oscim.core.MapPosition;
+import org.oscim.core.Point;
 import org.oscim.core.PointF;
 import org.oscim.core.Tag;
 import org.oscim.core.Tile;
@@ -65,7 +66,7 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
                     return false;
 
                 Poi3DTileData td = get(tile);
-                PointF p = element.getPoint(0);
+                Point p = element.getPoint(0);
                 SymbolItem s = SymbolItem.pool.get();
                 s.x = p.x;
                 s.y = p.y;
@@ -239,13 +240,13 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
                     SymbolItem it = (SymbolItem) inst.userData;
 
                     // variable height
-                    float s = scale + (it.x * it.y) % 3;
-                    float r = (it.x * it.y) % 360;
+                    double s = scale + (it.x * it.y) % 3;
+                    double r = (it.x * it.y) % 360;
 
                     inst.transform.idt();
-                    inst.transform.scale(s, s, s);
-                    inst.transform.translate((dx + it.x) / s, (dy + it.y) / s, 0);
-                    inst.transform.rotate(0, 0, 1, r);
+                    inst.transform.scale((float)s, (float)s, (float)s);
+                    inst.transform.translate((float)((dx + it.x) / s), (float)((dy + it.y) / s), (float)0);
+                    inst.transform.rotate(0, 0, 1, (float)r);
 
                     // inst.transform.setToTranslationAndScaling((dx +
                     // it.x), (dy + it.y),

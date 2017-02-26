@@ -42,21 +42,21 @@ public class SymbolItem extends Inlist<SymbolItem> {
     };
 
     public boolean billboard;
-    public float x;
-    public float y;
+    public double x;
+    public double y;
 
     public TextureRegion texRegion;
     public Bitmap bitmap;
     public PointF offset;
 
-    public void set(float x, float y, TextureRegion texture, boolean billboard) {
+    public void set(double x, double y, TextureRegion texture, boolean billboard) {
         this.x = x;
         this.y = y;
         this.texRegion = texture;
         this.billboard = billboard;
     }
 
-    public void set(float x, float y, Bitmap bitmap, boolean billboard) {
+    public void set(double x, double y, Bitmap bitmap, boolean billboard) {
         this.x = x;
         this.y = y;
         this.bitmap = bitmap;

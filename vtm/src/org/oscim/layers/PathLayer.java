@@ -253,7 +253,7 @@ public class PathLayer extends Layer {
         public Worker(Map map) {
             super(map, 0, new Task(), new Task());
             mClipper = new LineClipper(-max, -max, max, max);
-            mPPoints = new float[0];
+            mPPoints = new double[0];
         }
 
         private static final int MIN_DIST = 3;
@@ -262,7 +262,7 @@ public class PathLayer extends Layer {
         private double[] mPreprojected = new double[2];
 
         // projected points
-        private float[] mPPoints;
+        private double[] mPPoints;
         private final LineClipper mClipper;
         private int mNumPoints;
 
@@ -281,7 +281,7 @@ public class PathLayer extends Layer {
 
                     if (size * 2 >= points.length) {
                         points = mPreprojected = new double[size * 2];
-                        mPPoints = new float[size * 2];
+                        mPPoints = new double[size * 2];
                     }
 
                     for (int i = 0; i < size; i++)
@@ -297,7 +297,7 @@ public class PathLayer extends Layer {
 
                 if (size > points.length) {
                     points = mPreprojected = new double[size * 2];
-                    mPPoints = new float[size * 2];
+                    mPPoints = new double[size * 2];
                 }
 
                 for (int i = 0; i < size; i += 2)
@@ -352,13 +352,13 @@ public class PathLayer extends Layer {
 
             mClipper.clipStart(x, y);
 
-            float[] projected = mPPoints;
+            double[] projected = mPPoints;
             int i = addPoint(projected, 0, x, y);
 
-            float prevX = x;
-            float prevY = y;
+            double prevX = x;
+            double prevY = y;
 
-            float[] segment = null;
+            double[] segment = null;
 
             for (int j = 2; j < size * 2; j += 2) {
                 x = (int) ((mPreprojected[j + 0] - mx) * scale);
@@ -407,8 +407,8 @@ public class PathLayer extends Layer {
                     continue;
                 }
 
-                float dx = x - prevX;
-                float dy = y - prevY;
+                double dx = x - prevX;
+                double dy = y - prevY;
                 if ((i == 0) || FastMath.absMaxCmp(dx, dy, MIN_DIST)) {
                     projected[i++] = prevX = x;
                     projected[i++] = prevY = y;
@@ -428,7 +428,7 @@ public class PathLayer extends Layer {
             task.bucket.clear();
         }
 
-        private int addPoint(float[] points, int i, int x, int y) {
+        private int addPoint(double[] points, int i, int x, int y) {
             points[i++] = x;
             points[i++] = y;
             return i;

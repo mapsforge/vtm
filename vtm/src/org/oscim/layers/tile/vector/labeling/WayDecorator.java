@@ -25,7 +25,7 @@ import org.oscim.utils.geom.LineClipper;
 
 public final class WayDecorator {
 
-    public static void renderText(LineClipper clipper, float[] coordinates, String string,
+    public static void renderText(LineClipper clipper, double[] coordinates, String string,
                                   TextStyle text, int pos, int len, LabelTileData ld) {
         //TextItem items = textItems;
         TextItem t = null;
@@ -40,15 +40,15 @@ public final class WayDecorator {
         // find way segments long enough to draw the way name on them
         for (int i = pos; i < pos + len - 2; i += 2) {
             // get the first way point coordinates
-            float prevX = coordinates[i + 0];
-            float prevY = coordinates[i + 1];
+            double prevX = coordinates[i + 0];
+            double prevY = coordinates[i + 1];
 
             byte edge = 0;
             //clipper.clipStart(prevX, prevY);
 
             // get the current way point coordinates
-            float curX = coordinates[i + 2];
-            float curY = coordinates[i + 3];
+            double curX = coordinates[i + 2];
+            double curY = coordinates[i + 3];
 
             //int clip;
             //if ((clip = clipper.clipNext(curX, curY)) != 0) {
@@ -83,8 +83,8 @@ public final class WayDecorator {
             int last = i;
 
             // calculate the length of the current segment (Euclidian distance)
-            float vx = prevX - curX;
-            float vy = prevY - curY;
+            double vx = prevX - curX;
+            double vy = prevY - curY;
             if (vx == 0 && vy == 0)
                 continue;
 
@@ -97,8 +97,8 @@ public final class WayDecorator {
 
                 // add additional segments if possible
                 for (int j = i + 4; j < pos + len; j += 2) {
-                    float nextX = coordinates[j + 0];
-                    float nextY = coordinates[j + 1];
+                    double nextX = coordinates[j + 0];
+                    double nextY = coordinates[j + 1];
 
                     //if ((clip = clipper.clipNext(nextX, nextY)) != 0) {
                     //    if (clip < 0) {
@@ -110,12 +110,12 @@ public final class WayDecorator {
                     //    }
                     //}
 
-                    float wx = nextX - curX;
-                    float wy = nextY - curY;
+                    double wx = nextX - curX;
+                    double wy = nextY - curY;
                     if (wx == 0 && wy == 0)
                         continue;
 
-                    float area = GeometryUtils.area(prevX, prevY, curX, curY, nextX, nextY);
+                    double area = GeometryUtils.area(prevX, prevY, curX, curY, nextX, nextY);
 
                     if (area > 1000) {
                         //log.debug("b: " + string + " " + area );
@@ -132,9 +132,9 @@ public final class WayDecorator {
                         break;
                     }
 
-                    float ux = vx + wx;
-                    float uy = vy + wy;
-                    float diff = wx * uy - wy * ux;
+                    double ux = vx + wx;
+                    double uy = vy + wy;
+                    double diff = wx * uy - wy * ux;
 
                     // maximum angle between segments
                     if (diff > 0.1 || diff < -0.1) {
@@ -163,7 +163,7 @@ public final class WayDecorator {
                 a = (float) Math.sqrt(vx * vx + vy * vy);
             }
 
-            float segmentLength = a;
+            double segmentLength = a;
 
             if (edge == 0) {
                 if (segmentLength < minWidth) {
@@ -181,7 +181,7 @@ public final class WayDecorator {
                 labelWidth = text.paint.measureText(string);
             }
 
-            float x1, y1, x2, y2;
+            double x1, y1, x2, y2;
             if (prevX < curX) {
                 x1 = prevX;
                 y1 = prevY;

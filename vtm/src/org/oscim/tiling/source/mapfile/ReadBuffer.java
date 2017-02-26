@@ -28,20 +28,19 @@ import java.util.logging.Logger;
  * Reads from a {@link RandomAccessFile} into a buffer and decodes the data.
  */
 public class ReadBuffer {
-    private static final String CHARSET_UTF8 = "UTF-8";
-    private static final Logger LOG = Logger.getLogger(ReadBuffer.class.getName());
-
     /**
      * Maximum buffer size which is supported by this implementation.
      */
-    static final int MAXIMUM_BUFFER_SIZE = 8000000;
+    static final int MAXIMUM_BUFFER_SIZE = 2500000;
+    private static final String CHARSET_UTF8 = "UTF-8";
+    private static final Logger LOGGER = Logger.getLogger(ReadBuffer.class.getName());
 
-    private byte[] mBufferData;
-    private int mBufferPosition;
-    private final RandomAccessFile mInputFile;
+    private byte[] bufferData;
+    private int bufferPosition;
+    private final RandomAccessFile inputFile;
 
     ReadBuffer(RandomAccessFile inputFile) {
-        mInputFile = inputFile;
+        this.inputFile = inputFile;
     }
 
     /**
@@ -49,8 +48,8 @@ public class ReadBuffer {
      *
      * @return the byte value.
      */
-    public byte readByte() {
-        return mBufferData[mBufferPosition++];
+    public synchronized byte readByte() {
+        return this.bufferData[this.bufferPosition++];
     }
 
     /**
@@ -63,22 +62,20 @@ public class ReadBuffer {
      * @return true if the whole data was read successfully, false otherwise.
      * @throws IOException if an error occurs while reading the file.
      */
-    public boolean readFromFile(int length) throws IOException {
+    public synchronized boolean readFromFile(int length) throws IOException {
         // ensure that the read buffer is large enough
-        if (mBufferData == null || mBufferData.length < length) {
+        if (this.bufferData == null || this.bufferData.length < length) {
             // ensure that the read buffer is not too large
             if (length > MAXIMUM_BUFFER_SIZE) {
-                LOG.warning("invalid read length: " + length);
+                LOGGER.warning("invalid read length: " + length);
                 return false;
             }
-            mBufferData = new byte[length];
+            this.bufferData = new byte[length];
         }
 
-        mBufferPosition = 0;
-
         // reset the buffer position and read the data into the buffer
-        // bufferPosition = 0;
-        return mInputFile.read(mBufferData, 0, length) == length;
+        this.bufferPosition = 0;
+        return this.inputFile.read(this.bufferData, 0, length) == length;
     }
 
     /**
@@ -88,15 +85,9 @@ public class ReadBuffer {
      *
      * @return the int value.
      */
-    public int readInt() {
-        int pos = mBufferPosition;
-        byte[] data = mBufferData;
-        mBufferPosition += 4;
-
-        return data[pos] << 24
-                | (data[pos + 1] & 0xff) << 16
-                | (data[pos + 2] & 0xff) << 8
-                | (data[pos + 3] & 0xff);
+    public synchronized int readInt() {
+        this.bufferPosition += 4;
+        return Deserializer.getInt(this.bufferData, this.bufferPosition - 4);
     }
 
     /**
@@ -106,19 +97,9 @@ public class ReadBuffer {
      *
      * @return the long value.
      */
-    public long readLong() {
-        int pos = mBufferPosition;
-        byte[] data = mBufferData;
-        mBufferPosition += 8;
-
-        return (data[pos] & 0xffL) << 56
-                | (data[pos + 1] & 0xffL) << 48
-                | (data[pos + 2] & 0xffL) << 40
-                | (data[pos + 3] & 0xffL) << 32
-                | (data[pos + 4] & 0xffL) << 24
-                | (data[pos + 5] & 0xffL) << 16
-                | (data[pos + 6] & 0xffL) << 8
-                | (data[pos + 7] & 0xffL);
+    public synchronized long readLong() {
+        this.bufferPosition += 8;
+        return Deserializer.getLong(this.bufferData, this.bufferPosition - 8);
 
     }
 
@@ -129,9 +110,9 @@ public class ReadBuffer {
      *
      * @return the int value.
      */
-    public int readShort() {
-        mBufferPosition += 2;
-        return mBufferData[mBufferPosition - 2] << 8 | (mBufferData[mBufferPosition - 1] & 0xff);
+    public synchronized int readShort() {
+        this.bufferPosition += 2;
+        return Deserializer.getShort(this.bufferData, this.bufferPosition - 2);
     }
 
     /**
@@ -143,55 +124,23 @@ public class ReadBuffer {
      *
      * @return the value.
      */
-    public int readSignedInt() {
-        int pos = mBufferPosition;
-        byte[] data = mBufferData;
-        int flag;
+    public synchronized int readSignedInt() {
+        int variableByteDecode = 0;
+        byte variableByteShift = 0;
 
-        if ((data[pos] & 0x80) == 0) {
-            mBufferPosition += 1;
-            flag = ((data[pos] & 0x40) >> 6);
-
-            return ((data[pos] & 0x3f) ^ -flag) + flag;
+        // check if the continuation bit is set
+        while ((this.bufferData[this.bufferPosition] & 0x80) != 0) {
+            variableByteDecode |= (this.bufferData[this.bufferPosition++] & 0x7f) << variableByteShift;
+            variableByteShift += 7;
         }
 
-        if ((data[pos + 1] & 0x80) == 0) {
-            mBufferPosition += 2;
-            flag = ((data[pos + 1] & 0x40) >> 6);
-
-            return (((data[pos] & 0x7f)
-                    | (data[pos + 1] & 0x3f) << 7) ^ -flag) + flag;
-
+        // read the six data bits from the last byte
+        if ((this.bufferData[this.bufferPosition] & 0x40) != 0) {
+            // negative
+            return -(variableByteDecode | ((this.bufferData[this.bufferPosition++] & 0x3f) << variableByteShift));
         }
-
-        if ((data[pos + 2] & 0x80) == 0) {
-            mBufferPosition += 3;
-            flag = ((data[pos + 2] & 0x40) >> 6);
-
-            return (((data[pos] & 0x7f)
-                    | (data[pos + 1] & 0x7f) << 7
-                    | (data[pos + 2] & 0x3f) << 14) ^ -flag) + flag;
-
-        }
-
-        if ((data[pos + 3] & 0x80) == 0) {
-            mBufferPosition += 4;
-            flag = ((data[pos + 3] & 0x40) >> 6);
-
-            return (((data[pos] & 0x7f)
-                    | ((data[pos + 1] & 0x7f) << 7)
-                    | ((data[pos + 2] & 0x7f) << 14)
-                    | ((data[pos + 3] & 0x3f) << 21)) ^ -flag) + flag;
-        }
-
-        mBufferPosition += 5;
-        flag = ((data[pos + 4] & 0x40) >> 6);
-
-        return ((((data[pos] & 0x7f)
-                | (data[pos + 1] & 0x7f) << 7
-                | (data[pos + 2] & 0x7f) << 14
-                | (data[pos + 3] & 0x7f) << 21
-                | (data[pos + 4] & 0x3f) << 28)) ^ -flag) + flag;
+        // positive
+        return variableByteDecode | ((this.bufferData[this.bufferPosition++] & 0x3f) << variableByteShift);
 
     }
 
@@ -206,61 +155,10 @@ public class ReadBuffer {
      * @param values result values
      * @param length number of values to read
      */
-    public void readSignedInt(int[] values, int length) {
-        int pos = mBufferPosition;
-        byte[] data = mBufferData;
-        int flag;
-
+    public synchronized void readSignedInt(int[] values, int length) {
         for (int i = 0; i < length; i++) {
-
-            if ((data[pos] & 0x80) == 0) {
-
-                flag = ((data[pos] & 0x40) >> 6);
-
-                values[i] = ((data[pos] & 0x3f) ^ -flag) + flag;
-                pos += 1;
-
-            } else if ((data[pos + 1] & 0x80) == 0) {
-
-                flag = ((data[pos + 1] & 0x40) >> 6);
-
-                values[i] = (((data[pos] & 0x7f)
-                        | ((data[pos + 1] & 0x3f) << 7)) ^ -flag) + flag;
-                pos += 2;
-
-            } else if ((data[pos + 2] & 0x80) == 0) {
-
-                flag = ((data[pos + 2] & 0x40) >> 6);
-
-                values[i] = (((data[pos] & 0x7f)
-                        | ((data[pos + 1] & 0x7f) << 7)
-                        | ((data[pos + 2] & 0x3f) << 14)) ^ -flag) + flag;
-                pos += 3;
-
-            } else if ((data[pos + 3] & 0x80) == 0) {
-
-                flag = ((data[pos + 3] & 0x40) >> 6);
-
-                values[i] = (((data[pos] & 0x7f)
-                        | ((data[pos + 1] & 0x7f) << 7)
-                        | ((data[pos + 2] & 0x7f) << 14)
-                        | ((data[pos + 3] & 0x3f) << 21)) ^ -flag) + flag;
-
-                pos += 4;
-            } else {
-                flag = ((data[pos + 4] & 0x40) >> 6);
-
-                values[i] = ((((data[pos] & 0x7f)
-                        | ((data[pos + 1] & 0x7f) << 7)
-                        | ((data[pos + 2] & 0x7f) << 14)
-                        | ((data[pos + 3] & 0x7f) << 21)
-                        | ((data[pos + 4] & 0x3f) << 28))) ^ -flag) + flag;
-
-                pos += 5;
-            }
+            values[i] = this.readSignedInt();
         }
-
-        mBufferPosition = pos;
     }
 
     /**
@@ -272,42 +170,19 @@ public class ReadBuffer {
      *
      * @return the int value.
      */
-    public int readUnsignedInt() {
-        int pos = mBufferPosition;
-        byte[] data = mBufferData;
+    public synchronized int readUnsignedInt() {
 
-        if ((data[pos] & 0x80) == 0) {
-            mBufferPosition += 1;
-            return (data[pos] & 0x7f);
+        int variableByteDecode = 0;
+        byte variableByteShift = 0;
+
+        // check if the continuation bit is set
+        while ((this.bufferData[this.bufferPosition] & 0x80) != 0) {
+            variableByteDecode |= (this.bufferData[this.bufferPosition++] & 0x7f) << variableByteShift;
+            variableByteShift += 7;
         }
 
-        if ((data[pos + 1] & 0x80) == 0) {
-            mBufferPosition += 2;
-            return (data[pos] & 0x7f)
-                    | (data[pos + 1] & 0x7f) << 7;
-        }
-
-        if ((data[pos + 2] & 0x80) == 0) {
-            mBufferPosition += 3;
-            return (data[pos] & 0x7f)
-                    | ((data[pos + 1] & 0x7f) << 7)
-                    | ((data[pos + 2] & 0x7f) << 14);
-        }
-
-        if ((data[pos + 3] & 0x80) == 0) {
-            mBufferPosition += 4;
-            return (data[pos] & 0x7f)
-                    | ((data[pos + 1] & 0x7f) << 7)
-                    | ((data[pos + 2] & 0x7f) << 14)
-                    | ((data[pos + 3] & 0x7f) << 21);
-        }
-
-        mBufferPosition += 5;
-        return (data[pos] & 0x7f)
-                | ((data[pos + 1] & 0x7f) << 7)
-                | ((data[pos + 2] & 0x7f) << 14)
-                | ((data[pos + 3] & 0x7f) << 21)
-                | ((data[pos + 4] & 0x7f) << 28);
+        // read the seven data bits from the last byte
+        return variableByteDecode | (this.bufferData[this.bufferPosition++] << variableByteShift);
     }
 
     /**
@@ -323,7 +198,7 @@ public class ReadBuffer {
      * @return ...
      */
     public int getPositionAndSkip() {
-        int pos = mBufferPosition;
+        int pos = this.bufferPosition;
         int length = readUnsignedInt();
         skipBytes(length);
         return pos;
@@ -336,16 +211,15 @@ public class ReadBuffer {
      * @return the UTF-8 decoded string (may be null).
      */
     public String readUTF8EncodedString(int stringLength) {
-        if (stringLength > 0 && mBufferPosition + stringLength <= mBufferData.length) {
-            mBufferPosition += stringLength;
+        if (stringLength > 0 && this.bufferPosition + stringLength <= this.bufferData.length) {
+            this.bufferPosition += stringLength;
             try {
-                return new String(mBufferData, mBufferPosition - stringLength, stringLength,
-                        CHARSET_UTF8);
+                return new String(this.bufferData, this.bufferPosition - stringLength, stringLength, CHARSET_UTF8);
             } catch (UnsupportedEncodingException e) {
                 throw new IllegalStateException(e);
             }
         }
-        LOG.warning("invalid string length: " + stringLength);
+        LOGGER.warning("invalid string length: " + stringLength);
         return null;
     }
 
@@ -356,10 +230,10 @@ public class ReadBuffer {
      * @return the UTF-8 decoded string (may be null).
      */
     public String readUTF8EncodedStringAt(int position) {
-        int curPosition = mBufferPosition;
-        mBufferPosition = position;
+        int curPosition = this.bufferPosition;
+        this.bufferPosition = position;
         String result = readUTF8EncodedString(readUnsignedInt());
-        mBufferPosition = curPosition;
+        this.bufferPosition = curPosition;
         return result;
     }
 
@@ -367,14 +241,14 @@ public class ReadBuffer {
      * @return the current buffer position.
      */
     int getBufferPosition() {
-        return mBufferPosition;
+        return this.bufferPosition;
     }
 
     /**
      * @return the current size of the read buffer.
      */
     int getBufferSize() {
-        return mBufferData.length;
+        return this.bufferData.length;
     }
 
     /**
@@ -383,7 +257,7 @@ public class ReadBuffer {
      * @param bufferPosition the buffer position.
      */
     void setBufferPosition(int bufferPosition) {
-        mBufferPosition = bufferPosition;
+        this.bufferPosition = bufferPosition;
     }
 
     /**
@@ -392,7 +266,7 @@ public class ReadBuffer {
      * @param bytes the number of bytes to skip.
      */
     void skipBytes(int bytes) {
-        mBufferPosition += bytes;
+        this.bufferPosition += bytes;
     }
 
     boolean readTags(TagSet tags, Tag[] wayTags, byte numberOfTags) {
@@ -403,7 +277,6 @@ public class ReadBuffer {
         for (byte i = 0; i < numberOfTags; i++) {
             int tagId = readUnsignedInt();
             if (tagId < 0 || tagId >= maxTag) {
-                LOG.warning("invalid tag ID: " + tagId);
                 return true;
             }
             tags.add(wayTags[tagId]);
@@ -414,9 +287,9 @@ public class ReadBuffer {
     private static final int WAY_NUMBER_OF_TAGS_BITMASK = 0x0f;
     int lastTagPosition;
 
-    int skipWays(int queryTileBitmask, int elements) {
-        int pos = mBufferPosition;
-        byte[] data = mBufferData;
+    synchronized int skipWays(int queryTileBitmask, int elements) {
+        int pos = this.bufferPosition;
+        byte[] data = this.bufferData;
         int cnt = elements;
         int skip;
 
@@ -452,7 +325,7 @@ public class ReadBuffer {
             }
             // invalid way size
             if (skip < 0) {
-                mBufferPosition = pos;
+                this.bufferPosition = pos;
                 return -1;
             }
 
@@ -470,7 +343,7 @@ public class ReadBuffer {
                 break;
             }
         }
-        mBufferPosition = pos;
+        this.bufferPosition = pos;
         return cnt;
     }
 }

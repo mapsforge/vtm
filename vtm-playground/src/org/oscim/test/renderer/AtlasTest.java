@@ -73,7 +73,7 @@ public class AtlasTest extends GdxMap {
             ll3.line = new LineStyle(Color.GREEN, 3, Cap.BUTT);
             ll3.scale = 1f;
 
-            float[] points = new float[10];
+            double[] points = new double[10];
 
             for (int i = 0; i < 400; i++) {
                 int w = (int) (20 + Math.random() * 256);

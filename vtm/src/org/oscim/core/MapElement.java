@@ -27,7 +27,7 @@ package org.oscim.core;
  */
 public class MapElement extends GeometryBuffer {
 
-    public PointF labelPosition;
+    public Point labelPosition;
 
     /**
      * layer of the element (0-10) overrides the theme drawing order
@@ -44,8 +44,8 @@ public class MapElement extends GeometryBuffer {
         super(points, indices);
     }
 
-    public void setLabelPosition(float x, float y) {
-        labelPosition = new PointF(x, y);
+    public void setLabelPosition(double x, double y) {
+        labelPosition = new Point(x, y);
     }
 
     public void setLayer(int layer) {

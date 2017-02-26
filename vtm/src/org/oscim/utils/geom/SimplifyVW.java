@@ -32,7 +32,7 @@ public class SimplifyVW {
     class Item extends Inlist<Item> {
         int index;
         int id;
-        float area;
+        double area;
 
         Item prev;
     }
@@ -118,9 +118,9 @@ public class SimplifyVW {
         first = pool.release(first);
     }
 
-    public static float area(float[] a, int p1, int p2, int p3) {
+    public static float area(double[] a, int p1, int p2, int p3) {
 
-        float area = GeometryUtils.area(a, p1, p2, p3);
+        double area = GeometryUtils.area(a, p1, p2, p3);
         double dotp = GeometryUtils.dotProduct(a, p1, p2, p3);
         //return (float) (area * (0.5 + 0.5 * (1 - dotp * dotp)));
 
@@ -143,7 +143,7 @@ public class SimplifyVW {
         up(size++);
     }
 
-    public Item push(int id, float area) {
+    public Item push(int id, double area) {
         Item it = pool.get();
         heap[size] = it;
         it.index = size;

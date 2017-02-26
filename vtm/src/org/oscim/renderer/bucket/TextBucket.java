@@ -175,17 +175,17 @@ public class TextBucket extends TextureBucket {
             y1 = y2 = (short) (COORD_SCALE * (it.text.dy + hh));
             y3 = y4 = (short) (COORD_SCALE * (it.text.dy - hh));
         } else {
-            float vx = it.x1 - it.x2;
-            float vy = it.y1 - it.y2;
+            double vx = it.x1 - it.x2;
+            double vy = it.y1 - it.y2;
             float a = (float) Math.sqrt(vx * vx + vy * vy);
             vx = vx / a;
             vy = vy / a;
 
-            float ux = -vy * hh;
-            float uy = vx * hh;
+            double ux = -vy * hh;
+            double uy = vx * hh;
 
-            float ux2 = -vy * hh;
-            float uy2 = vx * hh;
+            double ux2 = -vy * hh;
+            double uy2 = vx * hh;
 
             vx *= hw;
             vy *= hw;

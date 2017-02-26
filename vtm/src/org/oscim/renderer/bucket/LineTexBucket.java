@@ -104,7 +104,7 @@ public final class LineTexBucket extends LineBucket {
     }
 
     @Override
-    void addLine(float[] points, int[] index, int numPoints, boolean closed) {
+    void addLine(double[] points, int[] index, int numPoints, boolean closed) {
 
         if (vertexItems.empty()) {
             /* The additional end vertex to make sure not to read outside
@@ -142,19 +142,19 @@ public final class LineTexBucket extends LineBucket {
             }
 
             int end = pos + length;
-            float x = points[pos++] * COORD_SCALE;
-            float y = points[pos++] * COORD_SCALE;
+            double x = points[pos++] * COORD_SCALE;
+            double y = points[pos++] * COORD_SCALE;
 
             /* randomize a bit */
-            float lineLength = line.randomOffset ? (x * x + y * y) % 80 : 0;
+            double lineLength = line.randomOffset ? (x * x + y * y) % 80 : 0;
 
             while (pos < end) {
-                float nx = points[pos++] * COORD_SCALE;
-                float ny = points[pos++] * COORD_SCALE;
+                double nx = points[pos++] * COORD_SCALE;
+                double ny = points[pos++] * COORD_SCALE;
 
                 /* Calculate triangle corners for the given width */
-                float vx = nx - x;
-                float vy = ny - y;
+                double vx = nx - x;
+                double vy = ny - y;
 
                 //    /* normalize vector */
                 double a = Math.sqrt(vx * vx + vy * vy);
