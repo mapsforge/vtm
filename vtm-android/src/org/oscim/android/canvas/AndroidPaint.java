@@ -99,6 +99,17 @@ class AndroidPaint implements Paint {
     }
 
     @Override
+    public Style getStyle() {
+        switch (mPaint.getStyle()) {
+            case FILL_AND_STROKE:
+            case FILL:
+                return Style.FILL;
+            default:
+                return Style.STROKE;
+        }
+    }
+
+    @Override
     public void setTextAlign(Align align) {
         // Align text in text layer
         //mPaint.setTextAlign(android.graphics.Paint.Align.valueOf(align.name()));

@@ -138,6 +138,30 @@ public class AwtCanvas implements Canvas {
         this.canvas.drawLine(x1, y1, x2, y2);
     }
 
+
+
+    @Override
+    public void drawCircle(float x, float y, float radius, Paint paint) {
+
+        // TODO THIS IS UNTESTED !!!
+
+        AwtPaint awtPaint = (AwtPaint) paint;
+        this.canvas.setColor(awtPaint.color);
+
+        switch (awtPaint.style) {
+            case STROKE:
+                if (awtPaint.stroke != null) {
+                    this.canvas.setStroke(awtPaint.stroke);
+                    this.canvas.drawOval((int)x, (int)y, (int)radius, (int)radius);
+                }
+                break;
+            case FILL:
+            default: // FILL_AND_STROKE is not defined here but exists on Android
+                this.canvas.fillOval((int)x, (int)y, (int)radius, (int)radius);
+        }
+
+    }
+
     @Override
     public void fillColor(int color) {
         java.awt.Color awtColor = color == Color.TRANSPARENT ? TRANSPARENT : new java.awt.Color(color);
