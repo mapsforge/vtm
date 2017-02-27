@@ -1,5 +1,6 @@
 /*
  * Copyright 2016 devemux86
+ * Copyright 2017 Longri
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -30,8 +31,8 @@ import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.map.Map;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 
@@ -39,6 +40,7 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
 
     protected static final boolean BILLBOARDS = true;
     protected MarkerSymbol mFocusMarker;
+    private ItemizedLayer<MarkerItem> markerLayer;
 
     @Override
     public void createLayers() {
@@ -64,7 +66,7 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
         else
             mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.CENTER, false);
 
-        ItemizedLayer<MarkerItem> markerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+        markerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
         mMap.layers().add(markerLayer);
 
         List<MarkerItem> pts = new ArrayList<>();
@@ -77,23 +79,63 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
         mMap.layers().add(new TileGridLayer(mMap));
     }
 
+    Timer timer;
+    int markerCount = 0;
+
     @Override
-    public boolean onItemSingleTapUp(int index, MarkerItem item) {
-        if (item.getMarker() == null)
+    public boolean onItemSingleTapUp(int index,final MarkerItem item) {
+        if (item.getMarker() == null) {
             item.setMarker(mFocusMarker);
-        else
+            markerCount++;
+            final AtomicInteger rotValue = new AtomicInteger(0);
+            if(timer != null) timer.cancel();
+            timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    float value = (float)(rotValue.incrementAndGet() * 10);
+                    item.setRotation(value);
+                    if(rotValue.get()>36) rotValue.set(0);
+                    markerLayer.update();
+                    mMap.updateMap(true);
+                }
+            };
+            timer.schedule(timerTask,1000,1000);
+
+        }else {
             item.setMarker(null);
+            markerCount--;
+            if(timer != null && markerCount == 0) timer.cancel();
+        }
 
         System.out.println("Marker tap " + item.getTitle());
         return true;
     }
 
     @Override
-    public boolean onItemLongPress(int index, MarkerItem item) {
-        if (item.getMarker() == null)
+    public boolean onItemLongPress(int index,final MarkerItem item) {
+        if (item.getMarker() == null) {
             item.setMarker(mFocusMarker);
-        else
+            markerCount++;
+            final AtomicInteger rotValue = new AtomicInteger(0);
+            if(timer != null) timer.cancel();
+            timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    float value = (float)(rotValue.incrementAndGet() * 10);
+                    item.setRotation(value);
+                    if(rotValue.get()>36) rotValue.set(0);
+                    markerLayer.update();
+                    mMap.updateMap(true);
+                }
+            };
+            timer.schedule(timerTask,300,300);
+        }else{
             item.setMarker(null);
+            markerCount--;
+            if(timer != null && markerCount == 0) timer.cancel();
+        }
 
         System.out.println("Marker long press " + item.getTitle());
         return true;

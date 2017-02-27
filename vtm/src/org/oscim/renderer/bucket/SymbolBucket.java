@@ -1,6 +1,7 @@
 /*
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,6 +20,7 @@ package org.oscim.renderer.bucket;
 
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.PointF;
+import org.oscim.renderer.GLMatrix;
 import org.oscim.renderer.atlas.TextureAtlas;
 import org.oscim.utils.pool.Inlist;
 import org.slf4j.Logger;
@@ -35,6 +37,10 @@ public final class SymbolBucket extends TextureBucket {
 
     private TextureItem prevTextures;
     private List<SymbolItem> mSymbols = new List<SymbolItem>();
+
+    private final float[] points = new float[8];
+    private final GLMatrix rotationMatrix = new GLMatrix();
+    private final GLMatrix translateMatrix = new GLMatrix();
 
     public SymbolBucket() {
         super(RenderBucket.SYMBOL);
@@ -118,48 +124,69 @@ public final class SymbolBucket extends TextureBucket {
             short u2 = (short) (SCALE * (x + width));
             short v2 = (short) (SCALE * (y + height));
 
-            PointF prevOffset = null;
-            short x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+            float minX, minY, maxX, maxY;
 
             /* add symbol items referencing the same bitmap */
             for (SymbolItem prev = it; it != null; it = it.next) {
 
-                if (prev.bitmap != null && prev.bitmap != it.bitmap)
+                if (prev.bitmap != null && prev.bitmap != it.bitmap && prev.rotation != it.rotation)
                     break;
 
-                if (prev.texRegion != null && prev.texRegion != it.texRegion)
+                if (prev.texRegion != null && prev.texRegion != it.texRegion && prev.rotation != it.rotation)
                     break;
 
-                if (it == prev || it.offset != prevOffset) {
-                    prevOffset = it.offset;
-                    if (it.offset == null) {
-                        float hw = width / 2f;
-                        float hh = height / 2f;
+                short offsetX, offsetY;
+                if (it.offset == null) {
+                    offsetX = 0;
+                    offsetY = 0;
+                } else {
+                    offsetX = (short) (((width / 2f) - (it.offset.x * width)) * SCALE);
+                    offsetY = (short) (((height / 2f) - (it.offset.y * height)) * SCALE);
+                }
 
-                        x1 = (short) (SCALE * (-hw));
-                        x2 = (short) (SCALE * (hw));
-                        y1 = (short) (SCALE * (hh));
-                        y2 = (short) (SCALE * (-hh));
-                    } else {
-                        float hw = (float) (it.offset.x * width);
-                        float hh = (float) (it.offset.y * height);
-                        x1 = (short) (SCALE * (-hw));
-                        x2 = (short) (SCALE * (width - hw));
-                        y1 = (short) (SCALE * (height - hh));
-                        y2 = (short) (SCALE * (-hh));
-                    }
+                float hw = width / 2f;
+                float hh = height / 2f;
+
+                minX = (SCALE * (-hw));
+                maxX = (SCALE * (hw));
+                minY = (SCALE * (hh));
+                maxY = (SCALE * (-hh));
+
+
+                //target drawing rectangle
+                {//lower-left
+                    points[0] = minX;
+                    points[1] = minY;
+                }
+
+                {//upper-left
+                    points[2] = minX;
+                    points[3] = maxY;
+                }
+
+                {//upper-right
+                    points[6] = maxX;
+                    points[7] = maxY;
+                }
+
+                {//lower-right
+                    points[4] = maxX;
+                    points[5] = minY;
+                }
+
+                if (it.rotation != 0) {
+                    rotationMatrix.setRotation(it.rotation, 0, 0, 1);
+                    rotationMatrix.prj2D(points, 0, 4);
                 }
 
                 /* add vertices */
-                short tx = (short) ((int) (SCALE * it.x) & LBIT_MASK
-                        | (it.billboard ? 1 : 0));
+                short tx = (short) (((int) (SCALE * it.x) & LBIT_MASK | (it.billboard ? 1 : 0)) + offsetX);
+                short ty = (short) ((SCALE * it.y) + offsetY);
 
-                short ty = (short) (SCALE * it.y);
-
-                vertexItems.add(tx, ty, x1, y1, u1, v2);
-                vertexItems.add(tx, ty, x1, y2, u1, v1);
-                vertexItems.add(tx, ty, x2, y1, u2, v2);
-                vertexItems.add(tx, ty, x2, y2, u2, v1);
+                vertexItems.add(tx, ty, points[0], points[1], u1, v2);//lower-left
+                vertexItems.add(tx, ty, points[2], points[3], u1, v1);//upper-left
+                vertexItems.add(tx, ty, points[4], points[5], u2, v2);//upper-right
+                vertexItems.add(tx, ty, points[6], points[7], u2, v1);//lower-right
 
                 /* six elements used to draw the four vertices */
                 t.indices += TextureBucket.INDICES_PER_SPRITE;
