@@ -93,7 +93,7 @@ public class CircleBucket extends RenderBucket {
             int uMVP, uFill, uRadius, uStroke, uWidth, aPos;
 
             Shader(String shaderFile) {
-                if (!GLAdapter.CIRCLE_QUADS)
+                if (!GLAdapter.CIRCLE_QUADS && !GLAdapter.GDX_WEBGL_QUIRKS)
                     gl.enable(GL.VERTEX_PROGRAM_POINT_SIZE);
 
                 String version = null;
