@@ -154,6 +154,11 @@ public class AwtPaint implements Paint {
     }
 
     @Override
+    public Style getStyle() {
+        return style;
+    }
+
+    @Override
     public void setTextAlign(Align align) {
         // Align text in text layer
         //this.align = align;

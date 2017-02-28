@@ -100,6 +100,30 @@ public class GwtCanvas implements org.oscim.backend.canvas.Canvas {
     }
 
     @Override
+    public void drawCircle(float x, float y, float radius, Paint paint) {
+
+        // TODO this has been blindly coded !
+
+        if ((bitmap == null) || (bitmap.pixmap == null)) {
+            //log.debug("no bitmap set");
+            return;
+        }
+
+        GwtPaint p = (GwtPaint) paint;
+        Context2d ctx = bitmap.pixmap.getContext();
+
+        if (p.stroke) {
+            ctx.setLineWidth(p.strokeWidth);
+            ctx.setStrokeStyle(p.color);
+        } else {
+            ctx.setFillStyle(p.color);
+        }
+
+        ctx.arc(x, y, radius, 0, 2*Math.PI);
+
+    }
+
+    @Override
     public void fillColor(int color) {
         // TODO
     }

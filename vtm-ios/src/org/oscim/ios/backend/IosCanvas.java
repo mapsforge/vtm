@@ -130,4 +130,24 @@ public class IosCanvas implements Canvas {
     public int getWidth() {
         return this.cgBitmapContext != null ? (int) this.cgBitmapContext.getWidth() : 0;
     }
+
+    @Override
+    public void drawCircle(float x, float y, float radius, Paint paint) {
+
+        // TODO this has been blindly coded
+        // some IOS guru please review it
+
+        CGRect rect = new CGRect(x-radius, y-radius, x+radius, y+radius);
+
+        switch (paint.getStyle()) {
+            case FILL:
+                setFillColor(this.cgBitmapContext, paint.getColor());
+                this.cgBitmapContext.fillEllipseInRect(rect);
+                break;
+            case STROKE:
+                setStrokeColor(this.cgBitmapContext, paint.getColor());
+                this.cgBitmapContext.strokeEllipseInRect(rect);
+                break;
+        }
+    }
 }
