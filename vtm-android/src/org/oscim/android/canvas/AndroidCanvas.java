@@ -73,6 +73,11 @@ public class AndroidCanvas implements Canvas {
     }
 
     @Override
+    public void drawRectangle(float x0, float y0, float x1, float y1, Paint paint, boolean isFill) {
+        canvas.drawRect(x0, y0, x1, y1, ((AndroidPaint) paint).mPaint);
+    }
+
+    @Override
     public void fillColor(int color) {
         canvas.drawColor(color, PorterDuff.Mode.CLEAR);
     }

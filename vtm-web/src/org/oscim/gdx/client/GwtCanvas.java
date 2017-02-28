@@ -102,7 +102,49 @@ public class GwtCanvas implements org.oscim.backend.canvas.Canvas {
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2, Paint paint) {
-        // TODO
+        if (bitmap == null) {
+            //log.debug("no bitmap set");
+            return;
+        }
+
+        GwtPaint p = (GwtPaint) paint;
+
+        if (p.stroke && GwtGdxGraphics.NO_STROKE_TEXT)
+            return;
+
+        Context2d ctx = bitmap.pixmap.getContext();
+
+        ctx.setLineWidth(p.strokeWidth);
+        ctx.setStrokeStyle(p.color);
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+    }
+
+    @Override
+    public void drawRectangle(float x0, float y0, float x1, float y1, Paint paint, boolean isFill) {
+        if (bitmap == null) {
+//            log.debug("no bitmap set");
+            return;
+        }
+
+        GwtPaint p = (GwtPaint) paint;
+
+        if (p.stroke && GwtGdxGraphics.NO_STROKE_TEXT) {
+//            log.debug("p.stroke && GwtGdxGraphics.NO_STROKE_TEXT");
+            return;
+        }
+
+        Context2d ctx = bitmap.pixmap.getContext();
+
+        if (p.stroke) {
+            ctx.setLineWidth(p.strokeWidth);
+            ctx.setStrokeStyle(p.color);
+            ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+        } else {
+            ctx.setFillStyle(p.color);
+            ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+        }
+
     }
 
     @Override

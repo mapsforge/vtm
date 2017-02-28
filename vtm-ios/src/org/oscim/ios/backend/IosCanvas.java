@@ -118,6 +118,29 @@ public class IosCanvas implements Canvas {
     }
 
     @Override
+    public void drawRectangle(float x1, float y1, float x2, float y2, Paint paint, boolean isFill) {
+        IosPaint fillPaint = (IosPaint) paint;
+
+        //flip Y-axis
+        y1 = (int) (this.cgBitmapContext.getHeight() - y1);
+        y2 = (int) (this.cgBitmapContext.getHeight() - y2);
+
+        this.cgBitmapContext.beginPath();
+        this.cgBitmapContext.moveToPoint(x1, y1);
+        this.cgBitmapContext.addLineToPoint(x1, y2);
+        this.cgBitmapContext.addLineToPoint(x2, y2);
+        this.cgBitmapContext.addLineToPoint(x2, y1);
+        this.cgBitmapContext.addLineToPoint(x1, y1);
+        if (isFill) {
+            setFillColor(this.cgBitmapContext, fillPaint.getColor());
+            this.cgBitmapContext.fillPath();
+        } else {
+            setStrokeColor(this.cgBitmapContext, fillPaint.getColor());
+            this.cgBitmapContext.strokePath();
+        }
+    }
+
+    @Override
     public void fillColor(int color) {
         CGRect rect = new CGRect(0, 0, this.cgBitmapContext.getWidth(), this.cgBitmapContext.getHeight());
         setFillColor(this.cgBitmapContext, (color));
