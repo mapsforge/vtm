@@ -2,6 +2,7 @@
  * Copyright 2014 Charles Greb
  * Copyright 2014 Hannes Janetzek
  * Copyright 2017 devemux86
+ * Copyright 2017 Mathieu De Brito
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -23,6 +24,7 @@ import org.oscim.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -41,6 +43,9 @@ public class OkHttpEngine implements HttpEngine {
     private final OkHttpClient mClient;
     private final UrlTileSource mTileSource;
 
+    private InputStream mInputStream;
+    private byte[] mCachedData;
+
     public static class OkHttpFactory implements HttpEngine.Factory {
         private final OkHttpClient mClient;
 
@@ -48,6 +53,9 @@ public class OkHttpEngine implements HttpEngine {
             mClient = new OkHttpClient();
         }
 
+        /**
+         * OkHttp cache implemented through {@link OkHttpClient.Builder#cache(Cache)}.
+         */
         public OkHttpFactory(Cache cache) {
             mClient = new OkHttpClient.Builder()
                     .cache(cache)
@@ -60,8 +68,6 @@ public class OkHttpEngine implements HttpEngine {
         }
     }
 
-    private InputStream inputStream;
-
     public OkHttpEngine(OkHttpClient client, UrlTileSource tileSource) {
         mClient = client;
         mTileSource = tileSource;
@@ -69,7 +75,7 @@ public class OkHttpEngine implements HttpEngine {
 
     @Override
     public InputStream read() throws IOException {
-        return inputStream;
+        return mInputStream;
     }
 
     @Override
@@ -85,7 +91,11 @@ public class OkHttpEngine implements HttpEngine {
                 builder.addHeader(opt.getKey(), opt.getValue());
             Request request = builder.build();
             Response response = mClient.newCall(request).execute();
-            inputStream = response.body().byteStream();
+            if (mTileSource.tileCache != null) {
+                mCachedData = response.body().bytes();
+                mInputStream = new ByteArrayInputStream(mCachedData);
+            } else
+                mInputStream = response.body().byteStream();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -93,11 +103,11 @@ public class OkHttpEngine implements HttpEngine {
 
     @Override
     public void close() {
-        if (inputStream == null)
+        if (mInputStream == null)
             return;
 
-        final InputStream is = inputStream;
-        inputStream = null;
+        final InputStream is = mInputStream;
+        mInputStream = null;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -106,17 +116,21 @@ public class OkHttpEngine implements HttpEngine {
         }).start();
     }
 
-    /**
-     * OkHttp cache implemented through {@link OkHttpClient.Builder#cache(Cache)}.
-     */
     @Override
     public void setCache(OutputStream os) {
+        if (mTileSource.tileCache != null) {
+            try {
+                os.write(mCachedData);
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
     }
 
     @Override
     public boolean requestCompleted(boolean success) {
-        IOUtils.closeQuietly(inputStream);
-        inputStream = null;
+        IOUtils.closeQuietly(mInputStream);
+        mInputStream = null;
 
         return success;
     }

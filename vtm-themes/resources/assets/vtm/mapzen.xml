@@ -1020,7 +1020,7 @@
                 <caption style="bold" fill="#606060" k="name" priority="5" size="14"
                     stroke="#ffffff" stroke-width="2.0" />
             </m>
-            <m v="suburb" zoom-max="14">
+            <m v="neighbourhood|suburb" zoom-max="14">
                 <caption style="bold_italic" fill="#404040" k="name" priority="4" size="17"
                     stroke="#ffffff" stroke-width="2.0" />
             </m>
@@ -1050,6 +1050,12 @@
                 <m zoom-max="7">
                     <caption dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff"
                         stroke-width="2.0" symbol="assets:symbols/dot_black.svg" />
+                </m>
+            </m>
+            <m v="region">
+                <m zoom-max="7">
+                    <caption style="bold" fill="#404040" k="name" priority="1" size="17"
+                        stroke="#ffffff" stroke-width="2.0" />
                 </m>
             </m>
             <m v="country">
