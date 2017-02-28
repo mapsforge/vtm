@@ -17,6 +17,7 @@ package org.oscim.utils;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.renderer.atlas.TextureAtlas;
 import org.oscim.renderer.atlas.TextureRegion;
+import org.oscim.utils.math.MathUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,11 @@ public class TextureAtlasUtils {
         BitmapPacker.PackStrategy strategy = maxHeight - minHeight < 50 ? new BitmapPacker.SkylineStrategy() :
                 new BitmapPacker.GuillotineStrategy();
         completePixel *= 1.2; // add estimated blank pixels
-        int atlasWidth = Math.min(MAX_ATLAS_SIZE, (int) Math.sqrt(completePixel));
+        int atlasWidth = (int) Math.sqrt(completePixel);
+        //get night POT
+        atlasWidth = MathUtils.nextPowerOfTwo(MathUtils.nextPowerOfTwo(atlasWidth) + 1);
+        //limit to max
+        atlasWidth = Math.min(MAX_ATLAS_SIZE, atlasWidth);
 
         BitmapPacker bitmapPacker = new BitmapPacker(atlasWidth, atlasWidth, PAD, strategy, flipY);
 
