@@ -144,6 +144,9 @@ public class IosPaint implements Paint {
         this.style = style;
     }
 
+
+
+
     @Override
     public void setTextAlign(Align align) {
         // Align text in text layer
@@ -350,5 +353,10 @@ public class IosPaint implements Paint {
     @Override
     public float getTextWidth(String text) {
         return measureText(text);
+    }
+
+    @Override
+    public Style getStyle() {
+        return style;
     }
 }

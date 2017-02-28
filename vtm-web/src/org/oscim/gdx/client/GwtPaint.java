@@ -30,6 +30,8 @@ public class GwtPaint implements Paint {
 
     float fontSize = 12;
 
+    Style mStyle;
+
     private FontStyle fontStyle = FontStyle.NORMAL;
     //private FontFamily fontFamily = FontFamily.DEFAULT;
 
@@ -70,6 +72,7 @@ public class GwtPaint implements Paint {
     @Override
     public void setStyle(Style style) {
         // TODO
+        mStyle = style;
     }
 
     @Override
@@ -138,5 +141,10 @@ public class GwtPaint implements Paint {
     @Override
     public float getTextWidth(String text) {
         return measureText(text);
+    }
+
+    @Override
+    public Style getStyle() {
+        return mStyle;
     }
 }

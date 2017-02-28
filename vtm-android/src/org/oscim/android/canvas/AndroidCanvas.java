@@ -66,6 +66,19 @@ public class AndroidCanvas implements Canvas {
         canvas.drawLine(x1, y1, x2, y2, ((AndroidPaint) paint).mPaint);
     }
 
+    /**
+     * drawCircle, Feb/2017
+     * @param x Circle center x (px)
+     * @param y Circle center y (px)
+     * @param radius Circle radius (px)
+     * @param paint Paint to use
+     */
+
+    @Override
+    public void drawCircle(float x, float y, float radius, Paint paint) {
+        canvas.drawCircle(x, y, radius, ((AndroidPaint)paint).mPaint);
+    }
+
     @Override
     public void fillColor(int color) {
         canvas.drawColor(color, PorterDuff.Mode.CLEAR);

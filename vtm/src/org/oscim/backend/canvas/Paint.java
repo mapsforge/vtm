@@ -76,4 +76,7 @@ public interface Paint {
     float getTextHeight(String text);
 
     float getTextWidth(String text);
+
+    /** Added so subclasses can get the style without the need of accessing the platform-specific paint */
+    Style getStyle();
 }
