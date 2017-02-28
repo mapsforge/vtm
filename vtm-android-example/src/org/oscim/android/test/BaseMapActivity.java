@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -86,13 +86,18 @@ public class BaseMapActivity extends MapActivity {
                 item.setChecked(true);
                 return true;
 
-            case R.id.theme_tubes:
-                mMap.setTheme(VtmThemes.TRONRENDER);
+            case R.id.theme_osmarender:
+                mMap.setTheme(VtmThemes.OSMARENDER);
                 item.setChecked(true);
                 return true;
 
-            case R.id.theme_osmarender:
-                mMap.setTheme(VtmThemes.OSMARENDER);
+            case R.id.theme_osmagray:
+                mMap.setTheme(VtmThemes.OSMAGRAY);
+                item.setChecked(true);
+                return true;
+
+            case R.id.theme_tubes:
+                mMap.setTheme(VtmThemes.TRONRENDER);
                 item.setChecked(true);
                 return true;
 

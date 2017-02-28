@@ -1,6 +1,7 @@
 /*
  * Copyright 2016 Andrey Novikov
  * Copyright 2016 devemux86
+ * Copyright 2017 schedul-xor
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -93,7 +94,7 @@ public class CircleBucket extends RenderBucket {
             int uMVP, uFill, uRadius, uStroke, uWidth, aPos;
 
             Shader(String shaderFile) {
-                if (!GLAdapter.CIRCLE_QUADS)
+                if (!GLAdapter.CIRCLE_QUADS && !GLAdapter.GDX_WEBGL_QUIRKS)
                     gl.enable(GL.VERTEX_PROGRAM_POINT_SIZE);
 
                 String version = null;

@@ -1,5 +1,16 @@
 # Changelog
 
+## New since 0.7.0
+
+- Symbol rotation [#294](https://github.com/mapsforge/vtm/issues/294)
+- Osmagray theme [#300](https://github.com/mapsforge/vtm/issues/300)
+- Many other minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.8.0)
+
+## Version 0.7.0 (2017-02-26)
+
+- Same as 0.7.0-rc2
+
 ### Version 0.7.0-rc2 (2017-02-20)
 
 - Fix theme parsing in non-Latin locales [#297](https://github.com/mapsforge/vtm/issues/297)

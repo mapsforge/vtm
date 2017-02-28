@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  * Copyright 2017 Longri
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -35,7 +35,7 @@ import java.util.List;
 
 import static org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 
-public class AtlasMarkerLayerTest extends MarkerLayerTest implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
+public class AtlasMarkerLayerTest extends MarkerLayerTest {
 
     @Override
     public void createLayers() {
@@ -74,15 +74,15 @@ public class AtlasMarkerLayerTest extends MarkerLayerTest implements ItemizedLay
         else
             mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.CENTER, false);
 
-        ItemizedLayer<MarkerItem> markerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
-        mMap.layers().add(markerLayer);
+        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+        mMap.layers().add(mMarkerLayer);
 
         List<MarkerItem> pts = new ArrayList<>();
         for (double lat = -90; lat <= 90; lat += 5) {
             for (double lon = -180; lon <= 180; lon += 5)
                 pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
         }
-        markerLayer.addItems(pts);
+        mMarkerLayer.addItems(pts);
 
         mMap.layers().add(new TileGridLayer(mMap));
     }

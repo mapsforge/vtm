@@ -7,6 +7,7 @@
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016 devemux86
  * Copyright 2016 Erik Duisters
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -74,5 +75,10 @@ public class MarkerItem implements MarkerInterface {
 
     public void setMarker(MarkerSymbol marker) {
         mMarker = marker;
+    }
+
+    public void setRotation(float rotation) {
+        if (mMarker != null)
+            mMarker.setRotation(rotation);
     }
 }

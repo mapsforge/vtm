@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -38,8 +38,7 @@ import java.util.List;
 
 import static org.oscim.android.canvas.AndroidGraphics.drawableToBitmap;
 
-public class AtlasMarkerOverlayActivity extends MarkerOverlayActivity
-        implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
+public class AtlasMarkerOverlayActivity extends MarkerOverlayActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,11 +78,8 @@ public class AtlasMarkerOverlayActivity extends MarkerOverlayActivity
         else
             mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.CENTER, false);
 
-        ItemizedLayer<MarkerItem> markerLayer =
-                new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(),
-                        symbol, this);
-
-        mMap.layers().add(markerLayer);
+        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+        mMap.layers().add(mMarkerLayer);
 
         List<MarkerItem> pts = new ArrayList<>();
 
@@ -92,7 +88,7 @@ public class AtlasMarkerOverlayActivity extends MarkerOverlayActivity
                 pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
         }
 
-        markerLayer.addItems(pts);
+        mMarkerLayer.addItems(pts);
 
         mMap.layers().add(new TileGridLayer(mMap, getResources().getDisplayMetrics().density));
     }

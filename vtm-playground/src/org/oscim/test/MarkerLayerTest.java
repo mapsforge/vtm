@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -37,8 +37,9 @@ import static org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 
 public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
 
-    protected static final boolean BILLBOARDS = true;
-    protected MarkerSymbol mFocusMarker;
+    static final boolean BILLBOARDS = true;
+    MarkerSymbol mFocusMarker;
+    ItemizedLayer<MarkerItem> mMarkerLayer;
 
     @Override
     public void createLayers() {
@@ -64,15 +65,15 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
         else
             mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.CENTER, false);
 
-        ItemizedLayer<MarkerItem> markerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
-        mMap.layers().add(markerLayer);
+        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+        mMap.layers().add(mMarkerLayer);
 
         List<MarkerItem> pts = new ArrayList<>();
         for (double lat = -90; lat <= 90; lat += 5) {
             for (double lon = -180; lon <= 180; lon += 5)
                 pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
         }
-        markerLayer.addItems(pts);
+        mMarkerLayer.addItems(pts);
 
         mMap.layers().add(new TileGridLayer(mMap));
     }
@@ -104,7 +105,7 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
         GdxMapApp.run(new MarkerLayerTest());
     }
 
-    protected class MapEventsReceiver extends Layer implements GestureListener {
+    class MapEventsReceiver extends Layer implements GestureListener {
 
         MapEventsReceiver(Map map) {
             super(map);

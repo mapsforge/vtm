@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -43,8 +43,9 @@ import static org.oscim.tiling.source.bitmap.DefaultSources.STAMEN_TONER;
 public class MarkerOverlayActivity extends BitmapTileMapActivity
         implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
 
-    protected static final boolean BILLBOARDS = true;
-    protected MarkerSymbol mFocusMarker;
+    static final boolean BILLBOARDS = true;
+    MarkerSymbol mFocusMarker;
+    ItemizedLayer<MarkerItem> mMarkerLayer;
 
     public MarkerOverlayActivity() {
         super(STAMEN_TONER.build());
@@ -74,11 +75,8 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
         else
             mFocusMarker = new MarkerSymbol(drawableToBitmap(d), HotspotPlace.CENTER, false);
 
-        ItemizedLayer<MarkerItem> markerLayer =
-                new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(),
-                        symbol, this);
-
-        mMap.layers().add(markerLayer);
+        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+        mMap.layers().add(mMarkerLayer);
 
         List<MarkerItem> pts = new ArrayList<>();
 
@@ -87,7 +85,7 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
                 pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
         }
 
-        markerLayer.addItems(pts);
+        mMarkerLayer.addItems(pts);
 
         mMap.layers().add(new TileGridLayer(mMap, getResources().getDisplayMetrics().density));
     }
@@ -122,7 +120,7 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
         return true;
     }
 
-    protected class MapEventsReceiver extends Layer implements GestureListener {
+    class MapEventsReceiver extends Layer implements GestureListener {
 
         MapEventsReceiver(Map map) {
             super(map);

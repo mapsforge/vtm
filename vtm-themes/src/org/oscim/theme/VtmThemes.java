@@ -2,6 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -31,6 +32,7 @@ public enum VtmThemes implements ThemeFile {
     DEFAULT("vtm/default.xml"),
     MAPZEN("vtm/mapzen.xml"),
     NEWTRON("vtm/newtron.xml"),
+    OSMAGRAY("vtm/osmagray.xml"),
     OSMARENDER("vtm/osmarender.xml"),
     TRONRENDER("vtm/tronrender.xml");
 

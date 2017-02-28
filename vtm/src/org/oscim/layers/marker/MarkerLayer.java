@@ -7,6 +7,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Stephan Leuschner
  * Copyright 2016 devemux86
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -94,6 +95,10 @@ public abstract class MarkerLayer<Item extends MarkerInterface> extends Layer {
      */
     public Item getFocus() {
         return mFocusedItem;
+    }
+
+    public void update() {
+        mMarkerRenderer.update();
     }
 
     /**

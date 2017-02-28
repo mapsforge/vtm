@@ -9,11 +9,14 @@
             android:checked="true"
             android:title="@string/theme_default" />
         <item
-            android:id="@+id/theme_tubes"
-            android:title="@string/theme_tubes" />
-        <item
             android:id="@+id/theme_osmarender"
             android:title="@string/theme_osmarender" />
+        <item
+            android:id="@+id/theme_osmagray"
+            android:title="@string/theme_osmagray" />
+        <item
+            android:id="@+id/theme_tubes"
+            android:title="@string/theme_tubes" />
         <item
             android:id="@+id/theme_newtron"
             android:title="@string/theme_newtron" />

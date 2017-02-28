@@ -1,0 +1,1366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#fffcfa"
+    version="1" xmlns="http://opensciencemap.org/rendertheme"
+    xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
+
+    <style-line id="trunk" stroke="#b4b4b4" width="1.5" />
+    <style-line id="motorway" stroke="#979797" width="1.7" />
+    <style-line id="primary" stroke="#868686" width="1.5" />
+    <style-line id="secondary" stroke="#c6c6c6" width="1.4" />
+    <style-line id="tertiary" stroke="#f7f7f7" width="1.15" />
+
+    <style-text style="bold" caption="true" dy="20" fill="#4d4d4d" id="caption-small-blue" k="name"
+        size="14" stroke="#ffffff" stroke-width="2.0" />
+
+    <style-text style="bold" id="highway-road" k="name" size="16" stroke="#d0d0d0"
+        stroke-width="2.0" />
+    <style-text style="bold" id="highway-track" k="name" size="16" stroke="#f3f3f3"
+        stroke-width="2.0" />
+
+    <m e="way" k="natural" v="issea|sea">
+        <area fill="#d0d0d0" mesh="true" />
+    </m>
+
+    <m e="way" k="natural" v="nosea">
+        <area fill="#f8f8f8" mesh="true" />
+    </m>
+
+    <!-- ways -->
+    <m e="way">
+        <!-- landuse -->
+        <m k="landuse">
+            <m select="first">
+                <m v="military">
+                    <area src="assets:patterns/military.png" stroke="#e4e4e4" stroke-width="0.2" />
+                </m>
+                <m v="residential|farmyard">
+                    <area fill="#e4e4e4" />
+                </m>
+                <m v="retail">
+                    <area fill="#efefef" stroke="#e4e4e4" stroke-width="0.2" />
+                </m>
+                <m v="industrial|brownfield|railway">
+                    <area fill="#dedede" stroke="#e4e4e4" stroke-width="0.2" />
+                </m>
+                <m v="commercial">
+                    <area fill="#fafafa" stroke="#e4e4e4" stroke-width="0.2" />
+                </m>
+                <m v="construction|greenfield">
+                    <area fill="#808080" stroke="#e4e4e4" stroke-width="0.2" />
+                </m>
+                <m v="garages">
+                    <area fill="#d6d6d6" />
+                </m>
+
+                <m v="landfill|quarry">
+                    <area fill="#d8d8d8" stroke="#626262" stroke-width="0.2" />
+                </m>
+                <m v="cemetery">
+                    <area src="assets:patterns/cemetery.png" stroke="#e4e4e4" stroke-width="0.2" />
+                </m>
+                <m v="field|farm|farmland|meadow|grass">
+                    <area fill="#f9f9f9" stroke="#cecece" stroke-width="0.1" />
+                </m>
+                <m v="allotments|village_green|recreation_ground">
+                    <area fill="#d9d9d9" stroke="#a6a6a6" stroke-width="0.2" />
+                </m>
+                <m v="reservoir|basin">
+                    <area fill="#d0d0d0" />
+                </m>
+            </m>
+            <m k="name" zoom-min="16">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+
+        <m k="natural" v="grassland|scrub">
+            <area fill="#acacac" stroke="#acacac" stroke-width="0.2" />
+        </m>
+
+        <m k="natural|landuse" v="forest|wood">
+            <m k="wood">
+                <m k="wood" v="coniferous">
+                    <area src="assets:patterns/wood-coniferous.png" />
+                </m>
+                <m k="wood" v="deciduous">
+                    <area src="assets:patterns/wood-deciduous.png" />
+                </m>
+                <m k="wood" v="mixed">
+                    <area src="assets:patterns/wood-mixed.png" />
+                </m>
+            </m>
+            <m k="wood" v="~">
+                <area fill="#acacac" stroke="#acacac" stroke-width="0.2" />
+            </m>
+
+            <m zoom-min="16">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+
+        <!-- amenity -->
+        <m k="amenity">
+            <m select="first">
+                <m v="kindergarten|school|college|university">
+                    <area fill="#b5b5b5" stroke="#d8d8d8" stroke-width="0.2" />
+                </m>
+                <m v="grave_yard">
+                    <area src="assets:patterns/cemetery.png" stroke="#e4e4e4" stroke-width="0.2" />
+                </m>
+                <m v="parking">
+                    <area fill="#fafafa" stroke="#d8d8d8" stroke-width="0.2" />
+                    <m k="access" v="private" zoom-min="15">
+                        <area src="assets:patterns/access-private.png" />
+                    </m>
+                    <m zoom-min="17">
+                        <symbol src="assets:symbols/transport/parking.svg" />
+                    </m>
+                </m>
+                <m closed="yes" v="fountain">
+                    <area fill="#d0d0d0" stroke="#080808" stroke-width="0.15" />
+                    <m zoom-min="17">
+                        <symbol src="assets:symbols/amenity/fountain2.svg" />
+                    </m>
+                </m>
+                <m v="hospital" zoom-min="15">
+                    <symbol src="assets:symbols/health/hospital.svg" />
+                </m>
+                <m v="theatre" zoom-min="17">
+                    <symbol src="assets:symbols/tourist/theatre.svg" />
+                </m>
+                <m v="toilets" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/toilets.svg" />
+                </m>
+            </m>
+            <m k="name" zoom-min="17">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+
+        <!-- natural -->
+        <m k="natural">
+            <m select="first">
+                <!--<m v="coastline">
+                  &lt;!&ndash; <m closed="no">
+                    <line stroke="#708599" fix="true" cap="butt" width="2.0" />
+                    </m> &ndash;&gt;
+                  <m closed="yes">
+                    <area fill="#d0d0d0" stroke="#d0d0d0" stroke-width="0.4" />
+                  </m>
+                </m>-->
+                <m v="glacier">
+                    <area fill="#fafafa" stroke="#cfcfcf" stroke-width="0.8" />
+                </m>
+                <m v="land">
+                    <area fill="#f8f8f8" stroke="#e0e0e0" stroke-width="0.1" />
+                </m>
+                <m v="beach">
+                    <area fill="#cacaca" />
+                </m>
+                <m v="heath">
+                    <area fill="#fafafa" stroke="#f7f7f7" stroke-width="0.2" />
+                </m>
+                <m v="marsh|wetland">
+                    <area src="assets:patterns/marsh.png" />
+                </m>
+            </m>
+            <m k="name" zoom-min="16">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+
+        <!-- leisure -->
+        <m k="leisure">
+            <m select="first">
+                <m v="park|garden|golf_course|common|green">
+                    <area fill="#e2e2e2" stroke="#acacac" stroke-width="0.2" />
+                </m>
+                <m v="playground|playing_fields|pitch|dog_park">
+                    <area fill="#e2e2e2" stroke="#acacac" stroke-width="0.2" />
+                    <m v="playground" zoom-min="17">
+                        <symbol src="assets:symbols/amenity/playground.svg" />
+                    </m>
+                </m>
+                <m v="nature_reserve">
+                    <area src="assets:patterns/nature-reserve.png" stroke="#acacac"
+                        stroke-width="0.2" />
+                </m>
+
+                <m v="stadium|sports_centre|water_park">
+                    <area fill="#d9d9d9" stroke="#acacac" stroke-width="0.2" />
+                </m>
+                <m v="track">
+                    <m k="area" v="yes|true">
+                        <area fill="#d9d9d9" stroke="#acacac" stroke-width="0.025" />
+                    </m>
+                    <m k="area" v="~|no|false">
+                        <line stroke="#acacac" width="0.75" />
+                        <line stroke="#d9d9d9" width="0.7" />
+                    </m>
+                </m>
+                <m v="swimming_pool">
+                    <area fill="#d0d0d0" stroke="#6b6b6b" stroke-width="0.2" />
+                </m>
+            </m>
+            <m k="name" zoom-min="16">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+
+        <!-- waterways -->
+        <m k="waterway">
+            <!-- waterway casings -->
+
+            <m v="canal">
+                <line stroke="#b0b0b0" width="1.0" />
+            </m>
+
+            <!-- waterway cores -->
+            <m v="ditch">
+                <line stroke="#d0d0d0" width="0.1" />
+            </m>
+            <m v="drain">
+                <line fade="13" fix="true" stroke="#d0d0d0" width="1.2" />
+            </m>
+            <m v="canal">
+                <line stroke="#d0d0d0" width="0.8" />
+            </m>
+            <m v="stream">
+                <line stroke="#d0d0d0" width="0.275" />
+            </m>
+            <m v="river" zoom-min="12">
+                <line stroke="#b5b5b5" width="1.5" />
+            </m>
+            <m v="river" zoom-max="11">
+                <line fix="true" stroke="#b5b5b5" width="1.5" />
+            </m>
+
+            <m v="dock">
+                <area fill="#d0d0d0" />
+            </m>
+            <m v="riverbank">
+                <area fill="#d0d0d0" />
+            </m>
+            <m v="weir">
+                <line stroke="#000044" width="0.375" />
+            </m>
+            <m v="dam">
+                <line stroke="#000000" width="0.5" />
+            </m>
+            <m k="lock" v="yes|true">
+                <line cap="butt" stroke="#000000" width="2.0" />
+                <line cap="butt" stroke="#f8f8f8" width="1.5" />
+            </m>
+        </m>
+
+
+        <!-- military -->
+        <m k="military">
+            <area src="assets:patterns/military.png" stroke="#e4e4e4" stroke-width="0.2" />
+        </m>
+
+
+        <!-- sport -->
+        <m k="sport">
+            <m v="soccer" zoom-min="17">
+                <symbol src="assets:symbols/sport/soccer.svg" />
+            </m>
+            <m v="swimming|canoe|diving|scuba_diving">
+                <area fill="#d0d0d0" stroke="#6b6b6b" stroke-width="0.2" />
+            </m>
+            <m v="tennis">
+                <area fill="#969696" stroke="#787878" stroke-width="0.2" />
+                <m zoom-min="17">
+                    <symbol src="assets:symbols/sport/tennis.svg" />
+                </m>
+            </m>
+        </m>
+
+
+        <!-- tourism areas -->
+        <m k="tourism">
+            <m v="attraction">
+                <area fill="#d4d4d4" />
+            </m>
+            <m v="zoo|picnic_site|caravan_site|camp_site">
+                <area fill="#e2e2e2" stroke="#acacac" stroke-width="0.2" />
+            </m>
+
+            <m k="name" zoom-min="16">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+
+        <m k="natural" v="water">
+            <area fill="#d0d0d0" />
+            <caption area-size="0.4" fill="#3b3b3b" k="name" size="16" stroke="#aaffffff"
+                stroke-width="2.0" />
+        </m>
+
+        <!--<m k="natural" v="coastline" closed="no">
+          <line stroke="#708599" fix="true" cap="butt" width="2.0" />
+        </m>-->
+
+        <!-- tunnel -->
+        <m k="tunnel" v="true|yes">
+            <!-- highway tunnels -->
+            <m k="highway">
+                <!-- highway tunnel casings -->
+                <m v="steps|footway|path">
+                    <line cap="butt" dasharray="5,5" stroke="#707070" width="0.6" />
+                </m>
+                <m v="track|cycleway|bridleway|service">
+                    <line cap="butt" dasharray="5,5" stroke="#707070" width="1.0" />
+                </m>
+                <m v="construction">
+                    <line cap="butt" dasharray="5,5" stroke="#707070" width="1.1" />
+                </m>
+                <m v="road">
+                    <line cap="butt" dasharray="5,5" stroke="#707070" width="1.3" />
+                </m>
+                <m v="pedestrian|unclassified|residential|living_street|byway">
+                    <line cap="butt" dasharray="5,5" stroke="#707070" width="1.5" />
+                </m>
+                <m v="tertiary|secondary_link|primary_link|trunk_link|motorway_link|secondary|primary|trunk">
+                    <line cap="butt" dasharray="5,5" stroke="#707070" width="1.8" />
+                </m>
+                <m v="motorway">
+                    <line cap="butt" dasharray="5,5" stroke="#707070" width="2.0" />
+                </m>
+
+                <!-- highway tunnel cores -->
+                <m v="steps|footway|path">
+                    <line cap="butt" dasharray="5,5" stroke="#ffffff" width="0.45" />
+                </m>
+                <m v="track">
+                    <line cap="butt" dasharray="5,5" stroke="#ffffff" width="0.7" />
+                </m>
+                <m v="cycleway|bridleway|service">
+                    <line cap="butt" dasharray="5,5" stroke="#ffffff" width="0.85" />
+                </m>
+                <m v="construction">
+                    <line cap="butt" dasharray="5,5" stroke="#ffffff" width="1.0" />
+                </m>
+                <m v="road">
+                    <line cap="butt" dasharray="5,5" stroke="#ffffff" width="1.25" />
+                </m>
+                <m v="pedestrian|unclassified|residential|living_street|byway">
+                    <line cap="butt" dasharray="5,5" stroke="#ffffff" width="1.35" />
+                </m>
+                <m v="tertiary|secondary_link|primary_link|trunk_link|motorway_link|secondary|primary|trunk">
+                    <line cap="butt" dasharray="5,5" stroke="#ffffff" width="1.5" />
+                </m>
+                <m v="motorway">
+                    <line cap="butt" dasharray="5,5" stroke="#ffffff" width="1.7" />
+                </m>
+            </m>
+
+            <!-- railway tunnel -->
+            <m k="railway">
+                <m v="tram|subway|light_rail|narrow_gauge">
+                    <line cap="butt" dasharray="4,4" stroke="#88131313" width="0.25" />
+                </m>
+                <m v="rail">
+                    <line cap="butt" dasharray="4,4" stroke="#aa333333" width="0.4" />
+                </m>
+            </m>
+        </m>
+
+
+        <!-- highway area -->
+        <m k="area" v="yes|true">
+            <m k="highway">
+                <m v="footway|footpath">
+                    <area fill="#dedede" stroke="#707070" stroke-width="1.15" />
+                </m>
+                <m v="pedestrian">
+                    <area fill="#dedede" stroke="#707070" stroke-width="1.15" />
+                </m>
+                <m v="path">
+                    <area fill="#d0d0d0" stroke="#d0d0d0" stroke-width="1.15" />
+                </m>
+                <m v="service">
+                    <area fill="#ffffff" stroke="#707070" stroke-width="1.15" />
+                </m>
+                <m v="unclassified">
+                    <area fill="#ffffff" stroke="#707070" stroke-width="1.3" />
+                </m>
+                <m v="residential">
+                    <area fill="#ffffff" stroke="#707070" stroke-width="1.15" />
+                </m>
+                <m v="road">
+                    <area fill="#d0d0d0" />
+                </m>
+                <m v="living_street">
+                    <area fill="#ffffff" stroke="#ffffff" stroke-width="1.15" />
+                </m>
+            </m>
+        </m>
+
+
+        <!-- platform cores -->
+        <m k="highway|railway|public_transport" v="platform">
+            <m closed="yes">
+                <area fill="#909090" />
+            </m>
+            <m closed="no">
+                <line stroke="#909090" width="0.3" />
+            </m>
+        </m>
+
+
+        <!-- runways casings and areas -->
+        <m k="aeroway">
+            <m closed="yes" v="aerodrome">
+                <m zoom-min="12">
+                    <area fill="#dadada" stroke="#aeaeae" stroke-width="0.8" />
+                </m>
+                <m zoom-max="11">
+                    <caption dy="18" fill="#000000" k="ref" priority="5" size="19" stroke="#ffffff"
+                        stroke-width="2.0" />
+                </m>
+                <m zoom-min="12">
+                    <caption area-size="0.1" dy="18" fill="#000000" k="name" priority="5" size="19"
+                        stroke="#ffffff" stroke-width="2.0" />
+                </m>
+                <symbol src="assets:symbols/transport/airport2.svg" />
+            </m>
+            <m v="apron">
+                <area fill="#f0f0f0" />
+            </m>
+            <m v="terminal">
+                <area fill="#d9d9d9" stroke="#616161" stroke-width="0.2" />
+            </m>
+
+            <!-- <m v="runway">
+              <line stroke="#000000" width="6.3" cap="square" />
+              </m>
+              <m v="taxiway">
+              <line stroke="#000000" width="2.7" cap="butt" />
+              </m> -->
+
+            <m k="name" zoom-min="16">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+    </m>
+
+
+    <!-- turning circles -->
+    <!-- <m e="node" k="highway" v="turning_circle">
+      <circle radius="1.5" scale-radius="true" fill="#707070" />
+      </m> -->
+
+
+    <m e="way">
+        <!-- highway casings -->
+
+        <m k="tunnel" v="~|no|false">
+            <m k="area" v="~|no|false">
+                <m k="highway">
+                    <m k="bridge" v="~|no|false">
+                        <m v="steps">
+                            <line stroke="#707070" width="0.6" />
+                        </m>
+                        <m v="footway|path">
+                            <line cap="butt" fix="true" stipple="2" stipple-stroke="#909090"
+                                stipple-width="1.0" stroke="#00ffffff" width="2.6" />
+                        </m>
+                    </m>
+                    <!-- <m v="track">
+                      <m k="tracktype" v="grade1">
+                      <line stroke="#d79331" width="1.0" />
+                      </m>
+                      <m k="tracktype" v="grade2">
+                      <line stroke="#d79331" width="1.0" dasharray="18,9" cap="butt" />
+                      </m>
+                      <m k="tracktype" v="grade3">
+                      <line stroke="#d79331" width="1.0" dasharray="10,13" cap="butt" />
+                      </m>
+                      <m k="tracktype" v="grade4">
+                      <line stroke="#d79331" width="1.0" dasharray="5,10,3,10" cap="butt" />
+                      </m>
+                      <m k="tracktype" v="grade5">
+                      <line stroke="#d79331" width="1.0" dasharray="3,10" cap="butt" />
+                      </m>
+                      <m k="tracktype" v="~|no|false">
+                      <line stroke="#d79331" width="1.0" dasharray="18,2" cap="butt" />
+                      </m>
+                      </m>
+                      <m v="cycleway|bridleway|service">
+                      <line stroke="#707070" width="1.0" />
+                      </m>
+                      <m v="byway">
+                      <line stroke="#707070" width="1.5" dasharray="7,2" cap="butt" />
+                      </m>
+                      <m v="pedestrian|unclassified|residential|living_street">
+                      <line stroke="#707070" width="1.5" />
+                      </m>
+                      <m v="tertiary|secondary_link|primary_link|trunk_link|motorway_link|secondary|primary|trunk">
+                      <line stroke="#707070" width="1.8" cap="butt" />
+                      </m>
+                      <m v="motorway">
+                      <line stroke="#707070" width="2.0" cap="butt" />
+                      </m>
+                      </m>
+                    -->
+                    <!-- <m k="bridge" v="yes|true">
+                      <m v="steps|footway|path">
+                      <line stroke="#000000" width="0.7" cap="butt" />
+                      </m>
+                      <m v="track|cycleway|bridleway|service">
+                      <line stroke="#000000" width="1.1" cap="butt" />
+                      </m>
+                      <m v="construction">
+                      <line stroke="#000000" width="1.2" cap="butt" />
+                      </m>
+                      <m v="road">
+                      <line stroke="#000000" width="1.4" cap="butt" />
+                      </m>
+                      <m v="pedestrian|unclassified|residential|living_street|byway">
+                      <line stroke="#000000" width="1.6" cap="butt" />
+                      </m>
+                      <m v="tertiary|secondary_link|primary_link|trunk_link|motorway_link|secondary|primary|trunk">
+                      <line stroke="#000000" width="1.9" cap="butt" />
+                      </m>
+                      <m v="motorway">
+                      <line stroke="#000000" width="2.1" cap="butt" />
+                      </m>
+                      </m> -->
+                </m>
+            </m>
+        </m>
+
+
+        <!-- building -->
+        <m k="building">
+            <m select="first">
+                <m closed="yes">
+                    <area fill="#d9d9d9" stroke="#616161" stroke-width="1.0" />
+                </m>
+                <m zoom-max="16">
+                    <line cap="butt" fix="true" stroke="#616161" width="1.0" />
+                </m>
+            </m>
+
+            <m zoom-min="17">
+                <extrusion line-color="#cc616161" side-color="#bbd9d9d9" top-color="#ccdddddd" />
+            </m>
+
+            <m zoom-min="17">
+                <text priority="9" use="caption-small-blue" />
+                <caption style="bold" fill="#606060" k="addr:housenumber" priority="10" size="12"
+                    stroke="#ffffff" stroke-width="2.0" />
+            </m>
+        </m>
+
+        <outline-layer cap="round" id="casing" stroke="#707070" width="0.15" />
+        <outline-layer cap="butt" id="casing-bridge" stroke="#404040" width="0.25" />
+
+        <m k="highway">
+            <m k="tunnel" v="~|no|false">
+                <m k="area" select="first" v="~|no|false">
+
+                    <m v="steps">
+                        <line cap="butt" dasharray="3,1" stroke="#dedede" width="0.45" />
+                        <m zoom-min="15">
+                            <text style="bold" k="name" size="16" stroke="#dedede"
+                                stroke-width="2.0" />
+                        </m>
+                    </m>
+                    <m v="footway|platform|corridor">
+                        <line cap="butt" fix="true" stroke="#dedede" width="1.4" />
+                        <m zoom-min="15">
+                            <text style="bold" k="name" size="16" stroke="#dedede"
+                                stroke-width="2.0" />
+                        </m>
+                    </m>
+                    <m v="cycleway">
+                        <line fix="true" stipple="4" stipple-stroke="#0f0f0f" stipple-width="0.8"
+                            stroke="#d1fad1" width="1.4" />
+                        <m zoom-min="15">
+                            <text style="bold" k="name" size="16" stroke="#d1fad1"
+                                stroke-width="2.0" />
+                        </m>
+                    </m>
+                    <m v="bridleway">
+                        <line stroke="#c9c9c9" width="0.85" />
+                        <m zoom-min="15">
+                            <text style="bold" k="name" size="16" stroke="#c9c9c9"
+                                stroke-width="2.0" />
+                        </m>
+                    </m>
+                    <m v="path">
+                        <line fix="true" stroke="#d0d0d0" width="1.45" />
+                        <m zoom-min="15">
+                            <text use="highway-road" />
+                        </m>
+                    </m>
+                    <m select="first" v="track">
+                        <m k="tracktype" v="grade1">
+                            <line stroke="#fafafa" width="0.75" />
+                            <m zoom-min="15">
+                                <text style="bold" k="name" size="16" stroke="#fafafa"
+                                    stroke-width="2.0" />
+                            </m>
+                        </m>
+                        <m k="tracktype" v="grade2">
+                            <line stroke="#f3f3f3" width="0.75" />
+                            <m zoom-min="15">
+                                <text use="highway-track" />
+                            </m>
+                        </m>
+                        <m k="tracktype" v="grade3">
+                            <line stroke="#f3f3f3" width="0.7" />
+                            <m zoom-min="15">
+                                <text use="highway-track" />
+                            </m>
+                        </m>
+                        <m k="tracktype" v="grade4">
+                            <line stroke="#f3f3f3" width="0.7" />
+                            <m zoom-min="15">
+                                <text use="highway-track" />
+                            </m>
+                        </m>
+                        <m k="tracktype" v="grade5">
+                            <line stroke="#f3f3f3" width="0.7" />
+                            <m zoom-min="15">
+                                <text use="highway-track" />
+                            </m>
+                        </m>
+                        <m k="tracktype" v="~|no|false">
+                            <line stroke="#f3f3f3" width="0.75" />
+                            <m zoom-min="15">
+                                <text use="highway-track" />
+                            </m>
+                        </m>
+                    </m>
+
+                    <m k="bridge" v="~|no|false">
+                        <m select="first">
+                            <m v="service">
+                                <line stroke="#ffffff" width="0.85" />
+                                <m zoom-min="15">
+                                    <text style="bold" k="name" size="16" stroke="#ffffff"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="construction">
+                                <line stroke="#d0d0d0" width="1.0" />
+                                <m zoom-min="15">
+                                    <text use="highway-road" />
+                                </m>
+                            </m>
+                            <m v="road">
+                                <line stroke="#d0d0d0" width="1.25" />
+                                <m zoom-min="15">
+                                    <text use="highway-road" />
+                                </m>
+                            </m>
+                            <m v="pedestrian">
+                                <line stroke="#dedede" width="0.85" />
+                                <m zoom-min="15">
+                                    <text style="bold" k="name" size="16" stroke="#dedede"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="unclassified|residential|living_street">
+                                <line stroke="#ffffff" width="1.25" />
+                                <m zoom-min="15">
+                                    <text style="bold" k="name" size="16" stroke="#ffffff"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="byway">
+                                <line stroke="#bababa" width="1.15" />
+                                <m zoom-min="15">
+                                    <text style="bold" k="name" size="16" stroke="#bababa"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="tertiary|tertiary_link">
+                                <line use="tertiary" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#f7f7f7"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="secondary_link">
+                                <line use="secondary" width="-0.1" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#c6c6c6"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="primary_link">
+                                <line use="primary" width="-0.1" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#868686"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="trunk_link">
+                                <line use="trunk" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#b4b4b4"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="motorway_link">
+                                <line use="motorway" width="-0.2" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#979797"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="secondary">
+                                <line use="secondary" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#c6c6c6"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="primary">
+                                <line use="primary" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#868686"
+                                        stroke-width="2.0" />
+                                    <text style="bold" fill="#606060" k="ref" size="12"
+                                        stroke="#ffffff" stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="trunk">
+                                <line use="trunk" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#b4b4b4"
+                                        stroke-width="2.0" />
+                                    <text style="bold" fill="#606060" k="ref" size="12"
+                                        stroke="#ffffff" stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="motorway">
+                                <line use="motorway" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#979797"
+                                        stroke-width="2.0" />
+                                    <text style="bold" fill="#606060" k="ref" size="12"
+                                        stroke="#ffffff" stroke-width="2.0" />
+                                </m>
+                            </m>
+
+                            <!-- <m zoom-min="16">
+
+                              <line width="1.0" stroke="#ff0000" />
+
+                              <m k="access" v="destination">
+                              <line src="assets:patterns/access-destination.png" width="1.5" />
+                              </m>
+                              <m k="access" v="private">
+                              <line src="assets:patterns/access-private.png" width="1.5" />
+                              </m>
+                              </m> -->
+
+                            <!-- add outline for all matches -->
+                            <m select="when-matched">
+                                <outline use="casing" />
+                            </m>
+                        </m>
+                    </m>
+
+                    <m k="bridge" v="yes|true">
+                        <m select="first">
+                            <m v="service">
+                                <line outline="casing-bridge" stroke="#ffffff" width="0.85" />
+                                <m zoom-min="15">
+                                    <text style="bold" k="name" size="16" stroke="#ffffff"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="construction">
+                                <line outline="casing-bridge" stroke="#d0d0d0" width="1.0" />
+                                <m zoom-min="15">
+                                    <text use="highway-road" />
+                                </m>
+                            </m>
+                            <m v="road">
+                                <line outline="casing-bridge" stroke="#d0d0d0" width="1.25" />
+                                <m zoom-min="15">
+                                    <text use="highway-road" />
+                                </m>
+                            </m>
+                            <m v="pedestrian">
+                                <line stroke="#dedede" width="0.85" />
+                                <m zoom-min="15">
+                                    <text style="bold" k="name" size="16" stroke="#dedede"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="unclassified|residential|living_street">
+                                <line outline="casing-bridge" stroke="#ffffff" width="1.25" />
+                                <m zoom-min="15">
+                                    <text style="bold" k="name" size="16" stroke="#ffffff"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="byway">
+                                <line outline="casing-bridge" stroke="#bababa" width="1.15" />
+                                <m zoom-min="15">
+                                    <text style="bold" k="name" size="16" stroke="#bababa"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="tertiary|tertiary_link">
+                                <line cap="square" outline="casing-bridge" use="tertiary" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#f7f7f7"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="secondary_link">
+                                <line cap="square" outline="casing-bridge" use="secondary"
+                                    width="-0.1" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#c6c6c6"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="primary_link">
+                                <line cap="square" outline="casing-bridge" use="primary"
+                                    width="-0.1" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#868686"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="trunk_link">
+                                <line cap="square" outline="casing-bridge" use="trunk" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#b4b4b4"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="motorway_link">
+                                <line cap="square" outline="casing-bridge" use="motorway"
+                                    width="-0.2" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#979797"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="secondary">
+                                <line cap="square" outline="casing-bridge" use="secondary" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#c6c6c6"
+                                        stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="primary">
+                                <line cap="square" outline="casing-bridge" use="primary" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#868686"
+                                        stroke-width="2.0" />
+                                    <text style="bold" fill="#606060" k="ref" size="12"
+                                        stroke="#ffffff" stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="trunk">
+                                <line outline="casing-bridge" use="trunk" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#b4b4b4"
+                                        stroke-width="2.0" />
+                                    <text style="bold" fill="#606060" k="ref" size="12"
+                                        stroke="#ffffff" stroke-width="2.0" />
+                                </m>
+                            </m>
+                            <m v="motorway">
+                                <line cap="square" outline="casing-bridge" use="motorway" />
+                                <m zoom-min="14">
+                                    <text style="bold" k="name" size="16" stroke="#979797"
+                                        stroke-width="2.0" />
+                                    <text style="bold" fill="#606060" k="ref" size="12"
+                                        stroke="#ffffff" stroke-width="2.0" />
+                                </m>
+                            </m>
+                        </m>
+                    </m>
+                </m>
+            </m>
+        </m>
+
+        <!-- runways cores -->
+        <m k="aeroway">
+            <m v="runway">
+                <line cap="square" stroke="#d8d8d8" width="4.5" />
+                <outline use="casing" />
+            </m>
+            <m v="taxiway">
+                <line cap="butt" stroke="#d8d8d8" width="1.8" />
+                <outline use="casing" />
+            </m>
+        </m>
+
+
+        <!-- man_made features -->
+        <m k="man_made" v="pier">
+            <m closed="no">
+                <line cap="butt" stroke="#d0d0d0" width="0.4" />
+                <line cap="butt" stroke="#e4e4e4" width="0.3" />
+            </m>
+            <m closed="yes">
+                <area fill="#e4e4e4" stroke="#d0d0d0" stroke-width="0.05" />
+            </m>
+        </m>
+
+
+        <!-- barriers -->
+        <m k="barrier">
+            <m k="barrier" v="fence|wall|city_wall">
+                <line cap="butt" fix="true" stroke="#111111" width="0.8" />
+            </m>
+            <m k="barrier" v="retaining_wall">
+                <line cap="butt" stroke="#888888" width="0.1" />
+            </m>
+        </m>
+
+
+        <!-- non-physical routes -->
+        <m k="route" v="ferry">
+            <line cap="butt" dasharray="15,10" stroke="#707070" width="0.3" />
+        </m>
+
+
+        <!-- highway one-way markers -->
+        <m k="tunnel" v="~|false|no">
+            <m k="area" v="~|false|no">
+                <m k="highway">
+                    <m k="oneway" v="yes|true" zoom-min="16">
+                        <line fix="true" src="assets:patterns/oneway.svg" stipple="160"
+                            stipple-stroke="#666666" width="6" />
+                    </m>
+                </m>
+            </m>
+        </m>
+
+
+        <m k="aerialway">
+            <line cap="butt" stroke="#202020" width="0.4" />
+            <line cap="butt" dasharray="2,200" stroke="#202020" width="4.0" />
+            <!--<m k="aerialway" v="cable_car">
+                <lineSymbol src="assets:symbols/cable_car.svg" />
+            </m>
+            <m k="aerialway" v="chair_lift">
+                <lineSymbol src="assets:symbols/chair_lift.svg" />
+            </m>
+            <m k="aerialway" v="gondola">
+                <lineSymbol src="assets:symbols/gondola.svg" />
+            </m>-->
+            <m zoom-min="14">
+                <text style="bold" fill="#606060" k="name" size="16" stroke="#ffffff"
+                    stroke-width="2.0" />
+            </m>
+        </m>
+
+
+        <m k="railway">
+            <m k="tunnel" v="~|false|no">
+
+                <m v="station">
+                    <area fill="#909090" stroke="#707070" stroke-width="0.3" />
+                </m>
+
+                <m k="bridge" v="yes|true">
+                    <m v="tram">
+                        <line cap="butt" fix="true" stroke="#cc000000" width="1.4" />
+                    </m>
+                    <m v="subway|light_rail|narrow_gauge">
+                        <line cap="butt" fix="true" stroke="#cc000000" width="1.6" />
+                    </m>
+                    <m v="rail">
+                        <line cap="butt" fix="true" stroke="#cc000000" width="1.6" />
+                    </m>
+                </m>
+
+                <m v="tram">
+                    <line cap="butt" stroke="#e6b7e6" width="0.25" />
+                    <line cap="butt" dasharray="12,18" stroke="#202020" width="0.25" />
+                </m>
+                <m v="subway">
+                    <line cap="butt" stroke="#0f0f4c" width="0.4" />
+                    <line cap="butt" dasharray="12,18" stroke="#bababa" width="0.25" />
+                </m>
+                <m v="light_rail">
+                    <!-- <line stroke="#03a3a3a" width="0.4" cap="butt" />
+                      <line stroke="#dcdcdc" width="0.25" cap="butt" />
+                      <line stroke="#03a3a3a" width="0.25" dasharray="12,18" cap="butt" /> -->
+                    <line cap="butt" fade="12" stipple="10" stipple-stroke="#dcdcdc"
+                        stipple-width="0.8" stroke="#3a3a3a" width="0.4" />
+                </m>
+                <m v="narrow_gauge">
+                    <line cap="butt" stroke="#333333" width="0.4" />
+                    <line cap="butt" stroke="#e6e6e6" width="0.25" />
+                    <line cap="butt" dasharray="18,18" stroke="#333333" width="0.25" />
+                </m>
+                <m v="rail">
+                    <!-- <line stroke="#333333" width="0.55" cap="butt" />
+                      <line stroke="#e6e6e6" width="0.4" cap="butt" />
+                      <line stroke="#333333" width="0.4" dasharray="15,15" cap="butt" /> -->
+                    <line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6"
+                        stipple-width="0.8" stroke="#333333" width="1.6" />
+                </m>
+            </m>
+        </m>
+
+
+        <m k="boundary">
+            <m k="boundary" v="national_park">
+                <line dasharray="15, 5, 5, 5" fix="true" stroke="#c8c8c8" width="1.25" />
+            </m>
+            <m k="boundary" v="administrative">
+                <m k="admin_level">
+                    <m v="11">
+                        <line dasharray="1, 5" fix="true" stroke="#787878" width="1.1" />
+                    </m>
+                    <m v="10">
+                        <line dasharray="5, 25" fix="true" stroke="#787878" width="1.1" />
+                    </m>
+                    <m v="9">
+                        <line dasharray="15, 15" fix="true" stroke="#787878" width="1.1" />
+                    </m>
+                    <m v="8">
+                        <line dasharray="15, 5, 5, 5" fix="true" stroke="#787878" width="1.1" />
+                    </m>
+                    <m v="7">
+                        <line fix="true" stroke="#787878" width="1.1" />
+                    </m>
+                    <m v="6">
+                        <line dasharray="5, 5" fix="true" stroke="#787878" width="1.25" />
+                    </m>
+                    <m v="5">
+                        <line dasharray="15, 15" fix="true" stroke="#787878" width="1.25" />
+                    </m>
+                    <m v="4">
+                        <line dasharray="15, 5, 5, 5" fix="true" stipple="4"
+                            stipple-stroke="#787878" stipple-width="0.9" stroke="#00000000"
+                            width="1.25" />
+                    </m>
+                    <m v="3">
+                        <line fix="true" stroke="#787878" width="1.25" />
+                    </m>
+                    <m v="2">
+                        <!-- <line stroke="#80ededed" width="0.75" />
+                          <line stroke="#787878" width="1.25" fix="true" dasharray="15, 15" /> -->
+                        <line dasharray="15, 5, 5, 5" fix="true" stipple="6"
+                            stipple-stroke="#80ededed" stipple-width="0.9" stroke="#787878"
+                            width="1.25" />
+                    </m>
+                </m>
+            </m>
+        </m>
+
+        <!--<m k="historic" v="ruins" zoom-min="17">
+            <caption style="bold" fill="#4040ff" k="name" size="16" stroke="#ffffff"
+                stroke-width="2.0" />
+        </m>-->
+
+        <m k="place" v="locality" zoom-min="17">
+            <caption style="bold" fill="#000000" k="name" size="16" stroke="#ffffff"
+                stroke-width="2.0" />
+        </m>
+    </m>
+
+
+    <m e="node" select="first">
+
+        <m k="aeroway">
+            <m v="helipad" zoom-min="17">
+                <symbol src="assets:symbols/transport/helicopter.svg" />
+            </m>
+            <m v="aerodrome|airport" zoom-max="13" zoom-min="9">
+                <symbol src="assets:symbols/transport/airport2.svg" />
+            </m>
+        </m>
+
+        <m k="amenity">
+            <m select="first">
+                <m v="atm" zoom-min="17">
+                    <symbol src="assets:symbols/money/atm2.svg" />
+                </m>
+                <m v="bank" zoom-min="17">
+                    <symbol src="assets:symbols/money/bank2.svg" />
+                </m>
+                <!--<m v="bench" zoom-min="17">
+                    <symbol src="assets:symbols/bench.svg" />
+                </m>-->
+                <m v="bicycle_rental" zoom-min="17">
+                    <symbol src="assets:symbols/transport/rental_bicycle.svg" />
+                </m>
+                <m v="bus_station" zoom-min="17">
+                    <symbol src="assets:symbols/transport/bus_station.svg" />
+                </m>
+                <m v="cafe" zoom-min="17">
+                    <symbol src="assets:symbols/food/cafe.svg" />
+                </m>
+                <m v="cinema" zoom-min="17">
+                    <symbol src="assets:symbols/tourist/cinema2.svg" />
+                </m>
+                <m v="drinking_water" zoom-min="17">
+                    <symbol src="assets:symbols/food/drinkingtap.svg" />
+                </m>
+                <m v="fast_food" zoom-min="17">
+                    <symbol src="assets:symbols/food/fastfood.svg" />
+                </m>
+                <m v="fire_station" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/firestation3.svg" />
+                </m>
+                <m v="fountain" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/fountain2.svg" />
+                </m>
+                <m v="fuel" zoom-min="17">
+                    <symbol src="assets:symbols/transport/fuel.svg" />
+                </m>
+                <m v="hospital" zoom-min="15">
+                    <symbol src="assets:symbols/health/hospital.svg" />
+                </m>
+                <m v="kindergarten" zoom-min="17">
+                    <symbol src="assets:symbols/education/nursery3.svg" />
+                </m>
+                <m v="library" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/library.svg" />
+                </m>
+                <m v="parking" zoom-min="17">
+                    <symbol src="assets:symbols/transport/parking.svg" />
+                </m>
+                <m v="pharmacy" zoom-min="17">
+                    <symbol src="assets:symbols/health/pharmacy.svg" />
+                </m>
+                <m v="place_of_worship" zoom-min="17">
+                    <m k="denomination|religion" v="buddhist">
+                        <symbol src="assets:symbols/place_of_worship/buddhist.svg" />
+                    </m>
+                    <m k="denomination|religion" v="christian">
+                        <symbol src="assets:symbols/place_of_worship/christian.svg" />
+                    </m>
+                    <m k="denomination|religion" v="hindu">
+                        <symbol src="assets:symbols/place_of_worship/hindu.svg" />
+                    </m>
+                    <m k="denomination|religion" v="jewish">
+                        <symbol src="assets:symbols/place_of_worship/jewish.svg" />
+                    </m>
+                    <m k="denomination|religion" v="muslim|moslem">
+                        <symbol src="assets:symbols/place_of_worship/islamic.svg" />
+                    </m>
+                    <m k="denomination|religion" v="shinto">
+                        <symbol src="assets:symbols/place_of_worship/shinto.svg" />
+                    </m>
+                    <m k="denomination|religion" v="~|*">
+                        <symbol src="assets:symbols/place_of_worship/unknown.svg" />
+                    </m>
+                </m>
+                <m v="post_box" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/post_box.svg" />
+                </m>
+                <m v="post_office" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/post_office.svg" />
+                </m>
+                <m v="pub|bar" zoom-min="17">
+                    <symbol src="assets:symbols/food/bar.svg" />
+                </m>
+                <m v="recycling" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/recycling.svg" />
+                </m>
+                <m v="restaurant" zoom-min="17">
+                    <symbol src="assets:symbols/food/restaurant.svg" />
+                </m>
+                <m v="school" zoom-min="17">
+                    <symbol src="assets:symbols/education/school.svg" />
+                </m>
+                <m v="shelter" zoom-min="17">
+                    <symbol src="assets:symbols/accommodation/shelter2.svg" />
+                </m>
+                <m v="telephone" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/telephone.svg" />
+                </m>
+                <m v="theatre" zoom-min="17">
+                    <symbol src="assets:symbols/tourist/theatre.svg" />
+                </m>
+                <m v="toilets" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/toilets.svg" />
+                </m>
+                <m v="university|college" zoom-min="17">
+                    <symbol src="assets:symbols/education/university.svg" />
+                </m>
+            </m>
+            <m zoom-min="17">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+        <m k="barrier" v="bollard">
+            <circle fill="#707070" radius="1.5" />
+        </m>
+
+
+        <m k="highway">
+            <m v="bus_stop" zoom-min="16">
+                <symbol src="assets:symbols/dot_blue.svg" />
+            </m>
+            <m v="traffic_signals" zoom-min="17">
+                <symbol src="assets:symbols/transport/traffic_lights.svg" />
+            </m>
+            <m v="turning_circle">
+                <circle fill="#ffffff" radius="1.4" scale-radius="true" />
+            </m>
+        </m>
+
+
+        <m k="historic">
+            <symbol src="assets:symbols/tourist/monument.svg" />
+
+            <m zoom-min="17">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+
+        <m k="leisure" v="playground" zoom-min="17">
+            <symbol src="assets:symbols/amenity/playground.svg" />
+        </m>
+
+
+        <m k="man_made" v="windmill" zoom-min="17">
+            <symbol src="assets:symbols/tourist/windmill.svg" />
+        </m>
+
+
+        <m k="natural">
+            <m select="first">
+                <m v="cave_entrance" zoom-min="15">
+                    <symbol src="assets:symbols/poi/cave.svg" />
+                    <m zoom-min="17">
+                        <text use="caption-small-blue" />
+                    </m>
+                </m>
+                <m v="peak" zoom-min="12">
+                    <symbol src="assets:symbols/peak.svg" />
+                    <caption style="bold" dy="12" fill="#323232" k="ele" size="12" stroke="#ffffff"
+                        stroke-width="2.0" />
+                    <caption style="bold" dy="-12" fill="#323232" k="name" size="14"
+                        stroke="#ffffff" stroke-width="2.0" />
+                </m>
+                <m v="volcano" zoom-min="12">
+                    <symbol src="assets:symbols/volcano.svg" />
+                    <caption style="bold" dy="12" fill="#323232" k="ele" size="12" stroke="#ffffff"
+                        stroke-width="2.0" />
+                    <caption style="bold" dy="-12" fill="#323232" k="name" size="14"
+                        stroke="#ffffff" stroke-width="2.0" />
+                </m>
+            </m>
+        </m>
+
+
+        <m k="place" select="first">
+            <m v="locality" zoom-min="13">
+                <caption style="bold" fill="#606060" k="name" size="14" stroke="#ffffff"
+                    stroke-width="2.0" />
+            </m>
+            <m v="hamlet" zoom-min="13">
+                <caption style="bold" fill="#000000" k="name" size="13" stroke="#ffffff"
+                    stroke-width="2.0" />
+            </m>
+            <m v="suburb|town|village" zoom-min="10">
+                <caption style="bold" fill="#000000" k="name" size="15" stroke="#ffffff"
+                    stroke-width="2.0" />
+            </m>
+            <m v="island" zoom-min="10">
+                <caption style="bold" fill="#000000" k="name" size="20" stroke="#ffffff"
+                    stroke-width="2.0" />
+            </m>
+            <m v="city" zoom-max="14">
+                <caption style="bold" fill="#000000" k="name" size="25" stroke="#ffffff"
+                    stroke-width="2.0" />
+            </m>
+            <m v="country" zoom-max="6">
+                <caption style="bold" fill="#000000" k="name" size="25" stroke="#ffffff"
+                    stroke-width="2.0" />
+            </m>
+        </m>
+
+
+        <m k="railway">
+            <m v="crossing" zoom-min="16">
+                <symbol src="assets:symbols/railway-crossing-small.svg" />
+            </m>
+            <!-- in Bremen this is also used for crossings between tram-lines and roads... -->
+            <m v="level_crossing" zoom-min="14">
+                <symbol src="assets:symbols/railway-crossing.svg" />
+            </m>
+            <m v="station" zoom-min="14">
+                <symbol src="assets:symbols/transport/train_station2.svg" />
+                <caption style="bold" dy="-20" fill="#ec2d2d" k="name" size="14" stroke="#ffffff"
+                    stroke-width="2.0" />
+            </m>
+            <m v="halt|tram_stop" zoom-min="15">
+                <symbol src="assets:symbols/transport/tram_stop.svg" />
+                <caption style="bold" dy="-20" fill="#ec2d2d" k="name" size="14" stroke="#ffffff"
+                    stroke-width="2.0" />
+            </m>
+        </m>
+
+
+        <m k="shop">
+            <m v="bakery" zoom-min="17">
+                <symbol src="assets:symbols/shopping/bakery.svg" />
+            </m>
+            <!--<m v="florist" zoom-min="17">
+                <symbol src="assets:symbols/shopping/florist.svg" />
+            </m>-->
+            <m v="supermarket|organic" zoom-min="17">
+                <symbol src="assets:symbols/shopping/supermarket.svg" />
+            </m>
+
+            <m zoom-min="17">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+
+        <m k="tourism">
+            <m v="alpine_hut" zoom-min="16">
+                <symbol src="assets:symbols/accommodation/alpinehut.svg" />
+            </m>
+            <m v="camp_site" zoom-min="17">
+                <symbol src="assets:symbols/accommodation/camping.svg" />
+            </m>
+            <m v="hostel" zoom-min="17">
+                <symbol src="assets:symbols/accommodation/hostel.svg" />
+            </m>
+            <m v="hotel" zoom-min="17">
+                <symbol src="assets:symbols/accommodation/hotel2.svg" />
+            </m>
+            <!--  <m v="information" zoom-min="17">
+               <symbol src="assets:symbols/tourist/information.svg" />
+             </m> -->
+            <m v="viewpoint" zoom-min="15">
+                <symbol src="assets:symbols/tourist/view_point.svg" />
+            </m>
+
+            <m zoom-min="17">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+
+        <!-- house numbers -->
+        <m k="addr:housenumber" zoom-min="17">
+            <caption style="bold" fill="#606060" k="addr:housenumber" size="12" stroke="#ffffff"
+                stroke-width="2.0" />
+        </m>
+    </m>
+
+</rendertheme>

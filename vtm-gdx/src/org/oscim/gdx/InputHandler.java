@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -115,11 +115,16 @@ public class InputHandler implements InputProcessor {
                 break;
 
             case Input.Keys.NUM_3:
-                mMap.setTheme(VtmThemes.TRONRENDER);
+                mMap.setTheme(VtmThemes.OSMAGRAY);
                 mMap.updateMap(false);
                 break;
 
             case Input.Keys.NUM_4:
+                mMap.setTheme(VtmThemes.TRONRENDER);
+                mMap.updateMap(false);
+                break;
+
+            case Input.Keys.NUM_5:
                 mMap.setTheme(VtmThemes.NEWTRON);
                 mMap.updateMap(false);
                 break;

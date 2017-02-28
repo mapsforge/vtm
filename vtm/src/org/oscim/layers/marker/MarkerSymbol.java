@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
  * Copyright 2016 Izumi Kawashima
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -43,6 +44,8 @@ public class MarkerSymbol {
      */
     final PointF mOffset;
     final boolean mBillboard;
+
+    float rotation = 0;
 
     public MarkerSymbol(TextureRegion textureRegion, float relX, float relY) {
         this(textureRegion, relX, relY, true);
@@ -179,5 +182,13 @@ public class MarkerSymbol {
         float oy = -h * (1 - mOffset.y);
 
         return dx >= ox && dy >= oy && dx <= ox + w && dy <= oy + h;
+    }
+
+    public float getRotation() {
+        return this.rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
     }
 }
