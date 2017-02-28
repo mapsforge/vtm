@@ -26,6 +26,7 @@ import org.oscim.renderer.atlas.TextureRegion;
  */
 public final class SymbolStyle extends RenderStyle<SymbolStyle> {
 
+    public final String sourceName;
     public final Bitmap bitmap;
     public final TextureRegion texture;
 
@@ -34,6 +35,7 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
     public final int symbolPercent;
 
     public SymbolStyle(Bitmap bitmap) {
+        this.sourceName = null;
         this.bitmap = bitmap;
         this.texture = null;
 
@@ -43,6 +45,7 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
     }
 
     public SymbolStyle(TextureRegion texture) {
+        this.sourceName = null;
         this.bitmap = null;
         this.texture = texture;
 
@@ -51,7 +54,18 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
         this.symbolPercent = 100;
     }
 
+    public SymbolStyle(String sourceName) {
+        this.sourceName = sourceName;
+        this.bitmap = null;
+        this.texture = null;
+
+        this.symbolWidth = 0;
+        this.symbolHeight = 0;
+        this.symbolPercent = 100;
+    }
+
     public SymbolStyle(SymbolBuilder<?> b) {
+        this.sourceName = b.sourceName;
         this.bitmap = b.bitmap;
         this.texture = b.texture;
 
@@ -83,6 +97,7 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
 
     public static class SymbolBuilder<T extends SymbolBuilder<T>> extends StyleBuilder<T> {
 
+        public String sourceName;
         public Bitmap bitmap;
         public TextureRegion texture;
 
@@ -117,6 +132,11 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
             return self();
         }
 
+        public T sourceName(String sourceName) {
+            this.sourceName = sourceName;
+            return self();
+        }
+
         public T symbolWidth(int symbolWidth) {
             this.symbolWidth = symbolWidth;
             return self();
@@ -135,6 +155,7 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
         public T reset() {
             bitmap = null;
             texture = null;
+            sourceName = null;
 
             symbolWidth = 0;
             symbolHeight = 0;

@@ -23,6 +23,7 @@ import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.theme.ThemeLoader;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
 import org.oscim.tiling.source.mapfile.MapInfo;
@@ -40,6 +41,7 @@ public class MapsforgeTest extends GdxMap {
         tileSource.setPreferredLanguage("en");
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);
+        ThemeLoader.useAtlas = true;
         mMap.setTheme(VtmThemes.DEFAULT);
 
         mMap.layers().add(new BuildingLayer(mMap, l));

@@ -22,6 +22,8 @@ import org.oscim.theme.IRenderTheme.ThemeException;
 
 public class ThemeLoader {
 
+    public static boolean useAtlas = false;
+
     public static IRenderTheme load(String renderThemePath) throws ThemeException {
         return load(new ExternalRenderTheme(renderThemePath));
     }
@@ -43,7 +45,7 @@ public class ThemeLoader {
     }
 
     public static IRenderTheme load(ThemeFile theme, ThemeCallback themeCallback) throws ThemeException {
-        IRenderTheme t = XmlThemeBuilder.read(theme, themeCallback);
+        IRenderTheme t = useAtlas ? XmlAtlasThemeBuilder.read(theme, themeCallback) : XmlThemeBuilder.read(theme, themeCallback);
         if (t != null)
             t.scaleTextSize(CanvasAdapter.textScale + (CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI - 1));
         return t;

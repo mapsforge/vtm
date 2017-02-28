@@ -41,6 +41,10 @@ public class RenderTheme implements IRenderTheme {
     private final int mLevels;
     private final Rule[] mRules;
 
+    public Rule[] getRules() {
+        return mRules;
+    }
+
     class RenderStyleCache {
         final int matchType;
         final LRUCache<MatchingCacheKey, RenderStyleItem> cache;
