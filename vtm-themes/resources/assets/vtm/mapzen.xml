@@ -1020,6 +1020,10 @@
                 <caption style="bold" fill="#606060" k="name" priority="5" size="14"
                     stroke="#ffffff" stroke-width="2.0" />
             </m>
+            <m v="neighbourhood">
+                <caption style="bold_italic" fill="#404040" k="name" priority="4" size="17"
+                    stroke="#ffffff" stroke-width="2.0" />
+            </m>
             <m v="suburb" zoom-max="14">
                 <caption style="bold_italic" fill="#404040" k="name" priority="4" size="17"
                     stroke="#ffffff" stroke-width="2.0" />
