@@ -19,7 +19,6 @@
 package org.oscim.android.test;
 
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import org.oscim.backend.CanvasAdapter;
@@ -48,8 +47,7 @@ public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
     private java.util.Map<Object, TextureRegion> regionsMap;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    void createLayers() {
         mBitmapLayer.tileRenderer().setBitmapAlpha(0.5f);
 
         // Map events receiver
