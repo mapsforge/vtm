@@ -25,8 +25,8 @@ import org.oscim.core.MercatorProjection;
 import org.oscim.core.Point;
 import org.oscim.core.PointF;
 import org.oscim.core.Tile;
+import org.oscim.layers.marker.utils.ScreenUtils;
 import org.oscim.layers.marker.MarkerSymbol;
-import org.oscim.layers.markercluster.AndroidLeech.SparseIntArray;
 import org.oscim.renderer.BucketRenderer;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.bucket.SymbolBucket;
@@ -64,7 +64,7 @@ public class ClusteredMarkerRenderer extends BucketRenderer {
      * a grid slot, ie. 64x64dp. For efficiency I use a linear sparsearray with ARRindex = SLOTypos * max_x + SLOTxpos"
      */
 
-    private SparseIntArray mGridMap = new SparseIntArray(200); // initial space for 200 markers, that's not a lot of memory, and in most cases will avoid resizing the array
+    private org.oscim.layers.marker.utils.SparseIntArray mGridMap = new org.oscim.layers.marker.utils.SparseIntArray(200); // initial space for 200 markers, that's not a lot of memory, and in most cases will avoid resizing the array
 
     /* Whether to enable clustering or disable the functionality*/
     private boolean mClusteringEnabled = false;
@@ -364,7 +364,7 @@ public class ClusteredMarkerRenderer extends BucketRenderer {
     protected void repopulateCluster(int size, double scale) {
 
         /* the grid slot size in px. increase to group more aggressively. currently set to marker size */
-        final int GRIDSIZE = ScreenUtils.getPixels(MAP_GRID_SIZE_DP);
+        final int GRIDSIZE = org.oscim.layers.marker.utils.ScreenUtils.getPixels(MAP_GRID_SIZE_DP);
 
 		/* the factor to map into Grid Coordinates (discrete squares of GRIDSIZE x GRIDSIZE) */
         final double factor = (scale / GRIDSIZE);

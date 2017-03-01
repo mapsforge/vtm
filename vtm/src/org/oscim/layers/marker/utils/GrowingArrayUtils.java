@@ -1,4 +1,4 @@
-package org.oscim.layers.markercluster.AndroidLeech;
+package org.oscim.layers.marker.utils;
 
 /**
  * This comes for Android API. It is used by the INT SPARSEARRAY

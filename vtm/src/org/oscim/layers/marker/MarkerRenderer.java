@@ -36,10 +36,17 @@ public class MarkerRenderer extends BucketRenderer {
 
     protected final MarkerSymbol mDefaultMarker;
 
-    private final SymbolBucket mSymbolLayer;
-    private final float[] mBox = new float[8];
-    private final MarkerLayer<MarkerInterface> mMarkerLayer;
-    private final Point mMapPoint = new Point();
+    // chg
+    protected final SymbolBucket mSymbolLayer;
+
+    // chg
+    protected final float[] mBox = new float[8];
+
+    // chg
+    protected final Point mMapPoint = new Point();
+
+    // chg
+    protected final MarkerLayer<MarkerInterface> mMarkerLayer;
 
     /**
      * increase view to show items that are partially visible
@@ -49,23 +56,12 @@ public class MarkerRenderer extends BucketRenderer {
     /**
      * flag to force update of markers
      */
-    private boolean mUpdate;
+    // chg
+    protected boolean mUpdate;
 
-    private InternalItem[] mItems;
+    // chg
+    protected InternalItem[] mItems;
 
-    static class InternalItem {
-        MarkerInterface item;
-        boolean visible;
-        boolean changes;
-        float x, y;
-        double px, py;
-        float dy;
-
-        @Override
-        public String toString() {
-            return "\n" + x + ":" + y + " / " + dy + " " + visible;
-        }
-    }
 
     public MarkerRenderer(MarkerLayer<MarkerInterface> markerLayer, MarkerSymbol defaultSymbol) {
         mSymbolLayer = new SymbolBucket();

@@ -29,6 +29,7 @@ import org.oscim.core.GeoPoint;
 /**
  * Immutable class describing a GeoPoint with a Title and a Description.
  */
+
 public class MarkerItem implements MarkerInterface {
     public final Object uid;
     public String title;
@@ -80,5 +81,23 @@ public class MarkerItem implements MarkerInterface {
     public void setRotation(float rotation) {
         if (mMarker != null)
             mMarker.setRotation(rotation);
+    }
+
+    /**
+     * If MarkerItems are created using this convenience class instead of MarkerItem, this specific item
+     * will not be clusterable
+     */
+
+    @SuppressWarnings("unused")
+    public static class NonClusterable extends MarkerItem {
+
+        public NonClusterable(String title, String description, GeoPoint geoPoint) {
+            super(null, title, description, geoPoint);
+        }
+
+        public NonClusterable(Object uid, String title, String description, GeoPoint geoPoint) {
+            super(uid, title, description, geoPoint);
+        }
+
     }
 }

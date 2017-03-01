@@ -57,7 +57,8 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(LineTexActivity.class));
         linearLayout.addView(createButton(VectorLayerMapActivity.class));
         linearLayout.addView(createButton(LocationActivity.class));
-		linearLayout.addView(createButton(ClusteredItemsDemoActivity.class));
+        linearLayout.addView(createButton(ClusteredItemsDemoActivity.class));
+        linearLayout.addView(createButton(ClusteredItemsExtensionDemoActivity.class));
 
         linearLayout.addView(createLabel("User Interaction"));
         linearLayout.addView(createButton(NewGesturesActivity.class));
