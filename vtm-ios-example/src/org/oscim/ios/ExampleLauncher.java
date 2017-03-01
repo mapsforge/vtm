@@ -25,7 +25,7 @@ import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIDevice;
 import org.robovm.apple.uikit.UIScreen;
 
-public class RobovmLauncher extends IOSApplication.Delegate {
+public class ExampleLauncher extends IOSApplication.Delegate {
 
     @Override
     protected IOSApplication createApplication() {
@@ -37,7 +37,10 @@ public class RobovmLauncher extends IOSApplication.Delegate {
         float scale = (float) (getIosVersion() >= 8 ? UIScreen.getMainScreen().getNativeScale() : UIScreen.getMainScreen().getScale());
         CanvasAdapter.dpi *= scale;
 
-        IOSMapApp iosMapApp = new IOSMapApp();
+//        IOSMapApp iosMapApp = new IOSMapApp();
+        IOSMapAppCluster iosMapApp = new IOSMapAppCluster();
+
+
         iosMapApp.init();
 
         return new IOSApplication(iosMapApp, config);
@@ -52,7 +55,7 @@ public class RobovmLauncher extends IOSApplication.Delegate {
         NSAutoreleasePool pool = new NSAutoreleasePool();
         System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE");
 
-        UIApplication.main(argv, null, RobovmLauncher.class);
+        UIApplication.main(argv, null, ExampleLauncher.class);
         pool.drain();
     }
 }
