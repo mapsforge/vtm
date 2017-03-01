@@ -54,6 +54,11 @@ public class MarkerOverlayActivity extends BitmapTileMapActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        createLayers();
+    }
+
+    void createLayers() {
         mBitmapLayer.tileRenderer().setBitmapAlpha(0.5f);
 
         // Map events receiver

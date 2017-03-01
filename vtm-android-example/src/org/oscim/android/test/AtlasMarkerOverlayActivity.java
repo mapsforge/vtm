@@ -19,7 +19,6 @@
 package org.oscim.android.test;
 
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.GeoPoint;
@@ -41,8 +40,7 @@ import static org.oscim.android.canvas.AndroidGraphics.drawableToBitmap;
 public class AtlasMarkerOverlayActivity extends MarkerOverlayActivity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    void createLayers() {
         mBitmapLayer.tileRenderer().setBitmapAlpha(0.5f);
 
         // Map events receiver
