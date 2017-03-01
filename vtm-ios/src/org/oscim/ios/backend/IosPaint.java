@@ -69,9 +69,9 @@ public class IosPaint implements Paint {
     private CGLineCap cap = CGLineCap.Butt;
     private CGLineJoin join = CGLineJoin.Miter;
     private Style style;
-    private float textSize;
-    private FontFamily fontFamily;
-    private FontStyle fontStyle;
+    private float textSize = 10;
+    private FontFamily fontFamily = FontFamily.DEFAULT;
+    private FontStyle fontStyle = FontStyle.NORMAL;
     private int colorInt;
     private int strokeColorInt;
     private CTLine ctLine;
