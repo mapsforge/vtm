@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -53,6 +53,7 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(MarkerOverlayActivity.class));
         linearLayout.addView(createButton(RotateMarkerOverlayActivity.class));
         linearLayout.addView(createButton(AtlasMarkerOverlayActivity.class));
+        linearLayout.addView(createButton(AtlasMultiTextureActivity.class));
         linearLayout.addView(createButton(PathOverlayActivity.class));
         linearLayout.addView(createButton(LineTexActivity.class));
         linearLayout.addView(createButton(VectorLayerMapActivity.class));
