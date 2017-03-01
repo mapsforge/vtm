@@ -45,6 +45,11 @@ task copyVtmThemesResources(type: Copy) {
     into("${buildDir}")
 }
 
+task copyVtmPlaygroundResources(type: Copy) {
+    from("../vtm-playground/resources")
+    into("${buildDir}/assets/")
+}
+
 
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn copyVtmResources
@@ -52,6 +57,10 @@ tasks.withType(JavaCompile) {
 
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn copyVtmThemesResources
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn copyVtmPlaygroundResources
 }
 
 task nativesJar(type: Jar) {

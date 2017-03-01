@@ -37,8 +37,11 @@ public class RobovmLauncher extends IOSApplication.Delegate {
         float scale = (float) (getIosVersion() >= 8 ? UIScreen.getMainScreen().getNativeScale() : UIScreen.getMainScreen().getScale());
         CanvasAdapter.dpi *= scale;
 
-        IOSMapApp iosMapApp = new IOSMapApp();
-        IOSMapApp.init();
+//        IOSMapApp iosMapApp = new IOSMapApp();
+        IOSMapAppCluster iosMapApp = new IOSMapAppCluster();
+
+
+        iosMapApp.init();
 
         return new IOSApplication(iosMapApp, config);
     }
