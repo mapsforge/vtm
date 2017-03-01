@@ -98,6 +98,9 @@
         <activity
             android:name=".ClusteredItemsDemoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ClusteredItemsExtensionDemoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>

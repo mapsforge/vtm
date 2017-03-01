@@ -1,4 +1,4 @@
-package org.oscim.layers.markercluster.AndroidLeech;
+package org.oscim.layers.marker.utils;
 
 /*
  * Copyright (C) 2006 The Android Open Source Project

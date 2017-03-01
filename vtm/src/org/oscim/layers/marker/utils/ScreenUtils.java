@@ -1,4 +1,4 @@
-package org.oscim.layers.markercluster;
+package org.oscim.layers.marker.utils;
 
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
@@ -12,7 +12,7 @@ import org.oscim.backend.canvas.Paint;
  * @author Rodolfo Lopez Pintor 2017 <rlp@nebular.tv>
  */
 
-class ScreenUtils {
+public class ScreenUtils {
 
     /** https://developer.android.com/reference/android/util/DisplayMetrics.html#DENSITY_DEFAULT */
     private final static float REFERENCE_DPI = 160;
@@ -24,12 +24,12 @@ class ScreenUtils {
      * @return Value in PX according to screen density
      */
 
-    static int getPixels(float dp) {
+    public static int getPixels(float dp) {
         return (int) (CanvasAdapter.dpi / REFERENCE_DPI * dp);
     }
 
     @SuppressWarnings("unused")
-    static class ClusterDrawable {
+    public static class ClusterDrawable {
 
         private Paint mPaintText = CanvasAdapter.newPaint();
         private Paint mPaintCircle = CanvasAdapter.newPaint(), mPaintBorder = CanvasAdapter.newPaint();
