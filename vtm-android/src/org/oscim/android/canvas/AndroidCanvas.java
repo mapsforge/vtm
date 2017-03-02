@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2017 devemux86
  * Copyright 2017 nebular
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -74,7 +75,7 @@ public class AndroidCanvas implements Canvas {
 
     @Override
     public void fillColor(int color) {
-        canvas.drawColor(color, PorterDuff.Mode.CLEAR);
+        canvas.drawColor(color, PorterDuff.Mode.SRC_OVER);
     }
 
     @Override
