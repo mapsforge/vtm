@@ -75,7 +75,7 @@ public class AndroidCanvas implements Canvas {
 
     @Override
     public void fillColor(int color) {
-        canvas.drawColor(color, PorterDuff.Mode.SRC);
+        canvas.drawColor(color, PorterDuff.Mode.SRC_OVER);
     }
 
     @Override
