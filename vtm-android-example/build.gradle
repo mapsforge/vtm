@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 dependencies {
+    compile project(':vtm')
     compile project(':vtm-android')
     compile project(':vtm-extras')
     compile project(':vtm-http')

@@ -76,8 +76,8 @@ public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
         paint.setStrokeWidth(2 * scale);
         paint.setColor(Color.BLACK);
         List<MarkerItem> pts = new ArrayList<>();
-        for (double lat = -90; lat <= 90; lat += 5) {
-            for (double lon = -180; lon <= 180; lon += 5) {
+        for (double lat = -90; lat <= 90; lat += 10) {
+            for (double lon = -180; lon <= 180; lon += 10) {
                 String title = lat + "/" + lon;
                 pts.add(new MarkerItem(title, "", new GeoPoint(lat, lon)));
 
