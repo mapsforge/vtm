@@ -36,7 +36,7 @@ public class LocationRenderer extends LayerRenderer {
     private static final float CIRCLE_SIZE = 60;
     private static final int SHOW_ACCURACY_ZOOM = 16;
 
-    public enum Shader {SHADER_1, SHADER_2}
+    public enum Shader {SHADER_1, SHADER_1_REVERSE, SHADER_2}
 
     private final Map mMap;
     private final Layer mLayer;
@@ -248,6 +248,9 @@ public class LocationRenderer extends LayerRenderer {
             case SHADER_1:
                 shader = GLShader.createProgram(vShaderStr, fShaderStr1);
                 break;
+            case SHADER_1_REVERSE:
+                shader = GLShader.createProgram(vShaderStr, fShaderStr1reverse);
+                break;
             case SHADER_2:
                 shader = GLShader.createProgram(vShaderStr, fShaderStr2);
                 break;
@@ -297,6 +300,35 @@ public class LocationRenderer extends LayerRenderer {
             + "  float c = 0.5 * (1.0 - smoothstep(14.0 / u_scale, 16.0 / u_scale, 1.0 - len));"
             + "  vec2 dir = normalize(v_tex);"
             + "  float d = 1.0 - dot(dir, u_dir); "
+            ///  0.5 width of viewshed
+            + "  d = clamp(step(0.5, d), 0.4, 0.7);"
+            ///  - subtract inner from outer to create the outline
+            ///  - multiply by viewshed
+            ///  - add center point
+            + "  a = d * (a - (b + c)) + c;"
+            + "  gl_FragColor = vec4(0.2, 0.2, 0.8, 1.0) * a;"
+            + "}}";
+
+    private static final String fShaderStr1reverse = ""
+            + "precision mediump float;"
+            + "varying vec2 v_tex;"
+            + "uniform float u_scale;"
+            + "uniform float u_phase;"
+            + "uniform vec2 u_dir;"
+
+            + "void main() {"
+            + "  float len = 1.0 - length(v_tex);"
+            + "  if (u_dir.x == 0.0 && u_dir.y == 0.0){"
+            + "  gl_FragColor = vec4(0.2, 0.2, 0.8, 1.0) * len;"
+            + "  } else {"
+            ///  outer ring
+            + "  float a = smoothstep(0.0, 2.0 / u_scale, len);"
+            ///  inner ring
+            + "  float b = 0.5 * smoothstep(4.0 / u_scale, 5.0 / u_scale, len);"
+            ///  center point
+            + "  float c = 0.5 * (1.0 - smoothstep(14.0 / u_scale, 16.0 / u_scale, 1.0 - len));"
+            + "  vec2 dir = normalize(v_tex);"
+            + "  float d = dot(dir, u_dir); "
             ///  0.5 width of viewshed
             + "  d = clamp(step(0.5, d), 0.4, 0.7);"
             ///  - subtract inner from outer to create the outline
