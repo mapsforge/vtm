@@ -1,0 +1,90 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.2.0'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'robovm'
+
+sourceSets.main.java.srcDirs = ["src/"]
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+ext {
+    // Configure your application main class
+    mainClassName = "org.oscim.ios.RoboVmLauncher"
+    roboVMVersion = "2.3.0"
+}
+
+launchIPhoneSimulator.dependsOn build
+launchIPadSimulator.dependsOn build
+launchIOSDevice.dependsOn build
+createIPA.dependsOn build
+
+dependencies {
+    compile project(':vtm')
+    compile project(':vtm-gdx')
+    compile project(':vtm-ios')
+    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+    compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+    compile "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
+    compile "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
+    compile 'org.slf4j:slf4j-simple:1.7.21'
+}
+
+task copyVtmResources(type: Copy) {
+    from("../vtm/resources")
+    into("${buildDir}")
+}
+
+task copyVtmThemesResources(type: Copy) {
+    from("../vtm-themes/resources")
+    into("${buildDir}")
+}
+
+task copyVtmPlaygroundResources(type: Copy) {
+    from("../vtm-playground/resources")
+    into("${buildDir}/assets/")
+}
+
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn copyVtmResources
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn copyVtmThemesResources
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn copyVtmPlaygroundResources
+}
+
+task nativesJar(type: Jar) {
+    classifier = 'natives'
+    from('natives')
+}
+
+task fatJar(type: Jar, dependsOn: classes) {
+    classifier = 'jar-with-dependencies'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    from('natives')
+    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
+    with jar
+}
+
+artifacts {
+    archives nativesJar
+    //archives fatJar
+}
+
+if (project.hasProperty("SONATYPE_USERNAME")) {
+    afterEvaluate {
+        project.apply from: "${rootProject.projectDir}/deploy.gradle"
+    }
+}
