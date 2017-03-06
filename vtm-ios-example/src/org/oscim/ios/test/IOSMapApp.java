@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.ios;
+package org.oscim.ios.test;
 
 import org.oscim.backend.GLAdapter;
 import org.oscim.gdx.GdxAssets;
