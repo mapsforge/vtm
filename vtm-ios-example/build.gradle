@@ -15,6 +15,8 @@ sourceSets.main.java.srcDirs = ["src/"]
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
+configurations {natives}
+
 ext {
     // Configure your application main class
     mainClassName = "org.oscim.ios.RoboVmLauncher"
@@ -29,7 +31,9 @@ createIPA.dependsOn build
 dependencies {
     compile project(':vtm')
     compile project(':vtm-gdx')
+    compile project(':vtm-jts')
     compile project(':vtm-ios')
+//    natives project(':vtm-ios')
     compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
     compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
     compile "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
@@ -52,6 +56,11 @@ task copyVtmPlaygroundResources(type: Copy) {
     into("${buildDir}/assets/")
 }
 
+task copyIosNatives(type: Copy) {
+    from("../vtm-ios/natives")
+    into("${buildDir}/natives/")
+}
+
 
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn copyVtmResources
@@ -63,6 +72,10 @@ tasks.withType(JavaCompile) {
 
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn copyVtmPlaygroundResources
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn copyIosNatives
 }
 
 task nativesJar(type: Jar) {

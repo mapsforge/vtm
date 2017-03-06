@@ -34,10 +34,10 @@
         <pattern>org.apache.harmony.security.provider.crypto.CryptoProvider</pattern>
     </forceLinkClasses>
     <libs>
-        <lib>natives/libvtm-jni.a</lib>
+        <lib>build/natives/libvtm-jni.a</lib>
     </libs>
     <frameworkPaths>
-        <path>natives</path>
+        <path>build/natives</path>
     </frameworkPaths>
     <frameworks>
         <framework>SVGgh</framework>

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.ios;
+package org.oscim.ios.test;
 
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GLAdapter;
@@ -27,14 +27,14 @@ import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
 import org.oscim.ios.backend.IosGL;
 import org.oscim.ios.backend.IosGraphics;
-import org.oscim.layers.PathLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.layers.vector.PathLayer;
+import org.oscim.layers.vector.geometries.Style;
 import org.oscim.map.Map;
 import org.oscim.renderer.bucket.TextureItem;
 import org.oscim.theme.VtmThemes;
-import org.oscim.theme.styles.LineStyle;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 import java.util.ArrayList;
@@ -111,7 +111,7 @@ public class IOSLineTexTest extends GdxMap {
             PathLayer pathLayer;
             if (init) {
                 int c = Color.fade(Color.rainbow((float) (lat + 90) / 180), 0.5f);
-                LineStyle style = LineStyle.builder()
+                Style style = Style.builder()
                         .stippleColor(c)
                         .stipple(24)
                         .stippleWidth(1)
