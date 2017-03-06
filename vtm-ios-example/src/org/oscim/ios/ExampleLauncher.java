@@ -38,7 +38,9 @@ public class ExampleLauncher extends IOSApplication.Delegate {
         CanvasAdapter.dpi *= scale;
 
 //        IOSMapApp iosMapApp = new IOSMapApp();
-        IOSMapAppCluster iosMapApp = new IOSMapAppCluster();
+//        IOSMapAppCluster iosMapApp = new IOSMapAppCluster();
+
+        IOSLineTexTest iosMapApp = new IOSLineTexTest();
 
 
         iosMapApp.init();
