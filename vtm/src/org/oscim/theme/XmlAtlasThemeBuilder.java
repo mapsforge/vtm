@@ -128,6 +128,7 @@ public class XmlAtlasThemeBuilder extends XmlThemeBuilder {
             try {
                 Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
                 if (bitmap != null) {
+                    //create a property depends name! (needed if the same image used with different sizes)
                     String sourceName = lowSrc + b.symbolWidth + "/" + b.symbolHeight + "/" + b.symbolPercent;
                     bitmapMap.put(sourceName, bitmap);
                     return b.sourceName(sourceName).build();

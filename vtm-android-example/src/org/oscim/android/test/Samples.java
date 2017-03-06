@@ -46,6 +46,7 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(MapsforgeStyleActivity.class));
         linearLayout.addView(createButton(MapboxMapActivity.class));
         linearLayout.addView(createButton(OsmJsonMapActivity.class));
+        linearLayout.addView(createButton(AtlasThemeMapActivity.class));
 
         linearLayout.addView(createLabel("Raster Maps"));
         linearLayout.addView(createButton(BitmapTileMapActivity.class));

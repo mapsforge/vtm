@@ -98,6 +98,12 @@
         <activity
             android:name=".VectorLayerMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+                android:name=".AtlasThemeMapActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+                android:name=".AtlasThemeMapActivity$MapFilePicker"
+                android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>
