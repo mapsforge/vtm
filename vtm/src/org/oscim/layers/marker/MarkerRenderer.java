@@ -3,6 +3,7 @@
  * Copyright 2016 Izumi Kawashima
  * Copyright 2017 Longri
  * Copyright 2017 devemux86
+ * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -17,7 +18,6 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.oscim.layers.marker;
 
 import org.oscim.core.MercatorProjection;
@@ -36,10 +36,10 @@ public class MarkerRenderer extends BucketRenderer {
 
     protected final MarkerSymbol mDefaultMarker;
 
-    private final SymbolBucket mSymbolLayer;
-    private final float[] mBox = new float[8];
-    private final MarkerLayer<MarkerInterface> mMarkerLayer;
-    private final Point mMapPoint = new Point();
+    protected final SymbolBucket mSymbolLayer;
+    protected final float[] mBox = new float[8];
+    protected final MarkerLayer<MarkerInterface> mMarkerLayer;
+    protected final Point mMapPoint = new Point();
 
     /**
      * increase view to show items that are partially visible
@@ -49,23 +49,9 @@ public class MarkerRenderer extends BucketRenderer {
     /**
      * flag to force update of markers
      */
-    private boolean mUpdate;
+    protected boolean mUpdate;
 
-    private InternalItem[] mItems;
-
-    static class InternalItem {
-        MarkerInterface item;
-        boolean visible;
-        boolean changes;
-        float x, y;
-        double px, py;
-        float dy;
-
-        @Override
-        public String toString() {
-            return "\n" + x + ":" + y + " / " + dy + " " + visible;
-        }
-    }
+    protected InternalItem[] mItems;
 
     public MarkerRenderer(MarkerLayer<MarkerInterface> markerLayer, MarkerSymbol defaultSymbol) {
         mSymbolLayer = new SymbolBucket();

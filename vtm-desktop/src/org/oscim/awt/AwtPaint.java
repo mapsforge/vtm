@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -101,6 +101,7 @@ public class AwtPaint implements Paint {
         DEFAULT_FONT = new Font("Arial", Font.PLAIN, 14).deriveFont(TEXT_ATTRIBUTES);
     }
 
+    private Align align;
     Color color = new Color(0.1f, 0.1f, 0.1f, 1);
     FontMetrics fm;
     Font font = DEFAULT_FONT; // new Font("Default", Font.PLAIN, 13);
@@ -156,8 +157,8 @@ public class AwtPaint implements Paint {
 
     @Override
     public void setTextAlign(Align align) {
-        // Align text in text layer
-        //this.align = align;
+        // TODO never read
+        this.align = align;
     }
 
     @Override

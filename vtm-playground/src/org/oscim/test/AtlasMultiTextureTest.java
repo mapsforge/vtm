@@ -43,8 +43,6 @@ import static org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 
 public class AtlasMultiTextureTest extends MarkerLayerTest {
 
-    private java.util.Map<Object, TextureRegion> regionsMap;
-
     @Override
     public void createLayers() {
         // Map events receiver
@@ -57,16 +55,10 @@ public class AtlasMultiTextureTest extends MarkerLayerTest {
 
         mMap.setMapPosition(0, 0, 1 << 2);
 
-        Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
-        Bitmap bitmapFocus = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_focus.png"));
-
         // Create Atlas from Bitmaps
         java.util.Map<Object, Bitmap> inputMap = new LinkedHashMap<>();
-        regionsMap = new LinkedHashMap<>();
+        java.util.Map<Object, TextureRegion> regionsMap = new LinkedHashMap<>();
         List<TextureAtlas> atlasList = new ArrayList<>();
-
-        inputMap.put("poi", bitmapPoi);
-        inputMap.put("focus", bitmapFocus);
 
         Canvas canvas = CanvasAdapter.newCanvas();
         Paint paint = CanvasAdapter.newPaint();
@@ -94,18 +86,7 @@ public class AtlasMultiTextureTest extends MarkerLayerTest {
         // With iOS we must flip the Y-Axis
         TextureAtlasUtils.createTextureRegions(inputMap, regionsMap, atlasList, true, false);
 
-        MarkerSymbol symbol;
-        if (BILLBOARDS)
-            symbol = new MarkerSymbol(regionsMap.get("poi"), HotspotPlace.BOTTOM_CENTER);
-        else
-            symbol = new MarkerSymbol(regionsMap.get("poi"), HotspotPlace.CENTER, false);
-
-        if (BILLBOARDS)
-            mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.BOTTOM_CENTER);
-        else
-            mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.CENTER, false);
-
-        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), (MarkerSymbol) null, this);
         mMap.layers().add(mMarkerLayer);
 
         mMarkerLayer.addItems(pts);
@@ -123,13 +104,13 @@ public class AtlasMultiTextureTest extends MarkerLayerTest {
 
     @Override
     public boolean onItemSingleTapUp(int index, MarkerItem item) {
-        if (item.getMarker() == null) {
-            MarkerSymbol markerSymbol = new MarkerSymbol(regionsMap.get(item.getTitle()), HotspotPlace.BOTTOM_CENTER);
-            item.setMarker(markerSymbol);
-        } else
-            item.setMarker(null);
-
         System.out.println("Marker tap " + item.getTitle());
+        return true;
+    }
+
+    @Override
+    public boolean onItemLongPress(int index, MarkerItem item) {
+        System.out.println("Marker long press " + item.getTitle());
         return true;
     }
 

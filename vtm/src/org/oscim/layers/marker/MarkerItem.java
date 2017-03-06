@@ -8,6 +8,7 @@
  * Copyright 2016 devemux86
  * Copyright 2016 Erik Duisters
  * Copyright 2017 Longri
+ * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -80,5 +81,19 @@ public class MarkerItem implements MarkerInterface {
     public void setRotation(float rotation) {
         if (mMarker != null)
             mMarker.setRotation(rotation);
+    }
+
+    /**
+     * If a MarkerItem is created using this convenience class instead of MarkerItem,
+     * this specific item will not be clusterable.
+     */
+    public static class NonClusterable extends MarkerItem {
+        public NonClusterable(String title, String description, GeoPoint geoPoint) {
+            super(null, title, description, geoPoint);
+        }
+
+        public NonClusterable(Object uid, String title, String description, GeoPoint geoPoint) {
+            super(uid, title, description, geoPoint);
+        }
     }
 }

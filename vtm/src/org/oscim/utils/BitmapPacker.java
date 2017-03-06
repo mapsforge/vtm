@@ -69,7 +69,7 @@ public class BitmapPacker {
         int rectX = rect.x, rectY = rect.y, rectWidth = rect.width, rectHeight = rect.height;
 
         packerAtlasItem.drawBitmap(image, rectX,
-                flipY ? packerAtlasItem.image.getHeight() - rectY : rectY);
+                flipY ? packerAtlasItem.image.getHeight() - rectY - rectHeight : rectY);
 
         return rect;
     }

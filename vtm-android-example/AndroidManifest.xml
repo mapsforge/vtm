@@ -36,6 +36,9 @@
             android:name=".BitmapTileMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".ClusterMarkerOverlayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".JeoIndoorMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity

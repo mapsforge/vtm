@@ -18,7 +18,6 @@
  */
 package org.oscim.android.test;
 
-import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import org.oscim.backend.CanvasAdapter;
@@ -45,11 +44,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static org.oscim.android.canvas.AndroidGraphics.drawableToBitmap;
-
 public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
-
-    private java.util.Map<Object, TextureRegion> regionsMap;
 
     @Override
     void createLayers() {
@@ -61,20 +56,10 @@ public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
         mMap.layers().add(new LabelLayer(mMap, l));
         mMap.setTheme(VtmThemes.DEFAULT);
 
-        /* directly load bitmap from resources */
-        Bitmap bitmapPoi = drawableToBitmap(getResources(), R.drawable.marker_poi);
-
-        /* another option: use some bitmap drawable */
-        Drawable d = getResources().getDrawable(R.drawable.marker_focus);
-        Bitmap bitmapFocus = drawableToBitmap(d);
-
         // Create Atlas from Bitmaps
         java.util.Map<Object, Bitmap> inputMap = new LinkedHashMap<>();
-        regionsMap = new LinkedHashMap<>();
+        java.util.Map<Object, TextureRegion> regionsMap = new LinkedHashMap<>();
         List<TextureAtlas> atlasList = new ArrayList<>();
-
-        inputMap.put("poi", bitmapPoi);
-        inputMap.put("focus", bitmapFocus);
 
         float scale = getResources().getDisplayMetrics().density;
         Canvas canvas = CanvasAdapter.newCanvas();
@@ -103,18 +88,7 @@ public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
         // With iOS we must flip the Y-Axis
         TextureAtlasUtils.createTextureRegions(inputMap, regionsMap, atlasList, true, false);
 
-        MarkerSymbol symbol;
-        if (BILLBOARDS)
-            symbol = new MarkerSymbol(regionsMap.get("poi"), HotspotPlace.BOTTOM_CENTER);
-        else
-            symbol = new MarkerSymbol(regionsMap.get("poi"), HotspotPlace.CENTER, false);
-
-        if (BILLBOARDS)
-            mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.BOTTOM_CENTER);
-        else
-            mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.CENTER, false);
-
-        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), (MarkerSymbol) null, this);
         mMap.layers().add(mMarkerLayer);
 
         mMarkerLayer.addItems(pts);
@@ -132,13 +106,13 @@ public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
 
     @Override
     public boolean onItemSingleTapUp(int index, MarkerItem item) {
-        if (item.getMarker() == null) {
-            MarkerSymbol markerSymbol = new MarkerSymbol(regionsMap.get(item.getTitle()), HotspotPlace.BOTTOM_CENTER);
-            item.setMarker(markerSymbol);
-        } else
-            item.setMarker(null);
-
         Toast.makeText(this, "Marker tap\n" + item.getTitle(), Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    @Override
+    public boolean onItemLongPress(int index, MarkerItem item) {
+        Toast.makeText(this, "Marker long press\n" + item.getTitle(), Toast.LENGTH_SHORT).show();
         return true;
     }
 }

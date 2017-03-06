@@ -22,6 +22,7 @@ import android.os.Bundle;
 
 import org.oscim.core.MapPosition;
 import org.oscim.layers.LocationLayer;
+import org.oscim.renderer.LocationRenderer;
 
 public class LocationActivity extends SimpleMapActivity implements LocationListener {
     private LocationLayer locationLayer;
@@ -35,6 +36,7 @@ public class LocationActivity extends SimpleMapActivity implements LocationListe
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         locationLayer = new LocationLayer(mMap);
+        locationLayer.locationRenderer.setShader("location_1_reverse");
         locationLayer.setEnabled(false);
         mMap.layers().add(locationLayer);
     }

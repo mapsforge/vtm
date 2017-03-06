@@ -3,9 +3,11 @@
 ## New since 0.7.0
 
 - Symbol rotation [#294](https://github.com/mapsforge/vtm/issues/294)
+- Marker clustering [#312](https://github.com/mapsforge/vtm/issues/312)
 - Osmagray theme [#300](https://github.com/mapsforge/vtm/issues/300)
+- Location custom shaders [#317](https://github.com/mapsforge/vtm/issues/317)
 - OkHttp external cache [#135](https://github.com/mapsforge/vtm/issues/135)
-- Texture atlas improvements [#304](https://github.com/mapsforge/vtm/pull/304)
+- Texture atlas improvements [#301](https://github.com/mapsforge/vtm/pull/301) [#304](https://github.com/mapsforge/vtm/pull/304)
 - Many other minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.8.0)
 

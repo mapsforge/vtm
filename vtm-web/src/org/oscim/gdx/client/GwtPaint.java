@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -24,6 +24,7 @@ import org.oscim.backend.canvas.Paint;
 
 public class GwtPaint implements Paint {
 
+    private Align align;
     String color;
     boolean stroke;
 
@@ -77,8 +78,8 @@ public class GwtPaint implements Paint {
 
     @Override
     public void setTextAlign(Align align) {
-        // Align text in text layer
-        //this.align = align;
+        // TODO never read
+        this.align = align;
     }
 
     @Override

@@ -1,6 +1,6 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -101,8 +101,7 @@ class AndroidPaint implements Paint {
 
     @Override
     public void setTextAlign(Align align) {
-        // Align text in text layer
-        //mPaint.setTextAlign(android.graphics.Paint.Align.valueOf(align.name()));
+        mPaint.setTextAlign(android.graphics.Paint.Align.valueOf(align.name()));
     }
 
     @Override
