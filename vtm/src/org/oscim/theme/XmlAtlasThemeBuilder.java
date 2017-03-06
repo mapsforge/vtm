@@ -60,7 +60,7 @@ public class XmlAtlasThemeBuilder extends XmlThemeBuilder {
 
 
     private static IRenderTheme replaceSymbolStylesOnTheme(Map<Object, TextureRegion> regionMap, RenderTheme theme) {
-        SymbolStyle.SymbolBuilder<?> symbolBuilder = new SymbolStyle.SymbolBuilder<>();
+        SymbolStyle.SymbolBuilder<?> symbolBuilder = new SymbolStyle.SymbolBuilder();
         Rule[] rules = theme.getRules();
         for (Rule rule : rules) {
             replaceSymbolStylesOnRules(regionMap, symbolBuilder, rule);
