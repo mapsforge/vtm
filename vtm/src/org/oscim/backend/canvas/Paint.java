@@ -2,6 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -72,6 +73,8 @@ public interface Paint {
     float getFontDescent();
 
     float getStrokeWidth();
+
+    Style getStyle();
 
     float getTextHeight(String text);
 

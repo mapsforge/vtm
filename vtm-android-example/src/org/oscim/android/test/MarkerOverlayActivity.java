@@ -18,7 +18,6 @@
 package org.oscim.android.test;
 
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import org.oscim.backend.canvas.Bitmap;
@@ -32,32 +31,34 @@ import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
+import org.oscim.layers.tile.buildings.BuildingLayer;
+import org.oscim.layers.tile.vector.VectorTileLayer;
+import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.map.Map;
+import org.oscim.theme.VtmThemes;
+import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.oscim.android.canvas.AndroidGraphics.drawableToBitmap;
-import static org.oscim.tiling.source.bitmap.DefaultSources.STAMEN_TONER;
 
-public class MarkerOverlayActivity extends BitmapTileMapActivity
+public class MarkerOverlayActivity extends SimpleMapActivity
         implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
 
     static final boolean BILLBOARDS = true;
     MarkerSymbol mFocusMarker;
     ItemizedLayer<MarkerItem> mMarkerLayer;
 
-    public MarkerOverlayActivity() {
-        super(STAMEN_TONER.build());
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mBitmapLayer.tileRenderer().setBitmapAlpha(0.5f);
-
+    void createLayers() {
         // Map events receiver
         mMap.layers().add(new MapEventsReceiver(mMap));
+
+        VectorTileLayer l = mMap.setBaseMap(new OSciMap4TileSource());
+        mMap.layers().add(new BuildingLayer(mMap, l));
+        mMap.layers().add(new LabelLayer(mMap, l));
+        mMap.setTheme(VtmThemes.DEFAULT);
 
         /* directly load bitmap from resources */
         Bitmap bitmap = drawableToBitmap(getResources(), R.drawable.marker_poi);

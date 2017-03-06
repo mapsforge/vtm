@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -23,7 +23,13 @@ import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
-import org.oscim.theme.ThemeLoader;
+import org.oscim.renderer.BitmapRenderer;
+import org.oscim.renderer.GLViewport;
+import org.oscim.scalebar.DefaultMapScaleBar;
+import org.oscim.scalebar.ImperialUnitAdapter;
+import org.oscim.scalebar.MapScaleBar;
+import org.oscim.scalebar.MapScaleBarLayer;
+import org.oscim.scalebar.MetricUnitAdapter;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
 import org.oscim.tiling.source.mapfile.MapInfo;
@@ -41,11 +47,22 @@ public class MapsforgeTest extends GdxMap {
         tileSource.setPreferredLanguage("en");
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);
-        ThemeLoader.useAtlas = true;
         mMap.setTheme(VtmThemes.DEFAULT);
 
         mMap.layers().add(new BuildingLayer(mMap, l));
         mMap.layers().add(new LabelLayer(mMap, l));
+
+        DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap);
+        mapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
+        mapScaleBar.setDistanceUnitAdapter(MetricUnitAdapter.INSTANCE);
+        mapScaleBar.setSecondaryDistanceUnitAdapter(ImperialUnitAdapter.INSTANCE);
+        mapScaleBar.setScaleBarPosition(MapScaleBar.ScaleBarPosition.BOTTOM_LEFT);
+
+        MapScaleBarLayer mapScaleBarLayer = new MapScaleBarLayer(mMap, mapScaleBar);
+        BitmapRenderer renderer = mapScaleBarLayer.getRenderer();
+        renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
+        renderer.setOffset(5, 0);
+        mMap.layers().add(mapScaleBarLayer);
 
         MapInfo info = tileSource.getMapInfo();
         MapPosition pos = new MapPosition();

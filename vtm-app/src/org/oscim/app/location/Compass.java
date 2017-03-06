@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Ahmad Saleem
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -83,6 +83,11 @@ public class Compass extends Layer implements SensorEventListener, Map.UpdateLis
         mArrowView = (ImageView) App.activity.findViewById(R.id.compass);
 
         setEnabled(false);
+    }
+
+    @Override
+    public boolean hasRotation() {
+        return true;
     }
 
     @Override

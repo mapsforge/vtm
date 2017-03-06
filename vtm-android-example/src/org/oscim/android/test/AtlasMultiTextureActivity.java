@@ -18,9 +18,13 @@
  */
 package org.oscim.android.test;
 
-import android.graphics.drawable.Drawable;
+import android.widget.Toast;
 
+import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
+import org.oscim.backend.canvas.Canvas;
+import org.oscim.backend.canvas.Color;
+import org.oscim.backend.canvas.Paint;
 import org.oscim.core.GeoPoint;
 import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.marker.ItemizedLayer;
@@ -40,9 +44,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static org.oscim.android.canvas.AndroidGraphics.drawableToBitmap;
-
-public class AtlasMarkerOverlayActivity extends MarkerOverlayActivity {
+public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
 
     @Override
     void createLayers() {
@@ -54,48 +56,63 @@ public class AtlasMarkerOverlayActivity extends MarkerOverlayActivity {
         mMap.layers().add(new LabelLayer(mMap, l));
         mMap.setTheme(VtmThemes.DEFAULT);
 
-        /* directly load bitmap from resources */
-        Bitmap bitmapPoi = drawableToBitmap(getResources(), R.drawable.marker_poi);
-
-        /* another option: use some bitmap drawable */
-        Drawable d = getResources().getDrawable(R.drawable.marker_focus);
-        Bitmap bitmapFocus = drawableToBitmap(d);
-
         // Create Atlas from Bitmaps
         java.util.Map<Object, Bitmap> inputMap = new LinkedHashMap<>();
         java.util.Map<Object, TextureRegion> regionsMap = new LinkedHashMap<>();
         List<TextureAtlas> atlasList = new ArrayList<>();
 
-        inputMap.put("poi", bitmapPoi);
-        inputMap.put("focus", bitmapFocus);
+        float scale = getResources().getDisplayMetrics().density;
+        Canvas canvas = CanvasAdapter.newCanvas();
+        Paint paint = CanvasAdapter.newPaint();
+        paint.setTypeface(Paint.FontFamily.DEFAULT, Paint.FontStyle.NORMAL);
+        paint.setTextSize(12 * scale);
+        paint.setStrokeWidth(2 * scale);
+        paint.setColor(Color.BLACK);
+        List<MarkerItem> pts = new ArrayList<>();
+        for (double lat = -90; lat <= 90; lat += 10) {
+            for (double lon = -180; lon <= 180; lon += 10) {
+                String title = lat + "/" + lon;
+                pts.add(new MarkerItem(title, "", new GeoPoint(lat, lon)));
+
+                Bitmap bmp = CanvasAdapter.newBitmap((int) (40 * scale), (int) (40 * scale), 0);
+                canvas.setBitmap(bmp);
+                canvas.fillColor(Color.GREEN);
+
+                canvas.drawText(Double.toString(lat), 3 * scale, 17 * scale, paint);
+                canvas.drawText(Double.toString(lon), 3 * scale, 35 * scale, paint);
+                inputMap.put(title, bmp);
+            }
+        }
 
         // Bitmaps will never used any more
         // With iOS we must flip the Y-Axis
         TextureAtlasUtils.createTextureRegions(inputMap, regionsMap, atlasList, true, false);
 
-        MarkerSymbol symbol;
-        if (BILLBOARDS)
-            symbol = new MarkerSymbol(regionsMap.get("poi"), HotspotPlace.BOTTOM_CENTER);
-        else
-            symbol = new MarkerSymbol(regionsMap.get("poi"), HotspotPlace.CENTER, false);
-
-        if (BILLBOARDS)
-            mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.BOTTOM_CENTER);
-        else
-            mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.CENTER, false);
-
-        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), (MarkerSymbol) null, this);
         mMap.layers().add(mMarkerLayer);
-
-        List<MarkerItem> pts = new ArrayList<>();
-
-        for (double lat = -90; lat <= 90; lat += 5) {
-            for (double lon = -180; lon <= 180; lon += 5)
-                pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
-        }
 
         mMarkerLayer.addItems(pts);
 
         mMap.layers().add(new TileGridLayer(mMap, getResources().getDisplayMetrics().density));
+
+        // set all markers
+        for (MarkerItem item : pts) {
+            MarkerSymbol markerSymbol = new MarkerSymbol(regionsMap.get(item.getTitle()), HotspotPlace.BOTTOM_CENTER);
+            item.setMarker(markerSymbol);
+        }
+
+        Toast.makeText(this, "Atlas count: " + atlasList.size(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onItemSingleTapUp(int index, MarkerItem item) {
+        Toast.makeText(this, "Marker tap\n" + item.getTitle(), Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    @Override
+    public boolean onItemLongPress(int index, MarkerItem item) {
+        Toast.makeText(this, "Marker long press\n" + item.getTitle(), Toast.LENGTH_SHORT).show();
+        return true;
     }
 }

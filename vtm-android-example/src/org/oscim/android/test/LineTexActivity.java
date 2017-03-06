@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -31,26 +31,19 @@ import org.oscim.renderer.bucket.TextureItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.oscim.tiling.source.bitmap.DefaultSources.STAMEN_TONER;
-
 /**
  * This is a very INEFFICIENT and somewhat less useful example for how to use
  * PathLayers!
  */
-public class LineTexActivity extends BitmapTileMapActivity {
+public class LineTexActivity extends SimpleMapActivity {
 
     private static final boolean ANIMATION = false;
 
     private List<PathLayer> mPathLayers = new ArrayList<>();
 
-    public LineTexActivity() {
-        super(STAMEN_TONER.build());
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBitmapLayer.tileRenderer().setBitmapAlpha(0.5f);
 
         TextureItem tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png"));
         tex.mipmap = true;

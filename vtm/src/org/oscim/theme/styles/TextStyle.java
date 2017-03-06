@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -22,7 +22,6 @@ import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Color;
 import org.oscim.backend.canvas.Paint;
-import org.oscim.backend.canvas.Paint.Align;
 import org.oscim.backend.canvas.Paint.FontFamily;
 import org.oscim.backend.canvas.Paint.FontStyle;
 import org.oscim.renderer.atlas.TextureRegion;
@@ -213,7 +212,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
         this.texture = b.texture;
 
         paint = CanvasAdapter.newPaint();
-        paint.setTextAlign(Align.CENTER);
+        //paint.setTextAlign(Align.CENTER);
         paint.setTypeface(b.fontFamily, b.fontStyle);
 
         paint.setColor(b.themeCallback != null ? b.themeCallback.getColor(b.fillColor) : b.fillColor);
@@ -222,7 +221,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
         if (b.strokeWidth > 0) {
             stroke = CanvasAdapter.newPaint();
             stroke.setStyle(Paint.Style.STROKE);
-            stroke.setTextAlign(Align.CENTER);
+            //stroke.setTextAlign(Align.CENTER);
             stroke.setTypeface(b.fontFamily, b.fontStyle);
             stroke.setColor(b.themeCallback != null ? b.themeCallback.getColor(b.strokeColor) : b.strokeColor);
             stroke.setStrokeWidth(b.strokeWidth);

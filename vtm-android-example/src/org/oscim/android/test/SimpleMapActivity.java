@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -42,6 +42,10 @@ public class SimpleMapActivity extends BaseMapActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        createLayers();
+    }
+
+    void createLayers() {
         GroupLayer groupLayer = new GroupLayer(mMap);
         groupLayer.layers.add(new BuildingLayer(mMap, mBaseLayer));
         groupLayer.layers.add(new LabelLayer(mMap, mBaseLayer));
@@ -64,7 +68,8 @@ public class SimpleMapActivity extends BaseMapActivity {
 
     @Override
     protected void onDestroy() {
-        mapScaleBar.destroy();
+        if (mapScaleBar != null)
+            mapScaleBar.destroy();
 
         super.onDestroy();
     }

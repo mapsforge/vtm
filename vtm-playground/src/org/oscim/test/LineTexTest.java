@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -23,12 +23,15 @@ import org.oscim.core.GeoPoint;
 import org.oscim.core.MapPosition;
 import org.oscim.event.Event;
 import org.oscim.gdx.GdxMapApp;
-import org.oscim.layers.tile.bitmap.BitmapTileLayer;
+import org.oscim.layers.tile.buildings.BuildingLayer;
+import org.oscim.layers.tile.vector.VectorTileLayer;
+import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.layers.vector.PathLayer;
 import org.oscim.layers.vector.geometries.Style;
 import org.oscim.map.Map;
 import org.oscim.renderer.bucket.TextureItem;
-import org.oscim.tiling.source.bitmap.DefaultSources;
+import org.oscim.theme.VtmThemes;
+import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +45,10 @@ public class LineTexTest extends GdxMapApp {
 
     @Override
     public void createLayers() {
-        BitmapTileLayer bitmapLayer = new BitmapTileLayer(mMap, DefaultSources.STAMEN_TONER.build());
-        bitmapLayer.tileRenderer().setBitmapAlpha(0.5f);
-        mMap.setBaseMap(bitmapLayer);
+        VectorTileLayer l = mMap.setBaseMap(new OSciMap4TileSource());
+        mMap.layers().add(new BuildingLayer(mMap, l));
+        mMap.layers().add(new LabelLayer(mMap, l));
+        mMap.setTheme(VtmThemes.DEFAULT);
 
         mMap.setMapPosition(0, 0, 1 << 2);
 

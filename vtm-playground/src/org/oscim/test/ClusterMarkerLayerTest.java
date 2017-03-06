@@ -1,6 +1,6 @@
 /*
  * Copyright 2016-2017 devemux86
- * Copyright 2017 Longri
+ * Copyright 2017 nebular
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -17,28 +17,27 @@ package org.oscim.test;
 
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
+import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeoPoint;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.TileGridLayer;
+import org.oscim.layers.marker.ClusterMarkerRenderer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
-import org.oscim.renderer.atlas.TextureAtlas;
-import org.oscim.renderer.atlas.TextureRegion;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
-import org.oscim.utils.TextureAtlasUtils;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
-import static org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
+public class ClusterMarkerLayerTest extends MarkerLayerTest {
 
-public class AtlasMarkerLayerTest extends MarkerLayerTest {
+    private static final int COUNT = 5;
+    private static final float STEP = 100f / 110000f; // roughly 100 meters
 
     @Override
     public void createLayers() {
@@ -50,41 +49,33 @@ public class AtlasMarkerLayerTest extends MarkerLayerTest {
         mMap.layers().add(new LabelLayer(mMap, l));
         mMap.setTheme(VtmThemes.DEFAULT);
 
-        mMap.setMapPosition(0, 0, 1 << 2);
+        mMap.setMapPosition(53.08, 8.83, 1 << 15);
 
         Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
-        Bitmap bitmapFocus = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_focus.png"));
-
-        // Create Atlas from Bitmaps
-        java.util.Map<Object, Bitmap> inputMap = new LinkedHashMap<>();
-        java.util.Map<Object, TextureRegion> regionsMap = new LinkedHashMap<>();
-        List<TextureAtlas> atlasList = new ArrayList<>();
-
-        inputMap.put("poi", bitmapPoi);
-        inputMap.put("focus", bitmapFocus);
-
-        // Bitmaps will never used any more
-        // With iOS we must flip the Y-Axis
-        TextureAtlasUtils.createTextureRegions(inputMap, regionsMap, atlasList, true, false);
-
         MarkerSymbol symbol;
         if (BILLBOARDS)
-            symbol = new MarkerSymbol(regionsMap.get("poi"), HotspotPlace.BOTTOM_CENTER);
+            symbol = new MarkerSymbol(bitmapPoi, MarkerSymbol.HotspotPlace.BOTTOM_CENTER);
         else
-            symbol = new MarkerSymbol(regionsMap.get("poi"), HotspotPlace.CENTER, false);
+            symbol = new MarkerSymbol(bitmapPoi, MarkerSymbol.HotspotPlace.CENTER, false);
 
-        if (BILLBOARDS)
-            mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.BOTTOM_CENTER);
-        else
-            mFocusMarker = new MarkerSymbol(regionsMap.get("focus"), HotspotPlace.CENTER, false);
-
-        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+        mMarkerLayer = new ItemizedLayer<>(
+                mMap,
+                new ArrayList<MarkerItem>(),
+                ClusterMarkerRenderer.factory(symbol, new ClusterMarkerRenderer.ClusterStyle(Color.WHITE, Color.BLUE)),
+                this);
         mMap.layers().add(mMarkerLayer);
 
+        // Create some markers spaced STEP degrees
         List<MarkerItem> pts = new ArrayList<>();
-        for (double lat = -90; lat <= 90; lat += 5) {
-            for (double lon = -180; lon <= 180; lon += 5)
-                pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
+        GeoPoint center = mMap.getMapPosition().getGeoPoint();
+        for (int x = -COUNT; x < COUNT; x++) {
+            for (int y = -COUNT; y < COUNT; y++) {
+                double random = STEP * Math.random() * 2;
+                MarkerItem item = new MarkerItem(y + ", " + x, "",
+                        new GeoPoint(center.getLatitude() + y * STEP + random, center.getLongitude() + x * STEP + random)
+                );
+                pts.add(item);
+            }
         }
         mMarkerLayer.addItems(pts);
 
@@ -93,6 +84,6 @@ public class AtlasMarkerLayerTest extends MarkerLayerTest {
 
     public static void main(String[] args) {
         GdxMapApp.init();
-        GdxMapApp.run(new AtlasMarkerLayerTest());
+        GdxMapApp.run(new ClusterMarkerLayerTest());
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -28,26 +28,19 @@ import org.oscim.map.Map.UpdateListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.oscim.tiling.source.bitmap.DefaultSources.STAMEN_TONER;
-
 /**
  * This is a very INEFFICIENT and somewhat less useful example for how to use
  * PathLayers!
  */
-public class PathOverlayActivity extends BitmapTileMapActivity {
+public class PathOverlayActivity extends SimpleMapActivity {
 
     private static final boolean ANIMATION = true;
 
     private List<PathLayer> mPathLayers = new ArrayList<>();
 
-    public PathOverlayActivity() {
-        super(STAMEN_TONER.build());
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBitmapLayer.tileRenderer().setBitmapAlpha(0.5f);
 
         for (double lat = -90; lat <= 90; lat += 5) {
             int c = Color.fade(Color.rainbow((float) (lat + 90) / 180), 0.5f);

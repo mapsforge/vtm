@@ -1,7 +1,8 @@
 /*
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
+ * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -130,19 +131,38 @@ public class AwtCanvas implements Canvas {
     }
 
     @Override
-    public void drawLine(int x1, int y1, int x2, int y2, Paint paint) {
+    public void drawCircle(float x, float y, float radius, Paint paint) {
         AwtPaint awtPaint = (AwtPaint) paint;
         this.canvas.setColor(awtPaint.color);
         if (awtPaint.stroke != null)
             this.canvas.setStroke(awtPaint.stroke);
-        this.canvas.drawLine(x1, y1, x2, y2);
+        float doubleRadius = radius * 2;
+
+        Paint.Style style = paint.getStyle();
+        switch (style) {
+            case FILL:
+                this.canvas.fillOval((int) (x - radius), (int) (y - radius), (int) doubleRadius, (int) doubleRadius);
+                break;
+            case STROKE:
+                this.canvas.drawOval((int) (x - radius), (int) (y - radius), (int) doubleRadius, (int) doubleRadius);
+                break;
+        }
+    }
+
+    @Override
+    public void drawLine(float x1, float y1, float x2, float y2, Paint paint) {
+        AwtPaint awtPaint = (AwtPaint) paint;
+        this.canvas.setColor(awtPaint.color);
+        if (awtPaint.stroke != null)
+            this.canvas.setStroke(awtPaint.stroke);
+        this.canvas.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
     }
 
     @Override
     public void fillColor(int color) {
         java.awt.Color awtColor = color == Color.TRANSPARENT ? TRANSPARENT : new java.awt.Color(color);
         Composite originalComposite = this.canvas.getComposite();
-        this.canvas.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+        this.canvas.setComposite(AlphaComposite.getInstance(color == Color.TRANSPARENT ? AlphaComposite.CLEAR : AlphaComposite.SRC_OVER));
         this.canvas.setColor(awtColor);
         this.canvas.fillRect(0, 0, getWidth(), getHeight());
         this.canvas.setComposite(originalComposite);

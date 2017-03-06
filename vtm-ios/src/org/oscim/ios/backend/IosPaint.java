@@ -1,6 +1,7 @@
 /*
  * Copyright 2016 Longri
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
+ * Copyright 2017 nebular
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -64,6 +65,7 @@ public class IosPaint implements Paint {
     private static final String DEFAULT_FONT_NAME_BOLD = UIFont.getSystemFont(1, UIFontWeight.Bold).getFontDescriptor().getPostscriptName();
     private static final String DEFAULT_FONT_NAME_ITALIC = UIFont.getItalicSystemFont(1).getFontDescriptor().getPostscriptName();
 
+    private Align align;
     private final NSAttributedStringAttributes attribs = new NSAttributedStringAttributes();
     private CGLineCap cap = CGLineCap.Butt;
     private CGLineJoin join = CGLineJoin.Miter;
@@ -146,8 +148,8 @@ public class IosPaint implements Paint {
 
     @Override
     public void setTextAlign(Align align) {
-        // Align text in text layer
-        //this.align = align;
+        // TODO never read
+        this.align = align;
     }
 
     @Override
@@ -340,6 +342,11 @@ public class IosPaint implements Paint {
     @Override
     public float getStrokeWidth() {
         return strokeWidth;
+    }
+
+    @Override
+    public Style getStyle() {
+        return style;
     }
 
     @Override

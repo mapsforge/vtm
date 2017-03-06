@@ -31,6 +31,13 @@ import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.renderer.BitmapRenderer;
+import org.oscim.renderer.GLViewport;
+import org.oscim.scalebar.DefaultMapScaleBar;
+import org.oscim.scalebar.ImperialUnitAdapter;
+import org.oscim.scalebar.MapScaleBar;
+import org.oscim.scalebar.MapScaleBarLayer;
+import org.oscim.scalebar.MetricUnitAdapter;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
 import org.oscim.tiling.source.mapfile.MapInfo;
@@ -39,6 +46,7 @@ public class MapsforgeMapActivity extends MapActivity {
     private static final int SELECT_MAP_FILE = 0;
 
     private TileGridLayer mGridLayer;
+    private DefaultMapScaleBar mMapScaleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,13 @@ public class MapsforgeMapActivity extends MapActivity {
 
         startActivityForResult(new Intent(this, MapFilePicker.class),
                 SELECT_MAP_FILE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mMapScaleBar.destroy();
+
+        super.onDestroy();
     }
 
     public static class MapFilePicker extends FilePicker {
@@ -127,6 +142,18 @@ public class MapsforgeMapActivity extends MapActivity {
 
                 mMap.layers().add(new BuildingLayer(mMap, l));
                 mMap.layers().add(new LabelLayer(mMap, l));
+
+                mMapScaleBar = new DefaultMapScaleBar(mMap);
+                mMapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
+                mMapScaleBar.setDistanceUnitAdapter(MetricUnitAdapter.INSTANCE);
+                mMapScaleBar.setSecondaryDistanceUnitAdapter(ImperialUnitAdapter.INSTANCE);
+                mMapScaleBar.setScaleBarPosition(MapScaleBar.ScaleBarPosition.BOTTOM_LEFT);
+
+                MapScaleBarLayer mapScaleBarLayer = new MapScaleBarLayer(mMap, mMapScaleBar);
+                BitmapRenderer renderer = mapScaleBarLayer.getRenderer();
+                renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
+                renderer.setOffset(5 * getResources().getDisplayMetrics().density, 0);
+                mMap.layers().add(mapScaleBarLayer);
 
                 MapInfo info = tileSource.getMapInfo();
                 MapPosition pos = new MapPosition();

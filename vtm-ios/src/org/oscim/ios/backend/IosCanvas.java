@@ -1,6 +1,7 @@
 /*
- * Copyright 2016 Longri
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 Longri
+ * Copyright 2016-2017 devemux86
+ * Copyright 2017 nebular
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -92,8 +93,27 @@ public class IosCanvas implements Canvas {
     }
 
     @Override
-    public void drawLine(int x1, int y1, int x2, int y2, Paint paint) {
+    public void drawCircle(float x, float y, float radius, Paint paint) {
+        CGRect rect = new CGRect(x - radius, y - radius, x + radius, y + radius);
 
+        switch (paint.getStyle()) {
+            case FILL:
+                setFillColor(this.cgBitmapContext, paint.getColor());
+                this.cgBitmapContext.fillEllipseInRect(rect);
+                break;
+            case STROKE:
+                // set Stroke properties
+                this.cgBitmapContext.setLineWidth(((IosPaint) paint).strokeWidth);
+                this.cgBitmapContext.setLineCap(((IosPaint) paint).getIosStrokeCap());
+                this.cgBitmapContext.setLineJoin(((IosPaint) paint).getIosStrokeJoin());
+                setStrokeColor(this.cgBitmapContext, (paint.getColor()));
+                this.cgBitmapContext.strokeEllipseInRect(rect);
+                break;
+        }
+    }
+
+    @Override
+    public void drawLine(float x1, float y1, float x2, float y2, Paint paint) {
         //flip Y-axis
         y1 = (int) (this.cgBitmapContext.getHeight() - y1);
         y2 = (int) (this.cgBitmapContext.getHeight() - y2);
