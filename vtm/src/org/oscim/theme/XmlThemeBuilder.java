@@ -120,16 +120,16 @@ public class XmlThemeBuilder extends DefaultHandler {
      * @param value          the XML attribute value.
      * @param attributeIndex the XML attribute index position.
      */
-    private static void logUnknownAttribute(String element, String name,
-                                            String value, int attributeIndex) {
+    protected static void logUnknownAttribute(String element, String name,
+                                              String value, int attributeIndex) {
         log.debug("unknown attribute in element {} () : {} = {}",
                 element, attributeIndex, name, value);
     }
 
-    private final ArrayList<RuleBuilder> mRulesList = new ArrayList<>();
-    private final Stack<Element> mElementStack = new Stack<>();
-    private final Stack<RuleBuilder> mRuleStack = new Stack<>();
-    private final HashMap<String, RenderStyle> mStyles = new HashMap<>(10);
+    protected final ArrayList<RuleBuilder> mRulesList = new ArrayList<>();
+    protected final Stack<Element> mElementStack = new Stack<>();
+    protected final Stack<RuleBuilder> mRuleStack = new Stack<>();
+    protected final HashMap<String, RenderStyle> mStyles = new HashMap<>(10);
 
     private final HashMap<String, TextStyle.TextBuilder<?>> mTextStyles = new HashMap<>(10);
 
@@ -137,21 +137,22 @@ public class XmlThemeBuilder extends DefaultHandler {
     private final CircleBuilder<?> mCircleBuilder = CircleStyle.builder();
     private final ExtrusionBuilder<?> mExtrusionBuilder = ExtrusionStyle.builder();
     private final LineBuilder<?> mLineBuilder = LineStyle.builder();
-    private final SymbolBuilder<?> mSymbolBuilder = SymbolStyle.builder();
+    protected final SymbolBuilder<?> mSymbolBuilder = SymbolStyle.builder();
     private final TextBuilder<?> mTextBuilder = TextStyle.builder();
 
     private RuleBuilder mCurrentRule;
-    private TextureAtlas mTextureAtlas;
+    protected TextureAtlas mTextureAtlas;
 
-    private int mLevels = 0;
-    private int mMapBackground = 0xffffffff;
-    private float mTextScale = 1;
+    protected int mLevels = 0;
+    protected int mMapBackground = 0xffffffff;
+    protected float mTextScale = 1;
 
-    private final ThemeFile mTheme;
+    protected final ThemeFile mTheme;
     private final ThemeCallback mThemeCallback;
-    private RenderTheme mRenderTheme;
+    protected RenderTheme mRenderTheme;
 
-    private final float mScale, mScale2;
+    protected final float mScale;
+    private final float mScale2;
 
     private Set<String> mCategories;
     private XmlRenderThemeStyleLayer mCurrentLayer;
@@ -424,7 +425,7 @@ public class XmlThemeBuilder extends DefaultHandler {
         return b;
     }
 
-    private TextureRegion getAtlasRegion(String src) {
+    protected TextureRegion getAtlasRegion(String src) {
         if (mTextureAtlas == null)
             return null;
 
@@ -1007,7 +1008,7 @@ public class XmlThemeBuilder extends DefaultHandler {
     /**
      * @return a new Symbol with the given rendering attributes.
      */
-    private SymbolStyle createSymbol(String elementName, Attributes attributes) {
+    protected SymbolStyle createSymbol(String elementName, Attributes attributes) {
         SymbolBuilder<?> b = mSymbolBuilder.reset();
         String src = null;
 
@@ -1112,7 +1113,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                     + value);
     }
 
-    private static void validateExists(String name, Object obj, String elementName) {
+    protected static void validateExists(String name, Object obj, String elementName) {
         if (obj == null)
             throw new ThemeException("missing attribute " + name
                     + " for element: " + elementName);
