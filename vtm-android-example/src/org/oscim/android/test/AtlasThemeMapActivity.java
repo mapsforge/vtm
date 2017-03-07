@@ -16,7 +16,6 @@
 package org.oscim.android.test;
 
 import android.os.Bundle;
-import android.view.Menu;
 
 import org.oscim.theme.ThemeLoader;
 
@@ -27,10 +26,5 @@ public class AtlasThemeMapActivity extends SimpleMapActivity {
         ThemeLoader.USE_ATLAS = true;
 
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return false;
     }
 }

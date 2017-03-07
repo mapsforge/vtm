@@ -19,7 +19,6 @@ import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.GeoPoint;
 import org.oscim.gdx.GdxMapApp;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
@@ -87,8 +86,6 @@ public class AtlasMarkerLayerTest extends MarkerLayerTest {
                 pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
         }
         mMarkerLayer.addItems(pts);
-
-        mMap.layers().add(new TileGridLayer(mMap));
     }
 
     public static void main(String[] args) {

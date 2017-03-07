@@ -18,7 +18,6 @@ package org.oscim.test;
 
 import org.oscim.backend.canvas.Color;
 import org.oscim.gdx.GdxMapApp;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
@@ -90,7 +89,6 @@ public class VectorLayerTest extends GdxMapApp {
         vectorLayer.update();
 
         mMap.layers().add(vectorLayer);
-        mMap.layers().add(new TileGridLayer(mMap, 0xff222222, 1.2f, 1));
     }
 
     public static void main(String[] args) {

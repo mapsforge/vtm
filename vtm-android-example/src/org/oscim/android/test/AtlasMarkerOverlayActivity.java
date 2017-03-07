@@ -22,7 +22,6 @@ import android.graphics.drawable.Drawable;
 
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.GeoPoint;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
@@ -95,7 +94,5 @@ public class AtlasMarkerOverlayActivity extends MarkerOverlayActivity {
         }
 
         mMarkerLayer.addItems(pts);
-
-        mMap.layers().add(new TileGridLayer(mMap, getResources().getDisplayMetrics().density));
     }
 }
