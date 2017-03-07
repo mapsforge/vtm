@@ -15,8 +15,6 @@ sourceSets.main.java.srcDirs = ["src/"]
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 ext {
-    // Configure your application main class
-    mainClassName = "org.oscim.ios.RoboVmLauncher"
     roboVMVersion = "2.3.0"
 }
 
