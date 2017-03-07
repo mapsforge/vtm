@@ -559,7 +559,11 @@ public class XmlThemeBuilder extends DefaultHandler {
                 logUnknownAttribute(elementName, name, value, i);
         }
 
-        b.texture = loadTexture(src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+        if (src != null && !src.isEmpty()) {
+            b.texture = loadTexture(src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+            if (b.texture == null)
+                log.warn("Loaded line texture are null: " + src);
+        }
         /*if (b.texture != null)
             b.texture.mipmap = true;*/
 
