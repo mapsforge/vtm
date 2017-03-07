@@ -3,6 +3,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2017 devemux86
  * Copyright 2017 nebular
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -32,6 +33,7 @@ import java.awt.Shape;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 public class AwtCanvas implements Canvas {
 
@@ -127,7 +129,17 @@ public class AwtCanvas implements Canvas {
 
     @Override
     public void drawBitmap(Bitmap bitmap, float x, float y) {
-        this.canvas.drawImage(((AwtBitmap) bitmap).bitmap, (int) x, (int) y, null);
+        int intX = (int) x;
+        int intY = (int) y;
+        BufferedImage src = ((AwtBitmap) bitmap).bitmap;
+        int[] srcbuf = ((DataBufferInt) src.getRaster().getDataBuffer()).getData();
+        int[] dstbuf = ((DataBufferInt) this.bitmap.getRaster().getDataBuffer()).getData();
+        int width = intX + src.getWidth() > this.bitmap.getWidth() ? this.getWidth() - intX : src.getWidth();
+        int height = intY + src.getHeight() > this.bitmap.getHeight() ? this.getHeight() - intY : src.getHeight();
+        int dstoffs = intX + intY * this.bitmap.getWidth();
+        int srcoffs = 0;
+        for (int i = 0; i < height; i++, dstoffs += this.bitmap.getWidth(), srcoffs += width)
+            System.arraycopy(srcbuf, srcoffs, dstbuf, dstoffs, width);
     }
 
     @Override

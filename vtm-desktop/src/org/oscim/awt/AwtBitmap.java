@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
- * Copyright 2016 Longri
+ * Copyright 2016-2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -47,7 +47,7 @@ public class AwtBitmap implements Bitmap {
     boolean internal;
 
     public AwtBitmap(int width, int height, int format) {
-        bitmap = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        bitmap = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
         this.width = width;
         this.height = height;
 
