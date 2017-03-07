@@ -22,7 +22,6 @@ import org.oscim.event.GestureListener;
 import org.oscim.event.MotionEvent;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.Layer;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
@@ -78,8 +77,6 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
                 pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
         }
         mMarkerLayer.addItems(pts);
-
-        mMap.layers().add(new TileGridLayer(mMap));
     }
 
     @Override

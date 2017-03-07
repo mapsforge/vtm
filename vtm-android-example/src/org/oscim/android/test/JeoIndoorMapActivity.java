@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -83,7 +83,6 @@ public class JeoIndoorMapActivity extends BaseMapActivity {
         mMap.layers().add(new BuildingLayer(mMap, mBaseLayer));
         mMap.layers().add(new LabelLayer(mMap, mBaseLayer));
 
-        //    mMap.layers().add(new TileGridLayer(mMap));
         //    String file = Environment.getExternalStorageDirectory().getAbsolutePath();
         //    VectorDataset data = (VectorDataset) JeoTest.getJsonData(file + "/states.json", true);
         //    Style style = JeoTest.getStyle();
@@ -157,7 +156,8 @@ public class JeoIndoorMapActivity extends BaseMapActivity {
             i = 0;
 
         mIndoorLayer.activeLevels[i] ^= true;
-        ((ToggleButton) v).setChecked(mIndoorLayer.activeLevels[i]);
+        if (v instanceof ToggleButton)
+            ((ToggleButton) v).setChecked(mIndoorLayer.activeLevels[i]);
         log.debug(Arrays.toString(mIndoorLayer.activeLevels));
         mIndoorLayer.update();
     }

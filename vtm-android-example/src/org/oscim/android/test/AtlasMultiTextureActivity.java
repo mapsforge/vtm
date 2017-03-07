@@ -26,7 +26,6 @@ import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Color;
 import org.oscim.backend.canvas.Paint;
 import org.oscim.core.GeoPoint;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
@@ -92,8 +91,6 @@ public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
         mMap.layers().add(mMarkerLayer);
 
         mMarkerLayer.addItems(pts);
-
-        mMap.layers().add(new TileGridLayer(mMap, getResources().getDisplayMetrics().density));
 
         // set all markers
         for (MarkerItem item : pts) {

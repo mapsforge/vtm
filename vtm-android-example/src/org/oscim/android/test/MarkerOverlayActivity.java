@@ -26,7 +26,6 @@ import org.oscim.event.Gesture;
 import org.oscim.event.GestureListener;
 import org.oscim.event.MotionEvent;
 import org.oscim.layers.Layer;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
@@ -87,8 +86,6 @@ public class MarkerOverlayActivity extends SimpleMapActivity
         }
 
         mMarkerLayer.addItems(pts);
-
-        mMap.layers().add(new TileGridLayer(mMap, getResources().getDisplayMetrics().density));
     }
 
     @Override

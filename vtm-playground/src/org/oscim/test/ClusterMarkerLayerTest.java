@@ -20,7 +20,6 @@ import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeoPoint;
 import org.oscim.gdx.GdxMapApp;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.marker.ClusterMarkerRenderer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
@@ -78,8 +77,6 @@ public class ClusterMarkerLayerTest extends MarkerLayerTest {
             }
         }
         mMarkerLayer.addItems(pts);
-
-        mMap.layers().add(new TileGridLayer(mMap));
     }
 
     public static void main(String[] args) {

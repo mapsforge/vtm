@@ -20,7 +20,6 @@ package org.oscim.android.test;
 import android.os.Bundle;
 
 import org.oscim.backend.canvas.Color;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.vector.VectorLayer;
 import org.oscim.layers.vector.geometries.PointDrawable;
 import org.oscim.layers.vector.geometries.Style;
@@ -88,7 +87,6 @@ public class VectorLayerMapActivity extends SimpleMapActivity {
         vectorLayer.update();
 
         mMap.layers().add(vectorLayer);
-        mMap.layers().add(new TileGridLayer(mMap, 0xff222222, 1.2f, 1));
     }
 
     @Override

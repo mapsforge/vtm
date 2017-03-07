@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -16,14 +16,12 @@
  */
 package org.oscim.test;
 
-import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeometryBuffer.GeometryType;
 import org.oscim.core.MapElement;
 import org.oscim.core.MapPosition;
 import org.oscim.core.MercatorProjection;
 import org.oscim.event.Event;
 import org.oscim.gdx.GdxMapApp;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.MapTile.TileNode;
 import org.oscim.layers.tile.TileLoader;
@@ -53,8 +51,6 @@ public class TileRenderTest extends GdxMapApp {
 
     @Override
     public void createLayers() {
-
-        mMap.layers().add(new TileGridLayer(mMap, Color.LTGRAY, 1.2f, 1));
 
         MapTile tile = new MapTile(null, tileX, tileY, tileZ);
 

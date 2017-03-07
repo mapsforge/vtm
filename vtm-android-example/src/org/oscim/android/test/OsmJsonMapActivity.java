@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,7 +19,6 @@ package org.oscim.android.test;
 
 import android.os.Bundle;
 
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
@@ -64,8 +63,6 @@ public class OsmJsonMapActivity extends MapActivity {
         l.tileRenderer().setOverdrawColor(0);
         mMap.layers().add(l);
         mMap.layers().add(new LabelLayer(mMap, l));
-
-        mMap.layers().add(new TileGridLayer(mMap, getResources().getDisplayMetrics().density));
 
         mMap.setMapPosition(53.08, 8.83, Math.pow(2, 16));
     }

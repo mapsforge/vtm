@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -22,7 +22,6 @@ import org.oscim.gdx.GdxMap;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.JeoVectorLayer;
 import org.oscim.layers.OSMIndoorLayer;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.test.JeoTest;
 
@@ -35,14 +34,13 @@ import static org.oscim.tiling.source.bitmap.DefaultSources.STAMEN_TONER;
 
 public class LayerTest extends GdxMap {
 
-    String PATH = "https://gist.github.com/anonymous/8960337/raw/overpass.geojson";
+    private String PATH = "https://gist.github.com/anonymous/8960337/raw/overpass.geojson";
 
-    OSMIndoorLayer mIndoorLayer;
+    private OSMIndoorLayer mIndoorLayer;
 
     @Override
     public void createLayers() {
         mMap.setBaseMap(new BitmapTileLayer(mMap, STAMEN_TONER.build()));
-        mMap.layers().add(new TileGridLayer(mMap));
 
         mMap.addTask(new Runnable() {
             @Override

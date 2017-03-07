@@ -18,7 +18,6 @@ package org.oscim.android.test;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeoPoint;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.marker.ClusterMarkerRenderer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
@@ -76,8 +75,6 @@ public class ClusterMarkerOverlayActivity extends MarkerOverlayActivity {
             }
         }
         mMarkerLayer.addItems(pts);
-
-        mMap.layers().add(new TileGridLayer(mMap, getResources().getDisplayMetrics().density));
     }
 
     @Override

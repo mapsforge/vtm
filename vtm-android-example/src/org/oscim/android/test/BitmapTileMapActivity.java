@@ -1,5 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
+ * Copyright 2017 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -17,10 +18,8 @@ package org.oscim.android.test;
 import android.os.Bundle;
 
 import org.oscim.android.cache.TileCache;
-import org.oscim.backend.canvas.Color;
 import org.oscim.core.MapPosition;
 import org.oscim.core.MercatorProjection;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.tiling.source.bitmap.BitmapTileSource;
@@ -53,7 +52,6 @@ public class BitmapTileMapActivity extends MapActivity {
         super.onCreate(savedInstanceState);
 
         MapRenderer.setBackgroundColor(0xff777777);
-        mMap.layers().add(new TileGridLayer(mMap, Color.GRAY, 1.8f, 8));
 
         if (mTileSource == null)
             return;
