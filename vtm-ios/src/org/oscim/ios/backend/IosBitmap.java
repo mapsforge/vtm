@@ -46,7 +46,7 @@ public class IosBitmap implements Bitmap {
 
     static final Logger log = LoggerFactory.getLogger(IosBitmap.class);
 
-    final CGBitmapContext cgBitmapContext;
+    CGBitmapContext cgBitmapContext;
     final int width;
     final int height;
     private int glInternalFormat = Integer.MIN_VALUE;
@@ -158,10 +158,14 @@ public class IosBitmap implements Bitmap {
 
     @Override
     public void recycle() {
-        if (this.cgBitmapContext != null) this.cgBitmapContext.release();
+        //CGContext.close() will close the object and release any system resources it holds.
+        if (this.cgBitmapContext != null) {
+            this.cgBitmapContext.close();
+            this.cgBitmapContext = null;
+        }
         if (this.directPixelBuffer != null) {
-            //cgBitmapContext.release() will also release the directPixelBuffer
-            this.directPixelBuffer = null; //only hint for GC
+            this.directPixelBuffer.clear();
+            this.directPixelBuffer = null;
         }
     }
 
