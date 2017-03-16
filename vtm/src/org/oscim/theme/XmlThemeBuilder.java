@@ -23,6 +23,7 @@ package org.oscim.theme;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.XMLReaderAdapter;
 import org.oscim.backend.canvas.Bitmap;
+import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Color;
 import org.oscim.backend.canvas.Paint.Cap;
 import org.oscim.backend.canvas.Paint.FontFamily;
@@ -49,6 +50,7 @@ import org.oscim.theme.styles.SymbolStyle;
 import org.oscim.theme.styles.SymbolStyle.SymbolBuilder;
 import org.oscim.theme.styles.TextStyle;
 import org.oscim.theme.styles.TextStyle.TextBuilder;
+import org.oscim.utils.math.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
@@ -559,9 +561,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 logUnknownAttribute(elementName, name, value, i);
         }
 
-        b.texture = loadTexture(src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
-        /*if (b.texture != null)
-            b.texture.mipmap = true;*/
+        b.texture = loadTexture(this.mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
 
         return b.build();
     }
@@ -652,19 +652,32 @@ public class XmlThemeBuilder extends DefaultHandler {
                 logUnknownAttribute(elementName, name, value, i);
         }
 
-        b.texture = loadTexture(src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+        b.texture = loadTexture(this.mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
 
         return b.build();
     }
 
-    private TextureItem loadTexture(String src, int width, int height, int percent) {
+    public static TextureItem loadTexture(String relativePathPrefix, String src, int width, int height, int percent) {
         if (src == null || src.length() == 0)
             return null;
 
         try {
-            Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), src, width, height, percent);
+            Bitmap bitmap = CanvasAdapter.getBitmapAsset(relativePathPrefix, src, width, height, percent);
             if (bitmap != null) {
                 log.debug("loading {}", src);
+
+                if (ThemeLoader.FORCE_POT_FOR_REPAETED_TEXTURE) {
+                    int potWidth = MathUtils.nextPowerOfTwo(bitmap.getWidth());
+                    int potHeight = MathUtils.nextPowerOfTwo(bitmap.getHeight());
+                    if (potWidth != bitmap.getWidth() || potHeight != bitmap.getHeight()) {
+                        log.debug("Force POT Texture alt size: {}/{} new size: {}/{}",bitmap.getWidth(),bitmap.getHeight(),potWidth,potHeight);
+                        Bitmap tmpBmp = CanvasAdapter.newBitmap(potWidth, potHeight, 0);
+                        Canvas canvas = CanvasAdapter.newCanvas();
+                        canvas.setBitmap(tmpBmp);
+                        canvas.drawBitmap(bitmap);
+                        bitmap = tmpBmp;
+                    }
+                }
                 return new TextureItem(bitmap, true);
             }
         } catch (Exception e) {
