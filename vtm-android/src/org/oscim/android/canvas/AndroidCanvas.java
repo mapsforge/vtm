@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2017 devemux86
  * Copyright 2017 nebular
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -56,6 +57,14 @@ public class AndroidCanvas implements Canvas {
 
             canvas.drawText(string, x, y, ((AndroidPaint) fill).mPaint);
         }
+    }
+
+    @Override
+    public void drawBitmap(Bitmap bitmap) {
+        android.graphics.Bitmap scaledBitmap = android.graphics.Bitmap.createScaledBitmap(
+                ((AndroidBitmap) bitmap).mBitmap, canvas.getWidth(), canvas.getHeight(), true);
+        canvas.drawBitmap(scaledBitmap, 0, 0, null);
+        scaledBitmap.recycle();
     }
 
     @Override

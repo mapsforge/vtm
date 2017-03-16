@@ -1,6 +1,5 @@
 /*
- * Copyright 2013 Hannes Janetzek
- * Copyright 2016 - 2017 Longri
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -15,47 +14,34 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.ios.test;
+package org.oscim.test;
 
-import org.oscim.backend.GLAdapter;
-import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
-import org.oscim.ios.backend.IosGL;
-import org.oscim.ios.backend.IosGraphics;
-import org.oscim.layers.GroupLayer;
-import org.oscim.layers.tile.buildings.BuildingLayer;
+import org.oscim.gdx.GdxMapApp;
+import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
-import org.oscim.layers.tile.vector.labeling.LabelLayer;
-import org.oscim.map.Map;
 import org.oscim.renderer.BitmapRenderer;
 import org.oscim.renderer.GLViewport;
-import org.oscim.scalebar.DefaultMapScaleBar;
-import org.oscim.scalebar.ImperialUnitAdapter;
-import org.oscim.scalebar.MapScaleBar;
-import org.oscim.scalebar.MapScaleBarLayer;
-import org.oscim.scalebar.MetricUnitAdapter;
+import org.oscim.scalebar.*;
 import org.oscim.theme.VtmThemes;
-import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
+import org.oscim.tiling.source.mapfile.MapFileTileSource;
 
-public class IOSMapApp extends GdxMap {
+import java.io.File;
 
-    public static void init() {
-        // init globals
-        IosGraphics.init();
-        GdxAssets.init("assets/");
-        GLAdapter.init(new IosGL());
-    }
+public class MapsforgeLine_NPOT_Test extends GdxMap {
+
+    private static File mapFile;
 
     @Override
     public void createLayers() {
-        Map map = getMap();
+        MapFileTileSource tileSource = new MapFileTileSource();
+        tileSource.setMapFile(mapFile.getAbsolutePath());
+        tileSource.setPreferredLanguage("en");
 
-        VectorTileLayer l = map.setBaseMap(new OSciMap4TileSource());
+        VectorTileLayer l = mMap.setBaseMap(tileSource);
+        mMap.setTheme(VtmThemes.DEFAULT);
 
-        GroupLayer groupLayer = new GroupLayer(mMap);
-        groupLayer.layers.add(new BuildingLayer(map, l));
-        groupLayer.layers.add(new LabelLayer(map, l));
-        map.layers().add(groupLayer);
+        mMap.layers().add(new TileGridLayer(mMap));
 
         DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap);
         mapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
@@ -67,9 +53,32 @@ public class IOSMapApp extends GdxMap {
         BitmapRenderer renderer = mapScaleBarLayer.getRenderer();
         renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
         renderer.setOffset(5, 0);
-        map.layers().add(mapScaleBarLayer);
+        mMap.layers().add(mapScaleBarLayer);
 
-        map.setTheme(VtmThemes.OSMARENDER);
-        map.setMapPosition(53.075, 8.808, 1 << 17);
+        //https://www.google.de/maps/@52.5808431,13.4000501,19.5z
+        mMap.setMapPosition(52.5808431, 13.4000501, 1 << 21);
+    }
+
+    private static File getMapFile(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("missing argument: <mapFile>");
+        }
+
+        File file = new File(args[0]);
+        if (!file.exists()) {
+            throw new IllegalArgumentException("file does not exist: " + file);
+        } else if (!file.isFile()) {
+            throw new IllegalArgumentException("not a file: " + file);
+        } else if (!file.canRead()) {
+            throw new IllegalArgumentException("cannot read file: " + file);
+        }
+        return file;
+    }
+
+    public static void main(String[] args) {
+        mapFile = getMapFile(args);
+
+        GdxMapApp.init();
+        GdxMapApp.run(new MapsforgeLine_NPOT_Test());
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Longri
+ * Copyright 2016 - 2017 Longri
  * Copyright 2016 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -17,8 +17,8 @@ package org.oscim.ios.test;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.theme.ThemeLoader;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.glkit.GLKViewDrawableStencilFormat;
 import org.robovm.apple.uikit.UIApplication;
@@ -37,12 +37,12 @@ public class ExampleLauncher extends IOSApplication.Delegate {
         float scale = (float) (getIosVersion() >= 8 ? UIScreen.getMainScreen().getNativeScale() : UIScreen.getMainScreen().getScale());
         CanvasAdapter.dpi *= scale;
 
-//        IOSMapApp iosMapApp = new IOSMapApp();
+//        IOSMapApp  iosMapApp = new IOSMapApp();
+        IOSLineTexTest iosMapApp = new IOSLineTexTest();
 //        IOSMapAppCluster iosMapApp = new IOSMapAppCluster();
 
-        IOSLineTexTest iosMapApp = new IOSLineTexTest();
 
-
+        ThemeLoader.FORCE_POT_FOR_REPAETED_TEXTURE = true;
         iosMapApp.init();
 
         return new IOSApplication(iosMapApp, config);

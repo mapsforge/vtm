@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 Longri
+ * Copyright 2016 - 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -35,6 +35,7 @@ import org.oscim.layers.vector.geometries.Style;
 import org.oscim.map.Map;
 import org.oscim.renderer.bucket.TextureItem;
 import org.oscim.theme.VtmThemes;
+import org.oscim.theme.XmlThemeBuilder;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 import java.util.ArrayList;
@@ -63,7 +64,8 @@ public class IOSLineTexTest extends GdxMap {
 
         mMap.setMapPosition(0, 0, 1 << 2);
 
-        tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png"));
+        tex =XmlThemeBuilder.loadTexture("","patterns/pike.png",0,0,100);
+//        tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png"));
         tex.mipmap = true;
 
         createLayers(1, true);
