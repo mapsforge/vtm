@@ -22,11 +22,17 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 
 import org.oscim.layers.GenericLayer;
+import org.oscim.layers.GroupLayer;
+import org.oscim.layers.Layer;
 import org.oscim.layers.TileGridLayer;
+import org.oscim.layers.tile.buildings.BuildingLayer;
+import org.oscim.map.Layers;
 import org.oscim.map.Map;
 import org.oscim.map.ViewController;
 import org.oscim.theme.VtmThemes;
 import org.oscim.utils.Easing;
+
+import java.util.List;
 
 public class InputHandler implements InputProcessor {
 
@@ -145,9 +151,46 @@ public class InputHandler implements InputProcessor {
                 }
                 mMap.render();
                 break;
+
+            case Input.Keys.B:
+                toggleBuildingLayer(mMap.layers());
+                mMap.render();
+                break;
         }
         return false;
     }
+
+    private boolean toggleBuildingLayer(Layers layers) {
+        //search building layer
+        for (Layer l : layers) {
+            if (l instanceof BuildingLayer) {
+                l.setEnabled(!l.isEnabled());
+                return true;
+            } else if (l instanceof GroupLayer) {
+                if (toggleBuildingLayer(((GroupLayer) l).layers)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean toggleBuildingLayer(List<Layer> layers) {
+        for (Layer l : layers) {
+            if (l instanceof BuildingLayer) {
+                l.setEnabled(!l.isEnabled());
+                return true;
+            } else if (l instanceof GroupLayer) {
+                if (toggleBuildingLayer(((GroupLayer) l).layers)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    ;
+
 
     @Override
     public boolean keyUp(int keycode) {

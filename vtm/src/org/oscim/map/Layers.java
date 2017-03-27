@@ -81,9 +81,40 @@ public final class Layers extends AbstractList<Layer> {
             }
         }
 
+        layer.setChangeHandler(layerEnabledChangeHandler);
+        if(layer instanceof GroupLayer){
+            addEnableChangeHandlerToGroupLayer((GroupLayer) layer);
+        }
         mLayerList.add(index, layer);
         mDirtyLayers = true;
     }
+
+    private void addEnableChangeHandlerToGroupLayer(GroupLayer gl){
+        for (Layer l: gl.layers){
+            if(l instanceof GroupLayer){
+                addEnableChangeHandlerToGroupLayer((GroupLayer)l);
+            }else{
+                l.setChangeHandler(layerEnabledChangeHandler);
+            }
+        }
+    }
+
+    private void removeEnableChangeHandlerToGroupLayer(GroupLayer gl){
+        for (Layer l: gl.layers){
+            if(l instanceof GroupLayer){
+                removeEnableChangeHandlerToGroupLayer((GroupLayer)l);
+            }else{
+                l.removeEnabledChangeHandler();
+            }
+        }
+    }
+
+    private final Layer.EnableChangeHandler layerEnabledChangeHandler = new Layer.EnableChangeHandler() {
+        @Override
+        public void changed(boolean enabled) {
+            mDirtyLayers = true;
+        }
+    };
 
     /**
      * Add using layer groups.
@@ -114,6 +145,7 @@ public final class Layers extends AbstractList<Layer> {
         Layer remove = mLayerList.remove(index);
 
         // unbind removed layer
+        remove.removeEnabledChangeHandler();
         if (remove instanceof UpdateListener)
             mMap.events.unbind((UpdateListener) remove);
         if (remove instanceof InputListener)
@@ -128,6 +160,7 @@ public final class Layers extends AbstractList<Layer> {
                 if (gl instanceof InputListener)
                     mMap.input.unbind((InputListener) gl);
             }
+            removeEnableChangeHandlerToGroupLayer((GroupLayer) remove);
         }
 
         // update layer group pointers
@@ -225,13 +258,13 @@ public final class Layers extends AbstractList<Layer> {
         for (int i = 0, n = mLayerList.size(); i < n; i++) {
             Layer o = mLayerList.get(i);
 
-            if (o.getRenderer() != null)
+            if (o.isEnabled() && o.getRenderer() != null)
                 numRenderLayers++;
 
             if (o instanceof GroupLayer) {
                 GroupLayer groupLayer = (GroupLayer) o;
                 for (Layer gl : groupLayer.layers) {
-                    if (gl.getRenderer() != null)
+                    if (gl.isEnabled() && gl.getRenderer() != null)
                         numRenderLayers++;
                 }
             }
@@ -244,14 +277,14 @@ public final class Layers extends AbstractList<Layer> {
         for (int i = 0, cnt = 0, n = mLayerList.size(); i < n; i++) {
             Layer o = mLayerList.get(i);
             LayerRenderer l = o.getRenderer();
-            if (l != null)
+            if (o.isEnabled() && l != null)
                 mLayerRenderer[cnt++] = l;
 
             if (o instanceof GroupLayer) {
                 GroupLayer groupLayer = (GroupLayer) o;
                 for (Layer gl : groupLayer.layers) {
                     l = gl.getRenderer();
-                    if (l != null)
+                    if (gl.isEnabled() && l != null)
                         mLayerRenderer[cnt++] = l;
                 }
             }
