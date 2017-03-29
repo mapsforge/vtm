@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.ShortBuffer;
 
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
+import static org.oscim.renderer.MapRenderer.SIZE_SCALE;
 
 public final class SymbolBucket extends TextureBucket {
     static final Logger log = LoggerFactory.getLogger(SymbolBucket.class);
@@ -177,10 +178,10 @@ public final class SymbolBucket extends TextureBucket {
 
                     short ty = (short) (COORD_SCALE * it.y);
 
-                    vertexItems.add(tx, ty, x1, y1, u1, v2);
-                    vertexItems.add(tx, ty, x1, y2, u1, v1);
-                    vertexItems.add(tx, ty, x2, y1, u2, v2);
-                    vertexItems.add(tx, ty, x2, y2, u2, v1);
+                    vertexItems.add(tx, ty, x1 * SIZE_SCALE, y1 * SIZE_SCALE, u1, v2);
+                    vertexItems.add(tx, ty, x1 * SIZE_SCALE, y2 * SIZE_SCALE, u1, v1);
+                    vertexItems.add(tx, ty, x2 * SIZE_SCALE, y1 * SIZE_SCALE, u2, v2);
+                    vertexItems.add(tx, ty, x2 * SIZE_SCALE, y2 * SIZE_SCALE, u2, v1);
                 } else { // with rotation
                     if (prev.bitmap != null && prev.bitmap != it.bitmap && prev.rotation != it.rotation)
                         break;
@@ -236,10 +237,10 @@ public final class SymbolBucket extends TextureBucket {
                             | (it.billboard ? 1 : 0)) + offsetX);
                     short ty = (short) ((COORD_SCALE * it.y) + offsetY);
 
-                    vertexItems.add(tx, ty, points[0], points[1], u1, v2); // lower-left
-                    vertexItems.add(tx, ty, points[2], points[3], u1, v1); // upper-left
-                    vertexItems.add(tx, ty, points[4], points[5], u2, v2); // upper-right
-                    vertexItems.add(tx, ty, points[6], points[7], u2, v1); // lower-right
+                    vertexItems.add(tx, ty, points[0] * SIZE_SCALE, points[1] * SIZE_SCALE, u1, v2); // lower-left
+                    vertexItems.add(tx, ty, points[2] * SIZE_SCALE, points[3] * SIZE_SCALE, u1, v1); // upper-left
+                    vertexItems.add(tx, ty, points[4] * SIZE_SCALE, points[5] * SIZE_SCALE, u2, v2); // upper-right
+                    vertexItems.add(tx, ty, points[6] * SIZE_SCALE, points[7] * SIZE_SCALE, u2, v1); // lower-right
                 }
 
                 /* six elements used to draw the four vertices */

@@ -39,6 +39,7 @@ public class MapRenderer {
      * scale factor used for short vertices
      */
     public static final float COORD_SCALE = 4;
+    public static final float SIZE_SCALE = 8 / COORD_SCALE;
 
     private final Map mMap;
     private final GLViewport mViewport;

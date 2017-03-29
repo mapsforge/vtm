@@ -28,6 +28,7 @@ import java.nio.ShortBuffer;
 
 import static org.oscim.backend.GLAdapter.gl;
 import static org.oscim.renderer.MapRenderer.MAX_INDICES;
+import static org.oscim.renderer.MapRenderer.SIZE_SCALE;
 import static org.oscim.renderer.MapRenderer.bindQuadIndicesVBO;
 
 /**
@@ -84,8 +85,8 @@ public class BitmapBucket extends TextureBucket {
 
     private void setVertices(ShortBuffer vboData) {
         short[] buf = mVertices;
-        short w = (short) (mWidth * MapRenderer.COORD_SCALE);
-        short h = (short) (mHeight * MapRenderer.COORD_SCALE);
+        short w = (short) (mWidth * MapRenderer.COORD_SCALE * SIZE_SCALE);
+        short h = (short) (mHeight * MapRenderer.COORD_SCALE * SIZE_SCALE);
 
         short texMin = 0;
         short texMax = 1;
