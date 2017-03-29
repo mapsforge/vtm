@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.oscim.backend.GLAdapter.gl;
+import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 
 /**
  * Note:
@@ -42,7 +43,6 @@ import static org.oscim.backend.GLAdapter.gl;
 public class LineBucket extends RenderBucket {
     static final Logger log = LoggerFactory.getLogger(LineBucket.class);
 
-    private static final float COORD_SCALE = MapRenderer.COORD_SCALE;
     /**
      * scale factor mapping extrusion vector to short values
      */
@@ -537,7 +537,7 @@ public class LineBucket extends RenderBucket {
 
         /* factor to normalize extrusion vector and scale to coord scale */
         private final static float COORD_SCALE_BY_DIR_SCALE =
-                MapRenderer.COORD_SCALE / LineBucket.DIR_SCALE;
+                COORD_SCALE / LineBucket.DIR_SCALE;
 
         private final static int CAP_THIN = 0;
         private final static int CAP_BUTT = 1;

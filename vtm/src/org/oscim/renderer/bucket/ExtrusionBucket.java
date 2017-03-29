@@ -21,7 +21,6 @@ import org.oscim.core.GeometryBuffer;
 import org.oscim.core.GeometryBuffer.GeometryType;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tile;
-import org.oscim.renderer.MapRenderer;
 import org.oscim.utils.FastMath;
 import org.oscim.utils.KeyMap;
 import org.oscim.utils.KeyMap.HashItem;
@@ -33,10 +32,10 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.ShortBuffer;
 
+import static org.oscim.renderer.MapRenderer.COORD_SCALE;
+
 public class ExtrusionBucket extends RenderBucket {
     static final Logger log = LoggerFactory.getLogger(ExtrusionBucket.class);
-
-    private static final float S = MapRenderer.COORD_SCALE;
 
     private VertexData mIndices[];
     private LineClipper mClipper;
@@ -164,7 +163,7 @@ public class ExtrusionBucket extends RenderBucket {
         synchronized (vertexPool) {
 
             Vertex key = vertexPool.get();
-            double scale = S * Tile.SIZE / 4096;
+            double scale = COORD_SCALE * Tile.SIZE / 4096;
 
             for (int k = 0, n = index.length; k < n; ) {
                 if (index[k] < 0)
@@ -330,9 +329,9 @@ public class ExtrusionBucket extends RenderBucket {
     //            v = 0;
     //        }
     //        /* set coordinate */
-    //        vertices[v++] = (short) (points[j++] * S);
-    //        vertices[v++] = (short) (points[j++] * S);
-    //        vertices[v++] = (short) (points[j++] * S);
+    //        vertices[v++] = (short) (points[j++] * COORD_SCALE);
+    //        vertices[v++] = (short) (points[j++] * COORD_SCALE);
+    //        vertices[v++] = (short) (points[j++] * COORD_SCALE);
     //        v++;
     //    }
     //
@@ -491,8 +490,8 @@ public class ExtrusionBucket extends RenderBucket {
             } else { // if (addFace)
                 short c = (short) (color1 | fcolor << 8);
                 /* add bottom and top vertex for each point */
-                vertexItems.add((short) (cx * S), (short) (cy * S), mh, c);
-                vertexItems.add((short) (cx * S), (short) (cy * S), h, c);
+                vertexItems.add((short) (cx * COORD_SCALE), (short) (cy * COORD_SCALE), mh, c);
+                vertexItems.add((short) (cx * COORD_SCALE), (short) (cy * COORD_SCALE), h, c);
 
                 //v += 8;
                 break;
@@ -512,8 +511,8 @@ public class ExtrusionBucket extends RenderBucket {
                 c = (short) (color2 | color1 << 8);
 
             /* add bottom and top vertex for each point */
-            vertexItems.add((short) (cx * S), (short) (cy * S), mh, c);
-            vertexItems.add((short) (cx * S), (short) (cy * S), h, c);
+            vertexItems.add((short) (cx * COORD_SCALE), (short) (cy * COORD_SCALE), mh, c);
+            vertexItems.add((short) (cx * COORD_SCALE), (short) (cy * COORD_SCALE), h, c);
 
             color1 = color2;
 
