@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
-import static org.oscim.renderer.MapRenderer.SIZE_SCALE;
 
 public class TextBucket extends TextureBucket {
     static final Logger log = LoggerFactory.getLogger(TextBucket.class);
@@ -210,17 +209,10 @@ public class TextBucket extends TextureBucket {
         short tx = (short) (tmp | (it.text.caption ? 1 : 0));
         short ty = (short) (COORD_SCALE * it.y);
 
-        if (it.text.caption) {
-            vertexItems.add(tx, ty, x1 * SIZE_SCALE, y1 * SIZE_SCALE, u1, v2);
-            vertexItems.add(tx, ty, x3 * SIZE_SCALE, y3 * SIZE_SCALE, u1, v1);
-            vertexItems.add(tx, ty, x2 * SIZE_SCALE, y2 * SIZE_SCALE, u2, v2);
-            vertexItems.add(tx, ty, x4 * SIZE_SCALE, y4 * SIZE_SCALE, u2, v1);
-        } else {
-            vertexItems.add(tx, ty, x1, y1, u1, v2);
-            vertexItems.add(tx, ty, x3, y3, u1, v1);
-            vertexItems.add(tx, ty, x2, y2, u2, v2);
-            vertexItems.add(tx, ty, x4, y4, u2, v1);
-        }
+        vertexItems.add(tx, ty, x1, y1, u1, v2);
+        vertexItems.add(tx, ty, x3, y3, u1, v1);
+        vertexItems.add(tx, ty, x2, y2, u2, v2);
+        vertexItems.add(tx, ty, x4, y4, u2, v1);
     }
 
     @Override
