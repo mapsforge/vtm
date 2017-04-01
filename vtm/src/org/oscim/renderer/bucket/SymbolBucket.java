@@ -28,10 +28,11 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.ShortBuffer;
 
+import static org.oscim.renderer.MapRenderer.COORD_SCALE;
+
 public final class SymbolBucket extends TextureBucket {
     static final Logger log = LoggerFactory.getLogger(SymbolBucket.class);
 
-    private final static float SCALE = 8.0f;
     private final static int VERTICES_PER_SPRITE = 4;
     private final static int LBIT_MASK = 0xfffffffe;
 
@@ -132,10 +133,10 @@ public final class SymbolBucket extends TextureBucket {
                 continue;
             }
 
-            short u1 = (short) (SCALE * x);
-            short v1 = (short) (SCALE * y);
-            short u2 = (short) (SCALE * (x + width));
-            short v2 = (short) (SCALE * (y + height));
+            short u1 = (short) (COORD_SCALE * x);
+            short v1 = (short) (COORD_SCALE * y);
+            short u2 = (short) (COORD_SCALE * (x + width));
+            short v2 = (short) (COORD_SCALE * (y + height));
 
             PointF prevOffset = null;
             short x1 = 0, y1 = 0, x2 = 0, y2 = 0;
@@ -156,30 +157,30 @@ public final class SymbolBucket extends TextureBucket {
                             float hw = width / 2f;
                             float hh = height / 2f;
 
-                            x1 = (short) (SCALE * (-hw));
-                            x2 = (short) (SCALE * (hw));
-                            y1 = (short) (SCALE * (hh));
-                            y2 = (short) (SCALE * (-hh));
+                            x1 = (short) (COORD_SCALE * (-hw));
+                            x2 = (short) (COORD_SCALE * (hw));
+                            y1 = (short) (COORD_SCALE * (hh));
+                            y2 = (short) (COORD_SCALE * (-hh));
                         } else {
                             float hw = (float) (it.offset.x * width);
                             float hh = (float) (it.offset.y * height);
-                            x1 = (short) (SCALE * (-hw));
-                            x2 = (short) (SCALE * (width - hw));
-                            y1 = (short) (SCALE * (height - hh));
-                            y2 = (short) (SCALE * (-hh));
+                            x1 = (short) (COORD_SCALE * (-hw));
+                            x2 = (short) (COORD_SCALE * (width - hw));
+                            y1 = (short) (COORD_SCALE * (height - hh));
+                            y2 = (short) (COORD_SCALE * (-hh));
                         }
                     }
 
                     /* add vertices */
-                    short tx = (short) ((int) (SCALE * it.x) & LBIT_MASK
+                    short tx = (short) ((int) (COORD_SCALE * it.x) & LBIT_MASK
                             | (it.billboard ? 1 : 0));
 
-                    short ty = (short) (SCALE * it.y);
+                    short ty = (short) (COORD_SCALE * it.y);
 
-                    vertexItems.add(tx, ty, x1, y1, u1, v2);
-                    vertexItems.add(tx, ty, x1, y2, u1, v1);
-                    vertexItems.add(tx, ty, x2, y1, u2, v2);
-                    vertexItems.add(tx, ty, x2, y2, u2, v1);
+                    vertexItems.add(tx, ty, x1 , y1 , u1, v2);
+                    vertexItems.add(tx, ty, x1 , y2 , u1, v1);
+                    vertexItems.add(tx, ty, x2 , y1 , u2, v2);
+                    vertexItems.add(tx, ty, x2 , y2 , u2, v1);
                 } else { // with rotation
                     if (prev.bitmap != null && prev.bitmap != it.bitmap && prev.rotation != it.rotation)
                         break;
@@ -192,17 +193,17 @@ public final class SymbolBucket extends TextureBucket {
                         offsetX = 0;
                         offsetY = 0;
                     } else {
-                        offsetX = (short) (((width / 2f) - (it.offset.x * width)) * SCALE);
-                        offsetY = (short) (((height / 2f) - (it.offset.y * height)) * SCALE);
+                        offsetX = (short) (((width / 2f) - (it.offset.x * width)) * COORD_SCALE);
+                        offsetY = (short) (((height / 2f) - (it.offset.y * height)) * COORD_SCALE);
                     }
 
                     float hw = width / 2f;
                     float hh = height / 2f;
 
-                    minX = (SCALE * (-hw));
-                    maxX = (SCALE * (hw));
-                    minY = (SCALE * (hh));
-                    maxY = (SCALE * (-hh));
+                    minX = (COORD_SCALE * (-hw));
+                    maxX = (COORD_SCALE * (hw));
+                    minY = (COORD_SCALE * (hh));
+                    maxY = (COORD_SCALE * (-hh));
 
                     // target drawing rectangle
                     { // lower-left
@@ -231,14 +232,14 @@ public final class SymbolBucket extends TextureBucket {
                     }
 
                     /* add vertices */
-                    short tx = (short) (((int) (SCALE * it.x) & LBIT_MASK
+                    short tx = (short) (((int) (COORD_SCALE * it.x) & LBIT_MASK
                             | (it.billboard ? 1 : 0)) + offsetX);
-                    short ty = (short) ((SCALE * it.y) + offsetY);
+                    short ty = (short) ((COORD_SCALE * it.y) + offsetY);
 
-                    vertexItems.add(tx, ty, points[0], points[1], u1, v2); // lower-left
-                    vertexItems.add(tx, ty, points[2], points[3], u1, v1); // upper-left
-                    vertexItems.add(tx, ty, points[4], points[5], u2, v2); // upper-right
-                    vertexItems.add(tx, ty, points[6], points[7], u2, v1); // lower-right
+                    vertexItems.add(tx, ty, points[0] , points[1] , u1, v2); // lower-left
+                    vertexItems.add(tx, ty, points[2] , points[3] , u1, v1); // upper-left
+                    vertexItems.add(tx, ty, points[4] , points[5] , u2, v2); // upper-right
+                    vertexItems.add(tx, ty, points[6] , points[7] , u2, v1); // lower-right
                 }
 
                 /* six elements used to draw the four vertices */

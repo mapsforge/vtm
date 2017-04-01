@@ -86,7 +86,7 @@ public class BitmapBucket extends TextureBucket {
         short[] buf = mVertices;
         short w = (short) (mWidth * MapRenderer.COORD_SCALE);
         short h = (short) (mHeight * MapRenderer.COORD_SCALE);
-
+        
         short texMin = 0;
         short texMax = 1;
 

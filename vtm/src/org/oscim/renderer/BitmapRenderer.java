@@ -91,7 +91,7 @@ public class BitmapRenderer extends BucketRenderer {
 
     @Override
     public synchronized void render(GLViewport v) {
-        v.useScreenCoordinates(mWidth, mHeight, position, xOffset, yOffset, 8);
+        v.useScreenCoordinates(mWidth, mHeight, position, xOffset, yOffset, MapRenderer.COORD_SCALE);
         BitmapBucket.Renderer.draw(buckets.get(), v, 1, 1);
     }
 }
