@@ -42,12 +42,18 @@ NS_ASSUME_NONNULL_BEGIN
 @property(strong, nonatomic, readonly) NSURL* __nullable 	svgURL;
 
 /*! @brief init method which takes a URL reference to a .svg file
-* @param url a reference to a standard .svg file
+* @param url a reference to a standard .svg or .svgz file
 */
 -(instancetype)initWithContentsOfURL:(NSURL *)url;
 
+/*! @brief init method which takes a input stream from a SVG source
+ * @param inputStream a reference to a standard .svg or .svgz file
+ */
+-(instancetype)initWithInputStream:(NSInputStream *)inputStream;
+
 /*! @brief init method which the name of a resource based SVG
- * @param a string giving the name of the resource
+ * @param resourceName string giving the name of the resource. This may include a file extension, if ommitted `svg` will be used.
+ * @param bundle optional bundle to look in
  * @commment might be from XCAsset data
  */
 -(nullable  instancetype) initWithResourceName:(NSString*)resourceName inBundle:(nullable NSBundle*)bundle;
@@ -66,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief not allowing a standard init method
  */
--(nullable instancetype) init __attribute__((unavailable("init not available")));
+-(instancetype) init __attribute__((unavailable("init not available")));
 
 /*! @brief method to create a URL relative to the URL used to create this object (assuming use of a URL to create it)
 * @param subPath relative path to this parser's svgURL

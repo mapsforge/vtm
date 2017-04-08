@@ -68,8 +68,8 @@ IB_DESIGNABLE // Cocapods users should add the use_frameworks! directive if this
 @interface SVGDocumentView : UIView
 
 /*! @property artworkPath
-* @brief the text contents of an SVG document can be accessed via 'User Defined RuntimeAttributes'
-*/
+ * @brief the text contents of an SVG document can be accessed via 'User Defined RuntimeAttributes'. If you are using a .svgz file, include the file extension in the path.
+ */
 @property(nonatomic, strong) IBInspectable NSString* __nullable        artworkPath;
 
 /*! @property defaultColor

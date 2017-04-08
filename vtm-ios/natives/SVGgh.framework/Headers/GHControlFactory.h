@@ -195,7 +195,7 @@ typedef NSUInteger ColorScheme;
 +(CGPathRef) newRoundRectPathForRect:(CGRect)aRect withRadius:(CGFloat) radius CF_RETURNS_RETAINED;
 
 /*! @brief utility routine to find the location of an SVG document relative to a provided bundle
- * @param an optional bundle containing the artwork
+ * @param mayBeNil optional bundle containing the artwork
  * @param theArtworkPath subpath within a bundle does not include the .svg extension which is assumed.
  */
 +(nullable NSURL*) locateArtworkForBundle:(nullable NSBundle*)mayBeNil atSubpath:(NSString*)theArtworkPath;
@@ -207,8 +207,7 @@ typedef NSUInteger ColorScheme;
 +(nullable NSURL*) locateArtworkForObject:(id<NSObject>)anObject atSubpath:(NSString*)theArtworkPath; // for compatibility
 
 /*! @brief utility routine to locate a URL inside your project when using Interface Builder's IB_DESIGNABLE service
- * @param anObject for instance a GHButton
- * @param theArtworkPath subpath within a bundle does not include the .svg extension which is assumed.
+ * @param artworkSubPath subpath within a bundle does not include the .svg extension which is assumed.
  */
 +(nullable NSURL*) findInterfaceBuilderArtwork:(NSString*)artworkSubPath;
 
