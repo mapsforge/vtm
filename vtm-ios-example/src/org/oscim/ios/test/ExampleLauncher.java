@@ -38,8 +38,8 @@ public class ExampleLauncher extends IOSApplication.Delegate {
         float scale = (float) (getIosVersion() >= 8 ? UIScreen.getMainScreen().getNativeScale() : UIScreen.getMainScreen().getScale());
         CanvasAdapter.dpi *= scale;
 
-//        IOSMapApp  iosMapApp = new IOSMapApp();
-        IOSLineTexTest iosMapApp = new IOSLineTexTest();
+        IOSMapApp  iosMapApp = new IOSMapApp();
+//        IOSLineTexTest iosMapApp = new IOSLineTexTest();
 //        IOSMapAppCluster iosMapApp = new IOSMapAppCluster();
 
 
