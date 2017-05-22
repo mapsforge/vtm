@@ -42,6 +42,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
 
     private final static boolean POST_AA = false;
     public static boolean TRANSLUCENT = true;
+    public static int DEFAULT_HEIGHT = 12;
 
     private static final Object BUILDING_DATA = BuildingLayer.class.getName();
 
@@ -87,7 +88,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
 
         /* 12m default */
         if (height == 0)
-            height = 12 * 100;
+            height = DEFAULT_HEIGHT * 100;
 
         ExtrusionBuckets ebs = get(tile);
 
