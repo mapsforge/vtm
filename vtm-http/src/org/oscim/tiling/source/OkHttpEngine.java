@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -47,24 +48,51 @@ public class OkHttpEngine implements HttpEngine {
     private byte[] mCachedData;
 
     public static class OkHttpFactory implements HttpEngine.Factory {
-        private final OkHttpClient mClient;
+        private final OkHttpClient.Builder mClientBuilder;
 
         public OkHttpFactory() {
-            mClient = new OkHttpClient();
+            mClientBuilder = new OkHttpClient.Builder();
         }
 
         /**
          * OkHttp cache implemented through {@link OkHttpClient.Builder#cache(Cache)}.
          */
         public OkHttpFactory(Cache cache) {
-            mClient = new OkHttpClient.Builder()
-                    .cache(cache)
-                    .build();
+            mClientBuilder = new OkHttpClient.Builder()
+                    .cache(cache);
+        }
+
+        /**
+         * Sets the default connect timeout for new connections. A value of 0 means no timeout,
+         * otherwise values must be between 1 and {@link Integer#MAX_VALUE} when converted to
+         * milliseconds.
+         */
+        public OkHttpFactory connectTimeout(long timeout, TimeUnit unit) {
+            mClientBuilder.connectTimeout(timeout, unit);
+            return this;
+        }
+
+        /**
+         * Sets the default read timeout for new connections. A value of 0 means no timeout, otherwise
+         * values must be between 1 and {@link Integer#MAX_VALUE} when converted to milliseconds.
+         */
+        public OkHttpFactory readTimeout(long timeout, TimeUnit unit) {
+            mClientBuilder.readTimeout(timeout, unit);
+            return this;
+        }
+
+        /**
+         * Sets the default write timeout for new connections. A value of 0 means no timeout, otherwise
+         * values must be between 1 and {@link Integer#MAX_VALUE} when converted to milliseconds.
+         */
+        public OkHttpFactory writeTimeout(long timeout, TimeUnit unit) {
+            mClientBuilder.writeTimeout(timeout, unit);
+            return this;
         }
 
         @Override
         public HttpEngine create(UrlTileSource tileSource) {
-            return new OkHttpEngine(mClient, tileSource);
+            return new OkHttpEngine(mClientBuilder.build(), tileSource);
         }
     }
 

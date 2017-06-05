@@ -1,5 +1,6 @@
 /*
  * Copyright 2012 Hannes Janetzek
+ * Copyright 2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -94,6 +95,8 @@ public class UrlTileDataSource implements ITileDataSource {
             log.debug("{} Unknown host: {}", tile, e.getMessage());
         } catch (IOException e) {
             log.debug("{} Network Error: {}", tile, e.getMessage());
+        } catch (Exception e) {
+            log.debug("{} Error: {}", tile, e.getMessage());
         } finally {
             boolean ok = (res == SUCCESS);
 
