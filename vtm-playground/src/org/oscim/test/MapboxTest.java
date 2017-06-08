@@ -23,13 +23,29 @@ import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.mvt.MapboxTileSource;
 
+import java.io.File;
+import java.util.UUID;
+
+import okhttp3.Cache;
+
 public class MapboxTest extends GdxMapApp {
+
+    private static final boolean USE_CACHE = false;
 
     @Override
     public void createLayers() {
+        // Cache the tiles into file system
+        File cacheDirectory = new File(System.getProperty("java.io.tmpdir"), UUID.randomUUID().toString());
+        int cacheSize = 10 * 1024 * 1024; // 10 MB
+        Cache cache = new Cache(cacheDirectory, cacheSize);
+
+        OkHttpEngine.OkHttpFactory factory = new OkHttpEngine.OkHttpFactory();
+        if (USE_CACHE)
+            factory.cache(cache);
+
         UrlTileSource tileSource = MapboxTileSource.builder()
                 .apiKey("mapzen-xxxxxxx") // Put a proper API key
-                .httpFactory(new OkHttpEngine.OkHttpFactory())
+                .httpFactory(factory)
                 //.locale("en")
                 .build();
 

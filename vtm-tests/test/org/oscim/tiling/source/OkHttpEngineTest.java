@@ -94,7 +94,7 @@ public class OkHttpEngineTest {
         Cache cache = new Cache(new File("tmp"), 1024);
         OSciMap4TileSource tileSource =
                 new OSciMap4TileSource(server.url("/tiles/vtm").toString());
-        engine = (OkHttpEngine) new OkHttpEngine.OkHttpFactory(cache).create(tileSource);
+        engine = (OkHttpEngine) new OkHttpEngine.OkHttpFactory().cache(cache).create(tileSource);
         engine.sendRequest(new Tile(1, 2, (byte) 3));
         engine.requestCompleted(true);
         assertThat(cache.requestCount()).isEqualTo(1);

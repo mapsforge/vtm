@@ -55,11 +55,11 @@ public class OkHttpEngine implements HttpEngine {
         }
 
         /**
-         * OkHttp cache implemented through {@link OkHttpClient.Builder#cache(Cache)}.
+         * Sets the response cache to be used to read and write cached responses.
          */
-        public OkHttpFactory(Cache cache) {
-            mClientBuilder = new OkHttpClient.Builder()
-                    .cache(cache);
+        public OkHttpFactory cache(Cache cache) {
+            mClientBuilder.cache(cache);
+            return this;
         }
 
         /**
