@@ -1,6 +1,7 @@
 /*
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016-2017 devemux86
+ * Copyright 2017 Akarsh Seggemu
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -168,6 +169,12 @@ public class OSMIndoorLayer extends JeoVectorLayer {
                 }
             }
         }
+        
+        Object o_1 = f.get("level");
+        if (o_1 instanceof String){
+            return Integer.parseInt((String) o_1);
+        }
+        
         return 0;
     }
 
