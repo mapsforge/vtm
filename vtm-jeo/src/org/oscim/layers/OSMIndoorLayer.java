@@ -172,7 +172,8 @@ public class OSMIndoorLayer extends JeoVectorLayer {
 
         o = f.get("level");
         if (o instanceof String) {
-            return Integer.parseInt((String) o);
+            double doubleLevelValue = Double.parseDouble((String) o);
+            return (int) doubleLevelValue;
         }
 
         return 0;
