@@ -21,10 +21,11 @@ uniform float u_scale;
 uniform float u_phase;
 uniform vec2 u_dir;
 uniform int u_mode;
+uniform vec4 u_color;
 void main() {
     float len = 1.0 - length(v_tex);
     if (u_mode == -1) {
-        gl_FragColor = vec4(0.2, 0.2, 0.8, 1.0) * len;
+        gl_FragColor = u_color * len;
     } else {
         // outer ring
         float a = smoothstep(0.0, 2.0 / u_scale, len);
@@ -40,6 +41,6 @@ void main() {
         // - multiply by viewshed
         // - add center point
         a = d * (a - (b + c)) + c;
-        gl_FragColor = vec4(0.2, 0.2, 0.8, 1.0) * a;
+        gl_FragColor = u_color * a;
     }
 }

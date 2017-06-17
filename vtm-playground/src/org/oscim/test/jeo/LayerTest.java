@@ -1,4 +1,5 @@
 /*
+ * Copyright 2014 Hannes Janetzek
  * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -34,7 +35,8 @@ import static org.oscim.tiling.source.bitmap.DefaultSources.STAMEN_TONER;
 
 public class LayerTest extends GdxMap {
 
-    private String PATH = "https://gist.github.com/anonymous/8960337/raw/overpass.geojson";
+    // from http://overpass-turbo.eu/s/2vp
+    String PATH = "https://gist.githubusercontent.com/anonymous/09062103a66844a96048f25626078c8d/raw/1d3af6a5a55e9ea4adc9551fa633a051a44a5a9c/overpass.geojson";
 
     private OSMIndoorLayer mIndoorLayer;
 

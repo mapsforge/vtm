@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -94,7 +95,8 @@ public class OkHttpEngineTest {
         Cache cache = new Cache(new File("tmp"), 1024);
         OSciMap4TileSource tileSource =
                 new OSciMap4TileSource(server.url("/tiles/vtm").toString());
-        engine = (OkHttpEngine) new OkHttpEngine.OkHttpFactory().cache(cache).create(tileSource);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder().cache(cache);
+        engine = (OkHttpEngine) new OkHttpEngine.OkHttpFactory(builder).create(tileSource);
         engine.sendRequest(new Tile(1, 2, (byte) 3));
         engine.requestCompleted(true);
         assertThat(cache.requestCount()).isEqualTo(1);

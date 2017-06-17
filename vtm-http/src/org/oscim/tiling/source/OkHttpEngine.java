@@ -30,9 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -54,40 +52,8 @@ public class OkHttpEngine implements HttpEngine {
             mClientBuilder = new OkHttpClient.Builder();
         }
 
-        /**
-         * Sets the response cache to be used to read and write cached responses.
-         */
-        public OkHttpFactory cache(Cache cache) {
-            mClientBuilder.cache(cache);
-            return this;
-        }
-
-        /**
-         * Sets the default connect timeout for new connections. A value of 0 means no timeout,
-         * otherwise values must be between 1 and {@link Integer#MAX_VALUE} when converted to
-         * milliseconds.
-         */
-        public OkHttpFactory connectTimeout(long timeout, TimeUnit unit) {
-            mClientBuilder.connectTimeout(timeout, unit);
-            return this;
-        }
-
-        /**
-         * Sets the default read timeout for new connections. A value of 0 means no timeout, otherwise
-         * values must be between 1 and {@link Integer#MAX_VALUE} when converted to milliseconds.
-         */
-        public OkHttpFactory readTimeout(long timeout, TimeUnit unit) {
-            mClientBuilder.readTimeout(timeout, unit);
-            return this;
-        }
-
-        /**
-         * Sets the default write timeout for new connections. A value of 0 means no timeout, otherwise
-         * values must be between 1 and {@link Integer#MAX_VALUE} when converted to milliseconds.
-         */
-        public OkHttpFactory writeTimeout(long timeout, TimeUnit unit) {
-            mClientBuilder.writeTimeout(timeout, unit);
-            return this;
+        public OkHttpFactory(OkHttpClient.Builder clientBuilder) {
+            mClientBuilder = clientBuilder;
         }
 
         @Override

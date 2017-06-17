@@ -27,6 +27,7 @@ import java.io.File;
 import java.util.UUID;
 
 import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 
 public class MapboxTest extends GdxMapApp {
 
@@ -34,14 +35,15 @@ public class MapboxTest extends GdxMapApp {
 
     @Override
     public void createLayers() {
-        // Cache the tiles into file system
-        File cacheDirectory = new File(System.getProperty("java.io.tmpdir"), UUID.randomUUID().toString());
-        int cacheSize = 10 * 1024 * 1024; // 10 MB
-        Cache cache = new Cache(cacheDirectory, cacheSize);
-
-        OkHttpEngine.OkHttpFactory factory = new OkHttpEngine.OkHttpFactory();
-        if (USE_CACHE)
-            factory.cache(cache);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (USE_CACHE) {
+            // Cache the tiles into file system
+            File cacheDirectory = new File(System.getProperty("java.io.tmpdir"), UUID.randomUUID().toString());
+            int cacheSize = 10 * 1024 * 1024; // 10 MB
+            Cache cache = new Cache(cacheDirectory, cacheSize);
+            builder.cache(cache);
+        }
+        OkHttpEngine.OkHttpFactory factory = new OkHttpEngine.OkHttpFactory(builder);
 
         UrlTileSource tileSource = MapboxTileSource.builder()
                 .apiKey("mapzen-xxxxxxx") // Put a proper API key

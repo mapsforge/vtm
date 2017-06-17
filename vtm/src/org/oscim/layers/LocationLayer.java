@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Ahmad Saleem
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -16,6 +16,7 @@
  */
 package org.oscim.layers;
 
+import org.oscim.backend.CanvasAdapter;
 import org.oscim.core.MercatorProjection;
 import org.oscim.map.Map;
 import org.oscim.renderer.LocationRenderer;
@@ -24,9 +25,13 @@ public class LocationLayer extends Layer {
     public final LocationRenderer locationRenderer;
 
     public LocationLayer(Map map) {
+        this(map, CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI);
+    }
+
+    public LocationLayer(Map map, float scale) {
         super(map);
 
-        mRenderer = locationRenderer = new LocationRenderer(mMap, this);
+        mRenderer = locationRenderer = new LocationRenderer(mMap, this, scale);
     }
 
     @Override
