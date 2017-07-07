@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -78,6 +78,8 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
      */
     public final boolean mesh;
 
+    public final float heightOffset;
+
     public final int symbolWidth;
     public final int symbolHeight;
     public final int symbolPercent;
@@ -98,6 +100,8 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
         this.strokeWidth = 1;
         this.mesh = false;
 
+        this.heightOffset = 0;
+
         this.symbolWidth = 0;
         this.symbolHeight = 0;
         this.symbolPercent = 100;
@@ -114,6 +118,8 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
         this.strokeColor = b.themeCallback != null ? b.themeCallback.getColor(b.strokeColor) : b.strokeColor;
         this.strokeWidth = b.strokeWidth;
         this.mesh = b.mesh;
+
+        this.heightOffset = b.heightOffset;
 
         this.symbolWidth = b.symbolWidth;
         this.symbolHeight = b.symbolHeight;
@@ -176,6 +182,8 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
 
         public TextureItem texture;
 
+        public float heightOffset;
+
         public int symbolWidth;
         public int symbolHeight;
         public int symbolPercent;
@@ -197,6 +205,8 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
             this.strokeColor = themeCallback != null ? themeCallback.getColor(area.strokeColor) : area.strokeColor;
             this.strokeWidth = area.strokeWidth;
             this.mesh = area.mesh;
+
+            this.heightOffset = area.heightOffset;
 
             this.symbolWidth = area.symbolWidth;
             this.symbolHeight = area.symbolHeight;
@@ -235,6 +245,11 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
             return self();
         }
 
+        public T heightOffset(float heightOffset) {
+            this.heightOffset = heightOffset;
+            return self();
+        }
+
         public T symbolWidth(int symbolWidth) {
             this.symbolWidth = symbolWidth;
             return self();
@@ -261,6 +276,8 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
             style = null;
             texture = null;
             mesh = false;
+
+            heightOffset = 0;
 
             symbolWidth = 0;
             symbolHeight = 0;

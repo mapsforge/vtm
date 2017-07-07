@@ -8,6 +8,7 @@
 | [Hunt Cyprus](https://play.google.com/store/apps/developer?id=Talent+S.A.) | Map and navigation application for hunters | Proprietary/Free and Commercial | Android | Closed |
 | [Kurviger](https://kurviger.de/en) | Route planner specialized on motorcyclists | Proprietary/Free and Commercial | Android | Closed |
 | [MapTrek](http://maptrek.mobi) | Application for outdoor activities | GPL3/Free and Commercial | Android | Open |
+| [MyTourbook](http://mytourbook.sourceforge.net/mytourbook/) | Visualize and analyze tours | GPL2/Free | Desktop | Open |
 | [Navi Cyprus](https://play.google.com/store/apps/developer?id=Talent+S.A.) | Map and navigation application | Proprietary/Free and Commercial | Android | Closed |
 | [topoGuide](http://www.topoguide.gr/index-en.php) | Digital guides for the outdoor | Proprietary/Free and Commercial | Android | Closed |
 | [Ubitrek](https://play.google.com/store/apps/details?id=ubicarta.ubitrek) | Hiking with IGN maps | Proprietary/Free | Android | Closed |

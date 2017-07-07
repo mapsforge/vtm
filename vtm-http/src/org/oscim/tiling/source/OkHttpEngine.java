@@ -100,14 +100,8 @@ public class OkHttpEngine implements HttpEngine {
         if (mInputStream == null)
             return;
 
-        final InputStream is = mInputStream;
+        IOUtils.closeQuietly(mInputStream);
         mInputStream = null;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                IOUtils.closeQuietly(is);
-            }
-        }).start();
     }
 
     @Override

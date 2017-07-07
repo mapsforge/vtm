@@ -1,5 +1,6 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2014 Hannes Janetzek
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -50,6 +51,7 @@ public class Style {
     public final float stippleWidth;
     public final TextureItem texture;
 
+    public final float heightOffset;
     public final boolean randomOffset;
 
     private Style(Builder builder) {
@@ -71,6 +73,7 @@ public class Style {
         stippleWidth = builder.stippleWidth;
         texture = builder.texture;
 
+        heightOffset = builder.heightOffset;
         randomOffset = builder.randomOffset;
     }
 
@@ -103,6 +106,7 @@ public class Style {
         public float stippleWidth = 1;
         public TextureItem texture = null;
 
+        public float heightOffset = 0;
         public boolean randomOffset = true;
 
         protected Builder() {
@@ -225,6 +229,11 @@ public class Style {
 
         public Builder texture(TextureItem texture) {
             this.texture = texture;
+            return this;
+        }
+
+        public Builder heightOffset(float heightOffset) {
+            this.heightOffset = heightOffset;
             return this;
         }
 

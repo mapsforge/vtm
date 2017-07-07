@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -41,6 +41,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
     public final float stippleWidth;
     public final TextureItem texture;
 
+    public final float heightOffset;
     public final boolean randomOffset;
 
     public final int symbolWidth;
@@ -82,6 +83,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         this.blur = blur;
         this.fadeScale = fadeScale;
 
+        this.heightOffset = 0;
         this.randomOffset = randomOffset;
 
         this.symbolWidth = 0;
@@ -103,6 +105,8 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         this.stippleColor = b.themeCallback != null ? b.themeCallback.getColor(b.stippleColor) : b.stippleColor;
         this.stippleWidth = b.stippleWidth;
         this.texture = b.texture;
+
+        this.heightOffset = b.heightOffset;
         this.randomOffset = b.randomOffset;
 
         this.symbolWidth = b.symbolWidth;
@@ -133,6 +137,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         public float stippleWidth;
         public TextureItem texture;
 
+        public float heightOffset;
         public boolean randomOffset;
 
         public int symbolWidth;
@@ -159,6 +164,8 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             this.stippleColor = themeCallback != null ? themeCallback.getColor(line.stippleColor) : line.stippleColor;
             this.stippleWidth = line.stippleWidth;
             this.texture = line.texture;
+
+            this.heightOffset = line.heightOffset;
             this.randomOffset = line.randomOffset;
 
             this.symbolWidth = line.symbolWidth;
@@ -218,6 +225,11 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             return self();
         }
 
+        public T heightOffset(float heightOffset) {
+            this.heightOffset = heightOffset;
+            return self();
+        }
+
         public T randomOffset(boolean randomOffset) {
             this.randomOffset = randomOffset;
             return self();
@@ -243,6 +255,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             style = null;
             fillColor = Color.BLACK;
             cap = Cap.ROUND;
+            outline = false;
             strokeWidth = 1;
             fixed = false;
 
@@ -254,6 +267,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             stippleColor = Color.BLACK;
             texture = null;
 
+            heightOffset = 0;
             randomOffset = true;
 
             symbolWidth = 0;

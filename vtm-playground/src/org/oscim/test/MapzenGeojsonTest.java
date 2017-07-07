@@ -1,6 +1,5 @@
 /*
- * Copyright 2016-2017 devemux86
- * Copyright 2017 Mathieu De Brito
+ * Copyright 2017 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -13,57 +12,54 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.android.test;
+package org.oscim.test;
 
-import android.os.Bundle;
-
-import org.oscim.android.cache.TileCache;
-import org.oscim.layers.TileGridLayer;
+import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.UrlTileSource;
-import org.oscim.tiling.source.mvt.MapboxTileSource;
+import org.oscim.tiling.source.geojson.MapzenGeojsonTileSource;
 
-public class MapboxMapActivity extends MapActivity {
+import java.io.File;
+import java.util.UUID;
+
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+
+public class MapzenGeojsonTest extends GdxMapApp {
 
     private static final boolean USE_CACHE = false;
 
-    private TileCache mCache;
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void createLayers() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (USE_CACHE) {
+            // Cache the tiles into file system
+            File cacheDirectory = new File(System.getProperty("java.io.tmpdir"), UUID.randomUUID().toString());
+            int cacheSize = 10 * 1024 * 1024; // 10 MB
+            Cache cache = new Cache(cacheDirectory, cacheSize);
+            builder.cache(cache);
+        }
+        OkHttpEngine.OkHttpFactory factory = new OkHttpEngine.OkHttpFactory(builder);
 
-        UrlTileSource tileSource = MapboxTileSource.builder()
+        UrlTileSource tileSource = MapzenGeojsonTileSource.builder()
                 .apiKey("mapzen-xxxxxxx") // Put a proper API key
-                .httpFactory(new OkHttpEngine.OkHttpFactory())
+                .httpFactory(factory)
                 //.locale("en")
                 .build();
-
-        if (USE_CACHE) {
-            // Cache the tiles into a local SQLite database
-            mCache = new TileCache(this, null, "tile.db");
-            mCache.setCacheSize(512 * (1 << 10));
-            tileSource.setCache(mCache);
-        }
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);
         mMap.setTheme(VtmThemes.MAPZEN);
 
         mMap.layers().add(new BuildingLayer(mMap, l));
         mMap.layers().add(new LabelLayer(mMap, l));
-
-        mMap.layers().add(new TileGridLayer(mMap, getResources().getDisplayMetrics().density));
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (mCache != null)
-            mCache.dispose();
+    public static void main(String[] args) {
+        GdxMapApp.init();
+        GdxMapApp.run(new MapzenGeojsonTest());
     }
 }

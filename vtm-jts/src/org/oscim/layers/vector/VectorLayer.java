@@ -1,5 +1,6 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2014 Hannes Janetzek
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -256,21 +257,20 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> {
         else
             ll = t.buckets.getLineTexBucket(level);
         if (ll.line == null) {
-            if (style.stipple == 0 && style.texture == null)
-                ll.line = new LineStyle(style.strokeColor, style.strokeWidth, style.cap);
-            else
-                ll.line = LineStyle.builder()
-                        .cap(style.cap)
-                        .color(style.strokeColor)
-                        .fixed(style.fixed)
-                        .level(0)
-                        .randomOffset(style.randomOffset)
-                        .stipple(style.stipple)
-                        .stippleColor(style.stippleColor)
-                        .stippleWidth(style.stippleWidth)
-                        .strokeWidth(style.strokeWidth)
-                        .texture(style.texture)
-                        .build();
+            ll.line = LineStyle.builder()
+                    .reset()
+                    .cap(style.cap)
+                    .color(style.strokeColor)
+                    .fixed(style.fixed)
+                    .heightOffset(style.heightOffset)
+                    .level(0)
+                    .randomOffset(style.randomOffset)
+                    .stipple(style.stipple)
+                    .stippleColor(style.stippleColor)
+                    .stippleWidth(style.stippleWidth)
+                    .strokeWidth(style.strokeWidth)
+                    .texture(style.texture)
+                    .build();
         }
 
         if (style.generalization != Style.GENERALIZATION_NONE) {

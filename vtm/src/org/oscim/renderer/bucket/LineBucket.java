@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -633,6 +633,8 @@ public class LineBucket extends RenderBucket {
                 LineBucket lb = (LineBucket) b;
                 LineStyle line = lb.line.current();
 
+                if (line.heightOffset != lb.heightOffset)
+                    lb.heightOffset = line.heightOffset;
                 if (lb.heightOffset != heightOffset) {
                     heightOffset = lb.heightOffset;
 

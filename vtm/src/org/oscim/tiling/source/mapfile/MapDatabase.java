@@ -78,11 +78,6 @@ public class MapDatabase implements ITileDataSource {
     static final Logger log = LoggerFactory.getLogger(MapDatabase.class);
 
     /**
-     * Maximum way nodes sequence length which is considered as valid.
-     */
-    private static final int MAXIMUM_WAY_NODES_SEQUENCE_LENGTH = 8192;
-
-    /**
      * Bitmask for the optional POI feature "elevation".
      */
     private static final int POI_FEATURE_ELEVATION = 0x20;
@@ -224,7 +219,7 @@ public class MapDatabase implements ITileDataSource {
         }
 
         if (mIntBuffer == null)
-            mIntBuffer = new int[MAXIMUM_WAY_NODES_SEQUENCE_LENGTH * 2];
+            mIntBuffer = new int[Short.MAX_VALUE * 2];
 
         try {
             mTileProjection.setTile(tile);
@@ -628,7 +623,7 @@ public class MapDatabase implements ITileDataSource {
         for (int coordinateBlock = 0; coordinateBlock < numBlocks; ++coordinateBlock) {
             int numWayNodes = mReadBuffer.readUnsignedInt();
 
-            if (numWayNodes < 2 || numWayNodes > MAXIMUM_WAY_NODES_SEQUENCE_LENGTH) {
+            if (numWayNodes < 2 || numWayNodes > Short.MAX_VALUE) {
                 log.warn("invalid number of way nodes: " + numWayNodes);
                 logDebugSignatures();
                 return false;

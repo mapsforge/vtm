@@ -25,11 +25,13 @@ import android.widget.ToggleButton;
 
 import org.jeo.map.Style;
 import org.jeo.vector.VectorDataset;
+import org.oscim.backend.canvas.Color;
 import org.oscim.layers.OSMIndoorLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.test.JeoTest;
 import org.oscim.theme.VtmThemes;
+import org.oscim.theme.styles.TextStyle;
 import org.oscim.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +96,13 @@ public class JeoIndoorMapActivity extends BaseMapActivity {
 
         VectorDataset data = JeoTest.readGeoJson(is);
         Style style = JeoTest.getStyle();
-        mIndoorLayer = new OSMIndoorLayer(mMap, data, style, getResources().getDisplayMetrics().density);
+        float scale = getResources().getDisplayMetrics().density;
+        TextStyle textStyle = TextStyle.builder()
+                .isCaption(true)
+                .fontSize(16 * scale).color(Color.BLACK)
+                .strokeWidth(2.2f * scale).strokeColor(Color.WHITE)
+                .build();
+        mIndoorLayer = new OSMIndoorLayer(mMap, data, style, textStyle);
         mMap.layers().add(mIndoorLayer);
 
         showToast("data ready");

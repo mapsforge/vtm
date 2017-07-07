@@ -36,7 +36,7 @@ public class LocationRenderer extends LayerRenderer {
     private static final long ANIM_RATE = 50;
     private static final long INTERVAL = 2000;
 
-    private static final float CIRCLE_SIZE = 40;
+    private static final float CIRCLE_SIZE = 30;
     private static final int COLOR = 0xff3333cc;
     private static final int SHOW_ACCURACY_ZOOM = 16;
 

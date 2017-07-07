@@ -1,5 +1,6 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2014 Hannes Janetzek
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -32,11 +33,13 @@ import org.jeo.vector.Schema;
 import org.jeo.vector.SchemaBuilder;
 import org.jeo.vector.VectorDataset;
 import org.jeo.vector.VectorQuery;
+import org.oscim.backend.canvas.Color;
 import org.oscim.layers.OSMIndoorLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.map.Map;
 import org.oscim.renderer.MapRenderer;
+import org.oscim.theme.styles.TextStyle;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 import java.io.File;
@@ -60,7 +63,12 @@ public class JeoTest {
         }
 
         Style style = JeoTest.getStyle();
-        map.layers().add(new OSMIndoorLayer(map, data, style));
+        TextStyle textStyle = TextStyle.builder()
+                .isCaption(true)
+                .fontSize(16).color(Color.BLACK)
+                .strokeWidth(2.2f).strokeColor(Color.WHITE)
+                .build();
+        map.layers().add(new OSMIndoorLayer(map, data, style, textStyle));
     }
 
     public static Style getStyle() {

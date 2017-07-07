@@ -54,9 +54,6 @@
             android:name=".LocationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".MapboxMapActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
             android:name=".MapFragmentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
@@ -72,6 +69,12 @@
             android:name=".MapsforgeStyleActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".MapzenGeojsonMapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".MapzenMvtMapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".MarkerOverlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
@@ -79,9 +82,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".NewGesturesActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".OsmJsonMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".PathOverlayActivity"

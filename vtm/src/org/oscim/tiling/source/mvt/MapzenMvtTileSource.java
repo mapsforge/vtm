@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -21,7 +21,7 @@ import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.source.UrlTileDataSource;
 import org.oscim.tiling.source.UrlTileSource;
 
-public class MapboxTileSource extends UrlTileSource {
+public class MapzenMvtTileSource extends UrlTileSource {
 
     private final static String DEFAULT_URL = "https://tile.mapzen.com/mapzen/vector/v1/all";
     private final static String DEFAULT_PATH = "/{Z}/{X}/{Y}.mvt";
@@ -38,8 +38,8 @@ public class MapboxTileSource extends UrlTileSource {
             return self();
         }
 
-        public MapboxTileSource build() {
-            return new MapboxTileSource(this);
+        public MapzenMvtTileSource build() {
+            return new MapzenMvtTileSource(this);
         }
     }
 
@@ -50,16 +50,16 @@ public class MapboxTileSource extends UrlTileSource {
 
     private final String locale;
 
-    protected MapboxTileSource(Builder<?> builder) {
+    public MapzenMvtTileSource(Builder<?> builder) {
         super(builder);
         this.locale = builder.locale;
     }
 
-    public MapboxTileSource() {
+    public MapzenMvtTileSource() {
         this(builder());
     }
 
-    public MapboxTileSource(String urlString) {
+    public MapzenMvtTileSource(String urlString) {
         this(builder().url(urlString));
     }
 

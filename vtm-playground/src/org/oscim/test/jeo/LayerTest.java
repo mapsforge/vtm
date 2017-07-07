@@ -19,12 +19,14 @@ package org.oscim.test.jeo;
 
 import org.jeo.map.Style;
 import org.jeo.vector.VectorDataset;
+import org.oscim.backend.canvas.Color;
 import org.oscim.gdx.GdxMap;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.JeoVectorLayer;
 import org.oscim.layers.OSMIndoorLayer;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.test.JeoTest;
+import org.oscim.theme.styles.TextStyle;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,7 +56,12 @@ public class LayerTest extends GdxMap {
 
                     VectorDataset data = JeoTest.readGeoJson(is);
                     Style style = JeoTest.getStyle();
-                    mIndoorLayer = new OSMIndoorLayer(mMap, data, style);
+                    TextStyle textStyle = TextStyle.builder()
+                            .isCaption(true)
+                            .fontSize(16).color(Color.BLACK)
+                            .strokeWidth(2.2f).strokeColor(Color.WHITE)
+                            .build();
+                    mIndoorLayer = new OSMIndoorLayer(mMap, data, style, textStyle);
                     mIndoorLayer.activeLevels[0] = true;
                     mIndoorLayer.activeLevels[1] = true;
                     mIndoorLayer.activeLevels[2] = true;

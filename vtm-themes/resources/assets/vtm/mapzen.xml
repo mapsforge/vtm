@@ -572,7 +572,7 @@
             <m zoom-min="17">
                 <caption style="bold" fill="#4040ff" k="name" priority="9" size="14"
                     stroke="#ffffff" stroke-width="2.0" />
-                <caption style="bold" fill="#606060" k="addr:housenumber" priority="10" size="12"
+                <caption style="bold" fill="#606060" k="addr_housenumber" priority="10" size="12"
                     stroke="#ffffff" stroke-width="2.0" />
             </m>
         </m>

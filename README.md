@@ -17,10 +17,10 @@ If you have any questions or problems, don't hesitate to ask our public [mailing
 - OpenGL vector-tile rendering
 - Themeable vector layers
 - Support for multiple tile sources:
-  - OpenScienceMap (.vtm)
-  - Mapsforge (.map)
-  - Mapbox tiles (.mvt)
-  - GeoJSON tiles
+  - OpenScienceMap vector tiles
+  - Mapsforge vector maps
+  - Mapbox vector tiles
+  - GeoJSON vector tiles
   - Raster tiles: any quadtree-scheme tiles as texture
 - Backends:
   - Android
