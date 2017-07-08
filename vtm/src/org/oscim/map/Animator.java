@@ -39,12 +39,12 @@ import static org.oscim.utils.FastMath.clamp;
 public class Animator {
     static final Logger log = LoggerFactory.getLogger(Animator.class);
 
-    private final static int ANIM_NONE = 0;
-    private final static int ANIM_MOVE = 1 << 0;
-    private final static int ANIM_SCALE = 1 << 1;
-    private final static int ANIM_ROTATE = 1 << 2;
-    private final static int ANIM_TILT = 1 << 3;
-    private final static int ANIM_FLING = 1 << 4;
+    public final static int ANIM_NONE = 0;
+    public final static int ANIM_MOVE = 1 << 0;
+    public final static int ANIM_SCALE = 1 << 1;
+    public final static int ANIM_ROTATE = 1 << 2;
+    public final static int ANIM_TILT = 1 << 3;
+    public final static int ANIM_FLING = 1 << 4;
 
     private final Map mMap;
 
@@ -71,6 +71,10 @@ public class Animator {
     }
 
     public synchronized void animateTo(long duration, BoundingBox bbox, Easing.Type easingType) {
+    	animateTo(duration, bbox, easingType, ANIM_MOVE | ANIM_SCALE | ANIM_ROTATE | ANIM_TILT);
+    }
+
+    public synchronized void animateTo(long duration, BoundingBox bbox, Easing.Type easingType, int state) {
         ThreadUtils.assertMainThread();
 
         mMap.getMapPosition(mStartPos);
@@ -97,7 +101,7 @@ public class Animator {
                 -mStartPos.bearing,
                 -mStartPos.tilt);
 
-        animStart(duration, ANIM_MOVE | ANIM_SCALE | ANIM_ROTATE | ANIM_TILT, easingType);
+        animStart(duration, state, easingType);
     }
 
     public void animateTo(BoundingBox bbox) {
@@ -125,9 +129,24 @@ public class Animator {
      * @param scale
      * @param relative   alter scale relative to current scale
      * @param easingType easing function
+     * @param state 
      */
     public void animateTo(long duration, GeoPoint geoPoint,
                           double scale, boolean relative, Easing.Type easingType) {
+    	animateTo(duration, geoPoint, scale, relative, easingType, ANIM_MOVE | ANIM_SCALE);
+    }
+    
+    /**
+     * Animate to GeoPoint
+     *
+     * @param duration   in ms
+     * @param geoPoint
+     * @param scale
+     * @param relative   alter scale relative to current scale
+     * @param easingType easing function
+     */
+    public void animateTo(long duration, GeoPoint geoPoint,
+                          double scale, boolean relative, Easing.Type easingType, int state) {
         ThreadUtils.assertMainThread();
 
         mMap.getMapPosition(mStartPos);
@@ -142,7 +161,7 @@ public class Animator {
                 scale - mStartPos.scale,
                 0, 0);
 
-        animStart(duration, ANIM_MOVE | ANIM_SCALE, easingType);
+        animStart(duration, state, easingType);
     }
 
     public void animateTo(GeoPoint p) {
@@ -154,6 +173,10 @@ public class Animator {
     }
 
     public void animateTo(long duration, MapPosition pos, Easing.Type easingType) {
+    	animateTo(duration, pos, easingType, ANIM_MOVE | ANIM_SCALE | ANIM_ROTATE | ANIM_TILT);
+    }
+    
+   	public void animateTo(long duration, MapPosition pos, Easing.Type easingType, int state) {
         ThreadUtils.assertMainThread();
 
         mMap.getMapPosition(mStartPos);
@@ -166,7 +189,7 @@ public class Animator {
                 pos.bearing - mStartPos.bearing,
                 mMap.viewport().limitTilt(pos.tilt) - mStartPos.tilt);
 
-        animStart(duration, ANIM_MOVE | ANIM_SCALE | ANIM_ROTATE | ANIM_TILT, easingType);
+        animStart(duration, state, easingType);
     }
 
     public void animateZoom(long duration, double scaleBy,
