@@ -1,6 +1,7 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
- *
+ * Copyright 2017 Wolfgang Schramm
+
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -93,13 +94,13 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
         super.onDetach();
     }
 
-    @Override
+	@Override
     public void onMapEvent(Event event, MapPosition mapPosition) {
 
         if (event == Map.CLEAR_EVENT)
             mWorker.cancel(true);
 
-        if (event == Map.POSITION_EVENT)
+        if (event == Map.POSITION_EVENT && isEnabled())
             mWorker.submit(MAX_RELABEL_DELAY);
     }
 
