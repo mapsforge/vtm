@@ -1,7 +1,8 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
  * Copyright 2017 Wolfgang Schramm
-
+ * Copyright 2017 devemux86
+ *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -85,6 +86,9 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
     }
 
     public void update() {
+        if (!isEnabled())
+            return;
+
         mWorker.submit(MAX_RELABEL_DELAY);
     }
 
@@ -94,13 +98,16 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
         super.onDetach();
     }
 
-	@Override
+    @Override
     public void onMapEvent(Event event, MapPosition mapPosition) {
 
         if (event == Map.CLEAR_EVENT)
             mWorker.cancel(true);
 
-        if (event == Map.POSITION_EVENT && isEnabled())
+        if (!isEnabled())
+            return;
+
+        if (event == Map.POSITION_EVENT)
             mWorker.submit(MAX_RELABEL_DELAY);
     }
 
@@ -124,7 +131,7 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
     @Override
     public void onTileManagerEvent(Event e, MapTile tile) {
         if (e == TileManager.TILE_LOADED) {
-            if (tile.isVisible)
+            if (tile.isVisible && isEnabled())
                 mWorker.submit(MAX_RELABEL_DELAY / 4);
             //log.debug("tile loaded: {}", tile);
         } else if (e == TileManager.TILE_REMOVED) {
