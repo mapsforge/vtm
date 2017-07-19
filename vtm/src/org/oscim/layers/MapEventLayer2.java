@@ -227,7 +227,8 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
                     vy *= t * t;
                     vx *= t * t;
                 }
-                doFling(vx, vy);
+                if (mEnableMove)
+                    doFling(vx, vy);
             }
 
             if (time - mStartDown > LONG_PRESS_THRESHOLD) {
