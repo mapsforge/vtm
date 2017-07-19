@@ -2,6 +2,7 @@
  * Copyright 2012, 2013 Hannes Janetzek
  * Copyright 2017 Wolfgang Schramm
  * Copyright 2017 devemux86
+ * Copyright 2017 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -41,9 +42,13 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
     private final Worker mWorker;
 
     public LabelLayer(Map map, VectorTileLayer l) {
+        this(map, l, new LabelTileLoaderHook());
+    }
+
+    public LabelLayer(Map map, VectorTileLayer l, VectorTileLayer.TileLoaderThemeHook h) {
         super(map);
         l.getManager().events.bind(this);
-        l.addHook(new LabelTileLoaderHook());
+        l.addHook(h);
 
         mLabelPlacer = new LabelPlacement(map, l.tileRenderer());
         mWorker = new Worker(map);
