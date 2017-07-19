@@ -4,7 +4,7 @@ dependencies {
     compile project(':vtm-desktop')
     compile project(':vtm-extras')
     compile project(':vtm-http')
-    compile project(':vtm-jeo')
+    //compile project(':vtm-jeo')
     compile project(':vtm-json')
     compile project(':vtm-jts')
     compile "org.slf4j:slf4j-simple:$slf4jVersion"

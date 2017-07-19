@@ -19,6 +19,7 @@
 - Improve canvas DPI setting [#349](https://github.com/mapsforge/vtm/issues/349)
 - OSM indoor layer enhancements [#366](https://github.com/mapsforge/vtm/issues/366)
 - Gretty plugin at web modules [#338](https://github.com/mapsforge/vtm/issues/338)
+- Disable vtm-jeo module until update [#375](https://github.com/mapsforge/vtm/issues/375)
 - Many other minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.8.0)
 
