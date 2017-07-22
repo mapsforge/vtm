@@ -4,6 +4,7 @@
  * Copyright 2017 Longri
  * Copyright 2017 devemux86
  * Copyright 2017 nebular
+ * Copyright 2017 Wolfgang Schramm
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -73,6 +74,12 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
      * Discrete scale step, used to trigger reclustering on significant scale change
      */
     private int mScaleSaved = 0;
+    
+    
+    /**
+     * Map scale to cluster the marker
+     */
+    private double mClusterScale = 0;
 
     /**
      * We use a flat Sparse array to calculate the clusters. The sparse array models a 2D map where every (x,y) denotes
@@ -121,7 +128,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
 
     @Override
     protected void populate(int size) {
-        repopulateCluster(size, mScaleSaved);
+        repopulateCluster(size, mClusterScale);
     }
 
     /**
@@ -210,6 +217,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
 
             if (scalepow != mScaleSaved) {
                 mScaleSaved = scalepow;
+                mClusterScale = scale;
 
                 // post repopulation to the main thread
                 mMarkerLayer.map().post(new Runnable() {
