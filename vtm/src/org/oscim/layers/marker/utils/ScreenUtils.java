@@ -1,6 +1,7 @@
 /*
  * Copyright 2017 nebular
  * Copyright 2017 devemux86
+ * Copyright 2017 Wolfgang Schramm
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -75,10 +76,10 @@ public class ScreenUtils {
         private void draw(Canvas canvas) {
             int halfsize = mSize >> 1;
 
-            // outline
-            canvas.drawCircle(halfsize, halfsize, halfsize, mPaintCircle);
             // fill
-            canvas.drawCircle(halfsize, halfsize, halfsize, mPaintBorder);
+            canvas.drawCircle(halfsize, halfsize, halfsize - 2, mPaintCircle);
+            // outline
+            canvas.drawCircle(halfsize, halfsize, halfsize - 2, mPaintBorder);
             // draw the number at the center
             canvas.drawText(mText,
                     (canvas.getWidth() - mPaintText.getTextWidth(mText)) * 0.5f,
