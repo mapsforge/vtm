@@ -1,4 +1,5 @@
 rootProject.name = 'vtm-parent'
+include ':theme-comparator'
 include ':vtm'
 include ':vtm-android'
 include ':vtm-android-example'
