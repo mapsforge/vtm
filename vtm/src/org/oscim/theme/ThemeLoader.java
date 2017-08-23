@@ -18,10 +18,26 @@
  */
 package org.oscim.theme;
 
+
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.theme.IRenderTheme.ThemeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 
 public class ThemeLoader {
+
+    private static final Logger log = LoggerFactory.getLogger(ThemeLoader.class);
 
     public static boolean USE_ATLAS;
     public static boolean POT_TEXTURES;
@@ -46,8 +62,45 @@ public class ThemeLoader {
         return load(theme, null);
     }
 
+
+    private static class SAXTerminatorException extends SAXException {
+    }
+
     public static IRenderTheme load(ThemeFile theme, ThemeCallback themeCallback) throws ThemeException {
-        IRenderTheme t = USE_ATLAS ? XmlAtlasThemeBuilder.read(theme, themeCallback) : XmlThemeBuilder.read(theme, themeCallback);
+
+        //decide wish ThemeBuilder we are use!
+        final AtomicBoolean isMapsforgeTheme = new AtomicBoolean(false);
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+
+            XMLReader xmlReader = factory.newSAXParser().getXMLReader();
+            xmlReader.setContentHandler(new DefaultHandler() {
+
+                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+
+                    if (localName.equals("rendertheme")) {
+                        isMapsforgeTheme.set(uri.equals("http://mapsforge.org/renderTheme"));
+                        //we have all info's, break parsing
+                        throw new SAXTerminatorException();
+                    }
+                }
+            });
+            xmlReader.parse(new InputSource(theme.getRenderThemeAsStream()));
+        } catch (SAXTerminatorException e) {
+            //do nothing;
+        } catch (SAXException | IOException | ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        IRenderTheme t;
+
+        if(isMapsforgeTheme.get()){
+            t = USE_ATLAS ? XmlMapsforgeAtlasThemeBuilder.read(theme, themeCallback) : XmlMapsforgeThemeBuilder.read(theme, themeCallback);
+        }else{
+            t = USE_ATLAS ? XmlAtlasThemeBuilder.read(theme, themeCallback) : XmlThemeBuilder.read(theme, themeCallback);
+        }
+
         if (t != null)
             t.scaleTextSize(CanvasAdapter.textScale + (CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI - 1));
         return t;
