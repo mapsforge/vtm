@@ -153,6 +153,8 @@ public class PathLayer extends Layer {
 
             /* add one point for every 100kms of the great circle path */
             int numberOfPoints = (int) (length / 100000);
+            if (numberOfPoints == 0)
+                return;
 
             addGreatCircle(startPoint, endPoint, numberOfPoints);
         }
