@@ -23,13 +23,16 @@ package org.oscim.theme;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.XMLReaderAdapter;
 import org.oscim.backend.canvas.Bitmap;
+import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Color;
+import org.oscim.backend.canvas.Paint;
 import org.oscim.backend.canvas.Paint.Cap;
 import org.oscim.backend.canvas.Paint.FontFamily;
 import org.oscim.backend.canvas.Paint.FontStyle;
 import org.oscim.renderer.atlas.TextureAtlas;
 import org.oscim.renderer.atlas.TextureAtlas.Rect;
 import org.oscim.renderer.atlas.TextureRegion;
+import org.oscim.renderer.bucket.TextureItem;
 import org.oscim.theme.IRenderTheme.ThemeException;
 import org.oscim.theme.rule.Rule;
 import org.oscim.theme.rule.Rule.Closed;
@@ -62,6 +65,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Float.parseFloat;
@@ -71,6 +75,8 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
     private static final Logger log = LoggerFactory.getLogger(XmlMapsforgeThemeBuilder.class);
 
     private static final int RENDER_THEME_VERSION = 4;
+    private static final Pattern SPLIT_PATTERN = Pattern.compile(",");
+
 
     private enum Element {
         RENDER_THEME, RENDERING_INSTRUCTION, RULE, STYLE, ATLAS, RENDERING_STYLE
@@ -557,22 +563,55 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
             else if ("symbol-percent".equals(name))
                 b.symbolPercent = Integer.parseInt(value);
 
-            else if ("stroke-dasharray".equals(name)){
-                //TODO handle dash array
-            }
-
-            else if ("dy".equals(name)) {
+            else if ("stroke-dasharray".equals(name)) {
+                b.strokeDasharray = parseFloatArray(value);
+                for (int j = 0; j < b.strokeDasharray.length; ++j) {
+                    b.strokeDasharray[j] = b.strokeDasharray[j] * mScale;
+                }
+            } else if ("dy".equals(name)) {
                 // NB: minus..
-             //TODO   b.dy = -Float.parseFloat(value) * mScale;
-            }
-
-            else
+                //TODO   b.dy = -Float.parseFloat(value) * mScale;
+            } else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
-        b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
-        /*if (b.texture != null)
-            b.texture.mipmap = true;*/
+
+        if (b.strokeDasharray != null) {//create a dashed texture
+            int bmpWidth = 0;
+            int bmpHeight = (int) (b.strokeWidth);
+            if (bmpHeight < 1) bmpHeight = 2;
+            for (float f : b.strokeDasharray) {
+                if (f < 1) f = 1;
+                bmpWidth += f;
+            }
+
+            int factor = 10;
+            Bitmap bmp = CanvasAdapter.newBitmap(bmpWidth*factor, bmpHeight*factor, 0);
+            Canvas canvas = CanvasAdapter.newCanvas();
+            canvas.setBitmap(bmp);
+
+            boolean bw = false;
+            int x = 0;
+            for (float f : b.strokeDasharray) {
+                if (f < 1) f = 1;
+                canvas.fillRectangle(x*factor, 0, (int) f*factor, bmpHeight*factor, (bw ? Color.TRANSPARENT : Color.WHITE));
+                x += f;
+                bw = !bw;
+            }
+            b.texture = new TextureItem(bmp);
+            b.texture.mipmap = false;
+            b.stipple = (int) (bmpWidth*1.2f);
+            b.stippleWidth = bmpWidth;
+            b.fixed = false;
+            b.randomOffset = false;
+
+            b.stippleColor = b.fillColor;
+            b.fillColor = Color.TRANSPARENT;
+            b.strokeColor = Color.TRANSPARENT;
+
+        } else {
+            b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+        }
 
         return b.build();
     }
@@ -957,13 +996,6 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
             else if ("position".equals(name)){
                 //TODO Handle  position: AUTO, CENTER, BELOW, BELOW_LEFT, BELOW_RIGHT, ABOVE, ABOVE_LEFT, ABOVE_RIGHT, LEFT, RIGHT
             }
-
-
-
-
-
-
-            else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
@@ -1160,5 +1192,14 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
         if (obj == null)
             throw new ThemeException("missing attribute " + name
                     + " for element: " + elementName);
+    }
+
+    private static float[] parseFloatArray(String dashString) {
+        String[] dashEntries = SPLIT_PATTERN.split(dashString);
+        float[] dashIntervals = new float[dashEntries.length];
+        for (int i = 0; i < dashEntries.length; ++i) {
+            dashIntervals[i] = Float.parseFloat(dashEntries[i]);
+        }
+        return dashIntervals;
     }
 }

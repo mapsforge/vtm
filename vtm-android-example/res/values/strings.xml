@@ -17,5 +17,6 @@
     <string name="style_1">Show nature</string>
     <string name="style_2">Hide nature</string>
     <string name="menu_gridlayer">Grid</string>
+    <string name="theme_load">load theme extern</string>
 
 </resources>

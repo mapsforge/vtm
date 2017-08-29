@@ -63,7 +63,7 @@ public class ThemeLoader {
     }
 
 
-    private static class SAXTerminatorException extends SAXException {
+    public static class SAXTerminatorException extends SAXException {
     }
 
     public static IRenderTheme load(ThemeFile theme, ThemeCallback themeCallback) throws ThemeException {

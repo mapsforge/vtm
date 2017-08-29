@@ -20,6 +20,9 @@
         <item
             android:id="@+id/theme_newtron"
             android:title="@string/theme_newtron" />
+        <item
+            android:id="@+id/theme_load"
+            android:title="@string/theme_load" />
     </group>
 
     <item
