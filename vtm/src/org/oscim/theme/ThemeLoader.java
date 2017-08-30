@@ -64,6 +64,9 @@ public class ThemeLoader {
 
 
     public static class SAXTerminatorException extends SAXException {
+        public SAXTerminatorException(){
+            super();
+        }
     }
 
     public static IRenderTheme load(ThemeFile theme, ThemeCallback themeCallback) throws ThemeException {
