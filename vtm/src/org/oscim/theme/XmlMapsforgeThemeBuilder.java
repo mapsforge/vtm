@@ -996,6 +996,8 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
             else if ("position".equals(name)){
                 //TODO Handle  position: AUTO, CENTER, BELOW, BELOW_LEFT, BELOW_RIGHT, ABOVE, ABOVE_LEFT, ABOVE_RIGHT, LEFT, RIGHT
             }
+
+            else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
