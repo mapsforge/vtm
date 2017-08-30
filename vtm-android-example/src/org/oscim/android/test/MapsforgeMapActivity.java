@@ -1,6 +1,7 @@
 /*
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016-2017 devemux86
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import org.oscim.android.filepicker.FilePicker;
 import org.oscim.android.filepicker.FilterByFileExtension;
 import org.oscim.android.filepicker.ValidMapFile;
+import org.oscim.android.filepicker.ValidRenderTheme;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
 import org.oscim.layers.TileGridLayer;
@@ -38,12 +40,14 @@ import org.oscim.scalebar.ImperialUnitAdapter;
 import org.oscim.scalebar.MapScaleBar;
 import org.oscim.scalebar.MapScaleBarLayer;
 import org.oscim.scalebar.MetricUnitAdapter;
+import org.oscim.theme.ExternalRenderTheme;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
 import org.oscim.tiling.source.mapfile.MapInfo;
 
 public class MapsforgeMapActivity extends MapActivity {
     private static final int SELECT_MAP_FILE = 0;
+    private static final int SELECT_THEME_FILE = 1;
 
     private TileGridLayer mGridLayer;
     private DefaultMapScaleBar mMapScaleBar;
@@ -68,6 +72,13 @@ public class MapsforgeMapActivity extends MapActivity {
         public MapFilePicker() {
             setFileDisplayFilter(new FilterByFileExtension(".map"));
             setFileSelectFilter(new ValidMapFile());
+        }
+    }
+
+    public static class ThemeFilePicker extends FilePicker {
+        public ThemeFilePicker() {
+            setFileDisplayFilter(new FilterByFileExtension(".xml"));
+            setFileSelectFilter(new ValidRenderTheme());
         }
     }
 
@@ -104,6 +115,11 @@ public class MapsforgeMapActivity extends MapActivity {
             case R.id.theme_newtron:
                 mMap.setTheme(VtmThemes.NEWTRON);
                 item.setChecked(true);
+                return true;
+
+            case R.id.theme_load:
+                startActivityForResult(new Intent(MapsforgeMapActivity.this, ThemeFilePicker.class),
+                        SELECT_THEME_FILE);
                 return true;
 
             case R.id.gridlayer:
@@ -162,6 +178,20 @@ public class MapsforgeMapActivity extends MapActivity {
                 mMap.setMapPosition(pos);
 
                 mPrefs.clear();
+            }
+        } else if (requestCode == SELECT_THEME_FILE) {
+            if (resultCode != RESULT_OK || intent == null || intent.getStringExtra(FilePicker.SELECTED_FILE) == null) {
+                finish();
+                return;
+            }
+
+            String themePath = intent.getStringExtra(FilePicker.SELECTED_FILE);
+
+            ExternalRenderTheme externalRenderTheme = new ExternalRenderTheme(themePath);
+            try {
+                mMap.setTheme(externalRenderTheme, true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

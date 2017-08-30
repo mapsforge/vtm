@@ -2,6 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2017 devemux86
+ * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -47,6 +48,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
     public final int symbolWidth;
     public final int symbolHeight;
     public final int symbolPercent;
+    public boolean dashTexture;
 
     public LineStyle(int stroke, float width) {
         this(0, "", stroke, width, Cap.BUTT, true, 0, 0, 0, -1, 0, false, null, true);
@@ -112,6 +114,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         this.symbolWidth = b.symbolWidth;
         this.symbolHeight = b.symbolHeight;
         this.symbolPercent = b.symbolPercent;
+        this.dashTexture = b.strokeDasharray != null;
     }
 
     @Override
@@ -143,6 +146,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         public int symbolWidth;
         public int symbolHeight;
         public int symbolPercent;
+        public float[] strokeDasharray;
 
         public LineBuilder() {
         }
@@ -273,7 +277,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             symbolWidth = 0;
             symbolHeight = 0;
             symbolPercent = 100;
-
+            strokeDasharray = null;
             return self();
         }
 
