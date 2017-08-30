@@ -51,13 +51,18 @@ public abstract class BaseAppender extends AppenderBase<ILoggingEvent> {
     }
 
     @Override
-    protected void append(ILoggingEvent eventObject) {
-        if (eventObject != null && canLogClass(eventObject.getLoggerName())) {
-            stringBuilder.append(doLayout(eventObject));
-            String areaText = stringBuilder.toString();
-            this.textArea.setText(areaText);
-            this.textArea.setCaretPosition(areaText.length());
-        }
+    protected void append(final ILoggingEvent eventObject) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (eventObject != null && canLogClass(eventObject.getLoggerName())) {
+                    textArea.append(doLayout(eventObject));
+                    textArea.setCaretPosition(textArea.getDocument().getLength());
+                }
+            }
+        });
+        thread.start();
+
 //TODO set Highlight for LogLevel [WARN], [ERROR]
     }
 
