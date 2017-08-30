@@ -4,6 +4,7 @@
  * Copyright 2016 devemux86
  * Copyright 2016 Bezzu
  * Copyright 2016 Pedinel
+ * Copyright 2017 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -153,6 +154,8 @@ public class PathLayer extends Layer {
 
             /* add one point for every 100kms of the great circle path */
             int numberOfPoints = (int) (length / 100000);
+            if (numberOfPoints == 0)
+                return;
 
             addGreatCircle(startPoint, endPoint, numberOfPoints);
         }

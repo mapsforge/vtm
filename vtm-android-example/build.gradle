@@ -4,9 +4,9 @@ dependencies {
     compile project(':vtm-android')
     compile project(':vtm-extras')
     compile project(':vtm-http')
-    /*compile(project(':vtm-jeo')) {
+    compile(project(':vtm-jeo')) {
         exclude group: 'com.vividsolutions', module: 'jts'
-    }*/
+    }
     compile project(':vtm-json')
     compile project(':vtm-jts')
     compile project(':vtm-themes')
