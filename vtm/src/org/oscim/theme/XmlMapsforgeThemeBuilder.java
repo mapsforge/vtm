@@ -76,6 +76,8 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
 
     private static final int RENDER_THEME_VERSION = 4;
     private static final Pattern SPLIT_PATTERN = Pattern.compile(",");
+    private static final float REPEAT_GAP_DEFAULT = 200f;
+    private static final float REPEAT_START_DEFAULT = 30f;
 
 
     private enum Element {
@@ -255,11 +257,11 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
 
             } else if ("style-line".equals(localName)) {
                 checkState(localName, Element.STYLE);
-                handleLineElement(localName, attributes, true);
+                handleLineElement(localName, attributes, true, false);
 
             } else if ("outline-layer".equals(localName)) {
                 checkState(localName, Element.RENDERING_INSTRUCTION);
-                LineStyle line = createLine(null, localName, attributes, mLevels++, true);
+                LineStyle line = createLine(null, localName, attributes, mLevels++, true, false);
                 mStyles.put(OUTLINE_STYLE + line.style, line);
 
             } else if ("area".equals(localName)) {
@@ -278,7 +280,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
 
             } else if ("line".equals(localName)) {
                 checkState(localName, Element.RENDERING_INSTRUCTION);
-                handleLineElement(localName, attributes, false);
+                handleLineElement(localName, attributes, false, false);
 
             } else if ("pathText".equals(localName)) {
                 checkState(localName, Element.RENDERING_INSTRUCTION);
@@ -304,7 +306,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
 
             } else if ("lineSymbol".equals(localName)) {
                 checkState(localName, Element.RENDERING_INSTRUCTION);
-                log.error("unknown element: {}", localName);
+                handleLineElement(localName, attributes, false, true);
 
             } else if ("atlas".equals(localName)) {
                 checkState(localName, Element.ATLAS);
@@ -447,7 +449,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
         return texture;
     }
 
-    private void handleLineElement(String localName, Attributes attributes, boolean isStyle)
+    private void handleLineElement(String localName, Attributes attributes, boolean isStyle, boolean symbolLine)
             throws SAXException {
 
         String use = attributes.getValue("use");
@@ -461,7 +463,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
             }
         }
 
-        LineStyle line = createLine(style, localName, attributes, mLevels++, false);
+        LineStyle line = createLine(style, localName, attributes, mLevels++, false, symbolLine);
 
         if (isStyle) {
             mStyles.put(LINE_STYLE + line.style, line);
@@ -470,9 +472,12 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
                 mCurrentRule.addStyle(line);
                 /* Note 'outline' will not be inherited, it's just a
                  * shortcut to add the outline RenderInstruction. */
-                LineStyle outline = createOutline(attributes.getValue("outline"), attributes);
-                if (outline != null)
-                    mCurrentRule.addStyle(outline);
+                String outlineValue = attributes.getValue("outline");
+                if (outlineValue != null) {
+                    LineStyle outline = createOutline(outlineValue, attributes);
+                    if (outline != null)
+                        mCurrentRule.addStyle(outline);
+                }
             }
         }
     }
@@ -484,7 +489,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
      * @return a new Line with the given rendering attributes.
      */
     private LineStyle createLine(LineStyle line, String elementName, Attributes attributes,
-                                 int level, boolean isOutline) {
+                                 int level, boolean isOutline, boolean symbolLine) {
         LineBuilder<?> b = mLineBuilder.set(line);
         b.isOutline(isOutline);
         b.level(level);
@@ -571,6 +576,12 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
             } else if ("dy".equals(name)) {
                 // NB: minus..
                 //TODO   b.dy = -Float.parseFloat(value) * mScale;
+            } else if ("align-center".equals(name)) {
+                //TODO   handle align-center
+            } else if ("repeat".equals(name)) {
+                //TODO   handle repeat
+            } else if ("display".equals(name)) {
+                //TODO  handle display
             } else
                 logUnknownAttribute(elementName, name, value, i);
         }
@@ -586,7 +597,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
             }
 
             int factor = 10;
-            Bitmap bmp = CanvasAdapter.newBitmap(bmpWidth*factor, bmpHeight*factor, 0);
+            Bitmap bmp = CanvasAdapter.newBitmap(bmpWidth * factor, bmpHeight * factor, 0);
             Canvas canvas = CanvasAdapter.newCanvas();
             canvas.setBitmap(bmp);
 
@@ -594,13 +605,13 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
             int x = 0;
             for (float f : b.strokeDasharray) {
                 if (f < 1) f = 1;
-                canvas.fillRectangle(x*factor, 0, (int) f*factor, bmpHeight*factor, (bw ? Color.TRANSPARENT : Color.WHITE));
+                canvas.fillRectangle(x * factor, 0, (int) f * factor, bmpHeight * factor, (bw ? Color.TRANSPARENT : Color.WHITE));
                 x += f;
                 bw = !bw;
             }
             b.texture = new TextureItem(bmp);
             b.texture.mipmap = false;
-            b.stipple = (int) (bmpWidth*1.2f);
+            b.stipple = (int) (bmpWidth * 1.2f);
             b.stippleWidth = bmpWidth;
             b.fixed = false;
             b.randomOffset = false;
@@ -611,6 +622,33 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
 
         } else {
             b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+            if (symbolLine) {
+
+                // we have no way to set a repeatGap for the renderer,
+                // so we create a texture that already contains this repeatGap.
+                float repeatGap = REPEAT_GAP_DEFAULT * mScale;
+                float repeatStart = REPEAT_START_DEFAULT * mScale;
+                int width = (int) (b.texture.width + repeatGap);
+                int height = b.texture.height;
+                Bitmap bmp = CanvasAdapter.newBitmap(width, height, 0);
+                Canvas canvas = CanvasAdapter.newCanvas();
+                canvas.setBitmap(bmp);
+                canvas.drawBitmap(b.texture.bitmap, repeatStart, 0);
+                b.texture = new TextureItem(bmp);
+
+                // we must set stipple values
+                // The multipliers are determined empirically to
+                // correspond to the representation at Mapsforge!
+                b.stipple = b.texture.width * 3;
+                b.strokeWidth *= 2 * mScale;
+
+                // use texture color
+                b.stippleColor = Color.WHITE;
+                b.fillColor = Color.TRANSPARENT;
+                b.strokeColor = Color.TRANSPARENT;
+
+                b.fixed = false;
+            }
         }
 
         return b.build();
@@ -700,9 +738,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
 
             else if ("symbol-scaling".equals(name)) {
                 // no-op
-            }
-
-            else
+            } else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
@@ -863,12 +899,9 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
             else if ("base-text-scale".equals(name))
                 baseTextScale = Float.parseFloat(value);
 
-            else if ("map-background-outside".equals(name)){
+            else if ("map-background-outside".equals(name)) {
                 //TODO handle map-background-outside
-            }
-
-
-            else
+            } else
                 XmlMapsforgeThemeBuilder.logUnknownAttribute(elementName, name, value, i);
 
         }
@@ -985,19 +1018,13 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
             else if ("symbol-percent".equals(name))
                 b.symbolPercent = Integer.parseInt(value);
 
-            else if ("display".equals(name)){
+            else if ("display".equals(name)) {
                 //TODO Handle display attribute NEVER, ALWAYS, IFSPACE;
-            }
-
-            else if ("symbol-id".equals(name)){
+            } else if ("symbol-id".equals(name)) {
                 //TODO Handle  symbol-id;
-            }
-
-            else if ("position".equals(name)){
+            } else if ("position".equals(name)) {
                 //TODO Handle  position: AUTO, CENTER, BELOW, BELOW_LEFT, BELOW_RIGHT, ABOVE, ABOVE_LEFT, ABOVE_RIGHT, LEFT, RIGHT
-            }
-
-            else
+            } else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
@@ -1088,23 +1115,15 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
             else if ("symbol-percent".equals(name))
                 b.symbolPercent = Integer.parseInt(value);
 
-            else if ("symbol-scaling".equals(name)){
+            else if ("symbol-scaling".equals(name)) {
                 // no-op
-            }
-
-            else if ("display".equals(name)){
+            } else if ("display".equals(name)) {
                 //TODO Handle display attribute NEVER, ALWAYS, IFSPACE;
-            }
-
-            else if ("id".equals(name)){
+            } else if ("id".equals(name)) {
                 //TODO Handle 'id'
-            }
-
-            else if ("priority".equals(name)){
+            } else if ("priority".equals(name)) {
                 //TODO Handle 'priority'
-            }
-
-            else
+            } else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
