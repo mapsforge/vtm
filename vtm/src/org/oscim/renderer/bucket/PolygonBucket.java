@@ -31,6 +31,7 @@ import org.oscim.renderer.GLViewport;
 import org.oscim.theme.styles.AreaStyle;
 import org.oscim.utils.ArrayUtils;
 import org.oscim.utils.geom.LineClipper;
+import org.oscim.utils.geom.TileClipper;
 import org.oscim.utils.math.Interpolation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,25 +55,29 @@ public final class PolygonBucket extends RenderBucket {
 
     public static boolean enableTexture = true;
 
+    private final TileClipper clipper;
+
+    private float xmin = Short.MAX_VALUE;
+    private float ymin = Short.MAX_VALUE;
+    private float xmax = Short.MIN_VALUE;
+    private float ymax = Short.MIN_VALUE;
+
     public AreaStyle area;
 
     PolygonBucket(int layer) {
         super(RenderBucket.POLYGON, true, false);
         level = layer;
+        clipper = new TileClipper(Tile.SIZE * (-2), Tile.SIZE * (-2), Tile.SIZE * 2, Tile.SIZE * 2);;
     }
 
     public void addPolygon(GeometryBuffer geom) {
+        clipper.clip(geom);
         addPolygon(geom.points, geom.index);
     }
 
-    float xmin = Short.MAX_VALUE;
-    float ymin = Short.MAX_VALUE;
-    float xmax = Short.MIN_VALUE;
-    float ymax = Short.MIN_VALUE;
-
     final float[] bbox = new float[8];
 
-    public void addPolygon(float[] points, int[] index) {
+    private void addPolygon(float[] points, int[] index) {
         short center = (short) ((Tile.SIZE >> 1) * COORD_SCALE);
 
         boolean outline = area.strokeWidth > 0;
