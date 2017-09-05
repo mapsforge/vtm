@@ -315,7 +315,7 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
         } else {
             PolygonBucket pb = mBuckets.getPolygonBucket(nLevel);
             pb.area = area;
-            pb.addPolygon(mElement.points, mElement.index);
+            pb.addPolygon(mElement);
         }
     }
 
