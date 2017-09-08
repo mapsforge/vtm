@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -63,16 +63,16 @@ public class MultiMapFileTileSource extends TileSource implements IMapFileTileSo
         return boundingBox;
     }
 
-    Map<MapFileTileSource, int[]> getZoomsByTileSource() {
-        return zoomsByTileSource;
-    }
-
     @Override
     public ITileDataSource getDataSource() {
         MultiMapDatabase multiMapDatabase = new MultiMapDatabase(this);
         for (MapFileTileSource mapFileTileSource : mapFileTileSources) {
             try {
-                multiMapDatabase.add(new MapDatabase(mapFileTileSource));
+                MapDatabase mapDatabase = new MapDatabase(mapFileTileSource);
+                int[] zoomLevels = zoomsByTileSource.get(mapFileTileSource);
+                if (zoomLevels != null)
+                    mapDatabase.restrictToZoomRange(zoomLevels[0], zoomLevels[1]);
+                multiMapDatabase.add(mapDatabase);
             } catch (IOException e) {
                 log.debug(e.getMessage());
             }

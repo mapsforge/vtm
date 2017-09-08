@@ -1,5 +1,6 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
+ * Copyright 2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -156,6 +157,10 @@ public class MapTile extends Tile {
         public TileData next() {
             return (TileData) next;
         }
+    }
+
+    public MapTile(int tileX, int tileY, int zoomLevel) {
+        this(null, tileX, tileY, zoomLevel);
     }
 
     public MapTile(TileNode node, int tileX, int tileY, int zoomLevel) {

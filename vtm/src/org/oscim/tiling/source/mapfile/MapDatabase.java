@@ -1,6 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013, 2014 Hannes Janetzek
+ * Copyright 2014-2015 Ludwig M Brinckmann
  * Copyright 2016-2017 devemux86
  * Copyright 2016 Andrey Novikov
  *
@@ -20,6 +21,8 @@
 package org.oscim.tiling.source.mapfile;
 
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.core.BoundingBox;
+import org.oscim.core.GeoPoint;
 import org.oscim.core.GeometryBuffer.GeometryType;
 import org.oscim.core.MapElement;
 import org.oscim.core.MercatorProjection;
@@ -35,6 +38,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.oscim.core.GeometryBuffer.GeometryType.LINE;
 import static org.oscim.core.GeometryBuffer.GeometryType.POLY;
@@ -167,6 +173,18 @@ public class MapDatabase implements ITileDataSource {
      */
     private static final int WAY_NUMBER_OF_TAGS_BITMASK = 0x0f;
 
+    /**
+     * Way filtering reduces the number of ways returned to only those that are
+     * relevant for the tile requested, leading to performance gains, but can
+     * cause line clipping artifacts (particularly at higher zoom levels). The
+     * risk of clipping can be reduced by either turning way filtering off or by
+     * increasing the wayFilterDistance which governs how large an area surrounding
+     * the requested tile will be returned.
+     * For most use cases the standard settings should be sufficient.
+     */
+    public static boolean wayFilterEnabled = true;
+    public static int wayFilterDistance = 20;
+
     private long mFileSize;
     private boolean mDebugFile;
     private RandomAccessFile mInputFile;
@@ -186,6 +204,9 @@ public class MapDatabase implements ITileDataSource {
     private final TileClipper mTileClipper;
 
     private final MapFileTileSource mTileSource;
+
+    private int zoomLevelMin = 0;
+    private int zoomLevelMax = Byte.MAX_VALUE;
 
     public MapDatabase(MapFileTileSource tileSource) throws IOException {
         mTileSource = tileSource;
@@ -305,7 +326,9 @@ public class MapDatabase implements ITileDataSource {
      * @param mapDataSink      the callback which handles the extracted map elements.
      */
     private void processBlock(QueryParameters queryParameters,
-                              SubFileParameter subFileParameter, ITileDataSink mapDataSink) {
+                              SubFileParameter subFileParameter, ITileDataSink mapDataSink,
+                              BoundingBox boundingBox, Selector selector,
+                              MapReadResult mapReadResult) {
 
         if (!processBlockSignature()) {
             return;
@@ -339,7 +362,13 @@ public class MapDatabase implements ITileDataSource {
             return;
         }
 
-        if (!processPOIs(mapDataSink, poisOnQueryZoomLevel)) {
+        boolean filterRequired = queryParameters.queryZoomLevel > subFileParameter.baseZoomLevel;
+
+        List<PointOfInterest> pois = null;
+        if (mapReadResult != null)
+            pois = new ArrayList<>();
+
+        if (!processPOIs(mapDataSink, poisOnQueryZoomLevel, boundingBox, filterRequired, pois)) {
             return;
         }
 
@@ -355,10 +384,19 @@ public class MapDatabase implements ITileDataSource {
         /* move the pointer to the first way */
         mReadBuffer.setBufferPosition(firstWayOffset);
 
-        if (!processWays(queryParameters, mapDataSink, waysOnQueryZoomLevel)) {
+        List<Way> ways = null;
+        if (mapReadResult != null && Selector.POIS != selector)
+            ways = new ArrayList<>();
+
+        if (!processWays(queryParameters, mapDataSink, waysOnQueryZoomLevel, boundingBox, filterRequired, selector, ways)) {
             return;
         }
 
+        if (mapReadResult != null) {
+            if (Selector.POIS == selector)
+                ways = Collections.emptyList();
+            mapReadResult.add(new PoiWayBundle(pois, ways));
+        }
     }
 
     //    private long mCurrentRow;
@@ -405,8 +443,26 @@ public class MapDatabase implements ITileDataSource {
 
     //private final static Tag mWaterTag = new Tag("natural", "water");
 
+    /**
+     * Map rendering.
+     */
     private void processBlocks(ITileDataSink mapDataSink, QueryParameters queryParams,
                                SubFileParameter subFileParameter) throws IOException {
+        processBlocks(mapDataSink, queryParams, subFileParameter, null, null, null);
+    }
+
+    /**
+     * Map data reading.
+     */
+    private void processBlocks(QueryParameters queryParams,
+                               SubFileParameter subFileParameter, BoundingBox boundingBox,
+                               Selector selector, MapReadResult mapReadResult) throws IOException {
+        processBlocks(null, queryParams, subFileParameter, boundingBox, selector, mapReadResult);
+    }
+
+    private void processBlocks(ITileDataSink mapDataSink, QueryParameters queryParams,
+                               SubFileParameter subFileParameter, BoundingBox boundingBox,
+                               Selector selector, MapReadResult mapReadResult) throws IOException {
 
         /* read and process all blocks from top to bottom and from left to right */
         for (long row = queryParams.fromBlockY; row <= queryParams.toBlockY; row++) {
@@ -508,7 +564,7 @@ public class MapDatabase implements ITileDataSource {
                 mTileLatitude = (int) (tileLatitudeDeg * 1E6);
                 mTileLongitude = (int) (tileLongitudeDeg * 1E6);
 
-                processBlock(queryParams, subFileParameter, mapDataSink);
+                processBlock(queryParams, subFileParameter, mapDataSink, boundingBox, selector, mapReadResult);
             }
         }
     }
@@ -539,7 +595,8 @@ public class MapDatabase implements ITileDataSource {
      * @return true if the POIs could be processed successfully, false
      * otherwise.
      */
-    private boolean processPOIs(ITileDataSink mapDataSink, int numberOfPois) {
+    private boolean processPOIs(ITileDataSink mapDataSink, int numberOfPois, BoundingBox boundingBox,
+                                boolean filterRequired, List<PointOfInterest> pois) {
         Tag[] poiTags = mTileSource.fileInfo.poiTags;
         MapElement e = mElem;
 
@@ -605,13 +662,26 @@ public class MapDatabase implements ITileDataSource {
 
             e.setLayer(layer);
 
-            mapDataSink.process(e);
+            if (pois != null) {
+                List<Tag> tags = new ArrayList<>();
+                for (int i = 0; i < e.tags.numTags; i++)
+                    tags.add(e.tags.tags[i]);
+                GeoPoint position = new GeoPoint(latitude, longitude);
+                // depending on the zoom level configuration the poi can lie outside
+                // the tile requested, we filter them out here
+                if (!filterRequired || boundingBox.contains(position)) {
+                    pois.add(new PointOfInterest(layer, tags, position));
+                }
+            }
+
+            if (mapDataSink != null)
+                mapDataSink.process(e);
         }
 
         return true;
     }
 
-    private boolean processWayDataBlock(MapElement e, boolean doubleDeltaEncoding, boolean isLine) {
+    private boolean processWayDataBlock(MapElement e, boolean doubleDeltaEncoding, boolean isLine, List<GeoPoint[]> wayCoordinates) {
         /* get and check the number of way coordinate blocks (VBE-U) */
         int numBlocks = mReadBuffer.readUnsignedInt();
         if (numBlocks < 1 || numBlocks > Short.MAX_VALUE) {
@@ -638,6 +708,14 @@ public class MapDatabase implements ITileDataSource {
 
             wayLengths[coordinateBlock] = decodeWayNodes(doubleDeltaEncoding,
                     e, len, isLine);
+
+            if (wayCoordinates != null) {
+                // create the array which will store the current way segment
+                GeoPoint[] waySegment = new GeoPoint[e.getNumPoints()];
+                for (int i = 0; i < e.getNumPoints(); i++)
+                    waySegment[i] = new GeoPoint(e.getPointY(i) / 1E6, e.getPointX(i) / 1E6);
+                wayCoordinates.add(waySegment);
+            }
         }
 
         return true;
@@ -712,8 +790,9 @@ public class MapDatabase implements ITileDataSource {
      * @return true if the ways could be processed successfully, false
      * otherwise.
      */
-    private boolean processWays(QueryParameters queryParameters,
-                                ITileDataSink mapDataSink, int numberOfWays) {
+    private boolean processWays(QueryParameters queryParameters, ITileDataSink mapDataSink,
+                                int numberOfWays, BoundingBox boundingBox, boolean filterRequired,
+                                Selector selector, List<Way> ways) {
 
         Tag[] wayTags = mTileSource.fileInfo.wayTags;
         MapElement e = mElem;
@@ -866,7 +945,11 @@ public class MapDatabase implements ITileDataSource {
             for (int wayDataBlock = 0; wayDataBlock < wayDataBlocks; wayDataBlock++) {
                 e.clear();
 
-                if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, linearFeature))
+                List<GeoPoint[]> wayNodes = null;
+                if (ways != null)
+                    wayNodes = new ArrayList<>();
+
+                if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, linearFeature, wayNodes))
                     return false;
 
                 /* drop invalid outer ring */
@@ -889,11 +972,110 @@ public class MapDatabase implements ITileDataSource {
 
                 e.setLayer(layer);
 
-                mapDataSink.process(e);
+                if (ways != null) {
+                    BoundingBox wayFilterBbox = boundingBox.extendMeters(wayFilterDistance);
+                    GeoPoint[][] wayNodesArray = wayNodes.toArray(new GeoPoint[wayNodes.size()][]);
+                    if (!filterRequired || !wayFilterEnabled || wayFilterBbox.intersectsArea(wayNodesArray)) {
+                        List<Tag> tags = new ArrayList<>();
+                        for (int i = 0; i < e.tags.numTags; i++)
+                            tags.add(e.tags.tags[i]);
+                        if (Selector.ALL == selector || hasName || hasHouseNr || hasRef || wayAsLabelTagFilter(tags)) {
+                            GeoPoint labelPos = e.labelPosition != null ? new GeoPoint(e.labelPosition.y / 1E6, e.labelPosition.x / 1E6) : null;
+                            ways.add(new Way(layer, tags, wayNodesArray, labelPos, e.type));
+                        }
+                    }
+                }
+
+                if (mapDataSink != null)
+                    mapDataSink.process(e);
             }
         }
 
         return true;
+    }
+
+    /**
+     * Reads only labels for tile.
+     *
+     * @param tile tile for which data is requested.
+     * @return label data for the tile.
+     */
+    public MapReadResult readLabels(Tile tile) {
+        return readMapData(tile, tile, Selector.LABELS);
+    }
+
+    /**
+     * Reads data for an area defined by the tile in the upper left and the tile in
+     * the lower right corner.
+     * Precondition: upperLeft.tileX <= lowerRight.tileX && upperLeft.tileY <= lowerRight.tileY
+     *
+     * @param upperLeft  tile that defines the upper left corner of the requested area.
+     * @param lowerRight tile that defines the lower right corner of the requested area.
+     * @return map data for the tile.
+     */
+    public MapReadResult readLabels(Tile upperLeft, Tile lowerRight) {
+        return readMapData(upperLeft, lowerRight, Selector.LABELS);
+    }
+
+    /**
+     * Reads all map data for the area covered by the given tile at the tile zoom level.
+     *
+     * @param tile defines area and zoom level of read map data.
+     * @return the read map data.
+     */
+    public MapReadResult readMapData(Tile tile) {
+        return readMapData(tile, tile, Selector.ALL);
+    }
+
+    /**
+     * Reads data for an area defined by the tile in the upper left and the tile in
+     * the lower right corner.
+     * Precondition: upperLeft.tileX <= lowerRight.tileX && upperLeft.tileY <= lowerRight.tileY
+     *
+     * @param upperLeft  tile that defines the upper left corner of the requested area.
+     * @param lowerRight tile that defines the lower right corner of the requested area.
+     * @return map data for the tile.
+     */
+    public MapReadResult readMapData(Tile upperLeft, Tile lowerRight) {
+        return readMapData(upperLeft, lowerRight, Selector.ALL);
+    }
+
+    private MapReadResult readMapData(Tile upperLeft, Tile lowerRight, Selector selector) {
+        if (mTileSource.fileHeader == null)
+            return null;
+
+        MapReadResult mapReadResult = new MapReadResult();
+
+        if (mIntBuffer == null)
+            mIntBuffer = new int[Short.MAX_VALUE * 2];
+
+        try {
+            mTileProjection.setTile(upperLeft);
+
+            QueryParameters queryParameters = new QueryParameters();
+            queryParameters.queryZoomLevel =
+                    mTileSource.fileHeader.getQueryZoomLevel(upperLeft.zoomLevel);
+
+            /* get and check the sub-file for the query zoom level */
+            SubFileParameter subFileParameter =
+                    mTileSource.fileHeader.getSubFileParameter(queryParameters.queryZoomLevel);
+
+            if (subFileParameter == null) {
+                log.warn("no sub-file for zoom level: "
+                        + queryParameters.queryZoomLevel);
+
+                return null;
+            }
+
+            QueryCalculations.calculateBaseTiles(queryParameters, upperLeft, lowerRight, subFileParameter);
+            QueryCalculations.calculateBlocks(queryParameters, subFileParameter);
+            processBlocks(queryParameters, subFileParameter, Tile.getBoundingBox(upperLeft, lowerRight), selector, mapReadResult);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            return null;
+        }
+
+        return mapReadResult;
     }
 
     private int[] readOptionalLabelPosition() {
@@ -906,6 +1088,29 @@ public class MapDatabase implements ITileDataSource {
         labelPosition[0] = mReadBuffer.readSignedInt();
 
         return labelPosition;
+    }
+
+    /**
+     * Reads only POI data for tile.
+     *
+     * @param tile tile for which data is requested.
+     * @return POI data for the tile.
+     */
+    public MapReadResult readPoiData(Tile tile) {
+        return readMapData(tile, tile, Selector.POIS);
+    }
+
+    /**
+     * Reads POI data for an area defined by the tile in the upper left and the tile in
+     * the lower right corner.
+     * This implementation takes the data storage of a MapFile into account for greater efficiency.
+     *
+     * @param upperLeft  tile that defines the upper left corner of the requested area.
+     * @param lowerRight tile that defines the lower right corner of the requested area.
+     * @return map data for the tile.
+     */
+    public MapReadResult readPoiData(Tile upperLeft, Tile lowerRight) {
+        return readMapData(upperLeft, lowerRight, Selector.POIS);
     }
 
     private int[][] readZoomTable(SubFileParameter subFileParameter) {
@@ -924,6 +1129,51 @@ public class MapDatabase implements ITileDataSource {
         }
 
         return zoomTable;
+    }
+
+    /**
+     * Restricts returns of data to zoom level range specified. This can be used to restrict
+     * the use of this map data base when used in MultiMapDatabase settings.
+     *
+     * @param minZoom minimum zoom level supported
+     * @param maxZoom maximum zoom level supported
+     */
+    public void restrictToZoomRange(int minZoom, int maxZoom) {
+        this.zoomLevelMax = maxZoom;
+        this.zoomLevelMin = minZoom;
+    }
+
+    /**
+     * Returns true if MapDatabase contains tile.
+     *
+     * @param tile tile to be rendered.
+     * @return true if tile is part of database.
+     */
+    public boolean supportsTile(Tile tile) {
+        return tile.getBoundingBox().intersects(mTileSource.getMapInfo().boundingBox)
+                && (tile.zoomLevel >= this.zoomLevelMin && tile.zoomLevel <= this.zoomLevelMax);
+    }
+
+    /**
+     * Returns true if a way should be included in the result set for readLabels()
+     * By default only ways with names, house numbers or a ref are included in the result set
+     * of readLabels(). This is to reduce the set of ways as much as possible to save memory.
+     *
+     * @param tags the tags associated with the way
+     * @return true if the way should be included in the result set
+     */
+    public boolean wayAsLabelTagFilter(List<Tag> tags) {
+        return false;
+    }
+
+    /**
+     * The Selector enum is used to specify which data subset is to be retrieved from a MapFile:
+     * ALL: all data (as in version 0.6.0)
+     * POIS: only poi data, no ways (new after 0.6.0)
+     * LABELS: poi data and ways that have a name (new after 0.6.0)
+     */
+    private enum Selector {
+        ALL, POIS, LABELS
     }
 
     static class TileProjection {
@@ -947,7 +1197,7 @@ public class MapDatabase implements ITileDataSource {
             /* scales longitude(1e6) to map-pixel */
             divx = (180.0 * COORD_SCALE) / (mapExtents >> 1);
 
-            /* scale latidute to map-pixel */
+            /* scale latitude to map-pixel */
             divy = (Math.PI * 2.0) / (mapExtents >> 1);
         }
 

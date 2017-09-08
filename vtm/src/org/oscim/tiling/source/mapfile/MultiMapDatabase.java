@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -14,6 +14,7 @@
  */
 package org.oscim.tiling.source.mapfile;
 
+import org.oscim.core.Tile;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
@@ -41,8 +42,7 @@ public class MultiMapDatabase implements ITileDataSource {
     public void query(MapTile tile, ITileDataSink mapDataSink) {
         MultiMapDataSink multiMapDataSink = new MultiMapDataSink(mapDataSink);
         for (MapDatabase mapDatabase : mapDatabases) {
-            int[] zoomLevels = tileSource.getZoomsByTileSource().get(mapDatabase.getTileSource());
-            if (zoomLevels == null || (zoomLevels[0] <= tile.zoomLevel && tile.zoomLevel <= zoomLevels[1]))
+            if (mapDatabase.supportsTile(tile))
                 mapDatabase.query(tile, multiMapDataSink);
         }
         mapDataSink.completed(multiMapDataSink.getResult());
@@ -60,5 +60,110 @@ public class MultiMapDatabase implements ITileDataSource {
         for (MapDatabase mapDatabase : mapDatabases) {
             mapDatabase.cancel();
         }
+    }
+
+    public MapReadResult readLabels(Tile tile) {
+        MapReadResult mapReadResult = new MapReadResult();
+        for (MapDatabase mdb : mapDatabases) {
+            if (mdb.supportsTile(tile)) {
+                MapReadResult result = mdb.readLabels(tile);
+                if (result == null) {
+                    continue;
+                }
+                boolean isWater = mapReadResult.isWater & result.isWater;
+                mapReadResult.isWater = isWater;
+                mapReadResult.add(result, false);
+            }
+        }
+        return mapReadResult;
+    }
+
+    public MapReadResult readLabels(Tile upperLeft, Tile lowerRight) {
+        MapReadResult mapReadResult = new MapReadResult();
+        for (MapDatabase mdb : mapDatabases) {
+            if (mdb.supportsTile(upperLeft)) {
+                MapReadResult result = mdb.readLabels(upperLeft, lowerRight);
+                if (result == null) {
+                    continue;
+                }
+                boolean isWater = mapReadResult.isWater & result.isWater;
+                mapReadResult.isWater = isWater;
+                mapReadResult.add(result, false);
+            }
+        }
+        return mapReadResult;
+    }
+
+    public MapReadResult readMapData(Tile tile) {
+        MapReadResult mapReadResult = new MapReadResult();
+        for (MapDatabase mdb : mapDatabases) {
+            if (mdb.supportsTile(tile)) {
+                MapReadResult result = mdb.readMapData(tile);
+                if (result == null) {
+                    continue;
+                }
+                boolean isWater = mapReadResult.isWater & result.isWater;
+                mapReadResult.isWater = isWater;
+                mapReadResult.add(result, false);
+            }
+        }
+        return mapReadResult;
+    }
+
+    public MapReadResult readMapData(Tile upperLeft, Tile lowerRight) {
+        MapReadResult mapReadResult = new MapReadResult();
+        for (MapDatabase mdb : mapDatabases) {
+            if (mdb.supportsTile(upperLeft)) {
+                MapReadResult result = mdb.readMapData(upperLeft, lowerRight);
+                if (result == null) {
+                    continue;
+                }
+                boolean isWater = mapReadResult.isWater & result.isWater;
+                mapReadResult.isWater = isWater;
+                mapReadResult.add(result, false);
+            }
+        }
+        return mapReadResult;
+    }
+
+    public MapReadResult readPoiData(Tile tile) {
+        MapReadResult mapReadResult = new MapReadResult();
+        for (MapDatabase mdb : mapDatabases) {
+            if (mdb.supportsTile(tile)) {
+                MapReadResult result = mdb.readPoiData(tile);
+                if (result == null) {
+                    continue;
+                }
+                boolean isWater = mapReadResult.isWater & result.isWater;
+                mapReadResult.isWater = isWater;
+                mapReadResult.add(result, false);
+            }
+        }
+        return mapReadResult;
+    }
+
+    public MapReadResult readPoiData(Tile upperLeft, Tile lowerRight) {
+        MapReadResult mapReadResult = new MapReadResult();
+        for (MapDatabase mdb : mapDatabases) {
+            if (mdb.supportsTile(upperLeft)) {
+                MapReadResult result = mdb.readPoiData(upperLeft, lowerRight);
+                if (result == null) {
+                    continue;
+                }
+                boolean isWater = mapReadResult.isWater & result.isWater;
+                mapReadResult.isWater = isWater;
+                mapReadResult.add(result, false);
+            }
+        }
+        return mapReadResult;
+    }
+
+    public boolean supportsTile(Tile tile) {
+        for (MapDatabase mdb : mapDatabases) {
+            if (mdb.supportsTile(tile)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

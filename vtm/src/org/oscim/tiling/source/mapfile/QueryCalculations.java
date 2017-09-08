@@ -1,5 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
+ * Copyright 2014-2015 Ludwig M Brinckmann
+ * Copyright 2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -100,18 +102,14 @@ final class QueryCalculations {
         }
     }
 
-    static void calculateBaseTiles(QueryParameters queryParameters, Tile tile,
-                                   SubFileParameter subFileParameter) {
+    static void calculateBaseTiles(QueryParameters queryParameters, Tile tile, SubFileParameter subFileParameter) {
         if (tile.zoomLevel < subFileParameter.baseZoomLevel) {
-            // calculate the XY numbers of the upper left and lower right
-            // sub-tiles
+            // calculate the XY numbers of the upper left and lower right sub-tiles
             int zoomLevelDifference = subFileParameter.baseZoomLevel - tile.zoomLevel;
             queryParameters.fromBaseTileX = tile.tileX << zoomLevelDifference;
             queryParameters.fromBaseTileY = tile.tileY << zoomLevelDifference;
-            queryParameters.toBaseTileX = queryParameters.fromBaseTileX
-                    + (1 << zoomLevelDifference) - 1;
-            queryParameters.toBaseTileY = queryParameters.fromBaseTileY
-                    + (1 << zoomLevelDifference) - 1;
+            queryParameters.toBaseTileX = queryParameters.fromBaseTileX + (1 << zoomLevelDifference) - 1;
+            queryParameters.toBaseTileY = queryParameters.fromBaseTileY + (1 << zoomLevelDifference) - 1;
             queryParameters.useTileBitmask = false;
         } else if (tile.zoomLevel > subFileParameter.baseZoomLevel) {
             // calculate the XY numbers of the parent base tile
@@ -128,6 +126,37 @@ final class QueryCalculations {
             queryParameters.fromBaseTileY = tile.tileY;
             queryParameters.toBaseTileX = queryParameters.fromBaseTileX;
             queryParameters.toBaseTileY = queryParameters.fromBaseTileY;
+            queryParameters.useTileBitmask = false;
+        }
+    }
+
+    static void calculateBaseTiles(QueryParameters queryParameters, Tile upperLeft, Tile lowerRight, SubFileParameter subFileParameter) {
+        if (upperLeft.zoomLevel < subFileParameter.baseZoomLevel) {
+            // here we need to combine multiple base tiles
+            int zoomLevelDifference = subFileParameter.baseZoomLevel - upperLeft.zoomLevel;
+            queryParameters.fromBaseTileX = upperLeft.tileX << zoomLevelDifference;
+            queryParameters.fromBaseTileY = upperLeft.tileY << zoomLevelDifference;
+            queryParameters.toBaseTileX = (lowerRight.tileX << zoomLevelDifference) + (1 << zoomLevelDifference) - 1;
+            queryParameters.toBaseTileY = (lowerRight.tileY << zoomLevelDifference) + (1 << zoomLevelDifference) - 1;
+            queryParameters.useTileBitmask = false;
+        } else if (upperLeft.zoomLevel > subFileParameter.baseZoomLevel) {
+            // we might have more than just one base tile as we might span boundaries
+            int zoomLevelDifference = upperLeft.zoomLevel - subFileParameter.baseZoomLevel;
+            queryParameters.fromBaseTileX = upperLeft.tileX >>> zoomLevelDifference;
+            queryParameters.fromBaseTileY = upperLeft.tileY >>> zoomLevelDifference;
+            queryParameters.toBaseTileX = lowerRight.tileX >>> zoomLevelDifference;
+            queryParameters.toBaseTileY = lowerRight.tileY >>> zoomLevelDifference;
+            // TODO understand what is going on here. The tileBitmask is used to extract just
+            // the data from the base tiles that is relevant for the area, but how can this work
+            // for a set of tiles, so not using tileBitmask for the moment.
+            queryParameters.useTileBitmask = true;
+            queryParameters.queryTileBitmask = QueryCalculations.calculateTileBitmask(upperLeft, lowerRight, zoomLevelDifference);
+        } else {
+            // we are on the base zoom level, so we just need all tiles in range
+            queryParameters.fromBaseTileX = upperLeft.tileX;
+            queryParameters.fromBaseTileY = upperLeft.tileY;
+            queryParameters.toBaseTileX = lowerRight.tileX;
+            queryParameters.toBaseTileY = lowerRight.tileY;
             queryParameters.useTileBitmask = false;
         }
     }
@@ -169,6 +198,17 @@ final class QueryCalculations {
         } else {
             return getSecondLevelTileBitmaskLowerRight(subtileX, subtileY);
         }
+    }
+
+    static int calculateTileBitmask(Tile upperLeft, Tile lowerRight, int zoomLevelDifference) {
+        int bitmask = 0;
+        for (int x = upperLeft.tileX; x <= lowerRight.tileX; x++) {
+            for (int y = upperLeft.tileY; y <= lowerRight.tileY; y++) {
+                Tile current = new Tile(x, y, upperLeft.zoomLevel);
+                bitmask |= calculateTileBitmask(current, zoomLevelDifference);
+            }
+        }
+        return bitmask;
     }
 
     private QueryCalculations() {
