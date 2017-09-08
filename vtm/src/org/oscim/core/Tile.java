@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -41,6 +41,11 @@ public class Tile {
     public static int TILE_SIZE_MULTIPLE = 64;
 
     /**
+     * the map size implied by zoom level and tileSize, to avoid multiple computations.
+     */
+    public final long mapSize;
+
+    /**
      * The X number of this tile.
      */
     public final int tileX;
@@ -55,6 +60,9 @@ public class Tile {
      */
     public final byte zoomLevel;
 
+    private BoundingBox boundingBox;
+    private Point origin;
+
     /**
      * @param tileX     the X number of the tile.
      * @param tileY     the Y number of the tile.
@@ -64,6 +72,7 @@ public class Tile {
         this.tileX = tileX;
         this.tileY = tileY;
         this.zoomLevel = zoomLevel;
+        this.mapSize = MercatorProjection.getMapSize(zoomLevel);
     }
 
     @Override
@@ -118,5 +127,64 @@ public class Tile {
         float scaled = DEFAULT_TILE_SIZE * scaleFactor;
         return Math.max(TILE_SIZE_MULTIPLE,
                 Math.round(scaled / TILE_SIZE_MULTIPLE) * TILE_SIZE_MULTIPLE);
+    }
+
+    /**
+     * Gets the geographic extend of this Tile as a BoundingBox.
+     *
+     * @return boundaries of this tile.
+     */
+    public BoundingBox getBoundingBox() {
+        if (this.boundingBox == null) {
+            double minLatitude = Math.max(MercatorProjection.LATITUDE_MIN, MercatorProjection.tileYToLatitude(tileY + 1, zoomLevel));
+            double minLongitude = Math.max(-180, MercatorProjection.tileXToLongitude(this.tileX, zoomLevel));
+            double maxLatitude = Math.min(MercatorProjection.LATITUDE_MAX, MercatorProjection.tileYToLatitude(this.tileY, zoomLevel));
+            double maxLongitude = Math.min(180, MercatorProjection.tileXToLongitude(tileX + 1, zoomLevel));
+            if (maxLongitude == -180) {
+                // fix for dateline crossing, where the right tile starts at -180 and causes an invalid bbox
+                maxLongitude = 180;
+            }
+            this.boundingBox = new BoundingBox(minLatitude, minLongitude, maxLatitude, maxLongitude);
+        }
+        return this.boundingBox;
+    }
+
+    /**
+     * Return the BoundingBox of a rectangle of tiles defined by upper left and lower right tile.
+     *
+     * @param upperLeft  tile in upper left corner.
+     * @param lowerRight tile in lower right corner.
+     * @return BoundingBox defined by the area around upperLeft and lowerRight Tile.
+     */
+    public static BoundingBox getBoundingBox(Tile upperLeft, Tile lowerRight) {
+        BoundingBox ul = upperLeft.getBoundingBox();
+        BoundingBox lr = lowerRight.getBoundingBox();
+        return ul.extendBoundingBox(lr);
+    }
+
+    /**
+     * @return the maximum valid tile number for the given zoom level, 2<sup>zoomLevel</sup> -1.
+     */
+    public static int getMaxTileNumber(byte zoomLevel) {
+        if (zoomLevel < 0) {
+            throw new IllegalArgumentException("zoomLevel must not be negative: " + zoomLevel);
+        } else if (zoomLevel == 0) {
+            return 0;
+        }
+        return (2 << zoomLevel - 1) - 1;
+    }
+
+    /**
+     * Returns the top-left point of this tile in absolute coordinates.
+     *
+     * @return the top-left point
+     */
+    public Point getOrigin() {
+        if (this.origin == null) {
+            double x = MercatorProjection.tileToPixel(this.tileX);
+            double y = MercatorProjection.tileToPixel(this.tileY);
+            this.origin = new Point(x, y);
+        }
+        return this.origin;
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  * Copyright 2016 Robin Boldt
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -101,7 +101,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
 
         double lat = MercatorProjection.toLatitude(tile.y);
         float groundScale = (float) MercatorProjection
-                .groundResolution(lat, 1 << tile.zoomLevel);
+                .groundResolutionWithScale(lat, 1 << tile.zoomLevel);
 
         ebs.buckets = Inlist.push(ebs.buckets,
                 new ExtrusionBucket(0, groundScale,

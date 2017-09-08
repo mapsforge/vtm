@@ -80,7 +80,7 @@ class S3DBTileLoader extends TileLoader {
     private void initTile(MapTile tile) {
         double lat = MercatorProjection.toLatitude(tile.y);
         mGroundScale = (float) MercatorProjection
-                .groundResolution(lat, 1 << mTile.zoomLevel);
+                .groundResolutionWithScale(lat, 1 << mTile.zoomLevel);
 
         mRoofs = new ExtrusionBucket(0, mGroundScale, Color.get(247, 249, 250));
 

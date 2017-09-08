@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -319,6 +319,46 @@ public class BoundingBox {
 
         return getMaxLatitude() >= boundingBox.getMinLatitude() && getMaxLongitude() >= boundingBox.getMinLongitude()
                 && getMinLatitude() <= boundingBox.getMaxLatitude() && getMinLongitude() <= boundingBox.getMaxLongitude();
+    }
+
+    /**
+     * Returns if an area built from the geoPoints intersects with a bias towards
+     * returning true.
+     * The method returns fast if any of the points lie within the bbox. If none of the points
+     * lie inside the box, it constructs the outer bbox for all the points and tests for intersection
+     * (so it is possible that the area defined by the points does not actually intersect)
+     *
+     * @param geoPoints the points that define an area
+     * @return false if there is no intersection, true if there could be an intersection
+     */
+    public boolean intersectsArea(GeoPoint[][] geoPoints) {
+        if (geoPoints.length == 0 || geoPoints[0].length == 0) {
+            return false;
+        }
+        for (GeoPoint[] outer : geoPoints) {
+            for (GeoPoint geoPoint : outer) {
+                if (this.contains(geoPoint)) {
+                    // if any of the points is inside the bbox return early
+                    return true;
+                }
+            }
+        }
+
+        // no fast solution, so accumulate boundary points
+        double tmpMinLat = geoPoints[0][0].getLatitude();
+        double tmpMinLon = geoPoints[0][0].getLongitude();
+        double tmpMaxLat = geoPoints[0][0].getLatitude();
+        double tmpMaxLon = geoPoints[0][0].getLongitude();
+
+        for (GeoPoint[] outer : geoPoints) {
+            for (GeoPoint geoPoint : outer) {
+                tmpMinLat = Math.min(tmpMinLat, geoPoint.getLatitude());
+                tmpMaxLat = Math.max(tmpMaxLat, geoPoint.getLatitude());
+                tmpMinLon = Math.min(tmpMinLon, geoPoint.getLongitude());
+                tmpMaxLon = Math.max(tmpMaxLon, geoPoint.getLongitude());
+            }
+        }
+        return this.intersects(new BoundingBox(tmpMinLat, tmpMinLon, tmpMaxLat, tmpMaxLon));
     }
 
     @Override
