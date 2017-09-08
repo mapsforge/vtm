@@ -6,6 +6,7 @@
 - Render themes: line symbol [#124](https://github.com/mapsforge/vtm/issues/124)
 - Render themes: stroke dash array [#131](https://github.com/mapsforge/vtm/issues/131)
 - POI Search example [#394](https://github.com/mapsforge/vtm/issues/394)
+- Mapsforge Reverse Geocoding [#383](https://github.com/mapsforge/vtm/issues/383)
 - Core utilities [#396](https://github.com/mapsforge/vtm/issues/396)
 - Mapsforge fix artifacts zoom > 17 [#231](https://github.com/mapsforge/vtm/issues/231)
 - vtm-theme-comparator module [#387](https://github.com/mapsforge/vtm/issues/387)

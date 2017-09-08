@@ -18,5 +18,6 @@
     <string name="style_1">Show nature</string>
     <string name="style_2">Hide nature</string>
     <string name="menu_gridlayer">Grid</string>
+    <string name="dialog_reverse_geocoding_title">Reverse Geocoding</string>
 
 </resources>

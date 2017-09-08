@@ -122,6 +122,7 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(MultiMapActivity.class));
 
         linearLayout.addView(createLabel("Experiments"));
+        linearLayout.addView(createButton(ReverseGeocodeActivity.class));
         linearLayout.addView(createButton(MapPositionActivity.class));
         linearLayout.addView(createButton(S3DBMapActivity.class));
         linearLayout.addView(createButton(ThemeStylerActivity.class));

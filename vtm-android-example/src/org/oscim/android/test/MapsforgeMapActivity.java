@@ -53,6 +53,7 @@ public class MapsforgeMapActivity extends MapActivity {
     private TileGridLayer mGridLayer;
     private DefaultMapScaleBar mMapScaleBar;
     private Menu mMenu;
+    MapFileTileSource mTileSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,12 +153,12 @@ public class MapsforgeMapActivity extends MapActivity {
                 return;
             }
 
-            MapFileTileSource tileSource = new MapFileTileSource();
-            tileSource.setPreferredLanguage("en");
+            mTileSource = new MapFileTileSource();
+            mTileSource.setPreferredLanguage("en");
             String file = intent.getStringExtra(FilePicker.SELECTED_FILE);
-            if (tileSource.setMapFile(file)) {
+            if (mTileSource.setMapFile(file)) {
 
-                VectorTileLayer l = mMap.setBaseMap(tileSource);
+                VectorTileLayer l = mMap.setBaseMap(mTileSource);
                 loadTheme(null);
 
                 mMap.layers().add(new BuildingLayer(mMap, l));
@@ -175,7 +176,7 @@ public class MapsforgeMapActivity extends MapActivity {
                 renderer.setOffset(5 * getResources().getDisplayMetrics().density, 0);
                 mMap.layers().add(mapScaleBarLayer);
 
-                MapInfo info = tileSource.getMapInfo();
+                MapInfo info = mTileSource.getMapInfo();
                 MapPosition pos = new MapPosition();
                 pos.setByBoundingBox(info.boundingBox, Tile.SIZE * 4, Tile.SIZE * 4);
                 mMap.setMapPosition(pos);

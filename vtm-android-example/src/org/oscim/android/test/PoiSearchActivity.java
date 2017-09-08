@@ -86,8 +86,11 @@ public class PoiSearchActivity extends MapsforgeMapActivity implements ItemizedL
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (requestCode == SELECT_MAP_FILE) {
-            startActivityForResult(new Intent(this, PoiFilePicker.class),
-                    SELECT_POI_FILE);
+            if (mTileSource != null)
+                startActivityForResult(new Intent(this, PoiFilePicker.class),
+                        SELECT_POI_FILE);
+            else
+                finish();
         } else if (requestCode == SELECT_POI_FILE) {
             if (resultCode != RESULT_OK || intent == null || intent.getStringExtra(FilePicker.SELECTED_FILE) == null) {
                 finish();

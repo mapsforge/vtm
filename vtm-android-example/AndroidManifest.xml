@@ -98,6 +98,9 @@
             android:name=".POTTextureActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".ReverseGeocodeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".RotateMarkerOverlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
