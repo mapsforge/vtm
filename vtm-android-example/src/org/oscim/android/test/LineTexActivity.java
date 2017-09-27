@@ -28,6 +28,7 @@ import org.oscim.layers.vector.geometries.Style;
 import org.oscim.map.Map;
 import org.oscim.renderer.bucket.TextureItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +46,13 @@ public class LineTexActivity extends SimpleMapActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TextureItem tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png"));
-        tex.mipmap = true;
+        TextureItem tex = null;
+        try {
+            tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png"));
+            tex.mipmap = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         for (double lat = -90; lat <= 90; lat += 5) {
             int c = Color.fade(Color.rainbow((float) (lat + 90) / 180), 0.5f);
