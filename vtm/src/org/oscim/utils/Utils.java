@@ -61,7 +61,7 @@ public final class Utils {
                 return new TextureItem(bitmap, true);
             }
         } catch (Exception e) {
-            log.debug("missing file / {}", e.getMessage());
+            log.error("{}: missing file / {}", src, e.getMessage());
         }
         return null;
     }

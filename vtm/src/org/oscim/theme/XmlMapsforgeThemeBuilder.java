@@ -1039,7 +1039,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
                 try {
                     b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, b.symbolWidth, b.symbolHeight, b.symbolPercent);
                 } catch (Exception e) {
-                    log.debug(e.getMessage());
+                    log.error("{}: {}", symbol, e.getMessage());
                 }
             } else
                 b.texture = getAtlasRegion(symbol);
@@ -1132,7 +1132,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
                 if (bitmap != null)
                     return buildSymbol(b, src, bitmap);
             } catch (Exception e) {
-                log.debug(e.getMessage());
+                log.error("{}: {}", src, e.getMessage());
             }
             return null;
         }

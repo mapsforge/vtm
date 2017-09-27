@@ -55,32 +55,17 @@ public class IosGraphics extends CanvasAdapter {
     }
 
     @Override
-    protected Bitmap decodeBitmapImpl(InputStream inputStream) {
-        try {
-            return new IosBitmap(inputStream);
-        } catch (IOException e) {
-            log.error("decodeBitmapImpl", e);
-            return null;
-        }
+    protected Bitmap decodeBitmapImpl(InputStream inputStream) throws IOException {
+        return new IosBitmap(inputStream);
     }
 
     @Override
-    protected Bitmap decodeSvgBitmapImpl(InputStream inputStream, int width, int height, int percent) {
-        try {
-            return new IosSvgBitmap(inputStream, width, height, percent);
-        } catch (IOException e) {
-            log.error("decodeSvgBitmapImpl", e);
-            return null;
-        }
+    protected Bitmap decodeSvgBitmapImpl(InputStream inputStream, int width, int height, int percent) throws IOException {
+        return new IosSvgBitmap(inputStream, width, height, percent);
     }
 
     @Override
-    protected Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, int width, int height, int percent) {
-        try {
-            return createBitmap(relativePathPrefix, src, width, height, percent);
-        } catch (IOException e) {
-            log.error("loadBitmapAssetImpl", e);
-            return null;
-        }
+    protected Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, int width, int height, int percent) throws IOException {
+        return createBitmap(relativePathPrefix, src, width, height, percent);
     }
 }
