@@ -5,6 +5,8 @@
 - Mapsforge themes compatibility [#100](https://github.com/mapsforge/vtm/issues/100)
 - Render themes: line symbol [#124](https://github.com/mapsforge/vtm/issues/124)
 - Render themes: stroke dash array [#131](https://github.com/mapsforge/vtm/issues/131)
+- PathLayer overlay touch events [#316](https://github.com/mapsforge/vtm/issues/316)
+- VectorLayer (polygon) overlay touch events [#424](https://github.com/mapsforge/vtm/issues/424)
 - Two finger tap zoom out gesture [#423](https://github.com/mapsforge/vtm/issues/423)
 - POI Search example [#394](https://github.com/mapsforge/vtm/issues/394)
 - Mapsforge Reverse Geocoding [#383](https://github.com/mapsforge/vtm/issues/383)

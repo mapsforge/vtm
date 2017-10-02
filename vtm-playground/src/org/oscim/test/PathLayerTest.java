@@ -20,6 +20,8 @@ import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeoPoint;
 import org.oscim.core.MapPosition;
 import org.oscim.event.Event;
+import org.oscim.event.Gesture;
+import org.oscim.event.MotionEvent;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
@@ -92,7 +94,18 @@ public class PathLayerTest extends GdxMapApp {
             PathLayer pathLayer;
             if (init) {
                 int c = Color.fade(Color.rainbow((float) (lat + 90) / 180), 0.5f);
-                pathLayer = new PathLayer(mMap, c, 6);
+                pathLayer = new PathLayer(mMap, c, 6) {
+                    @Override
+                    public boolean onGesture(Gesture g, MotionEvent e) {
+                        if (g instanceof Gesture.Tap) {
+                            if (contains(e.getX(), e.getY())) {
+                                System.out.println("PathLayer tap " + mMap.viewport().fromScreenPoint(e.getX(), e.getY()));
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                };
                 mMap.layers().add(pathLayer);
                 mPathLayers.add(pathLayer);
             } else {

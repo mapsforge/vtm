@@ -26,9 +26,13 @@ import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.Box;
+import org.oscim.core.GeoPoint;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
+import org.oscim.event.Gesture;
+import org.oscim.event.GestureListener;
+import org.oscim.event.MotionEvent;
 import org.oscim.layers.vector.geometries.Drawable;
 import org.oscim.layers.vector.geometries.LineDrawable;
 import org.oscim.layers.vector.geometries.PointDrawable;
@@ -41,6 +45,7 @@ import org.oscim.theme.styles.LineStyle;
 import org.oscim.utils.FastMath;
 import org.oscim.utils.QuadTree;
 import org.oscim.utils.SpatialIndex;
+import org.oscim.utils.geom.GeomBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +62,7 @@ import static org.oscim.core.MercatorProjection.longitudeToX;
  * package and
  * JTS geometries together with a GeometryStyle
  */
-public class VectorLayer extends AbstractVectorLayer<Drawable> {
+public class VectorLayer extends AbstractVectorLayer<Drawable> implements GestureListener {
 
     public static final Logger log = LoggerFactory.getLogger(VectorLayer.class);
 
@@ -350,5 +355,20 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> {
             g.addPoint((float) (x + radius * Math.cos(i * step)),
                     (float) (y + radius * Math.sin(i * step)));
         }
+    }
+
+    public synchronized boolean contains(float x, float y) {
+        GeoPoint geoPoint = mMap.viewport().fromScreenPoint(x, y);
+        Point point = new GeomBuilder().point(geoPoint.getLongitude(), geoPoint.getLatitude()).toPoint();
+        for (Drawable drawable : tmpDrawables) {
+            if (drawable.getGeometry().contains(point))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onGesture(Gesture g, MotionEvent e) {
+        return false;
     }
 }

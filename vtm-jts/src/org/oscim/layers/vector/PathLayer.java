@@ -20,12 +20,16 @@
  */
 package org.oscim.layers.vector;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
 
+import org.oscim.backend.CanvasAdapter;
 import org.oscim.core.GeoPoint;
+import org.oscim.core.Point;
 import org.oscim.layers.vector.geometries.LineDrawable;
 import org.oscim.layers.vector.geometries.Style;
 import org.oscim.map.Map;
+import org.oscim.utils.GeoPointUtils;
 import org.oscim.utils.geom.GeomBuilder;
 
 import java.util.ArrayList;
@@ -41,6 +45,9 @@ public class PathLayer extends VectorLayer {
 
     protected Style mStyle;
     protected LineDrawable mDrawable;
+
+    private final Point mPoint1 = new Point();
+    private final Point mPoint2 = new Point();
 
     public PathLayer(Map map, Style style) {
         super(map);
@@ -194,6 +201,12 @@ public class PathLayer extends VectorLayer {
                 remove(mDrawable);
             mDrawable = new LineDrawable(path, mStyle);
             add(mDrawable);
+
+            mPoints.clear();
+            for (int i = 0; i < path.getNumPoints(); i++) {
+                Coordinate c = path.getCoordinateN(i);
+                mPoints.add(new GeoPoint(c.y, c.x));
+            }
         }
         mWorker.submit(0);
     }
@@ -204,8 +217,29 @@ public class PathLayer extends VectorLayer {
                 remove(mDrawable);
             mDrawable = new LineDrawable(lonLat, mStyle);
             add(mDrawable);
+
+            mPoints.clear();
+            for (int i = 0; i < lonLat.length; i += 2)
+                mPoints.add(new GeoPoint(lonLat[i + 1], lonLat[i]));
         }
         mWorker.submit(0);
     }
 
+    @Override
+    public synchronized boolean contains(float x, float y) {
+        // Touch min 20 px at baseline mdpi (160dpi)
+        double distance = Math.max(20 / 2 * CanvasAdapter.getScale(), mStyle.strokeWidth);
+        for (int i = 0; i < mPoints.size() - 1; i++) {
+            if (i == 0)
+                mMap.viewport().toScreenPoint(mPoints.get(i), false, mPoint1);
+            else {
+                mPoint1.x = mPoint2.x;
+                mPoint1.y = mPoint2.y;
+            }
+            mMap.viewport().toScreenPoint(mPoints.get(i + 1), false, mPoint2);
+            if (GeoPointUtils.distanceSegmentPoint(mPoint1.x, mPoint1.y, mPoint2.x, mPoint2.y, x, y) <= distance)
+                return true;
+        }
+        return false;
+    }
 }

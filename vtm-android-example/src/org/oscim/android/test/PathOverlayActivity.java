@@ -18,10 +18,14 @@
 package org.oscim.android.test;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
+import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.MapPosition;
 import org.oscim.event.Event;
+import org.oscim.event.Gesture;
+import org.oscim.event.MotionEvent;
 import org.oscim.layers.vector.PathLayer;
 import org.oscim.map.Map.UpdateListener;
 
@@ -44,7 +48,18 @@ public class PathOverlayActivity extends SimpleMapActivity {
 
         for (double lat = -90; lat <= 90; lat += 5) {
             int c = Color.fade(Color.rainbow((float) (lat + 90) / 180), 0.5f);
-            PathLayer pathLayer = new PathLayer(mMap, c, 6);
+            PathLayer pathLayer = new PathLayer(mMap, c, 6 * CanvasAdapter.getScale()) {
+                @Override
+                public boolean onGesture(Gesture g, MotionEvent e) {
+                    if (g instanceof Gesture.Tap) {
+                        if (contains(e.getX(), e.getY())) {
+                            Toast.makeText(PathOverlayActivity.this, "PathLayer tap\n" + mMap.viewport().fromScreenPoint(e.getX(), e.getY()), Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            };
             mMap.layers().add(pathLayer);
             mPathLayers.add(pathLayer);
         }

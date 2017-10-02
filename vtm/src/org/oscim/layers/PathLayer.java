@@ -1,7 +1,7 @@
 /*
  * Copyright 2012 osmdroid authors: Viesturs Zarins, Martin Pearman
  * Copyright 2012 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2017 devemux86
  * Copyright 2016 Bezzu
  * Copyright 2016 Pedinel
  * Copyright 2017 Andrey Novikov
@@ -21,12 +21,17 @@
  */
 package org.oscim.layers;
 
+import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Paint.Cap;
 import org.oscim.core.GeoPoint;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.core.MapPosition;
 import org.oscim.core.MercatorProjection;
+import org.oscim.core.Point;
 import org.oscim.core.Tile;
+import org.oscim.event.Gesture;
+import org.oscim.event.GestureListener;
+import org.oscim.event.MotionEvent;
 import org.oscim.map.Map;
 import org.oscim.renderer.BucketRenderer;
 import org.oscim.renderer.GLViewport;
@@ -34,6 +39,7 @@ import org.oscim.renderer.bucket.LineBucket;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.theme.styles.LineStyle;
 import org.oscim.utils.FastMath;
+import org.oscim.utils.GeoPointUtils;
 import org.oscim.utils.async.SimpleWorker;
 import org.oscim.utils.geom.LineClipper;
 
@@ -44,13 +50,16 @@ import java.util.List;
 /**
  * This class draws a path line in given color or texture.
  */
-public class PathLayer extends Layer {
+public class PathLayer extends Layer implements GestureListener {
 
     /**
      * Stores points, converted to the map projection.
      */
     protected final ArrayList<GeoPoint> mPoints;
     protected boolean mUpdatePoints;
+
+    private final Point mPoint1 = new Point();
+    private final Point mPoint2 = new Point();
 
     /**
      * Line style
@@ -436,5 +445,27 @@ public class PathLayer extends Layer {
             points[i++] = y;
             return i;
         }
+    }
+
+    public synchronized boolean contains(float x, float y) {
+        // Touch min 20 px at baseline mdpi (160dpi)
+        double distance = Math.max(20 / 2 * CanvasAdapter.getScale(), mLineStyle.width);
+        for (int i = 0; i < mPoints.size() - 1; i++) {
+            if (i == 0)
+                mMap.viewport().toScreenPoint(mPoints.get(i), false, mPoint1);
+            else {
+                mPoint1.x = mPoint2.x;
+                mPoint1.y = mPoint2.y;
+            }
+            mMap.viewport().toScreenPoint(mPoints.get(i + 1), false, mPoint2);
+            if (GeoPointUtils.distanceSegmentPoint(mPoint1.x, mPoint1.y, mPoint2.x, mPoint2.y, x, y) <= distance)
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onGesture(Gesture g, MotionEvent e) {
+        return false;
     }
 }
