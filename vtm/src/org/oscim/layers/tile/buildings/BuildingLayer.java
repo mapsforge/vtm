@@ -45,6 +45,10 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
 
     private static final Object BUILDING_DATA = BuildingLayer.class.getName();
 
+    /**
+     * @param map       Stores map workaround
+     * @param tileLayer Manages loading of vector tiles for rendering
+     */
     public BuildingLayer(Map map, VectorTileLayer tileLayer) {
         this(map, tileLayer, MIN_ZOOM, MAX_ZOOM);
     }
@@ -74,18 +78,24 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
 
         ExtrusionStyle extrusion = (ExtrusionStyle) style.current();
 
-        int height = 0;
-        int minHeight = 0;
+        int height = 0; // in cm
+        int minHeight = 0; // in cm
 
         String v = element.tags.getValue(Tag.KEY_HEIGHT);
-        if (v != null)
-            height = (int) Float.parseFloat(v);
+        if (v == null) {
+            // FIXME load from theme or decode tags to generalize level/height tags
+            if ((v = element.tags.getValue(Tag.KEY_BUILDING + ":" + Tag.KEY_LEVELS)) != null) {
+                height = (int) (Float.parseFloat(v) * 280); // 2.8m level height
+            }
+        } else
+            height = (int) Float.parseFloat(v) * 100;
 
         v = element.tags.getValue(Tag.KEY_MIN_HEIGHT);
         if (v != null)
-            minHeight = (int) Float.parseFloat(v);
+            minHeight = (int) Float.parseFloat(v) * 100;
 
         if (height == 0)
+            // FIXME ignore buildings containing building parts
             height = extrusion.defaultHeight * 100;
 
         ExtrusionBuckets ebs = get(tile);

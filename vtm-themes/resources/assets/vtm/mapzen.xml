@@ -557,13 +557,25 @@
           </m> -->
 
         <!-- building -->
-        <m k="kind" v="building">
-            <m zoom-min="14">
-                <m closed="yes">
-                    <area fade="14" use="building" />
+        <m k="kind" v="building|building_part">
+            <m v="building">
+                <m zoom-min="14">
+                    <m closed="yes">
+                        <area fade="14" use="building" />
+                    </m>
+                    <m closed="no">
+                        <line fade="14" use="building" />
+                    </m>
                 </m>
-                <m closed="no">
-                    <line fade="14" use="building" />
+            </m>
+            <m v="building_part">
+                <m zoom-min="16">
+                    <m closed="yes">
+                        <area fade="16" use="building" />
+                    </m>
+                    <m closed="no">
+                        <line fade="16" use="building" />
+                    </m>
                 </m>
             </m>
             <m zoom-min="17">
