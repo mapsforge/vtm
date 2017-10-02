@@ -29,6 +29,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class TileDecoder extends PbfDecoder {
     static final Logger log = LoggerFactory.getLogger(TileDecoder.class);
@@ -220,13 +223,18 @@ public class TileDecoder extends PbfDecoder {
             // FIXME filter out all variable tags
             // might depend on theme though
             if (Tag.KEY_NAME.equals(key)
-                    || Tag.KEY_HEIGHT.equals(key)
-                    || Tag.KEY_MIN_HEIGHT.equals(key)
                     || Tag.KEY_HOUSE_NUMBER.equals(key)
                     || Tag.KEY_REF.equals(key)
                     || Tag.KEY_ELE.equals(key))
                 tag = new Tag(key, val, false);
-            else
+            else if (Tag.KEY_NAME.equals(key)
+                    || Tag.KEY_HEIGHT.equals(key)
+                    || Tag.KEY_MIN_HEIGHT.equals(key)) {
+                // reformat values to established meters in osm
+                DecimalFormat df = (DecimalFormat) NumberFormat.getNumberInstance(Locale.US);
+                df.applyPattern("0.##");
+                tag = new Tag(key, df.format(Float.valueOf(val) / 100));
+            } else
                 tag = new Tag(key, val, false, true);
 
             mTileTags.add(tag);

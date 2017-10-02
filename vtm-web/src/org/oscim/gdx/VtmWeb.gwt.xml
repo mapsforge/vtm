@@ -15,6 +15,7 @@
     <!-- <inherits name="com.badlogic.gdx.backends.gdx_backends_gwt" /> -->
     <inherits name="com.badlogic.gdx.backends.Gdx" />
     <inherits name="com.google.gwt.user.theme.chrome.Chrome" />
+    <inherits name="com.google.gwt.i18n.I18N" />
 
 
     <!--   <extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.scenes.scene2d" />

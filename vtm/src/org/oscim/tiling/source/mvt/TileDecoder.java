@@ -30,7 +30,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class TileDecoder extends PbfDecoder {
     private static final Logger log = LoggerFactory.getLogger(TileDecoder.class);
@@ -218,6 +221,7 @@ public class TileDecoder extends PbfDecoder {
             f.elem.tags.add(layerTag);
 
             boolean hasName = false;
+            boolean hasVolume = false;
             String fallbackName = null;
 
             for (int j = 0; j < (f.numTags << 1); j += 2) {
@@ -240,8 +244,12 @@ public class TileDecoder extends PbfDecoder {
 
                 } else {
                     key = keys.get(keyIdx);
-                    if (key.startsWith(Tag.KEY_NAME))
+                    if (key.startsWith(Tag.KEY_NAME)) {
                         continue;
+                    } else if (key.equals("volume")) {
+                        hasVolume = true;
+                    }
+
 
                     f.elem.tags.add(new Tag(key, val));
                 }
@@ -249,6 +257,17 @@ public class TileDecoder extends PbfDecoder {
 
             if (!hasName && fallbackName != null)
                 f.elem.tags.add(new Tag(Tag.KEY_NAME, fallbackName, false));
+            if (hasVolume && f.elem.tags.containsKey("area")
+                    && !f.elem.tags.containsKey(Tag.KEY_HEIGHT)) {
+                // Calculate height of building parts
+                DecimalFormat df = (DecimalFormat) NumberFormat.getNumberInstance(Locale.US);
+                df.applyPattern("0.##");
+                Float area = Float.parseFloat(f.elem.tags.getValue("area"));
+                Float volume = Float.parseFloat(f.elem.tags.getValue("volume"));
+                String heightStr = df.format(volume / area);
+
+                f.elem.tags.add(new Tag(Tag.KEY_HEIGHT, heightStr, false));
+            }
 
             // FIXME extract layer tag here
             f.elem.setLayer(5);

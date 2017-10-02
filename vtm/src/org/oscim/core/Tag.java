@@ -51,6 +51,7 @@ public class Tag {
     public static final String KEY_LANDUSE = "landuse";
     public static final String KEY_HEIGHT = "height";
     public static final String KEY_MIN_HEIGHT = "min_height";
+    public static final String KEY_LEVELS = "levels";
 
     public static final String VALUE_YES = "yes";
     public static final String VALUE_NO = "no";

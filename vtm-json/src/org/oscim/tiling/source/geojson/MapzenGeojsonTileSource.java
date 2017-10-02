@@ -18,7 +18,10 @@ import org.oscim.core.MapElement;
 import org.oscim.core.Tag;
 import org.oscim.tiling.source.UrlTileSource;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class MapzenGeojsonTileSource extends GeojsonTileSource {
@@ -82,6 +85,7 @@ public class MapzenGeojsonTileSource extends GeojsonTileSource {
             Object value = entry.getValue();
             String val = (value instanceof String) ? (String) value : String.valueOf(value);
 
+            // Extract local name
             if (key.startsWith(Tag.KEY_NAME)) {
                 int len = key.length();
                 if (len == 4) {
@@ -95,6 +99,20 @@ public class MapzenGeojsonTileSource extends GeojsonTileSource {
                     mapElement.tags.add(new Tag(Tag.KEY_NAME, val, false));
                 }
                 continue;
+            } else if (key.equals("volume") && properties.containsKey("area")
+                    && !properties.containsKey(Tag.KEY_HEIGHT)) {
+                // Calculate height of building parts
+                DecimalFormat df = (DecimalFormat) NumberFormat.getNumberInstance(Locale.US);
+                df.applyPattern("0.##");
+                Object area = properties.get("area");
+                float height = ((value instanceof Integer) ? (Integer) value : 0)
+                        / (float) ((area instanceof Integer) ? (Integer) area : 1);
+                String heightStr = df.format(height);
+
+                Tag tag = mappings.get(Tag.KEY_HEIGHT + "=" + heightStr);
+                if (tag == null)
+                    tag = addMapping(Tag.KEY_HEIGHT, heightStr);
+                mapElement.tags.add(tag);
             }
 
             Tag tag = mappings.get(key + "=" + val);
