@@ -34,7 +34,7 @@
 		</data>
 		<key>Headers/SVGContext.h</key>
 		<data>
-		fYKblLtFBEOZBWKITmzeqxkB3wA=
+		nipDZcSdfdoY/A8ur+tBBZ0/+6w=
 		</data>
 		<key>Headers/SVGDocumentView.h</key>
 		<data>
@@ -66,7 +66,7 @@
 		</data>
 		<key>Headers/SVGgh.h</key>
 		<data>
-		FhA5aS1gL+U2oztDy+ZAYAMbsQY=
+		cvRfO1GOHm6DU0yYwNOiyIVoduk=
 		</data>
 		<key>Headers/SVGghLoader.h</key>
 		<data>
@@ -78,7 +78,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		Ekf8hDNYwrf/YAzxlZyyfB58pCE=
+		mQCRU5XiOhj4nuJmB5nqUsBIgCw=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -168,11 +168,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			fYKblLtFBEOZBWKITmzeqxkB3wA=
+			nipDZcSdfdoY/A8ur+tBBZ0/+6w=
 			</data>
 			<key>hash2</key>
 			<data>
-			7BISlxYEV6x9kQFS15ufHja8Q+26HD5NjXYaTDJyIEI=
+			vBXhqJbZ8dvTNO4WmhY8Fa+mEQ1CXgCeY2t8BK9GdEM=
 			</data>
 		</dict>
 		<key>Headers/SVGDocumentView.h</key>
@@ -256,11 +256,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			FhA5aS1gL+U2oztDy+ZAYAMbsQY=
+			cvRfO1GOHm6DU0yYwNOiyIVoduk=
 			</data>
 			<key>hash2</key>
 			<data>
-			K7FvEVgrwXFf8fYXUC1Z28mYShSPC2GIrNE0Q4jvPMs=
+			XU2bmBHIVDePmIgujoxVNix2qbEhCI7bmzLLm2UoioA=
 			</data>
 		</dict>
 		<key>Headers/SVGghLoader.h</key>

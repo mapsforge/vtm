@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(CGFloat) opacity;
 
 /*! @brief opacity is dependent (via inheritence) as you descend an SVG Document. This opacity is the place to keep track of updated opacity.
- * @param the current opacity (defaults to 1.0)
+ * @param opacity the current opacity (defaults to 1.0)
  */
 -(void) setOpacity:(CGFloat)opacity;
 

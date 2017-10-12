@@ -49,4 +49,4 @@
 
 /*! \brief Because views and buttons are dynamically instantiated from Storyboards and Nibs, code for their classes might not link in from a static library. Thus this method to make sure the class gets called at least once from code.
 */
-void MakeSureSVGghLinks();
+void MakeSureSVGghLinks(void);
