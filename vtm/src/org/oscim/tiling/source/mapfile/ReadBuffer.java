@@ -24,6 +24,9 @@ import org.oscim.utils.Parameters;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -39,6 +42,18 @@ public class ReadBuffer {
 
     ReadBuffer(RandomAccessFile inputFile) {
         mInputFile = inputFile;
+    }
+
+    /**
+     * Converts four bytes from the read buffer to a float.
+     *
+     * @return the float value.
+     */
+    public float readFloat() {
+        byte[] bytes = new byte[4];
+        System.arraycopy(mBufferData, mBufferPosition, bytes, 0, 4);
+        this.mBufferPosition += 4;
+        return ByteBuffer.wrap(bytes).getFloat();
     }
 
     /**
@@ -394,6 +409,7 @@ public class ReadBuffer {
 
     boolean readTags(TagSet tags, Tag[] wayTags, byte numberOfTags) {
         tags.clear();
+        List<Integer> ids = new ArrayList<>();
 
         int maxTag = wayTags.length;
 
@@ -401,10 +417,36 @@ public class ReadBuffer {
             int tagId = readUnsignedInt();
             if (tagId < 0 || tagId >= maxTag) {
                 LOG.warning("invalid tag ID: " + tagId);
-                return true;
+                break;
             }
-            tags.add(wayTags[tagId]);
+            ids.add(tagId);
         }
+
+        for (Integer id : ids) {
+            Tag tag = wayTags[id];
+            // Decode variable values of Tags
+            if (tag.value.charAt(0) == '%' && tag.value.length() == 2) {
+                String value = tag.value;
+                if (value.charAt(1) == 'b') {
+                    value = String.valueOf(readByte());
+                } else if (value.charAt(1) == 'i') {
+                    if (tag.key.contains(":colour")) {
+                        value = "#" + Integer.toHexString(readInt());
+                    } else {
+                        value = String.valueOf(readInt());
+                    }
+                } else if (value.charAt(1) == 'f') {
+                    value = String.valueOf(readFloat());
+                } else if (value.charAt(1) == 'h') {
+                    value = String.valueOf(readShort());
+                } else if (value.charAt(1) == 's') {
+                    value = readUTF8EncodedString();
+                }
+                tag = new Tag(tag.key, value);
+            }
+            tags.add(tag);
+        }
+
         return true;
     }
 
