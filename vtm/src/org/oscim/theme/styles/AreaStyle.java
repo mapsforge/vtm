@@ -108,6 +108,7 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
     }
 
     public AreaStyle(AreaBuilder<?> b) {
+        this.cat = b.cat;
         this.level = b.level;
         this.style = b.style;
         this.fadeScale = b.fadeScale;
@@ -195,6 +196,7 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
             if (area == null)
                 return reset();
 
+            this.cat = area.cat;
             this.level = area.level;
             this.style = area.style;
             this.fadeScale = area.fadeScale;
@@ -266,6 +268,7 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
         }
 
         public T reset() {
+            cat = null;
             level = -1;
             fillColor = Color.WHITE;
             strokeColor = Color.BLACK;
