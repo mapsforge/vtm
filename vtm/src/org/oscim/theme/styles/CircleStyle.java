@@ -43,6 +43,7 @@ public final class CircleStyle extends RenderStyle<CircleStyle> {
     }
 
     public CircleStyle(CircleBuilder<?> b) {
+        this.cat = b.cat;
         this.radius = b.radius;
         this.scaleRadius = b.scaleRadius;
         this.fillColor = b.themeCallback != null ? b.themeCallback.getColor(b.fillColor) : b.fillColor;
@@ -78,6 +79,7 @@ public final class CircleStyle extends RenderStyle<CircleStyle> {
             this.fillColor = themeCallback != null ? themeCallback.getColor(circle.fillColor) : circle.fillColor;
             this.strokeColor = themeCallback != null ? themeCallback.getColor(circle.strokeColor) : circle.strokeColor;
             this.strokeWidth = circle.strokeWidth;
+            this.cat = circle.cat;
             this.level = circle.level;
 
             return self();
@@ -94,6 +96,7 @@ public final class CircleStyle extends RenderStyle<CircleStyle> {
         }
 
         public T reset() {
+            cat = null;
             level = -1;
             radius = 0;
             scaleRadius = false;

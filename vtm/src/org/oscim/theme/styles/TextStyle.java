@@ -47,6 +47,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
         public int symbolPercent;
 
         public T reset() {
+            cat = null;
             fontFamily = FontFamily.DEFAULT;
             fontStyle = FontStyle.NORMAL;
             style = null;
@@ -150,6 +151,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
         }
 
         public T from(TextBuilder<?> other) {
+            cat = other.cat;
             fontFamily = other.fontFamily;
             fontStyle = other.fontStyle;
             style = other.style;
@@ -176,6 +178,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             if (text == null)
                 return reset();
 
+            this.cat = text.cat;
             this.style = text.style;
             this.textKey = text.textKey;
             this.caption = text.caption;
@@ -202,6 +205,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
     }
 
     TextStyle(TextBuilder<?> b) {
+        this.cat = b.cat;
         this.style = b.style;
         this.textKey = b.textKey;
         this.caption = b.caption;

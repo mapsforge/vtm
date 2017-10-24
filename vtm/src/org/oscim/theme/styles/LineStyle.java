@@ -104,6 +104,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
     }
 
     private LineStyle(LineBuilder<?> b) {
+        this.cat = b.cat;
         this.level = b.level;
         this.style = b.style;
         this.width = b.strokeWidth;
@@ -171,6 +172,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             if (line == null)
                 return reset();
 
+            this.cat = line.cat;
             this.level = line.level;
             this.style = line.style;
             this.strokeWidth = line.width;
@@ -290,6 +292,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         }
 
         public T reset() {
+            cat = null;
             level = -1;
             style = null;
             fillColor = Color.BLACK;

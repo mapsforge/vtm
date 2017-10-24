@@ -44,6 +44,7 @@ public class ExtrusionStyle extends RenderStyle<ExtrusionStyle> {
     }
 
     public ExtrusionStyle(ExtrusionBuilder<?> b) {
+        this.cat = b.cat;
         this.level = b.level;
 
         this.colorSide = b.themeCallback != null ? b.themeCallback.getColor(b.colorSide) : b.colorSide;
@@ -105,6 +106,7 @@ public class ExtrusionStyle extends RenderStyle<ExtrusionStyle> {
             if (extrusion == null)
                 return reset();
 
+            this.cat = extrusion.cat;
             this.level = extrusion.level;
             this.colorSide = themeCallback != null ? themeCallback.getColor(extrusion.colorSide) : extrusion.colorSide;
             this.colorTop = themeCallback != null ? themeCallback.getColor(extrusion.colorTop) : extrusion.colorTop;
@@ -150,6 +152,7 @@ public class ExtrusionStyle extends RenderStyle<ExtrusionStyle> {
         }
 
         public T reset() {
+            cat = null;
             level = -1;
             colorSide = Color.TRANSPARENT;
             colorTop = Color.TRANSPARENT;

@@ -58,6 +58,8 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
     }
 
     public SymbolStyle(SymbolBuilder<?> b) {
+        this.cat = b.cat;
+
         this.bitmap = b.bitmap;
         this.texture = b.texture;
         this.hash = b.hash;
@@ -105,6 +107,8 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
             if (symbol == null)
                 return reset();
 
+            this.cat = symbol.cat;
+
             this.bitmap = symbol.bitmap;
             this.texture = symbol.texture;
             this.hash = symbol.hash;
@@ -147,6 +151,8 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
         }
 
         public T reset() {
+            cat = null;
+            
             bitmap = null;
             texture = null;
             hash = 0;
