@@ -67,12 +67,6 @@ public class Viewport {
     protected final GLMatrix mUnprojMatrix = new GLMatrix();
     protected final GLMatrix mTmpMatrix = new GLMatrix();
 
-    /* temporary vars: only use in synchronized functions! */
-    protected final Point mMovePoint = new Point();
-    protected final float[] mv = new float[4];
-    protected final float[] mu = new float[4];
-    protected final float[] mViewCoords = new float[8];
-
     protected float mHeight, mWidth;
 
     public final static float VIEW_DISTANCE = 3.0f;
@@ -211,6 +205,7 @@ public class Viewport {
     }
 
     protected void unproject(float x, float y, float[] coords, int position) {
+        float[] mv = new float[4];
         mv[0] = x;
         mv[1] = y;
         mv[2] = -1;
@@ -246,7 +241,7 @@ public class Viewport {
         if (box == null)
             box = new Box();
 
-        float[] coords = mViewCoords;
+        float[] coords = new float[8];
         getMapExtents(coords, expand);
 
         box.xmin = coords[0];
@@ -281,6 +276,7 @@ public class Viewport {
      * @return the corresponding GeoPoint
      */
     public GeoPoint fromScreenPoint(float x, float y) {
+        Point mMovePoint = new Point();
         fromScreenPoint(x, y, mMovePoint);
         return new GeoPoint(
                 MercatorProjection.toLatitude(mMovePoint.y),
@@ -302,6 +298,7 @@ public class Viewport {
      * @param y screen coordinate
      */
     public void fromScreenPoint(double x, double y, Point out) {
+        float[] mu = new float[4];
         unprojectScreen(x, y, mu);
 
         double cs = mPos.scale * Tile.SIZE;
@@ -314,10 +311,10 @@ public class Viewport {
         dx /= cs;
         dy /= cs;
 
-        if (dx > 1)
-            dx = 1;
-        else if (dx < 0)
-            dx = 0;
+        while (dx > 1)
+            dx -= 1;
+        while (dx < 0)
+            dx += 1;
 
         if (dy > 1)
             dy = 1;
@@ -365,6 +362,7 @@ public class Viewport {
      */
     public void toScreenPoint(double x, double y, boolean relativeToCenter, Point out) {
 
+        float[] mv = new float[4];
         double cs = mPos.scale * Tile.SIZE;
         double cx = mPos.x * cs;
         double cy = mPos.y * cs;
