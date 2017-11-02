@@ -314,10 +314,10 @@ public class Viewport {
         dx /= cs;
         dy /= cs;
 
-        while (dx > 1)
-            dx -= 1;
-        while (dx < 0)
-            dx += 1;
+        if (dx > 1)
+            dx = 1;
+        else if (dx < 0)
+            dx = 0;
 
         if (dy > 1)
             dy = 1;
