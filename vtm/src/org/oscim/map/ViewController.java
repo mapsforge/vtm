@@ -118,7 +118,7 @@ public class ViewController extends Viewport {
             mPos.y = mMinY;
     }
 
-    private Point applyRotation(double mx, double my) {
+    private synchronized Point applyRotation(double mx, double my) {
         if (mPos.bearing == 0) {
             mMovePoint.x = mx;
             mMovePoint.y = my;

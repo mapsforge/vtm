@@ -210,7 +210,7 @@ public class Viewport {
         }
     }
 
-    protected void unproject(float x, float y, float[] coords, int position) {
+    protected synchronized void unproject(float x, float y, float[] coords, int position) {
         mv[0] = x;
         mv[1] = y;
         mv[2] = -1;
@@ -242,7 +242,7 @@ public class Viewport {
      * the visible part of the map. Sets box to map coordinates:
      * xmin,ymin,xmax,ymax
      */
-    public Box getBBox(Box box, int expand) {
+    public synchronized Box getBBox(Box box, int expand) {
         if (box == null)
             box = new Box();
 
@@ -280,7 +280,7 @@ public class Viewport {
      * @param y screen coordinate
      * @return the corresponding GeoPoint
      */
-    public GeoPoint fromScreenPoint(float x, float y) {
+    public synchronized GeoPoint fromScreenPoint(float x, float y) {
         fromScreenPoint(x, y, mMovePoint);
         return new GeoPoint(
                 MercatorProjection.toLatitude(mMovePoint.y),
@@ -301,7 +301,7 @@ public class Viewport {
      * @param x screen coordinate
      * @param y screen coordinate
      */
-    public void fromScreenPoint(double x, double y, Point out) {
+    public synchronized void fromScreenPoint(double x, double y, Point out) {
         unprojectScreen(x, y, mu);
 
         double cs = mPos.scale * Tile.SIZE;
@@ -363,7 +363,7 @@ public class Viewport {
      *
      * @param out Point projected to screen coordinate
      */
-    public void toScreenPoint(double x, double y, boolean relativeToCenter, Point out) {
+    public synchronized void toScreenPoint(double x, double y, boolean relativeToCenter, Point out) {
 
         double cs = mPos.scale * Tile.SIZE;
         double cx = mPos.x * cs;
