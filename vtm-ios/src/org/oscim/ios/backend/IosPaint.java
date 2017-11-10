@@ -194,7 +194,7 @@ public class IosPaint implements Paint {
                 !!!!!
                 NOTE: The value of NSStrokeWidthAttributeName is interpreted as a percentage of the font point size.
                 */
-                float strokeWidthPercent = -(this.strokeWidth / this.textSize * 50);
+                float strokeWidthPercent = (this.strokeWidth / this.textSize * 150);
                 attribs.setStrokeWidth(strokeWidthPercent);
 
                 NSAttributedString attributedString = new NSAttributedString(text, attribs);
