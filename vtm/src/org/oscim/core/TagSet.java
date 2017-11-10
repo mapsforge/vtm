@@ -30,12 +30,12 @@ public class TagSet {
     /**
      * The Tags.
      */
-    public Tag[] tags;
+    private Tag[] tags;
 
     /**
      * The number of current Tags in set.
      */
-    public int numTags;
+    private int numTags;
 
     /**
      * Instantiates a new TagSet with initial size of 10.
@@ -61,6 +61,13 @@ public class TagSet {
     }
 
     /**
+     * @return Size of TagSet
+     */
+    public int size() {
+        return numTags;
+    }
+
+    /**
      * Clear. Reset the TagSet to contain 0 tags and null out tags.
      */
     public void clearAndNullTags() {
@@ -80,6 +87,19 @@ public class TagSet {
     }
 
     /**
+     * Find Tag by given index.
+     *
+     * @param index the index of tag.
+     * @return the tag if found, null otherwise.
+     */
+    public Tag get(int index) {
+        if (index >= numTags) {
+            return null;
+        }
+        return tags[index];
+    }
+
+    /**
      * Find Tag by given key.
      *
      * @param key the key as intern String.
@@ -94,10 +114,19 @@ public class TagSet {
     }
 
     /**
+     * Return Tags array contained in TagSet.
+     *
+     * @return the tags array.
+     */
+    public Tag[] getTags() {
+        return tags;
+    }
+
+    /**
      * Checks if any tag has the key 'key'.
      *
      * @param key the key as intern String.
-     * @return true, iff any tag has the given key
+     * @return true, if any tag has the given key
      */
     public boolean containsKey(String key) {
         for (int i = 0; i < numTags; i++) {

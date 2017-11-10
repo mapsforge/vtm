@@ -602,7 +602,8 @@ public class MapDatabase implements ITileDataSource {
         MapElement e = mElem;
 
         for (int elementCounter = numberOfPois; elementCounter != 0; --elementCounter) {
-            int numTags = 0;
+            /* reset to common tag position */
+            e.tags.clear();
 
             if (mDebugFile) {
                 /* get and check the POI signature */
@@ -631,12 +632,7 @@ public class MapDatabase implements ITileDataSource {
             if (numberOfTags != 0) {
                 if (!mReadBuffer.readTags(e.tags, poiTags, numberOfTags))
                     return false;
-
-                numTags = numberOfTags;
             }
-
-            /* reset to common tag position */
-            e.tags.numTags = numTags;
 
             /* get the feature bitmask (1 byte) */
             byte featureByte = mReadBuffer.readByte();
@@ -665,8 +661,8 @@ public class MapDatabase implements ITileDataSource {
 
             if (pois != null) {
                 List<Tag> tags = new ArrayList<>();
-                for (int i = 0; i < e.tags.numTags; i++)
-                    tags.add(e.tags.tags[i]);
+                for (int i = 0; i < e.tags.size(); i++)
+                    tags.add(e.tags.get(i));
                 GeoPoint position = new GeoPoint(latitude, longitude);
                 // depending on the zoom level configuration the poi can lie outside
                 // the tile requested, we filter them out here
@@ -813,7 +809,8 @@ public class MapDatabase implements ITileDataSource {
         //setTileClipping(queryParameters);
 
         for (int elementCounter = numberOfWays; elementCounter != 0; --elementCounter) {
-            int numTags = 0;
+            /* reset to common tag position */
+            e.tags.clear();
 
             if (mDebugFile) {
                 // get and check the way signature
@@ -844,8 +841,6 @@ public class MapDatabase implements ITileDataSource {
                     if (!mReadBuffer.readTags(e.tags, wayTags, numberOfTags))
                         return false;
 
-                    numTags = numberOfTags;
-
                     mReadBuffer.setBufferPosition(pos);
                 }
             } else {
@@ -872,11 +867,8 @@ public class MapDatabase implements ITileDataSource {
             byte numberOfTags = (byte) (specialByte & WAY_NUMBER_OF_TAGS_BITMASK);
 
             if (numberOfTags != 0) {
-
                 if (!mReadBuffer.readTags(e.tags, wayTags, numberOfTags))
                     return false;
-
-                numTags = numberOfTags;
             }
 
             /* get the feature bitmask (1 byte) */
@@ -889,8 +881,6 @@ public class MapDatabase implements ITileDataSource {
             boolean hasName = (featureByte & WAY_FEATURE_NAME) != 0;
             boolean hasHouseNr = (featureByte & WAY_FEATURE_HOUSE_NUMBER) != 0;
             boolean hasRef = (featureByte & WAY_FEATURE_REF) != 0;
-
-            e.tags.numTags = numTags;
 
             if (mTileSource.experimental) {
                 if (hasName) {
@@ -978,8 +968,8 @@ public class MapDatabase implements ITileDataSource {
                     GeoPoint[][] wayNodesArray = wayNodes.toArray(new GeoPoint[wayNodes.size()][]);
                     if (!filterRequired || !wayFilterEnabled || wayFilterBbox.intersectsArea(wayNodesArray)) {
                         List<Tag> tags = new ArrayList<>();
-                        for (int i = 0; i < e.tags.numTags; i++)
-                            tags.add(e.tags.tags[i]);
+                        for (int i = 0; i < e.tags.size(); i++)
+                            tags.add(e.tags.get(i));
                         if (Selector.ALL == selector || hasName || hasHouseNr || hasRef || wayAsLabelTagFilter(tags)) {
                             GeoPoint labelPos = e.labelPosition != null ? new GeoPoint(e.labelPosition.y / 1E6, e.labelPosition.x / 1E6) : null;
                             ways.add(new Way(layer, tags, wayNodesArray, labelPos, e.type));

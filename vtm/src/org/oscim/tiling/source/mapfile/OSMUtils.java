@@ -38,8 +38,8 @@ public final class OSMUtils {
      */
     public static boolean isArea(MapElement mapElement) {
         boolean result = true;
-        for (int i = 0; i < mapElement.tags.numTags; i++) {
-            Tag tag = mapElement.tags.tags[i];
+        for (int i = 0; i < mapElement.tags.size(); i++) {
+            Tag tag = mapElement.tags.get(i);
             String key = tag.key.toLowerCase(Locale.ENGLISH);
             String value = tag.value.toLowerCase(Locale.ENGLISH);
             if ("area".equals(key)) {

@@ -389,7 +389,7 @@ public class TileDecoder extends PbfDecoder {
 
         mElem.tags.clear();
 
-        int max = mTileTags.numTags - 1;
+        int max = mTileTags.size() - 1;
 
         for (int i = 0; i < numTags; i++) {
             int idx = tagIds[i];
@@ -400,7 +400,7 @@ public class TileDecoder extends PbfDecoder {
                         Integer.valueOf(i));
                 return false;
             }
-            mElem.tags.add(mTileTags.tags[idx]);
+            mElem.tags.add(mTileTags.get(idx));
         }
 
         return true;

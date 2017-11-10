@@ -37,13 +37,13 @@ class MatchingCacheKey {
      * set temporary values for comparison
      */
     boolean set(TagSet tags, MatchingCacheKey compare) {
-        int numTags = tags.numTags;
+        int numTags = tags.size();
 
         /* Test if tags are equal to previous query */
         if (compare != null && numTags == compare.mTags.length) {
             int i = 0;
             for (; i < numTags; i++) {
-                Tag t1 = tags.tags[i];
+                Tag t1 = tags.get(i);
                 Tag t2 = compare.mTags[i];
 
                 if (!(t1 == t2 || (Utils.equals(t1.key, t2.key) && Utils.equals(t1.value, t2.value))))
@@ -60,7 +60,7 @@ class MatchingCacheKey {
 
         int result = 7;
         for (int i = 0; i < numTags; i++) {
-            Tag t = tags.tags[i];
+            Tag t = tags.get(i);
             result = 31 * result + t.hashCode();
             mTags[i] = t;
         }
