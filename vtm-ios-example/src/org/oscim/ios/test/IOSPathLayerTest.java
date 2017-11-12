@@ -40,7 +40,7 @@ import org.oscim.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IOSLineTexTest extends GdxMap {
+public class IOSPathLayerTest extends GdxMap {
 
     public static void init() {
         // init globals
@@ -91,12 +91,6 @@ public class IOSLineTexTest extends GdxMap {
             List<GeoPoint> pts = new ArrayList<>();
 
             for (double lon = -180; lon <= 180; lon += 2) {
-                //pts.add(new GeoPoint(lat, lon));
-                //                double longitude = lon + (pos * 180);
-                //                if (longitude < -180)
-                //                    longitude += 360;
-                //                if (longitude > 180)
-                //                    longitude -= 360;
                 double longitude = lon;
 
                 double latitude = lat + (pos * 90);

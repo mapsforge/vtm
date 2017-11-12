@@ -29,6 +29,7 @@ dependencies {
     implementation project(':vtm-gdx')
     implementation project(':vtm-jts')
     implementation project(':vtm-ios')
+    implementation project(':vtm-themes')
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
     implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
     implementation "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"

@@ -69,6 +69,7 @@ import java.util.Stack;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
+import static org.oscim.utils.Utils.getPotBitmap;
 
 public class XmlMapsforgeThemeBuilder extends DefaultHandler {
 
@@ -616,7 +617,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
                 x += f;
                 transparent = !transparent;
             }
-            b.texture = new TextureItem(bitmap);
+            b.texture = new TextureItem(getPotBitmap(bitmap));
             b.texture.mipmap = true;
             b.randomOffset = false;
             b.stipple = width;
@@ -633,7 +634,7 @@ public class XmlMapsforgeThemeBuilder extends DefaultHandler {
                 Canvas canvas = CanvasAdapter.newCanvas();
                 canvas.setBitmap(bitmap);
                 canvas.drawBitmap(b.texture.bitmap, b.repeatStart, 0);
-                b.texture = new TextureItem(bitmap);
+                b.texture = new TextureItem(getPotBitmap(bitmap));
                 b.texture.mipmap = true;
                 b.fixed = true;
                 b.randomOffset = false;
