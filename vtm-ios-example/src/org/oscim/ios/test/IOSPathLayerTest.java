@@ -40,7 +40,7 @@ import org.oscim.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IOSLineTexTest extends GdxMap {
+public class IOSPathLayerTest extends GdxMap {
 
     public static void init() {
         // init globals

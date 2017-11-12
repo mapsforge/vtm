@@ -42,7 +42,7 @@ import java.io.IOException;
 /**
  * Created by Longri on 11.11.2017.
  */
-public class IOSLineDashTexTest extends GdxMap {
+public class IOSLineTexBucketTest extends GdxMap {
 
     public static void init() {
         // init globals

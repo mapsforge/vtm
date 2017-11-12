@@ -39,8 +39,8 @@ public class ExampleLauncher extends IOSApplication.Delegate {
         CanvasAdapter.dpi *= scale;
 
 //        IOSMapApp iosMapApp = new IOSMapApp();
-//        IOSLineTexTest iosMapApp = new IOSLineTexTest();
-        IOSLineDashTexTest iosMapApp = new IOSLineDashTexTest();
+//        IOSPathLayerTest iosMapApp = new IOSPathLayerTest();
+        IOSLineTexBucketTest iosMapApp = new IOSLineTexBucketTest();
 
 
         // iOS needs POT textures for drawing lines with texture
