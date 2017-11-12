@@ -45,25 +45,37 @@ public final class Utils {
             Bitmap bitmap = CanvasAdapter.getBitmapAsset(relativePathPrefix, src, width, height, percent);
             if (bitmap != null) {
                 log.debug("loading {}", src);
-
-                if (Parameters.POT_TEXTURES) {
-                    int potWidth = MathUtils.nextPowerOfTwo(bitmap.getWidth());
-                    int potHeight = MathUtils.nextPowerOfTwo(bitmap.getHeight());
-                    if (potWidth != bitmap.getWidth() || potHeight != bitmap.getHeight()) {
-                        log.debug("POT texture: {}x{} -> {}x{}", bitmap.getWidth(), bitmap.getHeight(), potWidth, potHeight);
-                        Bitmap potBitmap = CanvasAdapter.newBitmap(potWidth, potHeight, 0);
-                        Canvas canvas = CanvasAdapter.newCanvas();
-                        canvas.setBitmap(potBitmap);
-                        canvas.drawBitmapScaled(bitmap);
-                        bitmap = potBitmap;
-                    }
-                }
-                return new TextureItem(bitmap, true);
+                return new TextureItem(getPotBitmap(bitmap), true);
             }
         } catch (Exception e) {
             log.error("{}: missing file / {}", src, e.getMessage());
         }
         return null;
+    }
+
+    /**
+     * Returns a Bitmap with POT size, if {@link Parameters}.POT_TEXTURES == true!
+     * Else the returned Bitmap is the same instance of given Bitmap!
+     *
+     * If the given Bitmap have POT size, the given instance is returned!
+     *
+     * @param bitmap
+     * @return
+     */
+    public static Bitmap getPotBitmap(Bitmap bitmap) {
+        if (Parameters.POT_TEXTURES) {
+            int potWidth = MathUtils.nextPowerOfTwo(bitmap.getWidth());
+            int potHeight = MathUtils.nextPowerOfTwo(bitmap.getHeight());
+            if (potWidth != bitmap.getWidth() || potHeight != bitmap.getHeight()) {
+                log.debug("POT texture: {}x{} -> {}x{}", bitmap.getWidth(), bitmap.getHeight(), potWidth, potHeight);
+                Bitmap potBitmap = CanvasAdapter.newBitmap(potWidth, potHeight, 0);
+                Canvas potCanvas = CanvasAdapter.newCanvas();
+                potCanvas.setBitmap(potBitmap);
+                potCanvas.drawBitmapScaled(bitmap);
+                bitmap = potBitmap;
+            }
+        }
+        return bitmap;
     }
 
     private Utils() {
