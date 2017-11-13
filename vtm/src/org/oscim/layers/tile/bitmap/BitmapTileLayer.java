@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2017 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -36,6 +37,7 @@ public class BitmapTileLayer extends TileLayer {
     private final static int CACHE_LIMIT = 40;
 
     protected final TileSource mTileSource;
+    private float mBitmapAlpha;
 
     public static class FadeStep {
         public final double scaleStart, scaleEnd;
@@ -47,13 +49,28 @@ public class BitmapTileLayer extends TileLayer {
             this.alphaStart = alphaStart;
             this.alphaEnd = alphaEnd;
         }
+
+        public FadeStep(double scaleStart, double scaleEnd, float alphaStart, float alphaEnd) {
+            this.scaleStart = scaleStart;
+            this.scaleEnd = scaleEnd;
+            this.alphaStart = alphaStart;
+            this.alphaEnd = alphaEnd;
+        }
     }
 
     public BitmapTileLayer(Map map, TileSource tileSource) {
         this(map, tileSource, CACHE_LIMIT);
     }
 
+    public BitmapTileLayer(Map map, TileSource tileSource, float transparency) {
+        this(map, tileSource, CACHE_LIMIT, transparency);
+    }
+
     public BitmapTileLayer(Map map, TileSource tileSource, int cacheLimit) {
+        this(map, tileSource, cacheLimit, 0f);
+    }
+
+    public BitmapTileLayer(Map map, TileSource tileSource, int cacheLimit, float transparency) {
         super(map,
                 new TileManager(map, cacheLimit),
                 new VectorTileRenderer());
@@ -62,7 +79,16 @@ public class BitmapTileLayer extends TileLayer {
                 tileSource.getZoomLevelMax());
 
         mTileSource = tileSource;
+        mBitmapAlpha = 1 - transparency;
+        tileRenderer().setBitmapAlpha(mBitmapAlpha);
         initLoader(getNumLoaders());
+        setFade(map.getMapPosition());
+    }
+
+    public void setTransparency(float transparency) {
+        mBitmapAlpha = 1 - transparency;
+        tileRenderer().setBitmapAlpha(mBitmapAlpha);
+        map().updateMap(true);
     }
 
     @Override
@@ -72,6 +98,10 @@ public class BitmapTileLayer extends TileLayer {
         if (event != Map.POSITION_EVENT)
             return;
 
+        setFade(pos);
+    }
+
+    private void setFade(MapPosition pos) {
         FadeStep[] fade = mTileSource.getFadeSteps();
 
         if (fade == null) {
@@ -79,7 +109,7 @@ public class BitmapTileLayer extends TileLayer {
             return;
         }
 
-        float alpha = 0;
+        float alpha = 0f;
         for (FadeStep f : fade) {
             if (pos.scale < f.scaleStart || pos.scale > f.scaleEnd)
                 continue;
@@ -88,14 +118,15 @@ public class BitmapTileLayer extends TileLayer {
                 alpha = f.alphaStart;
                 break;
             }
-            double range = f.scaleEnd / f.scaleStart;
-            float a = (float) ((range - (pos.scale / f.scaleStart)) / range);
-            a = FastMath.clamp(a, 0, 1);
+            double range = f.scaleEnd - f.scaleStart;
+            float a = (float) ((pos.scale - f.scaleStart) / range);
+            a = FastMath.clamp(a, 0f, 1f);
             // interpolate alpha between start and end
-            alpha = a * f.alphaStart + (1 - a) * f.alphaEnd;
+            alpha = (1 - a) * f.alphaStart + a * f.alphaEnd;
             break;
         }
 
+        alpha = FastMath.clamp(alpha, 0f, mBitmapAlpha);
         tileRenderer().setBitmapAlpha(alpha);
     }
 
