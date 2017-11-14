@@ -62,15 +62,15 @@ public class BitmapTileLayer extends TileLayer {
         this(map, tileSource, CACHE_LIMIT);
     }
 
-    public BitmapTileLayer(Map map, TileSource tileSource, float transparency) {
-        this(map, tileSource, CACHE_LIMIT, transparency);
+    public BitmapTileLayer(Map map, TileSource tileSource, float bitmapAlpha) {
+        this(map, tileSource, CACHE_LIMIT, bitmapAlpha);
     }
 
     public BitmapTileLayer(Map map, TileSource tileSource, int cacheLimit) {
         this(map, tileSource, cacheLimit, 0f);
     }
 
-    public BitmapTileLayer(Map map, TileSource tileSource, int cacheLimit, float transparency) {
+    public BitmapTileLayer(Map map, TileSource tileSource, int cacheLimit, float bitmapAlpha) {
         super(map,
                 new TileManager(map, cacheLimit),
                 new VectorTileRenderer());
@@ -79,14 +79,14 @@ public class BitmapTileLayer extends TileLayer {
                 tileSource.getZoomLevelMax());
 
         mTileSource = tileSource;
-        mBitmapAlpha = 1 - transparency;
+        mBitmapAlpha = bitmapAlpha;
         tileRenderer().setBitmapAlpha(mBitmapAlpha);
         initLoader(getNumLoaders());
         setFade(map.getMapPosition());
     }
 
-    public void setTransparency(float transparency) {
-        mBitmapAlpha = 1 - transparency;
+    public void setBitmapAlpha(float bitmapAlpha) {
+        mBitmapAlpha = bitmapAlpha;
         tileRenderer().setBitmapAlpha(mBitmapAlpha);
         map().updateMap(true);
     }
