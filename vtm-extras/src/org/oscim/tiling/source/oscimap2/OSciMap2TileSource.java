@@ -143,7 +143,7 @@ public class OSciMap2TileSource extends UrlTileSource {
         private boolean decodeTileTags() throws IOException {
             String tagString = decodeString();
 
-            int curTag = mTileTags.numTags;
+            int curTag = mTileTags.size();
 
             String key = Tags.keys[mSArray[curTag]];
             Tag tag;
@@ -261,7 +261,7 @@ public class OSciMap2TileSource extends UrlTileSource {
             if (fail || indexCnt == 0) {
                 log.debug(mTile + " failed reading way: bytes:" + bytes + " index:"
                         + (Arrays.toString(index)) + " tag:"
-                        + (mElem.tags.numTags > 0 ? Arrays.deepToString(mElem.tags.tags) : "null")
+                        + (mElem.tags.size() > 0 ? Arrays.deepToString(mElem.tags.getTags()) : "null")
                         + " " + indexCnt + " " + coordCnt);
                 return false;
             }
@@ -290,7 +290,7 @@ public class OSciMap2TileSource extends UrlTileSource {
 
             int cnt = 0;
             int end = position() + bytes;
-            int max = mTileTags.numTags - 1;
+            int max = mTileTags.size() - 1;
 
             for (; position() < end; cnt++) {
                 int tagNum = decodeVarint32();
@@ -315,7 +315,7 @@ public class OSciMap2TileSource extends UrlTileSource {
                     return false;
                 }
 
-                mElem.tags.add(mTileTags.tags[tagNum]);
+                mElem.tags.add(mTileTags.get(tagNum));
             }
 
             if (cnt == 0) {

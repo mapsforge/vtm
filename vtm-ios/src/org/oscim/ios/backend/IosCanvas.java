@@ -76,8 +76,6 @@ public class IosCanvas implements Canvas {
         IosPaint iosFill = (IosPaint) fill;
         if (stroke != null) {
             IosPaint iosStroke = (IosPaint) stroke;
-            iosFill.setStrokeWidth(iosStroke.strokeWidth);
-            iosFill.setStrokeColor(iosStroke.getColor());
             iosStroke.drawLine(this.cgBitmapContext, string, x, y);
         }
         iosFill.drawLine(this.cgBitmapContext, string, x, y);

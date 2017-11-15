@@ -137,7 +137,7 @@ public class TileDecoder implements ITileDecoder {
 
         //add tag information
         mTileSource.decodeTags(mMapElement, mTagMap);
-        if (mMapElement.tags.numTags == 0)
+        if (mMapElement.tags.size() == 0)
             return;
 
         mTileSource.postGeomHook(mMapElement);
