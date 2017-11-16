@@ -52,7 +52,7 @@ public class TextureBucket extends RenderBucket {
             TEXTURE_HEIGHT,
             false);
 
-    public TextureBucket(int type) {
+    public TextureBucket(byte type) {
         super(type, false, true);
     }
 

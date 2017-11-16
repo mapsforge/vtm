@@ -81,7 +81,7 @@ public class LineBucket extends RenderBucket {
         this.level = layer;
     }
 
-    LineBucket(int type, boolean indexed, boolean quads) {
+    LineBucket(byte type, boolean indexed, boolean quads) {
         super(type, indexed, quads);
     }
 
