@@ -165,7 +165,10 @@ public class GeoPoint implements Comparable<GeoPoint>, Serializable{
 
     @Override
     public int compareTo(GeoPoint geoPoint) {
-        if (this.longitudeE6 > geoPoint.longitudeE6) {
+        // equals method will resolve Java double precision problem (see equals method)
+        if (this.equals(geoPoint)) {
+            return 0;
+        } else if (this.longitudeE6 > geoPoint.longitudeE6) {
             return 1;
         } else if (this.longitudeE6 < geoPoint.longitudeE6) {
             return -1;
@@ -218,10 +221,17 @@ public class GeoPoint implements Comparable<GeoPoint>, Serializable{
         } else if (!(obj instanceof GeoPoint)) {
             return false;
         }
+        /*
+         * problem is that the Java double precision problem can cause two coordinates that represent 
+         * the same geographical position to have a different latitudeE6/longitudeE6. therefore a difference 
+         * of 1 in the latitudeE6/longitudeE6 can be the result of this rounding effect
+         * see https://en.wikipedia.org/wiki/Double-precision_floating-point_format
+         * see https://stackoverflow.com/questions/179427/how-to-resolve-a-java-rounding-double-issue
+         */
         GeoPoint other = (GeoPoint) obj;
-        if (this.latitudeE6 != other.latitudeE6) {
+        if (Math.abs(this.latitudeE6 - other.latitudeE6) > 1) {
             return false;
-        } else if (this.longitudeE6 != other.longitudeE6) {
+        } else if (Math.abs(this.longitudeE6 - other.longitudeE6) > 1) {
             return false;
         }
         return true;
