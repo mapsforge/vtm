@@ -34,7 +34,7 @@ public class TextItem extends Inlist<TextItem> {
         @Override
         protected boolean clearItem(TextItem ti) {
             // drop references
-            ti.string = null;
+            ti.label = null;
             ti.text = null;
             //ti.n1 = null;
             //ti.n2 = null;
@@ -57,16 +57,16 @@ public class TextItem extends Inlist<TextItem> {
         return ti;
     }
 
-    public TextItem set(float x, float y, String string, TextStyle text) {
+    public TextItem set(float x, float y, String label, TextStyle text) {
         this.x = x;
         this.y = y;
-        this.string = string;
+        this.label = label;
         this.text = text;
         this.x1 = 0;
         this.y1 = 0;
         this.x2 = 1;
         this.y2 = 0;
-        this.width = text.paint.measureText(string);
+        this.width = text.paint.measureText(label);
         return this;
     }
 
@@ -74,7 +74,7 @@ public class TextItem extends Inlist<TextItem> {
     public float x, y;
 
     // label text
-    public String string;
+    public String label;
 
     // text style
     public TextStyle text;
@@ -96,6 +96,6 @@ public class TextItem extends Inlist<TextItem> {
 
     @Override
     public String toString() {
-        return x + " " + y + " " + string;
+        return x + " " + y + " " + label;
     }
 }

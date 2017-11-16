@@ -59,16 +59,16 @@ public class TextBucket extends TextureBucket {
                         /* break if next item uses different text style */
                         && item.text == it.next.text
                         /* check same string instance */
-                        && item.string != it.string
+                        && item.label != it.label
                         /* check same string */
-                        && !item.string.equals(it.string))
+                        && !item.label.equals(it.label))
                     it = it.next;
 
                 /* unify duplicate string
                  * // Note: this is required for 'packing test' in prepare to
                  * work! */
-                if (item.string != it.string && item.string.equals(it.string))
-                    item.string = it.string;
+                if (item.label != it.label && item.label.equals(it.label))
+                    item.label = it.label;
 
                 /* insert after text of same type and/or before same string */
                 item.next = it.next;
@@ -129,7 +129,7 @@ public class TextBucket extends TextureBucket {
 
             yy = y + height - it.text.fontDescent;
 
-            mCanvas.drawText(it.string, x, yy, it.text.paint, it.text.stroke);
+            mCanvas.drawText(it.label, x, yy, it.text.paint, it.text.stroke);
 
             // FIXME !!!
             if (width > TEXTURE_WIDTH)
@@ -144,7 +144,7 @@ public class TextBucket extends TextureBucket {
 
                 if (it.next == null
                         || (it.next.text != it.text)
-                        || (it.next.string != it.string)) {
+                        || (it.next.label != it.label)) {
                     it = it.next;
                     break;
                 }
