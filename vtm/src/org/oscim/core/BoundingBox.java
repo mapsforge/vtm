@@ -365,13 +365,13 @@ public class BoundingBox {
     public String toString() {
         return new StringBuilder()
                 .append("BoundingBox [minLat=")
-                .append(minLatitudeE6)
+                .append(getMinLatitude())
                 .append(", minLon=")
-                .append(minLongitudeE6)
+                .append(getMinLongitude())
                 .append(", maxLat=")
-                .append(maxLatitudeE6)
+                .append(getMaxLatitude())
                 .append(", maxLon=")
-                .append(maxLongitudeE6)
+                .append(getMaxLongitude())
                 .append("]")
                 .toString();
     }
