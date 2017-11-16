@@ -20,6 +20,8 @@
  */
 package org.oscim.core;
 
+import java.io.Serializable;
+
 import org.oscim.utils.FastMath;
 
 /**
@@ -30,7 +32,7 @@ import org.oscim.utils.FastMath;
  * <br>
  * @see https://github.com/mapsforge/mapsforge/blob/master/mapsforge-core/src/main/java/org/mapsforge/core/util/LatLongUtils.java
  */
-public class GeoPoint implements Comparable<GeoPoint> {
+public class GeoPoint implements Comparable<GeoPoint>, Serializable{
     /**
 	 * Generated serial version UID
 	 */
