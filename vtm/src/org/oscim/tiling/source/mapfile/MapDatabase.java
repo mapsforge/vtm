@@ -4,6 +4,7 @@
  * Copyright 2014-2015 Ludwig M Brinckmann
  * Copyright 2016-2017 devemux86
  * Copyright 2016 Andrey Novikov
+ * Copyright 2017 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
