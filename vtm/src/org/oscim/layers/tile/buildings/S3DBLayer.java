@@ -51,6 +51,14 @@ public class S3DBLayer extends TileLayer {
         this(map, tileSource, true, false);
     }
 
+    /**
+     * Simple-3D-Buildings OSCIM4 Tile Layer
+     *
+     * @param map        Stored map workaround
+     * @param tileSource Source of loaded tiles in {@link org.oscim.layers.tile.vector.VectorTileLayer}
+     * @param fxaa       Switch on Fast Approximate Anti-Aliasing
+     * @param ssao       Switch on Screen Space Ambient Occlusion
+     */
     public S3DBLayer(Map map, TileSource tileSource, boolean fxaa, boolean ssao) {
         super(map, new TileManager(map, MAX_CACHE));
         setRenderer(new S3DBRenderer(fxaa, ssao));
