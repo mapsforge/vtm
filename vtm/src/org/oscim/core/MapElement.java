@@ -17,6 +17,8 @@
  */
 package org.oscim.core;
 
+import java.util.Arrays;
+
 /**
  * The MapElement class is a reusable containter for a geometry
  * with tags.
@@ -72,11 +74,11 @@ public class MapElement extends GeometryBuffer {
     public MapElement clone() {
         MapElement copy = new MapElement();
         copy.tags.set(this.tags.asArray());
-        copy.points = this.points.clone();
+        copy.points = Arrays.copyOf(this.points, this.points.length);
         copy.pointPos = this.pointPos;
         copy.labelPosition = this.labelPosition;
         copy.setLayer(this.layer);
-        copy.index = this.index.clone();
+        copy.index = Arrays.copyOf(this.index, this.index.length);
         copy.indexPos = this.indexPos;
         copy.type = this.type;
         return copy;
