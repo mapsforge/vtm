@@ -19,7 +19,9 @@ public class S3DBLayer extends TileLayer {
     static final Logger log = LoggerFactory.getLogger(S3DBLayer.class);
 
     private final static int MAX_CACHE = 32;
-    private final static int SRC_ZOOM = 16;
+
+    private final static int MIN_ZOOM = 16;
+    private final static int MAX_ZOOM = 16;
 
     /* TODO get from theme */
     private final static double HSV_S = 0.7;
@@ -35,7 +37,7 @@ public class S3DBLayer extends TileLayer {
         super(map, new TileManager(map, MAX_CACHE));
         setRenderer(new S3DBRenderer(fxaa, ssao));
 
-        mTileManager.setZoomLevel(SRC_ZOOM, SRC_ZOOM);
+        mTileManager.setZoomLevel(MIN_ZOOM, MAX_ZOOM);
         mTileSource = tileSource;
         initLoader(2);
     }
@@ -49,7 +51,7 @@ public class S3DBLayer extends TileLayer {
         LayerRenderer mRenderer;
 
         public S3DBRenderer(boolean fxaa, boolean ssao) {
-            mRenderer = new BuildingRenderer(this, SRC_ZOOM, SRC_ZOOM, true, false);
+            mRenderer = new BuildingRenderer(this, MIN_ZOOM, MAX_ZOOM, true, false);
 
             if (fxaa || ssao) {
                 Mode mode = Mode.FXAA;

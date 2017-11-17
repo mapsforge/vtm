@@ -41,6 +41,8 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
     private final static int MIN_ZOOM = 17;
     private final static int MAX_ZOOM = 17;
 
+    protected final static int BUILDING_LEVEL_HEIGHT = 280; // cm
+
     private final static boolean POST_AA = false;
     public static boolean TRANSLUCENT = true;
 
@@ -84,7 +86,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
         else {
             // FIXME load from theme or decode tags to generalize level/height tags
             if ((v = element.tags.getValue(Tag.KEY_BUILDING_LEVELS)) != null)
-                height = (int) (Float.parseFloat(v) * 280); // 2.8m level height
+                height = (int) (Float.parseFloat(v) * BUILDING_LEVEL_HEIGHT);
         }
 
         v = element.tags.getValue(Tag.KEY_MIN_HEIGHT);

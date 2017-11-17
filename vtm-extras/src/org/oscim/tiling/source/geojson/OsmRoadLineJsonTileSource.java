@@ -27,8 +27,8 @@ public class OsmRoadLineJsonTileSource extends GeoJsonTileSource {
 
     static final Logger log = LoggerFactory.getLogger(OsmRoadLineJsonTileSource.class);
 
-    Tag mTagTunnel = new Tag("tunnel", "yes");
-    Tag mTagBridge = new Tag("bridge", "yes");
+    Tag mTagTunnel = new Tag("tunnel", Tag.VALUE_YES);
+    Tag mTagBridge = new Tag("bridge", Tag.VALUE_YES);
 
     public OsmRoadLineJsonTileSource() {
         super("http://tile.openstreetmap.us/vectiles-highroad");
