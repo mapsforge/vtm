@@ -65,4 +65,20 @@ public class MapElement extends GeometryBuffer {
         return tags.toString() + '\n' + super.toString() + '\n';
 
     }
+
+    /**
+     * @return a deep copy of this MapElement
+     */
+    public MapElement clone() {
+        MapElement copy = new MapElement();
+        copy.tags.set(this.tags.asArray());
+        copy.points = this.points.clone();
+        copy.pointPos = this.pointPos;
+        copy.labelPosition = this.labelPosition;
+        copy.setLayer(this.layer);
+        copy.index = this.index.clone();
+        copy.indexPos = this.indexPos;
+        copy.type = this.type;
+        return copy;
+    }
 }
