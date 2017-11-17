@@ -27,7 +27,7 @@ public class OsmBuildingJsonTileSource extends GeoJsonTileSource {
         super("http://tile.openstreetmap.us/vectiles-buildings");
     }
 
-    Tag mTagBuilding = new Tag("building", "yes");
+    Tag mTagBuilding = new Tag(Tag.KEY_BUILDING, Tag.VALUE_YES);
 
     @Override
     public void decodeTags(MapElement mapElement, Map<String, Object> properties) {

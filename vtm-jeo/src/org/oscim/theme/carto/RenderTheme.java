@@ -256,7 +256,7 @@ public class RenderTheme implements IRenderTheme {
 
         MapElement e = new MapElement();
         e.startPolygon();
-        e.tags.add(new Tag("building", "yes"));
+        e.tags.add(new Tag(Tag.KEY_BUILDING, Tag.VALUE_YES));
 
         t.matchElement(GeometryType.POLY, e.tags, 16);
         t.matchElement(GeometryType.POLY, e.tags, 15);

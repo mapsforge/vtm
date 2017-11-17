@@ -46,18 +46,51 @@ public class Tag {
      */
     public static final String KEY_ELE = "ele";
 
+    /**
+     * The key of the id tag.
+     */
+    public static final String KEY_ID = "id";
+
     public static final String KEY_AMENITY = "amenity";
-    public static final String KEY_AREA = "area";
     public static final String KEY_BUILDING = "building";
-    public static final String KEY_BUILDING_LEVELS = "building:levels";
     public static final String KEY_HIGHWAY = "highway";
     public static final String KEY_LANDUSE = "landuse";
-    public static final String KEY_HEIGHT = "height";
-    public static final String KEY_MIN_HEIGHT = "min_height";
-    public static final String KEY_VOLUME = "volume";
 
     public static final String VALUE_YES = "yes";
     public static final String VALUE_NO = "no";
+
+    // S3DB
+    public static final String KEY_AREA = "area";
+    public static final String KEY_COLOR = "colour";
+    public static final String KEY_BUILDING_COLOR = "building:colour";
+    public static final String KEY_BUILDING_LEVELS = "building:levels";
+    public static final String KEY_BUILDING_MATERIAL = "building:material";
+    public static final String KEY_BUILDING_MIN_LEVEL = "building:min_level";
+    public static final String KEY_BUILDING_PART = "building:part";
+    public static final String KEY_HEIGHT = "height";
+    public static final String KEY_MATERIAL = "material";
+    public static final String KEY_MIN_HEIGHT = "min_height";
+    public static final String KEY_ROOF = "roof";
+    public static final String KEY_ROOF_COLOR = "roof:colour";
+    public static final String KEY_ROOF_HEIGHT = "roof:height";
+    public static final String KEY_ROOF_LEVELS = "roof:levels";
+    public static final String KEY_ROOF_MATERIAL = "roof:material";
+    public static final String KEY_ROOF_SHAPE = "roof:shape";
+    public static final String KEY_VOLUME = "volume";
+
+    // Roof shape values
+    public static final String VALUE_FLAT = "flat";
+    public static final String VALUE_SKILLON = "skillion";
+    public static final String VALUE_GABLED = "gabled";
+    public static final String VALUE_HALF_HIPPED = "half_hipped";
+    public static final String VALUE_HIPPED = "hipped";
+    public static final String VALUE_PYRAMIDAL = "pyramidal";
+    public static final String VALUE_GAMBREL = "gambrel";
+    public static final String VALUE_MANSARD = "mansard";
+    public static final String VALUE_DOME = "dome";
+    public static final String VALUE_ONION = "onion";
+    public static final String VALUE_ROUND = "round";
+    public static final String VALUE_SALTBOX = "saltbox";
 
     /**
      * The key of this tag.

@@ -1,3 +1,21 @@
+/*
+ * Copyright 2014-2015 Hannes Janetzek
+ * Copyright 2016-2017 devemux86
+ *
+ * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.oscim.layers.tile.buildings;
 
 import org.oscim.backend.canvas.Color;
@@ -16,10 +34,11 @@ import org.oscim.tiling.TileSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.oscim.layers.tile.buildings.S3DBLayer.getMaterialColor;
-
 class S3DBTileLoader extends TileLoader {
     static final Logger log = LoggerFactory.getLogger(S3DBTileLoader.class);
+
+    public static final String OSCIM4_KEY_COLOR = "c";
+    public static final String OSCIM4_KEY_MATERIAL = "m";
 
     /**
      * current TileDataSource used by this MapTileLoader
@@ -43,7 +62,7 @@ class S3DBTileLoader extends TileLoader {
                 0, 4096, 0,
                 4096, 4096, 0};
         g.index = new int[]{0, 1, 2, 2, 1, 3};
-        mTilePlane.tags.add(new Tag("c", "transparent"));
+        mTilePlane.tags.add(new Tag(OSCIM4_KEY_COLOR, "transparent"));
     }
 
     public S3DBTileLoader(TileManager tileManager, TileSource tileSource) {
@@ -93,10 +112,6 @@ class S3DBTileLoader extends TileLoader {
         process(mTilePlane);
     }
 
-    String COLOR_KEY = "c";
-    String MATERIAL_KEY = "m";
-    String ROOF_KEY = "roof";
-    String ROOF_SHAPE_KEY = "roof:shape";
 
     @Override
     public void process(MapElement element) {
@@ -109,23 +124,23 @@ class S3DBTileLoader extends TileLoader {
         if (mParts == null)
             initTile(mTile);
 
-        boolean isRoof = element.tags.containsKey(ROOF_KEY);
+        boolean isRoof = element.tags.containsKey(Tag.KEY_ROOF);
         //if (isRoof)
         //    log.debug(element.tags.toString());
 
         int c = 0;
-        if (element.tags.containsKey(COLOR_KEY)) {
-            c = S3DBLayer.getColor(element.tags.getValue(COLOR_KEY), isRoof);
+        if (element.tags.containsKey(OSCIM4_KEY_COLOR)) {
+            c = S3DBLayer.getColor(element.tags.getValue(OSCIM4_KEY_COLOR), isRoof);
         }
 
-        if (c == 0 && element.tags.containsKey(MATERIAL_KEY)) {
-            c = getMaterialColor(element.tags.getValue(MATERIAL_KEY), isRoof);
+        if (c == 0 && element.tags.containsKey(OSCIM4_KEY_MATERIAL)) {
+            c = S3DBLayer.getMaterialColor(element.tags.getValue(OSCIM4_KEY_MATERIAL), isRoof);
         }
 
         if (c == 0) {
-            String roofShape = element.tags.getValue(ROOF_SHAPE_KEY);
+            String roofShape = element.tags.getValue(Tag.KEY_ROOF_SHAPE);
 
-            if (isRoof && (roofShape == null || "flat".equals(roofShape)))
+            if (isRoof && (roofShape == null || Tag.VALUE_FLAT.equals(roofShape)))
                 mRoofs.add(element);
             else
                 mParts.add(element);

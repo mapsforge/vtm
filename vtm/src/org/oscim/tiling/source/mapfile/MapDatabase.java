@@ -4,6 +4,7 @@
  * Copyright 2014-2015 Ludwig M Brinckmann
  * Copyright 2016-2017 devemux86
  * Copyright 2016 Andrey Novikov
+ * Copyright 2017 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -953,7 +954,8 @@ public class MapDatabase implements ITileDataSource {
                 mTileProjection.project(e);
 
                 // At large query zoom levels clip everything
-                if (!e.tags.containsKey("building")
+                if ((!e.tags.containsKey(Tag.KEY_BUILDING)
+                        && !e.tags.containsKey(Tag.KEY_BUILDING_PART))
                         || queryParameters.queryZoomLevel > MapFileTileSource.MAX_ZOOM_LEVEL) {
                     if (!mTileClipper.clip(e)) {
                         continue;
