@@ -185,40 +185,32 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
     /**
      * Process all stored map elements (here only buildings)
      *
-     * @param tile the tile which contains map elements
+     * @param tile the tile which contains stored map elements
      */
     protected void processElements(MapTile tile) {
         if (!mBuildings.containsKey(tile.hashCode())) return;
 
         List<BuildingElement> tileBuildings = mBuildings.get(tile.hashCode());
-        HashSet<BuildingElement> complexBuildings = new HashSet<>();
-        for (BuildingElement partElement : tileBuildings) {
-            if (!partElement.isPart) continue;
-            // #TagFromTheme
-            String refId = partElement.element.tags.getValue(Tag.KEY_REF);
-            refId = refId == null ? partElement.element.tags.getValue("root_id") : refId;
-            if (refId == null) continue;
-            // Search buildings which inherit parts
-            for (BuildingElement tileBuilding : tileBuildings) {
-                if (tileBuilding.isPart
-                        || !(refId.equals(tileBuilding.element.tags.getValue(Tag.KEY_ID))))
-                    continue;
-                // Memorize complex buildings
-                for (Tag tag : tileBuilding.element.tags.asArray()) {
-                    if ((tag.key.equals(Tag.KEY_BUILDING_COLOR)
-                            || tag.key.equals(Tag.KEY_ROOF_COLOR))
-                            && !partElement.element.tags.containsKey(tag.key)) {
-                        partElement.element.tags.add(tag);
-                    }
-                }
+        HashSet<BuildingElement> rootBuildings = new HashSet<>();
+        for (BuildingElement partBuilding : tileBuildings) {
+            if (!partBuilding.isPart) continue;
 
-                // Memorize complex building outline
-                complexBuildings.add(tileBuilding);
+            String refId = partBuilding.element.tags.getValue(Tag.KEY_REF); // #TagFromTheme
+            refId = refId == null ? partBuilding.element.tags.getValue("root_id") : refId;
+            if (refId == null) continue;
+
+            // Search buildings which inherit parts
+            for (BuildingElement rootBuilding : tileBuildings) {
+                if (rootBuilding.isPart
+                        || !(refId.equals(rootBuilding.element.tags.getValue(Tag.KEY_ID))))
+                    continue;
+
+                rootBuildings.add(rootBuilding);
                 break;
             }
         }
 
-        tileBuildings.removeAll(complexBuildings); // Remove complex buildings from list
+        tileBuildings.removeAll(rootBuildings); // root buildings aren't rendered
 
         for (BuildingElement buildingElement : tileBuildings) {
             processElement(buildingElement.element, buildingElement.style, tile);
