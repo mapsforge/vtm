@@ -188,6 +188,10 @@ public class GeometryBuffer {
         return type == GeometryType.POINT;
     }
 
+    public boolean isTris() {
+        return type == GeometryType.TRIS;
+    }
+
     /**
      * Sets the point x,y at position pos.
      *
