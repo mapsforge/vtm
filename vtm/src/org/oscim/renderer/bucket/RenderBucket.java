@@ -1,6 +1,7 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
  * Copyright 2016 Stephan Leuschner 
+ * Copyright 2017 Luca Osten
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -23,17 +24,17 @@ import java.nio.ShortBuffer;
 
 public abstract class RenderBucket extends Inlist<RenderBucket> {
 
-    public static final int LINE = 0;
-    public static final int TEXLINE = 1;
-    public static final int POLYGON = 2;
-    public static final int MESH = 3;
-    public static final int EXTRUSION = 4;
-    public static final int HAIRLINE = 5;
-    public static final int SYMBOL = 6;
-    public static final int BITMAP = 7;
-    public static final int CIRCLE = 8;
+    public static final byte LINE = 0;
+    public static final byte TEXLINE = 1;
+    public static final byte POLYGON = 2;
+    public static final byte MESH = 3;
+    public static final byte EXTRUSION = 4;
+    public static final byte HAIRLINE = 5;
+    public static final byte SYMBOL = 6;
+    public static final byte BITMAP = 7;
+    public static final byte CIRCLE = 8;
 
-    public final int type;
+    public final byte type;
 
     /**
      * Drawing order from bottom to top.
@@ -55,7 +56,7 @@ public abstract class RenderBucket extends Inlist<RenderBucket> {
     final static VertexData EMPTY = new VertexData();
     final boolean quads;
 
-    protected RenderBucket(int type, boolean indexed, boolean quads) {
+    protected RenderBucket(byte type, boolean indexed, boolean quads) {
         this.type = type;
         vertexItems = new VertexData();
         if (indexed)

@@ -1,6 +1,7 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2017 Luca Osten
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -52,7 +53,7 @@ public class TextureBucket extends RenderBucket {
             TEXTURE_HEIGHT,
             false);
 
-    public TextureBucket(int type) {
+    public TextureBucket(byte type) {
         super(type, false, true);
     }
 

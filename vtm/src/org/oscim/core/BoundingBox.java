@@ -2,6 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016-2017 devemux86
+ * Copyright 2017 Luca Osten
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -365,13 +366,13 @@ public class BoundingBox {
     public String toString() {
         return new StringBuilder()
                 .append("BoundingBox [minLat=")
-                .append(minLatitudeE6)
+                .append(getMinLatitude())
                 .append(", minLon=")
-                .append(minLongitudeE6)
+                .append(getMinLongitude())
                 .append(", maxLat=")
-                .append(maxLatitudeE6)
+                .append(getMaxLatitude())
                 .append(", maxLon=")
-                .append(maxLongitudeE6)
+                .append(getMaxLongitude())
                 .append("]")
                 .toString();
     }

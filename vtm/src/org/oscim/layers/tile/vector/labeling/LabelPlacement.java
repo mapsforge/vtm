@@ -1,5 +1,6 @@
 /*
  * Copyright 2016 devemux86
+ * Copyright 2017 Luca Osten
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -520,15 +521,15 @@ public class LabelPlacement {
             /* iterate through following */
             for (Label l = (Label) cur.next; l != null; l = (Label) l.next) {
 
-                if (w != l.width || t != l.text || !cur.string.equals(l.string)) {
+                if (w != l.width || t != l.text || !cur.label.equals(l.label)) {
                     p = l;
                     continue;
                 } else if (cur.next == l) {
-                    l.string = cur.string;
+                    l.label = cur.label;
                     p = l;
                     continue;
                 }
-                l.string = cur.string;
+                l.label = cur.label;
 
                 /* insert l after cur */
                 Label tmp = (Label) cur.next;

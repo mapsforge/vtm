@@ -1,8 +1,9 @@
 /*
- * Copyright 2010, 2011, 2012 mapsforge.org
+ * Copyright 2010-2017 mapsforge.org
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016 Andrey Novikov
  * Copyright 2016 devemux86
+ * Copyright 2017 Luca Osten
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,14 +20,25 @@
  */
 package org.oscim.core;
 
+import java.io.Serializable;
+
 import org.oscim.utils.FastMath;
 
 /**
  * A GeoPoint represents an immutable pair of latitude and longitude
  * coordinates.
+ * <p>
+ * The coordinate validation functions were inspired by the mapsforge LatLongUtils class.
+ * <br>
+ * @see https://github.com/mapsforge/mapsforge/blob/master/mapsforge-core/src/main/java/org/mapsforge/core/util/LatLongUtils.java
  */
-public class GeoPoint implements Comparable<GeoPoint> {
+public class GeoPoint implements Comparable<GeoPoint>, Serializable{
     /**
+	 * Generated serial version UID
+	 */
+	private static final long serialVersionUID = 8965378345755560352L;
+
+	/**
      * Conversion factor from degrees to microdegrees.
      */
     private static final double CONVERSION_FACTOR = 1000000d;
@@ -46,6 +58,50 @@ public class GeoPoint implements Comparable<GeoPoint> {
      * Polar radius of earth is required for distance computation.
      */
     private static final double POLAR_RADIUS = 6356752.3142;
+
+    /**
+     * Maximum possible latitude coordinate.
+     */
+    public static final double LATITUDE_MAX = 90;
+
+    /**
+     * Minimum possible latitude coordinate.
+     */
+    public static final double LATITUDE_MIN = -LATITUDE_MAX;
+
+    /**
+     * Maximum possible longitude coordinate.
+     */
+    public static final double LONGITUDE_MAX = 180;
+
+    /**
+     * Minimum possible longitude coordinate.
+     */
+    public static final double LONGITUDE_MIN = -LONGITUDE_MAX;
+
+    /**
+     * @param latitude the latitude coordinate in degrees which should be validated.
+     * @return the latitude value
+     * @throws IllegalArgumentException if the latitude coordinate is invalid or {@link Double#NaN}.
+     */
+    public static double validateLatitude(double latitude) {
+        if (Double.isNaN(latitude) || latitude < LATITUDE_MIN || latitude > LATITUDE_MAX) {
+            throw new IllegalArgumentException("invalid latitude: " + latitude);
+        }
+        return latitude;
+    }
+
+    /**
+     * @param longitude the longitude coordinate in degrees which should be validated.
+     * @return the longitude value
+     * @throws IllegalArgumentException if the longitude coordinate is invalid or {@link Double#NaN}.
+     */
+    public static double validateLongitude(double longitude) {
+        if (Double.isNaN(longitude) || longitude < LONGITUDE_MIN || longitude > LONGITUDE_MAX) {
+            throw new IllegalArgumentException("invalid longitude: " + longitude);
+        }
+        return longitude;
+    }
 
     /**
      * The hash code of this object.
@@ -109,7 +165,10 @@ public class GeoPoint implements Comparable<GeoPoint> {
 
     @Override
     public int compareTo(GeoPoint geoPoint) {
-        if (this.longitudeE6 > geoPoint.longitudeE6) {
+        // equals method will resolve Java double precision problem (see equals method)
+        if (this.equals(geoPoint)) {
+            return 0;
+        } else if (this.longitudeE6 > geoPoint.longitudeE6) {
             return 1;
         } else if (this.longitudeE6 < geoPoint.longitudeE6) {
             return -1;
@@ -162,10 +221,17 @@ public class GeoPoint implements Comparable<GeoPoint> {
         } else if (!(obj instanceof GeoPoint)) {
             return false;
         }
+        /*
+         * problem is that the Java double precision problem can cause two coordinates that represent 
+         * the same geographical position to have a different latitudeE6/longitudeE6. therefore a difference 
+         * of 1 in the latitudeE6/longitudeE6 can be the result of this rounding effect
+         * see https://en.wikipedia.org/wiki/Double-precision_floating-point_format
+         * see https://stackoverflow.com/questions/179427/how-to-resolve-a-java-rounding-double-issue
+         */
         GeoPoint other = (GeoPoint) obj;
-        if (this.latitudeE6 != other.latitudeE6) {
+        if (Math.abs(this.latitudeE6 - other.latitudeE6) > 1) {
             return false;
-        } else if (this.longitudeE6 != other.longitudeE6) {
+        } else if (Math.abs(this.longitudeE6 - other.longitudeE6) > 1) {
             return false;
         }
         return true;

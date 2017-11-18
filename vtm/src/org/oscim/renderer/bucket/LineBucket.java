@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2017 devemux86
+ * Copyright 2017 Luca Osten
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -81,7 +82,7 @@ public class LineBucket extends RenderBucket {
         this.level = layer;
     }
 
-    LineBucket(int type, boolean indexed, boolean quads) {
+    LineBucket(byte type, boolean indexed, boolean quads) {
         super(type, indexed, quads);
     }
 

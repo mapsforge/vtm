@@ -1,6 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2017 Luca Osten
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -25,7 +26,7 @@ import org.oscim.utils.geom.LineClipper;
 
 public final class WayDecorator {
 
-    public static void renderText(LineClipper clipper, float[] coordinates, String string,
+    public static void renderText(LineClipper clipper, float[] coordinates, String label,
                                   TextStyle text, int pos, int len, LabelTileData ld) {
         //TextItem items = textItems;
         TextItem t = null;
@@ -171,14 +172,14 @@ public final class WayDecorator {
                 }
 
                 if (labelWidth < 0) {
-                    labelWidth = text.paint.measureText(string);
+                    labelWidth = text.paint.measureText(label);
                 }
 
                 if (segmentLength < labelWidth * 0.50) {
                     continue;
                 }
             } else if (labelWidth < 0) {
-                labelWidth = text.paint.measureText(string);
+                labelWidth = text.paint.measureText(label);
             }
 
             float x1, y1, x2, y2;
@@ -205,7 +206,7 @@ public final class WayDecorator {
             t = n;
             t.x = x1 + (x2 - x1) / 2f;
             t.y = y1 + (y2 - y1) / 2f;
-            t.string = string;
+            t.label = label;
             t.text = text;
             t.width = labelWidth;
             t.x1 = x1;

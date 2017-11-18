@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2017 Luca Osten
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -35,7 +36,7 @@ final class Label extends TextItem {
     public OBB2D bbox;
 
     public Label clone(TextItem ti) {
-        this.string = ti.string;
+        this.label = ti.label;
         this.text = ti.text;
         this.width = ti.width;
         this.length = ti.length;
@@ -51,12 +52,12 @@ final class Label extends TextItem {
         if (l.text != ll.text)
             return false;
 
-        if (l.string == ll.string)
+        if (l.label == ll.label)
             return true;
 
-        if (l.string.equals(ll.string)) {
+        if (l.label.equals(ll.label)) {
             // make strings unique, should be done only once..
-            l.string = ll.string;
+            l.label = ll.label;
             return true;
         }
 

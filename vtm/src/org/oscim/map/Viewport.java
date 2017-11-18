@@ -2,6 +2,7 @@
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016 devemux86
  * Copyright 2016 Erik Duisters
+ * Copyright 2017 Luca Osten
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
