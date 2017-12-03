@@ -33,7 +33,7 @@ import org.oscim.gdx.client.MapConfig;
 import org.oscim.gdx.client.MapUrl;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
-import org.oscim.layers.tile.buildings.S3DBLayer;
+import org.oscim.layers.tile.buildings.S3DBTileLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.renderer.MapRenderer;
@@ -138,7 +138,7 @@ class GwtMap extends GdxMap {
                     .zoomMin(16)
                     .zoomMax(16)
                     .build();
-            mMap.layers().add(new S3DBLayer(mMap, ts));
+            mMap.layers().add(new S3DBTileLayer(mMap, ts));
         }
         if (l != null) {
             boolean nolabels = mapUrl.params.containsKey("nolabels");

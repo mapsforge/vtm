@@ -17,12 +17,12 @@
 package org.oscim.test;
 
 import org.oscim.gdx.GdxMapApp;
-import org.oscim.layers.tile.buildings.S3DBLayer;
+import org.oscim.layers.tile.buildings.S3DBTileLayer;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
-public class S3DBLayerTest extends GdxMapApp {
+public class S3DBTileLayerTest extends GdxMapApp {
 
     @Override
     public void createLayers() {
@@ -34,7 +34,7 @@ public class S3DBLayerTest extends GdxMapApp {
                 .url("http://opensciencemap.org/tiles/s3db")
                 .build();
 
-        S3DBLayer tl = new S3DBLayer(mMap, ts);
+        S3DBTileLayer tl = new S3DBTileLayer(mMap, ts);
         mMap.layers().add(tl);
 
         mMap.setMapPosition(53.08, 8.82, 1 << 17);
@@ -43,6 +43,6 @@ public class S3DBLayerTest extends GdxMapApp {
 
     public static void main(String[] args) {
         init();
-        run(new S3DBLayerTest());
+        run(new S3DBTileLayerTest());
     }
 }

@@ -20,13 +20,13 @@ import android.os.Bundle;
 
 import org.oscim.android.cache.TileCache;
 import org.oscim.layers.tile.TileLayer;
-import org.oscim.layers.tile.buildings.S3DBLayer;
+import org.oscim.layers.tile.buildings.S3DBTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
-public class S3DBMapActivity extends BaseMapActivity {
+public class OpenScienceMapS3DBMapActivity extends BaseMapActivity {
 
     TileCache mS3dbCache;
 
@@ -47,7 +47,7 @@ public class S3DBMapActivity extends BaseMapActivity {
             mS3dbCache.setCacheSize(512 * (1 << 10));
             ts.setCache(mS3dbCache);
         }
-        TileLayer tl = new S3DBLayer(mMap, ts, true, false);
+        TileLayer tl = new S3DBTileLayer(mMap, ts, true, false);
         mMap.layers().add(tl);
         mMap.layers().add(new LabelLayer(mMap, mBaseLayer));
     }
