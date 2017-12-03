@@ -104,7 +104,7 @@
             android:name=".RotateMarkerOverlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".S3DBMapActivity"
+            android:name=".OpenScienceMapS3DBMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".SimpleMapActivity"

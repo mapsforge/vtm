@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 
 public class ThemeBuilderTest extends GdxMapImpl {
 
-    final Logger log = LoggerFactory.getLogger(S3DBLayerTest.class);
+    final Logger log = LoggerFactory.getLogger(S3DBTileLayerTest.class);
 
     static class MyTheme extends ThemeBuilder {
         public MyTheme() {
