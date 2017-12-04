@@ -68,7 +68,7 @@ public class TileClipper {
 
             clipEdge(out, geom, LineClipper.BOTTOM);
 
-            if ((geom.indexPos == 0) && (geom.index[0] < 6))
+            if ((geom.indexCurrentPos == 0) && (geom.index[0] < 6))
                 return false;
         } else if (geom.isLine()) {
 
@@ -81,12 +81,12 @@ public class TileClipper {
             System.arraycopy(out.index, 0, idx, 0, numLines);
             geom.index[numLines] = -1;
 
-            float pts[] = geom.ensurePointSize(out.pointPos >> 1, false);
-            System.arraycopy(out.points, 0, pts, 0, out.pointPos);
-            geom.indexPos = out.indexPos;
-            geom.pointPos = out.pointPos;
+            float pts[] = geom.ensurePointSize(out.pointNextPos >> 1, false);
+            System.arraycopy(out.points, 0, pts, 0, out.pointNextPos);
+            geom.indexCurrentPos = out.indexCurrentPos;
+            geom.pointNextPos = out.pointNextPos;
 
-            if ((geom.indexPos == 0) && (geom.index[0] < 4))
+            if ((geom.indexCurrentPos == 0) && (geom.index[0] < 4))
                 return false;
         }
         return true;

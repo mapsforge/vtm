@@ -77,22 +77,22 @@ public class MapElement extends GeometryBuffer {
      * @return a deep copy of this MapElement
      */
     public MapElement clone() {
-        int indexSize = this.indexPos + 1;
+        int indexSize = this.indexCurrentPos + 1;
         for (int i = 0; i < this.index.length; i++) {
             if (this.index[i] == -1) {
                 indexSize = i;
                 break;
             }
         }
-        float[] copyPoints = Arrays.copyOf(this.points, this.pointPos);
+        float[] copyPoints = Arrays.copyOf(this.points, this.pointNextPos);
         int[] copyIndex = Arrays.copyOf(this.index, indexSize);
 
         MapElement copy = new MapElement(copyPoints, copyIndex);
         copy.tags.set(this.tags.asArray());
-        copy.pointPos = this.pointPos;
+        copy.pointNextPos = this.pointNextPos;
         copy.labelPosition = this.labelPosition;
         copy.setLayer(this.layer);
-        copy.indexPos = this.indexPos;
+        copy.indexCurrentPos = this.indexCurrentPos;
         copy.type = this.type;
         return copy;
     }

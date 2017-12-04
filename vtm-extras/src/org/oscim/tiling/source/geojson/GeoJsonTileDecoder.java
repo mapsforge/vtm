@@ -269,8 +269,8 @@ public class GeoJsonTileDecoder implements ITileDecoder {
     }
 
     private void removeLastPoint() {
-        mMapElement.pointPos -= 2;
-        mMapElement.index[mMapElement.indexPos] -= 2;
+        mMapElement.pointNextPos -= 2;
+        mMapElement.index[mMapElement.indexCurrentPos] -= 2;
     }
 
     private void parseLineString(JsonParser jp)

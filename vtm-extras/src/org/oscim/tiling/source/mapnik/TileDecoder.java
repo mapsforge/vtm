@@ -484,8 +484,8 @@ public class TileDecoder extends PbfDecoder {
 
                 // only add last point if it is di
                 int ppos = cnt * 2;
-                if (elem.points[elem.pointPos - ppos] != curX
-                        || elem.points[elem.pointPos - ppos + 1] != curY)
+                if (elem.points[elem.pointNextPos - ppos] != curX
+                        || elem.points[elem.pointNextPos - ppos + 1] != curY)
                     elem.addPoint(curX / mScale, curY / mScale);
 
                 lastClip = false;
@@ -525,10 +525,10 @@ public class TileDecoder extends PbfDecoder {
         if (isPoly && isOuter && simplify && !testBBox(xmax - xmin, ymax - ymin)) {
             //log.debug("skip small poly "+ elem.indexPos + " > "
             // +  (xmax - xmin) * (ymax - ymin));
-            elem.pointPos -= elem.index[elem.indexPos];
-            if (elem.indexPos > 0) {
-                elem.indexPos -= 2;
-                elem.index[elem.indexPos + 1] = -1;
+            elem.pointNextPos -= elem.index[elem.indexCurrentPos];
+            if (elem.indexCurrentPos > 0) {
+                elem.indexCurrentPos -= 2;
+                elem.index[elem.indexCurrentPos + 1] = -1;
             } else {
                 elem.type = GeometryType.NONE;
             }
