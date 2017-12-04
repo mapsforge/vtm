@@ -65,7 +65,7 @@ public class GeometryBuffer {
 
     /**
      * The indexes.
-     * POLY/LINE: store number of points of each polygon / line. Point is (x, y).
+     * POLY/LINE: store 2 * number of points of each polygon / line. Point is (x, y).
      * MESH: store point indices of triangle (p1, p2, p3) with
      *       index[3 * n + 0] = p1; index[3 * n + 1] = p2; index[3 * n + 2] = p3; n ∈ ℕ0.
      *       Point p is (x, y, z).
