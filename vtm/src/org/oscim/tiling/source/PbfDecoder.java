@@ -244,7 +244,7 @@ public abstract class PbfDecoder implements ITileDecoder {
 
         bufferPos = pos;
 
-        geom.pointPos = cnt;
+        geom.pointNextPos = cnt;
 
         // return number of points read
         return (cnt >> 1);

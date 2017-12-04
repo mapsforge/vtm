@@ -53,7 +53,7 @@ public class MeshBucket extends RenderBucket {
     }
 
     public void addMesh(GeometryBuffer geom) {
-        numPoints += geom.pointPos;
+        numPoints += geom.pointNextPos;
         if (tess == null)
             tess = new TessJNI(8);
 

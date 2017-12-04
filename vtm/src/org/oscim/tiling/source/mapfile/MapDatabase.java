@@ -723,8 +723,8 @@ public class MapDatabase implements ITileDataSource {
         int[] buffer = mIntBuffer;
         mReadBuffer.readSignedInt(buffer, length);
 
-        float[] outBuffer = e.ensurePointSize(e.pointPos + length, true);
-        int outPos = e.pointPos;
+        float[] outBuffer = e.ensurePointSize(e.pointNextPos + length, true);
+        int outPos = e.pointNextPos;
         int lat, lon;
 
         /* first node latitude single-delta offset */
@@ -772,7 +772,7 @@ public class MapDatabase implements ITileDataSource {
             }
         }
 
-        e.pointPos = outPos;
+        e.pointNextPos = outPos;
 
         return cnt;
     }

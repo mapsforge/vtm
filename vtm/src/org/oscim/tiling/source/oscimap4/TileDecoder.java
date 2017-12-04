@@ -328,7 +328,7 @@ public class TileDecoder extends PbfDecoder {
                                     Integer.valueOf(cnt));
                             fail = true;
                         }
-                        mElem.pointPos = cnt;
+                        mElem.pointNextPos = cnt;
                     } else {
                         mElem.ensurePointSize(coordCnt, false);
                         int cnt = decodeInterleavedPoints(mElem, mScaleFactor);
