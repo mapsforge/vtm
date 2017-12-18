@@ -22,6 +22,8 @@ package org.oscim.core;
  * - should make internals private, maybe
  */
 
+import java.util.Arrays;
+
 /**
  * The GeometryBuffer class holds temporary geometry data for processing.
  * Only One geometry type can be set at a time. Use 'clear()' to reset the
@@ -126,6 +128,22 @@ public class GeometryBuffer {
         this.indexCurrentPos = 0;
         this.pointNextPos = 0;
         this.pointLimit = points.length - 2;
+    }
+
+    /**
+     * @param buffer the buffer to copy
+     */
+    public GeometryBuffer(GeometryBuffer buffer) {
+        int indexSize = 0;
+        while (indexSize < buffer.index.length && buffer.index[indexSize] != -1) {
+            indexSize++;
+        }
+        this.points = Arrays.copyOf(buffer.points, buffer.pointNextPos);
+        this.index = Arrays.copyOf(buffer.index, indexSize);
+
+        this.pointNextPos = buffer.pointNextPos;
+        this.indexCurrentPos = buffer.indexCurrentPos;
+        this.type = buffer.type;
     }
 
     /**

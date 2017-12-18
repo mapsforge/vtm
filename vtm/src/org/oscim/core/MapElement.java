@@ -18,8 +18,6 @@
  */
 package org.oscim.core;
 
-import java.util.Arrays;
-
 /**
  * The MapElement class is a reusable containter for a geometry
  * with tags.
@@ -51,6 +49,16 @@ public class MapElement extends GeometryBuffer {
         super(points, index);
     }
 
+    /**
+     * @param element the map element to copy
+     */
+    public MapElement(MapElement element) {
+        super(element);
+        this.tags.set(element.tags.asArray());
+        this.labelPosition = element.labelPosition;
+        this.setLayer(element.layer);
+    }
+
     public void setLabelPosition(float x, float y) {
         labelPosition = new PointF(x, y);
     }
@@ -74,26 +82,9 @@ public class MapElement extends GeometryBuffer {
     }
 
     /**
-     * @return a deep copy of this MapElement
+     * @return a duplicate of the element's geometries
      */
-    public MapElement clone() {
-        int indexSize = this.indexCurrentPos + 1;
-        for (int i = 0; i < this.index.length; i++) {
-            if (this.index[i] == -1) {
-                indexSize = i;
-                break;
-            }
-        }
-        float[] copyPoints = Arrays.copyOf(this.points, this.pointNextPos);
-        int[] copyIndex = Arrays.copyOf(this.index, indexSize);
-
-        MapElement copy = new MapElement(copyPoints, copyIndex);
-        copy.tags.set(this.tags.asArray());
-        copy.pointNextPos = this.pointNextPos;
-        copy.labelPosition = this.labelPosition;
-        copy.setLayer(this.layer);
-        copy.indexCurrentPos = this.indexCurrentPos;
-        copy.type = this.type;
-        return copy;
+    public GeometryBuffer getGeometryBuffer() {
+        return new GeometryBuffer(this);
     }
 }

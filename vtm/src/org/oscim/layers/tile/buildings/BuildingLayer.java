@@ -109,7 +109,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
                 buildingElements = new ArrayList<>();
                 mBuildings.put(tile.hashCode(), buildingElements);
             }
-            element = element.clone(); // Deep copy, because element will be cleared
+            element = new MapElement(element); // Deep copy, because element will be cleared
             buildingElements.add(new BuildingElement(element, extrusion, isBuildingPart));
             return true;
         }
