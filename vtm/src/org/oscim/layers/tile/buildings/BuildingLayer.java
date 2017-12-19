@@ -54,7 +54,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
 
     private static final Object BUILDING_DATA = BuildingLayer.class.getName();
 
-    // Can replace with Multimap in Java 8
+    // Can be replaced with Multimap in Java 8
     private HashMap<Integer, List<BuildingElement>> mBuildings = new HashMap<>();
 
     class BuildingElement {
@@ -70,10 +70,14 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
     }
 
     public BuildingLayer(Map map, VectorTileLayer tileLayer) {
-        this(map, tileLayer, MIN_ZOOM, MAX_ZOOM);
+        this(map, tileLayer, MIN_ZOOM, MAX_ZOOM, false);
     }
 
-    public BuildingLayer(Map map, VectorTileLayer tileLayer, int zoomMin, int zoomMax) {
+    public BuildingLayer(Map map, VectorTileLayer tileLayer, boolean isMesh) {
+        this(map, tileLayer, MIN_ZOOM, MAX_ZOOM, isMesh);
+    }
+
+    public BuildingLayer(Map map, VectorTileLayer tileLayer, int zoomMin, int zoomMax, boolean isMesh) {
 
         super(map);
 
@@ -81,8 +85,8 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
 
         mRenderer = new BuildingRenderer(tileLayer.tileRenderer(),
                 zoomMin, zoomMax,
-                false, TRANSLUCENT);
-        if (POST_AA)
+                isMesh, !isMesh && TRANSLUCENT); // alpha must be disabled for mesh renderer
+        if (POST_AA || isMesh) // simplified that every mesh layer uses SSAO and FXAA
             mRenderer = new OffscreenRenderer(Mode.SSAO_FXAA, mRenderer);
     }
 
@@ -211,13 +215,17 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
         mBuildings.remove(tile.hashCode());
     }
 
+    /**
+     * @param tile the MapTile
+     * @return ExtrusionBuckets of the tile
+     */
     public static ExtrusionBuckets get(MapTile tile) {
-        ExtrusionBuckets eb = (ExtrusionBuckets) tile.getData(BUILDING_DATA);
-        if (eb == null) {
-            eb = new ExtrusionBuckets(tile);
-            tile.addData(BUILDING_DATA, eb);
+        ExtrusionBuckets ebs = (ExtrusionBuckets) tile.getData(BUILDING_DATA);
+        if (ebs == null) {
+            ebs = new ExtrusionBuckets(tile);
+            tile.addData(BUILDING_DATA, ebs);
         }
-        return eb;
+        return ebs;
     }
 
     @Override
