@@ -25,6 +25,8 @@ import java.util.Arrays;
  * - should make internals private, maybe
  */
 
+import java.util.Arrays;
+
 /**
  * The GeometryBuffer class holds temporary geometry data for processing.
  * Only One geometry type can be set at a time. Use 'clear()' to reset the
