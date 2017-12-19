@@ -17,6 +17,7 @@
  */
 package org.oscim.layers.tile;
 
+import org.oscim.core.MercatorProjection;
 import org.oscim.core.Tile;
 import org.oscim.layers.tile.vector.VectorTileLoader;
 import org.oscim.layers.tile.vector.labeling.LabelTileLoaderHook;
@@ -334,6 +335,15 @@ public class MapTile extends Tile {
             prev = d;
         }
         return null;
+    }
+
+    /**
+     * @return the corresponding ground scale
+     */
+    public float getGroundScale() {
+        double lat = MercatorProjection.toLatitude(this.y);
+        return (float) MercatorProjection
+                .groundResolutionWithScale(lat, 1 << this.zoomLevel);
     }
 
     public static int depthOffset(MapTile t) {

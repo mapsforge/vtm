@@ -1,10 +1,12 @@
 package org.oscim.renderer.bucket;
 
 import org.oscim.backend.GL;
+import org.oscim.core.GeometryBuffer;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.MapTile.TileData;
 import org.oscim.renderer.BufferObject;
 import org.oscim.renderer.MapRenderer;
+import org.oscim.utils.pool.Inlist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,22 +35,98 @@ public class ExtrusionBuckets extends TileData {
     }
 
     /**
-     * Set new ExtrusionLayers and clear previous.
+     * Add ExtrusionBucket at last position
      */
-    public void setBuckets(ExtrusionBucket el) {
+    private void add(ExtrusionBucket el) {
+        if (buckets == null) {
+            this.buckets = el;
+        }
+        RenderBucket b = buckets;
+        while (b.next != null) b = b.next;
+
+        b.next = el;
+    }
+
+    /**
+     * Insert ExtrusionBucket at first position
+     */
+    private void push(ExtrusionBucket el) {
+        this.buckets = Inlist.push(this.buckets, el);
+    }
+
+    /**
+     * Add poly element to corresponding ExtrusionBucket
+     *
+     * @param element     the MapElement as polygon
+     * @param groundScale the scale of ground
+     * @param colors      the colors (top, side, side, line) of element
+     * @param height      the height of extrusion
+     * @param minHeight   the minimum height of extrusion
+     */
+    public void addPolyElement(GeometryBuffer element, float groundScale, float[] colors, int height, int minHeight) {
+        // Add to bucket which has same color
+        for (ExtrusionBucket eb = this.buckets(); eb != null; eb = eb.next()) {
+            if (eb.getColors() == colors) {
+                eb.addPoly(element, height, minHeight);
+                return;
+            }
+        }
+
+        // Add to new bucket with different color
+        ExtrusionBucket eb = new ExtrusionBucket(0, groundScale, colors);
+        eb.addPoly(element, height, minHeight);
+        this.push(eb);
+    }
+
+    /**
+     * Add mesh element to corresponding ExtrusionBucket
+     *
+     * @param element     the MapElement as mesh
+     * @param groundScale the scale of ground
+     * @param color       the color of element
+     */
+    public void addMeshElement(GeometryBuffer element, float groundScale, int color) {
+        // Add to bucket which has same color
+        for (ExtrusionBucket eb = this.buckets(); eb != null; eb = eb.next()) {
+            if (eb.getColor() == color) {
+                eb.addMesh(element);
+                return;
+            }
+        }
+
+        // Add to new bucket with different color
+        ExtrusionBucket eb = new ExtrusionBucket(0, groundScale, color);
+        eb.addMesh(element);
+        this.push(eb);
+    }
+
+    /**
+     * Set new ExtrusionBuckets and clear previous.
+     */
+    public void resetBuckets(ExtrusionBucket el) {
         for (RenderBucket b = buckets; b != null; b = b.next)
             b.clear();
 
         buckets = el;
     }
 
+    /**
+     * Set ExtrusionBuckets.
+     */
+    public void setBuckets(ExtrusionBucket el) {
+        buckets = el;
+    }
+
+    /**
+     * Get root bucket
+     */
     public ExtrusionBucket buckets() {
         return buckets;
     }
 
     @Override
     protected void dispose() {
-        setBuckets(null);
+        resetBuckets(null);
 
         if (compiled) {
             ibo = BufferObject.release(ibo);
