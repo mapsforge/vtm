@@ -20,7 +20,6 @@
 package org.oscim.layers.tile.buildings;
 
 import org.oscim.core.MapElement;
-import org.oscim.core.MercatorProjection;
 import org.oscim.core.Tag;
 import org.oscim.layers.Layer;
 import org.oscim.layers.tile.MapTile;
@@ -29,12 +28,10 @@ import org.oscim.layers.tile.vector.VectorTileLayer.TileLoaderThemeHook;
 import org.oscim.map.Map;
 import org.oscim.renderer.OffscreenRenderer;
 import org.oscim.renderer.OffscreenRenderer.Mode;
-import org.oscim.renderer.bucket.ExtrusionBucket;
 import org.oscim.renderer.bucket.ExtrusionBuckets;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.theme.styles.ExtrusionStyle;
 import org.oscim.theme.styles.RenderStyle;
-import org.oscim.utils.pool.Inlist;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -156,24 +153,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
         if (height == 0)
             height = extrusion.defaultHeight * 100;
 
-        ExtrusionBuckets ebs = get(tile);
-
-        for (ExtrusionBucket b = ebs.buckets; b != null; b = b.next()) {
-            if (b.getColors() == extrusion.colors) {
-                b.addPoly(element, height, minHeight);
-                return;
-            }
-        }
-
-        double lat = MercatorProjection.toLatitude(tile.y);
-        float groundScale = (float) MercatorProjection
-                .groundResolutionWithScale(lat, 1 << tile.zoomLevel);
-
-        ebs.buckets = Inlist.push(ebs.buckets,
-                new ExtrusionBucket(0, groundScale,
-                        extrusion.colors));
-
-        ebs.buckets.addPoly(element, height, minHeight);
+        get(tile).addPolyElement(element, tile.getGroundScale(), extrusion.colors, height, minHeight);
     }
 
     /**
@@ -234,7 +214,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
             processElements(tile);
             get(tile).prepare();
         } else
-            get(tile).setBuckets(null);
+            get(tile).resetBuckets(null);
     }
 
     //    private int multi;
