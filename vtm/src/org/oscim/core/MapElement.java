@@ -19,12 +19,12 @@
 package org.oscim.core;
 
 /**
- * The MapElement class is a reusable containter for a geometry
+ * The MapElement class is a reusable container for a geometry
  * with tags.
  * MapElement is created by TileDataSource(s) and passed to
  * MapTileLoader via ITileDataSink.process().
  * This is just a buffer that belongs to TileDataSource,
- * so dont keep a reference to it when passed as parameter.
+ * so don't keep a reference to it when passed as parameter.
  */
 public class MapElement extends GeometryBuffer {
 
@@ -76,15 +76,6 @@ public class MapElement extends GeometryBuffer {
 
     @Override
     public String toString() {
-
         return tags.toString() + '\n' + super.toString() + '\n';
-
-    }
-
-    /**
-     * @return a duplicate of the element's geometries
-     */
-    public GeometryBuffer getGeometryBuffer() {
-        return new GeometryBuffer(this);
     }
 }
