@@ -97,19 +97,19 @@ public class LwHttp implements HttpEngine {
 
         StringBuilder sb = new StringBuilder()
                 .append(" HTTP/1.1")
-                .append("\nUser-Agent: vtm/0.5.9")
-                .append("\nHost: ")
+                .append("\r\nUser-Agent: vtm/0.5.9")
+                .append("\r\nHost: ")
                 .append(mHost)
-                .append("\nConnection: Keep-Alive");
+                .append("\r\nConnection: Keep-Alive");
 
         for (Entry<String, String> l : tileSource.getRequestHeader().entrySet()) {
             String key = l.getKey();
             String val = l.getValue();
             //if ("Accept-Encoding".equals(key) && "gzip".equals(val))
             //    mUseGZIP = true;
-            sb.append('\n').append(key).append(": ").append(val);
+            sb.append('\r\n').append(key).append(": ").append(val);
         }
-        sb.append("\n\n");
+        sb.append("\r\n\r\n");
 
         REQUEST_GET_END = sb.toString().getBytes();
 
