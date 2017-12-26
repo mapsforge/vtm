@@ -107,7 +107,7 @@ public class LwHttp implements HttpEngine {
             String val = l.getValue();
             //if ("Accept-Encoding".equals(key) && "gzip".equals(val))
             //    mUseGZIP = true;
-            sb.append('\r\n').append(key).append(": ").append(val);
+            sb.append("\r\n").append(key).append(": ").append(val);
         }
         sb.append("\r\n\r\n");
 
