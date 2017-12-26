@@ -104,3 +104,17 @@ html,body {
     background-color: #DDDDDD;
     opacity: 0.5;
 }
+
+#building-solution{
+    z-index: 20001;
+    position: absolute;
+    top: 40px;
+    left: 0px;
+}
+input[type=range][orient=vertical]{
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+    width: 8px;
+    height: 175px;
+    padding: 0 5px;
+}
