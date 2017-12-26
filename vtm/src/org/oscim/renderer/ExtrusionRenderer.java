@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2017 Izumi Kawashima
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -38,13 +39,15 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
     protected int mBucketsCnt;
     protected float mAlpha = 1;
 
+    private float mZSolutionLimit;
+
     public ExtrusionRenderer(boolean mesh, boolean alpha) {
         mMode = mesh ? 1 : 0;
         mTranslucent = alpha;
     }
 
     public static class Shader extends GLShader {
-        int uMVP, uColor, uAlpha, uMode, aPos, aLight;
+        int uMVP, uColor, uAlpha, uMode, aPos, aLight, uZSolutionLimit;
 
         public Shader(String shader) {
             if (!create(shader))
@@ -54,6 +57,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
             uColor = getUniform("u_color");
             uAlpha = getUniform("u_alpha");
             uMode = getUniform("u_mode");
+            uZSolutionLimit = getUniform("u_z_solution_limit");
             aPos = getAttrib("a_pos");
             aLight = getAttrib("a_light");
         }
@@ -92,6 +96,10 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
         }
     }
 
+    public void setZSolutionLimit(float zSolutionLimit) {
+        this.mZSolutionLimit = zSolutionLimit;
+    }
+
     @Override
     public void render(GLViewport v) {
 
@@ -114,6 +122,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
         gl.depthFunc(GL.LESS);
         gl.uniform1f(s.uAlpha, mAlpha);
+        gl.uniform1f(s.uZSolutionLimit, mZSolutionLimit);
 
         ExtrusionBuckets[] ebs = mExtrusionBucketSet;
 

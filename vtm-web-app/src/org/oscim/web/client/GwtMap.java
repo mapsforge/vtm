@@ -36,6 +36,7 @@ import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.buildings.S3DBTileLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.renderer.ExtrusionRenderer;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.StreamRenderTheme;
 import org.oscim.theme.VtmThemes;
@@ -50,6 +51,8 @@ class GwtMap extends GdxMap {
     static final Logger log = LoggerFactory.getLogger(GwtMap.class);
 
     SearchBox mSearchBox;
+    BuildingSolutionControl mBuildingSolutionControl;
+    BuildingLayer buildingLayer;
 
     @Override
     public void create() {
@@ -144,18 +147,35 @@ class GwtMap extends GdxMap {
             boolean nolabels = mapUrl.params.containsKey("nolabels");
             boolean nobuildings = mapUrl.params.containsKey("nobuildings");
 
-            if (!nobuildings && !s3db)
-                mMap.layers().add(new BuildingLayer(mMap, l));
+            if (!nobuildings && !s3db) {
+                buildingLayer = new BuildingLayer(mMap, l);
+                ((ExtrusionRenderer) buildingLayer.getRenderer()).setZSolutionLimit((float) 65536/10);
+                mMap.layers().add(buildingLayer);
+            }
 
             if (!nolabels)
                 mMap.layers().add(new LabelLayer(mMap, l));
         }
 
         mSearchBox = new SearchBox(mMap);
-
     }
 
     @Override
     protected void createLayers() {
+
+        mBuildingSolutionControl = new BuildingSolutionControl("#building-solution-input");
+        mBuildingSolutionControl.addValueChangeListener(new BuildingSolutionControl.ValueChangeListener() {
+            @Override
+            public void onValueChange(int val, int max) {
+                if (buildingLayer == null) {
+                    return;
+                }
+
+                ((ExtrusionRenderer) buildingLayer.getRenderer()).setZSolutionLimit((float) val/10);
+
+                mMap.updateMap(true);
+            }
+        });
+        mBuildingSolutionControl.init();
     }
 }
