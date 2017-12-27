@@ -225,4 +225,9 @@ public class OffscreenRenderer extends LayerRenderer {
         gl.drawArrays(GL.TRIANGLE_STRIP, 0, 4);
         GLUtils.checkGlError("....");
     }
+
+    @Override
+    public void setZLimit(float zLimit) {
+        mRenderer.setZLimit(zLimit);
+    }
 }

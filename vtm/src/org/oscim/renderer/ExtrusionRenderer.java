@@ -40,8 +40,6 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
     protected int mBucketsCnt;
     protected float mAlpha = 1;
 
-    private float mZLimit = Float.MAX_VALUE;
-
     public ExtrusionRenderer(boolean mesh, boolean alpha) {
         mMode = mesh ? 1 : 0;
         mTranslucent = alpha;
@@ -273,9 +271,5 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
             v.mvp.addDepthOffset(delta);
         }
         v.mvp.setAsUniform(s.uMVP);
-    }
-
-    public void setZLimit(float zLimit) {
-        mZLimit = zLimit;
     }
 }

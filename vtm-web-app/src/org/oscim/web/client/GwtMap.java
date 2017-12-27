@@ -149,7 +149,7 @@ class GwtMap extends GdxMap {
 
             if (!nobuildings && !s3db) {
                 mBuildingLayer = new BuildingLayer(mMap, l);
-                ((ExtrusionRenderer) mBuildingLayer.getRenderer()).setZLimit((float) 65536 / 10);
+                mBuildingLayer.getRenderer().setZLimit((float) 65536 / 10);
                 mMap.layers().add(mBuildingLayer);
             }
 
@@ -170,7 +170,7 @@ class GwtMap extends GdxMap {
                     return;
                 }
 
-                ((ExtrusionRenderer) mBuildingLayer.getRenderer()).setZLimit((float) val / 10);
+                mBuildingLayer.getRenderer().setZLimit((float) val / 10);
 
                 mMap.updateMap(true);
             }
