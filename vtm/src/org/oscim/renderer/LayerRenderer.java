@@ -28,6 +28,8 @@ public abstract class LayerRenderer {
      */
     boolean isInitialized;
 
+    protected float mZLimit = Float.MAX_VALUE;
+
     /**
      * Set 'ready for render' state when layer data is ready for rendering.
      *
@@ -69,4 +71,7 @@ public abstract class LayerRenderer {
      */
     public abstract void render(GLViewport viewport);
 
+    public void setZLimit(float zLimit) {
+        mZLimit = zLimit;
+    }
 }
