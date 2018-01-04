@@ -131,6 +131,8 @@
         </m>
     </m>
 
+    <!-- TODO aeroway -->
+
     <!-- Landcover -->
     <m k="layer" v="landcover">
         <!-- TODO handle subclass -->
