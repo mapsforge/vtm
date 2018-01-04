@@ -18,14 +18,13 @@
 package org.oscim.layers.tile.buildings;
 
 import org.oscim.backend.canvas.Color;
-import org.oscim.core.GeometryBuffer;
 import org.oscim.core.GeometryBuffer.GeometryType;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tag;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.TileLoader;
 import org.oscim.layers.tile.TileManager;
-import org.oscim.renderer.bucket.ExtrusionBucket;
+import org.oscim.renderer.bucket.ExtrusionBuckets;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.TileSource;
@@ -37,31 +36,14 @@ class S3DBTileLoader extends TileLoader {
 
     private static final String OSCIM4_KEY_COLOR = "c";
     private static final String OSCIM4_KEY_MATERIAL = "m";
+    private static final int DEFAULT_COLOR = Color.get(255, 254, 252);
 
     /**
      * current TileDataSource used by this MapTileLoader
      */
     private final ITileDataSource mTileDataSource;
 
-    private ExtrusionBucket mParts;
-    private ExtrusionBucket mRoofs;
-
     private float mGroundScale;
-
-    static MapElement mTilePlane = new MapElement();
-
-    static {
-        mTilePlane = new MapElement();
-        GeometryBuffer g = mTilePlane;
-        g.type = GeometryType.TRIS;
-        g.points = new float[]{
-                0, 0, 0,
-                4096, 0, 0,
-                0, 4096, 0,
-                4096, 4096, 0};
-        g.index = new int[]{0, 1, 2, 2, 1, 3};
-        mTilePlane.tags.add(new Tag(OSCIM4_KEY_COLOR, "transparent"));
-    }
 
     public S3DBTileLoader(TileManager tileManager, TileSource tileSource) {
         super(tileManager);
@@ -94,75 +76,32 @@ class S3DBTileLoader extends TileLoader {
         return true;
     }
 
-    private void initTile(MapTile tile) {
-        mGroundScale = tile.getGroundScale();
-
-        mRoofs = new ExtrusionBucket(0, mGroundScale, Color.get(247, 249, 250));
-
-        mParts = new ExtrusionBucket(0, mGroundScale, Color.get(255, 254, 252));
-        //mRoofs = new ExtrusionLayer(0, mGroundScale, Color.get(207, 209, 210));
-        mRoofs.next = mParts;
-
-        BuildingLayer.get(tile).resetBuckets(mRoofs);
-
-        process(mTilePlane);
-    }
-
     @Override
     public void process(MapElement element) {
+        if (BuildingLayer.get(mTile).buckets == null) {
+            mGroundScale = mTile.getGroundScale();
+        }
 
         if (element.type != GeometryType.TRIS) {
             log.debug("wrong type " + element.type);
             return;
         }
 
-        if (mParts == null)
-            initTile(mTile);
-
         boolean isRoof = element.tags.containsKey(Tag.KEY_ROOF);
-        //if (isRoof)
-        //    log.debug(element.tags.toString());
 
-        int c = 0;
+        int c = DEFAULT_COLOR;
         if (element.tags.containsKey(OSCIM4_KEY_COLOR)) {
             c = S3DBUtils.getColor(element.tags.getValue(OSCIM4_KEY_COLOR), isRoof);
-        }
-
-        if (c == 0 && element.tags.containsKey(OSCIM4_KEY_MATERIAL)) {
+        } else if (element.tags.containsKey(OSCIM4_KEY_MATERIAL)) {
             c = S3DBUtils.getMaterialColor(element.tags.getValue(OSCIM4_KEY_MATERIAL), isRoof);
         }
 
-        if (c == 0) {
-            String roofShape = element.tags.getValue(Tag.KEY_ROOF_SHAPE);
-
-            if (isRoof && (roofShape == null || Tag.VALUE_FLAT.equals(roofShape)))
-                mRoofs.addMesh(element);
-            else
-                mParts.addMesh(element);
-            return;
-        }
-
-        // May replace with ExtrusionBucket.addMeshElement()
-        for (ExtrusionBucket l = mParts; l != null; l = l.next()) {
-            if (l.getColor() == c) {
-                l.addMesh(element);
-                return;
-            }
-        }
-        ExtrusionBucket l = new ExtrusionBucket(0, mGroundScale, c);
-
-        l.next = mParts.next;
-        mParts.next = l;
-
-        l.addMesh(element);
+        ExtrusionBuckets ebs = BuildingLayer.get(mTile);
+        ebs.addMeshElement(element, mGroundScale, c);
     }
 
     @Override
     public void completed(QueryResult result) {
-
-        mParts = null;
-        mRoofs = null;
-
         super.completed(result);
     }
 }
