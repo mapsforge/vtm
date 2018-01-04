@@ -145,7 +145,7 @@ public class Tessellator {
         int ipos = 0;
         int numRings = 0;
         int numPoints = 0;
-        for (int i = 0; i < index.length; i++) {
+        for (int i = 0; i < index.length && index[i] >= 0; i++) {
             numPoints += index[i];
             numRings++;
         }
@@ -174,12 +174,12 @@ public class Tessellator {
 
         short[] ids = new short[nelems];
         tess.getElementsWithInputVertexIds(ids, 0, 0, nelems);
+        tess.dispose();
+
         for (int k = 0; k < ids.length; k++) {
             if (ids[k] < 0) return 0; // FIXME why sometimes negative indices are produced?
             outMesh.index[k] = ids[k];
         }
-
-        tess.dispose();
 
         return nelems;
     }
