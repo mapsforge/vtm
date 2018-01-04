@@ -16,6 +16,7 @@
  */
 package org.oscim.utils;
 
+import org.oscim.core.GeometryBuffer;
 import org.oscim.renderer.bucket.VertexData;
 import org.oscim.utils.math.MathUtils;
 import org.slf4j.Logger;
@@ -27,8 +28,18 @@ public class Tessellator {
     static final Logger log = LoggerFactory.getLogger(Tessellator.class);
 
     /**
-     * Special version for ExtrusionLayer to match indices with vertex
-     * positions.
+     * Special version for ExtrusionLayer to match indices with vertex positions.
+     * Tessellates polygon in tris elements.
+     *
+     * @param points the {@link org.oscim.core.GeometryBuffer#points}
+     * @param ppos the {@link org.oscim.core.GeometryBuffer#pointNextPos} (not needed)
+     * @param numPoints equals ppos?
+     * @param index the {@link org.oscim.core.GeometryBuffer#index}
+     * @param ipos the {@link org.oscim.core.GeometryBuffer#indexCurrentPos}
+     * @param numRings the number of ring polygons
+     * @param vertexOffset shift outTris index with offset
+     * @param outTris the tessellated polygon as triangular {@link org.oscim.renderer.bucket.VertexData}
+     * @return number of indices of outTris
      */
     public static int tessellate(float[] points, int ppos, int numPoints, int[] index,
                                  int ipos, int numRings, int vertexOffset, VertexData outTris) {
@@ -119,6 +130,60 @@ public class Tessellator {
 
         return sumIndices;
     }
+
+    /**
+     * Tessellates a {@link org.oscim.core.GeometryBuffer} to a triangular/mesh GeometryBuffer.
+     * The points array remains the same.
+     *
+     * @param geom    the input GeometryBuffer as POLY or LINE
+     * @param outMesh the out GeometryBuffer as MESH, but has 2D point coordinates.
+     * @return number of indices of out3D (0 if tessellation failed)
+     */
+    public static int tessellate(GeometryBuffer geom, GeometryBuffer outMesh) {
+        int[] index = geom.index;
+        float[] points = geom.points;
+        int ipos = 0;
+        int numRings = 0;
+        int numPoints = 0;
+        for (int i = 0; i < index.length && index[i] >= 0; i++) {
+            numPoints += index[i];
+            numRings++;
+        }
+
+        int buckets = FastMath.log2(MathUtils.nextPowerOfTwo(numPoints));
+        buckets -= 2;
+        //log.debug("tess use {}", buckets);
+
+        TessJNI tess = new TessJNI(buckets);
+
+        tess.addContour2D(index, points, ipos, numRings);
+
+        if (!tess.tesselate())
+            return 0;
+
+        int nverts = tess.getVertexCount() * 2;
+        int nelems = tess.getElementCount() * 3;
+
+        if (numPoints != nverts) {
+            log.debug("tess ----- skip poly: " + nverts + " " + numPoints);
+            tess.dispose();
+            return 0;
+        }
+
+        outMesh.index = new int[nelems];
+
+        short[] ids = new short[nelems];
+        tess.getElementsWithInputVertexIds(ids, 0, 0, nelems);
+        tess.dispose();
+
+        for (int k = 0; k < ids.length; k++) {
+            if (ids[k] < 0) return 0; // FIXME why sometimes negative indices are produced?
+            outMesh.index[k] = ids[k];
+        }
+
+        return nelems;
+    }
+
     //    private static final int RESULT_VERTICES = 0;
     //    private static final int RESULT_TRIANGLES = 1;
     //
