@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
- * Copyright 2017 Gustl22
+ * Copyright 2017, 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -24,6 +24,7 @@ import org.oscim.utils.FastMath;
 import org.oscim.utils.KeyMap;
 import org.oscim.utils.KeyMap.HashItem;
 import org.oscim.utils.Tessellator;
+import org.oscim.utils.geom.GeometryUtils;
 import org.oscim.utils.geom.LineClipper;
 import org.oscim.utils.pool.Pool;
 import org.slf4j.Logger;
@@ -66,6 +67,12 @@ public class ExtrusionBucket extends RenderBucket {
     private final float mGroundResolution;
 
     private KeyMap<Vertex> mVertexMap;
+
+    /* temporary vars: only use in synchronized functions! */
+    private final float[] v1 = new float[3];
+    private final float[] v2 = new float[3];
+    private final float[] v3 = new float[3];
+    private final float[] reuse = new float[3];
 
     //private static final int NORMAL_DIR_MASK = 0xFFFFFFFE;
     //private int numIndexHits = 0;
@@ -168,7 +175,7 @@ public class ExtrusionBucket extends RenderBucket {
         synchronized (vertexPool) {
 
             Vertex key = vertexPool.get();
-            double scale = COORD_SCALE * Tile.SIZE / 4096;
+            float scale = COORD_SCALE * Tile.SIZE / 4096;
 
             // n is introduced if length increases while processing
             for (int k = 0, n = index.length; k < n; ) {
@@ -184,50 +191,38 @@ public class ExtrusionBucket extends RenderBucket {
                 int vtx2 = index[k++] * 3;
                 int vtx3 = index[k++] * 3;
 
-                float vx1 = points[vtx1 + 0];
-                float vy1 = points[vtx1 + 1];
-                float vz1 = points[vtx1 + 2];
+                v1[0] = points[vtx1 + 0];
+                v1[1] = points[vtx1 + 1];
+                v1[2] = points[vtx1 + 2];
 
-                float vx2 = points[vtx2 + 0];
-                float vy2 = points[vtx2 + 1];
-                float vz2 = points[vtx2 + 2];
+                v2[0] = points[vtx2 + 0];
+                v2[1] = points[vtx2 + 1];
+                v2[2] = points[vtx2 + 2];
 
-                float vx3 = points[vtx3 + 0];
-                float vy3 = points[vtx3 + 1];
-                float vz3 = points[vtx3 + 2];
+                v3[0] = points[vtx3 + 0];
+                v3[1] = points[vtx3 + 1];
+                v3[2] = points[vtx3 + 2];
 
                 // Calculate normal for color gradient
-                float ax = vx2 - vx1;
-                float ay = vy2 - vy1;
-                float az = vz2 - vz1;
-
-                float bx = vx3 - vx1;
-                float by = vy3 - vy1;
-                float bz = vz3 - vz1;
-
-                // Vector product (c is at right angle to a and b)
-                float cx = ay * bz - az * by;
-                float cy = az * bx - ax * bz;
-                float cz = ax * by - ay * bx;
-
-                double len = Math.sqrt(cx * cx + cy * cy + cz * cz);
+                float[] normTris = GeometryUtils.normalOfPlane(v1, v2, v3, reuse);
+                double len = Math.sqrt(GeometryUtils.dotProduct(normTris, normTris));
 
                 // packing the normal in two bytes
                 //    int mx = FastMath.clamp(127 + (int) ((cx / len) * 128), 0, 0xff);
                 //    int my = FastMath.clamp(127 + (int) ((cy / len) * 128), 0, 0xff);
                 //    short normal = (short) ((my << 8) | (mx & NORMAL_DIR_MASK) | (cz > 0 ? 1 : 0));
 
-                double p = Math.sqrt((cz / len) * 8.0 + 8.0);
-                int mx = FastMath.clamp(127 + (int) ((cx / len / p) * 128), 0, 255);
-                int my = FastMath.clamp(127 + (int) ((cy / len / p) * 128), 0, 255);
+                double p = Math.sqrt((normTris[2] / len) * 8.0 + 8.0);
+                int mx = FastMath.clamp(127 + (int) ((normTris[0] / len / p) * 128), 0, 255);
+                int my = FastMath.clamp(127 + (int) ((normTris[1] / len / p) * 128), 0, 255);
                 short normal = (short) ((my << 8) | mx);
 
                 if (key == null)
                     key = vertexPool.get();
 
-                key.set((short) (vx1 * scale),
-                        (short) (vy1 * scale),
-                        (short) (vz1 * scale),
+                key.set((short) (v1[0] * scale),
+                        (short) (v1[1] * scale),
+                        (short) (v1[2] * scale),
                         normal);
 
                 Vertex vertex = mVertexMap.put(key, false);
@@ -241,9 +236,9 @@ public class ExtrusionBucket extends RenderBucket {
                     addMeshIndex(vertex, false);
                 }
 
-                key.set((short) (vx2 * scale),
-                        (short) (vy2 * scale),
-                        (short) (vz2 * scale),
+                key.set((short) (v2[0] * scale),
+                        (short) (v2[1] * scale),
+                        (short) (v2[2] * scale),
                         normal);
 
                 vertex = mVertexMap.put(key, false);
@@ -257,9 +252,9 @@ public class ExtrusionBucket extends RenderBucket {
                     addMeshIndex(vertex, false);
                 }
 
-                key.set((short) (vx3 * scale),
-                        (short) (vy3 * scale),
-                        (short) (vz3 * scale),
+                key.set((short) (v3[0] * scale),
+                        (short) (v3[1] * scale),
+                        (short) (v3[2] * scale),
                         (short) normal);
 
                 vertex = mVertexMap.put(key, false);

@@ -305,17 +305,18 @@ public final class GeometryUtils {
      * @param pC third point of plane
      * @return the normal of plane
      */
-    public static float[] normalOfPlane(float[] pA, float[] pB, float[] pC) {
+    public static float[] normalOfPlane(float[] pA, float[] pB, float[] pC, float[] reuse) {
         // Calculate normal for color gradient
         float[] BA = diffVec(pB, pA);
         float[] BC = diffVec(pC, pA);
 
         // Vector product (c is at right angle to a and b)
-        float[] normal = new float[3];
-        normal[0] = BA[1] * BC[2] - BA[2] * BC[1];
-        normal[1] = BA[2] * BC[0] - BA[0] * BC[2];
-        normal[2] = BA[0] * BC[1] - BA[1] * BC[0];
-        return normal;
+        if (reuse == null)
+            reuse = new float[3];
+        reuse[0] = BA[1] * BC[2] - BA[2] * BC[1];
+        reuse[1] = BA[2] * BC[0] - BA[0] * BC[2];
+        reuse[2] = BA[0] * BC[1] - BA[1] * BC[0];
+        return reuse;
     }
 
     /**
