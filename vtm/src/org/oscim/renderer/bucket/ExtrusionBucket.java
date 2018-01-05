@@ -68,6 +68,12 @@ public class ExtrusionBucket extends RenderBucket {
 
     private KeyMap<Vertex> mVertexMap;
 
+    /* temporary vars: only use in synchronized functions! */
+    private final float[] v1 = new float[3];
+    private final float[] v2 = new float[3];
+    private final float[] v3 = new float[3];
+    private final float[] reuse = new float[3];
+
     //private static final int NORMAL_DIR_MASK = 0xFFFFFFFE;
     //private int numIndexHits = 0;
 
@@ -185,23 +191,20 @@ public class ExtrusionBucket extends RenderBucket {
                 int vtx2 = index[k++] * 3;
                 int vtx3 = index[k++] * 3;
 
-                float[] v1 = new float[3];
                 v1[0] = points[vtx1 + 0];
                 v1[1] = points[vtx1 + 1];
                 v1[2] = points[vtx1 + 2];
 
-                float[] v2 = new float[3];
                 v2[0] = points[vtx2 + 0];
                 v2[1] = points[vtx2 + 1];
                 v2[2] = points[vtx2 + 2];
 
-                float[] v3 = new float[3];
                 v3[0] = points[vtx3 + 0];
                 v3[1] = points[vtx3 + 1];
                 v3[2] = points[vtx3 + 2];
 
                 // Calculate normal for color gradient
-                float[] normTris = GeometryUtils.normalOfPlane(v1, v2, v3);
+                float[] normTris = GeometryUtils.normalOfPlane(v1, v2, v3, reuse);
                 double len = Math.sqrt(GeometryUtils.dotProduct(normTris, normTris));
 
                 // packing the normal in two bytes
