@@ -108,6 +108,7 @@ public class SimpleMapActivity extends BaseMapActivity {
 
                     p.setTilt((float) (Math.random() * 60));
                     p.setBearing((float) (Math.random() * 360));
+                    p.setRoll((float) (Math.random() * 360));
                     //mMapView.map().setMapPosition(p);
 
                     mMapView.map().animator().animateTo(time, p);

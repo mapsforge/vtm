@@ -10,7 +10,7 @@ import org.oscim.map.Map;
 import java.util.HashMap;
 
 public class MapUrl extends Timer {
-    private int curLon, curLat, curZoom, curTilt, curRot;
+    private float curLon, curLat, curZoom, curTilt, curRot, curRoll;
     private MapPosition pos = new MapPosition();
     private final Map mMap;
     private String mParams = "";
@@ -40,6 +40,7 @@ public class MapUrl extends Timer {
         double lat = pos.getLatitude(), lon = pos.getLongitude();
         float rotation = pos.bearing;
         float tilt = pos.tilt;
+        float roll = pos.roll;
 
         //String themeName = "";
         //String mapName = "";
@@ -59,6 +60,8 @@ public class MapUrl extends Timer {
                     rotation = Float.parseFloat(p.substring(4));
                 else if (p.startsWith("tilt="))
                     tilt = Float.parseFloat(p.substring(5));
+                else if (p.startsWith("roll="))
+                    roll = Float.parseFloat(p.substring(5));
                     //    else if (p.startsWith("theme="))
                     //        themeName = p.substring(6);
                     //    else if (p.startsWith("map="))
@@ -83,36 +86,39 @@ public class MapUrl extends Timer {
                 MercatorProjection.latitudeToY(lat),
                 1 << zoom,
                 rotation,
-                tilt);
+                tilt, roll);
 
     }
 
     @Override
     public void run() {
         mMap.viewport().getMapPosition(pos);
-        int lat = (int) (MercatorProjection.toLatitude(pos.y) * 1000);
-        int lon = (int) (MercatorProjection.toLongitude(pos.x) * 1000);
-        int rot = (int) (pos.bearing);
-        rot = (int) (pos.bearing) % 360;
-        //rot = rot < 0 ? -rot : rot;
+        float lat = (float) (MercatorProjection.toLatitude(pos.y) * 1000000);
+        float lon = (float) (MercatorProjection.toLongitude(pos.x) * 1000000);
+        float rot = ((pos.bearing) % 360) * 1000000;
+        float roll = ((pos.roll) % 360) * 1000000;
+        float tilt = pos.tilt * 1000000;
+        float zoom = (float) pos.zoomLevel * 1000000;
 
-        if (curZoom != pos.zoomLevel || curLat != lat || curLon != lon
-                || curTilt != rot || curRot != (int) (pos.bearing)) {
+        if (curZoom != zoom || curLat != lat || curLon != lon
+                || curTilt != rot || curRot != rot || curRoll != roll) {
 
             curLat = lat;
             curLon = lon;
-            curZoom = pos.zoomLevel;
-            curTilt = (int) pos.tilt;
+            curZoom = zoom;
+            curTilt = tilt;
             curRot = rot;
+            curRoll = roll;
 
             String newURL = Window.Location
                     .createUrlBuilder()
                     .setHash(mParams
-                            + "scale=" + pos.zoomLevel
-                            + "&rot=" + curRot
-                            + "&tilt=" + curTilt
-                            + "&lat=" + (curLat / 1000f)
-                            + "&lon=" + (curLon / 1000f))
+                            + "scale=" + (curZoom / 1000000f)
+                            + "&rot=" + (curRot / 1000000f)
+                            + "&tilt=" + (curTilt / 1000000f)
+                            + "&roll=" + (curRoll / 1000000f)
+                            + "&lat=" + (curLat / 1000000f)
+                            + "&lon=" + (curLon / 1000000f))
                     .buildString();
             Window.Location.replace(newURL);
         }
