@@ -25,6 +25,8 @@ public final class GeometryUtils {
     private GeometryUtils() {
     }
 
+    // TODO Utils can be improved e.g. by avoiding object creations
+
     /**
      * Test if point x/y is in polygon defined by vertices[offset ...
      * offset+length]
@@ -101,19 +103,19 @@ public final class GeometryUtils {
         if (bisection[0] == 0 && bisection[1] == 0) {
             // 90 degree to v1
             bisection[0] = v1[1];
-            bisection[1] = v1[0];
+            bisection[1] = -v1[0];
         }
         return bisection;
     }
 
     /**
      * @param a first vector
-     * @param b second vector (same length as a)
+     * @param b second vector
      * @return a - b
      */
     public static float[] diffVec(float[] a, float[] b) {
-        float[] diff = new float[a.length];
-        for (int i = 0; i < a.length; i++) {
+        float[] diff = new float[Math.min(a.length, b.length)];
+        for (int i = 0; i < diff.length; i++) {
             diff[i] = a[i] - b[i];
         }
         return diff;
@@ -121,12 +123,12 @@ public final class GeometryUtils {
 
     /**
      * @param a first vector
-     * @param b second vector (same length as a)
+     * @param b second vector
      * @return a + b
      */
     public static float[] sumVec(float[] a, float[] b) {
-        float[] add = new float[a.length];
-        for (int i = 0; i < a.length; i++) {
+        float[] add = new float[Math.min(a.length, b.length)];
+        for (int i = 0; i < add.length; i++) {
             add[i] = b[i] + a[i];
         }
         return add;
@@ -260,14 +262,11 @@ public final class GeometryUtils {
     }
 
     /**
-     * @return more than 0 if points of triangle are clockwise, 0 if triangle is a line,
-     * else less than 0.
+     * @return a positive value, if pA-pB-pC makes a counter-clockwise turn,
+     * negative for clockwise turn, and zero if the points are collinear.
      */
     public static float isTrisClockwise(float[] pA, float[] pB, float[] pC) {
-        float v = (pB[0] - pA[0]) * (pB[1] + pA[1]);
-        v += (pC[0] - pB[0]) * (pC[1] + pB[1]);
-        v += (pA[0] - pC[0]) * (pA[1] + pC[1]);
-        return v;
+        return (pB[0] - pA[0]) * (pC[1] - pA[1]) - (pB[1] - pA[1]) * (pC[0] - pA[0]);
     }
 
     /**
@@ -329,6 +328,18 @@ public final class GeometryUtils {
             scaled[i] = v[i] * scale;
         }
         return scaled;
+    }
+
+    /**
+     * @param pP point
+     * @param pL point of line
+     * @param vL vector of line
+     * @return the minimum distance between line and point
+     */
+    public static float distancePointLine2D(float[] pP, float[] pL, float[] vL) {
+        float[] vPL = diffVec(pL, pP);
+        float[] vPS = diffVec(vPL, scale(vL, dotProduct(vPL, vL)));
+        return (float) Math.sqrt(dotProduct(vPS, vPS));
     }
 
     public static void main(String[] args) {

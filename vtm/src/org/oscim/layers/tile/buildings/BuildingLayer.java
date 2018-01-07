@@ -32,6 +32,8 @@ import org.oscim.renderer.bucket.ExtrusionBuckets;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.theme.styles.ExtrusionStyle;
 import org.oscim.theme.styles.RenderStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +43,9 @@ import java.util.Set;
 
 public class BuildingLayer extends Layer implements TileLoaderThemeHook {
 
-    private final static int BUILDING_LEVEL_HEIGHT = 280; // cm
+    static final Logger log = LoggerFactory.getLogger(BuildingLayer.class);
+
+    protected final static int BUILDING_LEVEL_HEIGHT = 280; // cm
 
     private final static int MIN_ZOOM = 17;
     private final static int MAX_ZOOM = 17;
@@ -52,7 +56,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
     private static final Object BUILDING_DATA = BuildingLayer.class.getName();
 
     // Can be replaced with Multimap in Java 8
-    private HashMap<Integer, List<BuildingElement>> mBuildings = new HashMap<>();
+    protected HashMap<Integer, List<BuildingElement>> mBuildings = new HashMap<>();
 
     class BuildingElement {
         MapElement element;
@@ -93,6 +97,8 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
     @Override
     public boolean process(MapTile tile, RenderBuckets buckets, MapElement element,
                            RenderStyle style, int level) {
+        // FIXME check why some buildings are processed up to 4 times (should avoid overhead)
+        // and fix artifacts at tile borders
 
         if (!(style instanceof ExtrusionStyle))
             return false;
@@ -128,7 +134,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
      * @param extrusion the style of map element
      * @param tile      the tile which contains map element
      */
-    private void processElement(MapElement element, ExtrusionStyle extrusion, MapTile tile) {
+    protected void processElement(MapElement element, ExtrusionStyle extrusion, MapTile tile) {
         int height = 0; // cm
         int minHeight = 0; // cm
 
@@ -162,7 +168,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
      *
      * @param tile the tile which contains stored map elements
      */
-    private void processElements(MapTile tile) {
+    protected void processElements(MapTile tile) {
         if (!mBuildings.containsKey(tile.hashCode()))
             return;
 

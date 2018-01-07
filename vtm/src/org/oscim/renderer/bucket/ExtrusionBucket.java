@@ -20,6 +20,7 @@ package org.oscim.renderer.bucket;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.core.Tile;
+import org.oscim.layers.tile.buildings.S3DBUtils;
 import org.oscim.utils.FastMath;
 import org.oscim.utils.KeyMap;
 import org.oscim.utils.KeyMap.HashItem;
@@ -360,14 +361,8 @@ public class ExtrusionBucket extends RenderBucket {
         int[] index = element.index;
         float[] points = element.points;
 
-        /* 10 cm steps */
-        float sfactor = 1 / 10f;
-        height *= sfactor;
-        minHeight *= sfactor;
-
-        /* match height with ground resultion (meter per pixel) */
-        height /= mGroundResolution;
-        minHeight /= mGroundResolution;
+        height = S3DBUtils.mapGroundScale(height, mGroundResolution);
+        minHeight = S3DBUtils.mapGroundScale(minHeight, mGroundResolution);
 
         boolean complexOutline = false;
         boolean simpleOutline = true;
