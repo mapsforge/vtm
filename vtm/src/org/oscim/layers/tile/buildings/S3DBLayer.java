@@ -123,7 +123,7 @@ public class S3DBLayer extends BuildingLayer {
         Integer bColor = null;
         if (mColored) {
             if (element.tags.containsKey(Tag.KEY_BUILDING_COLOR)) {
-                bColor = S3DBUtils.getColor(element.tags.getValue(Tag.KEY_BUILDING_COLOR), false);
+                bColor = S3DBUtils.getColor(element.tags.getValue(Tag.KEY_BUILDING_COLOR), false, false);
             } else if (element.tags.containsKey(Tag.KEY_BUILDING_MATERIAL)) {
                 bColor = S3DBUtils.getMaterialColor(element.tags.getValue(Tag.KEY_BUILDING_MATERIAL), false);
             }
@@ -210,7 +210,7 @@ public class S3DBLayer extends BuildingLayer {
         if (mColored) {
             v = element.tags.getValue(Tag.KEY_ROOF_COLOR);
             if (v != null)
-                roofColor = S3DBUtils.getColor(v, true);
+                roofColor = S3DBUtils.getColor(v, true, false);
             else if ((v = element.tags.getValue(Tag.KEY_ROOF_MATERIAL)) != null)
                 roofColor = S3DBUtils.getMaterialColor(v, true);
         }

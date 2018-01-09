@@ -1054,16 +1054,17 @@ public final class S3DBUtils {
     }
 
     /**
-     * @param color the color as string (see http://wiki.openstreetmap.org/wiki/Key:colour)
-     * @param roof  declare if color is used for roofs
+     * @param color     the color as string (see http://wiki.openstreetmap.org/wiki/Key:colour)
+     * @param roof      declare if color is used for roofs
+     * @param relative  declare if colors are modified relative to their values
      * @return the color as integer (8 bit each a, r, g, b)
      */
-    public static int getColor(String color, boolean roof) {
+    public static int getColor(String color, boolean roof, boolean relative) {
 
         if (color.charAt(0) == '#') {
             int c = Color.parseColor(color, Color.CYAN);
             /* hardcoded colors are way too saturated for my taste */
-            return ColorUtil.modHsv(c, 1.0, 0.4, HSV_V, true);
+            return ColorUtil.modHsv(c, 1.0, 0.4, HSV_V, relative);
         }
 
         if (roof) {
@@ -1101,7 +1102,7 @@ public final class S3DBUtils {
         Integer css = ColorsCSS.get(color);
 
         if (css != null)
-            return ColorUtil.modHsv(css, 1.0, HSV_S, HSV_V, true);
+            return ColorUtil.modHsv(css, 1.0, HSV_S, HSV_V, relative);
 
         log.debug("unknown color:{}", color);
         return 0;
