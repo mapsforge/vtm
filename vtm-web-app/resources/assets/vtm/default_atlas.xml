@@ -590,9 +590,10 @@
                 <extrusion line-color="#ffd9d8d6" side-color="#eaecebe9" top-color="#eaf9f8f6" />
             </m>
             <m zoom-min="17">
-                <caption style="bold" fill="#4040ff" k="name" size="10" stroke="#ffffff"
+                <caption style="bold" fill="#2d51bc" k="name" size="10" stroke="#ffffff"
                     stroke-width="2.0" />
-                <caption style="bold" fill="#606060" k="addr:housenumber" size="10" stroke="#ffffff"
+                <caption font-family="condensed" style="bold" fill="#606060" k="addr:housenumber"
+                    size="10" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
         </m>
@@ -956,7 +957,7 @@
 
         <!-- historic -->
         <!-- <m k="historic" v="ruins" zoom-min="17">
-          <caption k="name" style="bold" size="10" fill="#4040ff" stroke="#ffffff" stroke-width="2.0"
+          <caption k="name" style="bold" size="10" fill="#2d51bc" stroke="#ffffff" stroke-width="2.0"
           />
           </m> -->
 
@@ -1006,14 +1007,14 @@
         </m>
 
         <!-- historic -->
-        <!-- <m k="historic"> <circle r="3" fill="#4040ff" stroke="#606060"
+        <!-- <m k="historic"> <circle r="3" fill="#2d51bc" stroke="#606060"
           width="1.5" /> <m zoom-min="17"> <caption
-          k="name" dy="10" style="bold" size="10" fill="#4040ff" stroke="#ffffff"
+          k="name" dy="10" style="bold" size="10" fill="#2d51bc" stroke="#ffffff"
           width="2.0" /> </m> </m> -->
 
         <!-- house numbers -->
         <!-- <m k="addr:housenumber" zoom-min="18"> <caption
-          k="addr:housenumber" style="bold" size="10" fill="#606060" stroke="#ffffff"
+          k="addr:housenumber" font-family="condensed" style="bold" size="10" fill="#606060" stroke="#ffffff"
           width="2.0" /> </m> -->
 
         <!-- place -->
@@ -1053,14 +1054,14 @@
         <!-- railway -->
         <m k="railway">
             <m v="station" zoom-min="14">
-                <circle fill="#ec2d2d" radius="6" stroke="#606060" stroke-width="1.5" />
-                <caption style="bold" dy="15" fill="#ec2d2d" k="name" size="13" stroke="#ffffff"
+                <circle fill="#af3a3a" radius="6" stroke="#606060" stroke-width="1.5" />
+                <caption style="bold" dy="15" fill="#af3a3a" k="name" size="13" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
 
             <m v="halt|tram_stop">
-                <circle fill="#ec2d2d" radius="4" stroke="#606060" stroke-width="1.5" />
-                <caption style="bold" dy="10" fill="#ec2d2d" k="name" size="11" stroke="#ffffff"
+                <circle fill="#af3a3a" radius="4" stroke="#606060" stroke-width="1.5" />
+                <caption style="bold" dy="10" fill="#af3a3a" k="name" size="11" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
             <m v="level_crossing">

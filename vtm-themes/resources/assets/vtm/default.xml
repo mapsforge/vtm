@@ -12,6 +12,9 @@
     <style-text style="bold" fill="#101010" id="major-road" k="name" priority="1" size="16"
         stroke="#eeeeee" stroke-width="2.0" />
 
+    <style-text font-family="medium" caption="true" dy="20" fill="#2d51bc" id="caption-small-blue"
+        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+
     <style-text style="bold" fill="#606060" id="ref" k="ref" priority="2" size="12" stroke="#ffffff"
         stroke-width="2.0" />
     <style-text caption="true" id="ref-caption" use="ref" />
@@ -605,9 +608,9 @@
                 <extrusion line-color="#ffd9d8d6" side-color="#eaecebe9" top-color="#eaf9f8f6" />
             </m>
             <m zoom-min="17">
-                <caption style="bold" fill="#4040ff" k="name" priority="9" size="14"
-                    stroke="#ffffff" stroke-width="2.0" />
-                <caption style="bold" fill="#606060" k="addr:housenumber" priority="10" size="12"
+                <text priority="9" use="caption-small-blue" />
+                <caption font-family="condensed" style="bold" fill="#606060" k="addr:housenumber"
+                    priority="10" size="12"
                     stroke="#ffffff" stroke-width="2.0" />
             </m>
         </m>
@@ -1007,7 +1010,7 @@
 
         <!-- historic -->
         <!-- <m k="historic" v="ruins" zoom-min="17">
-          <caption k="name" style="bold" size="10" fill="#4040ff" stroke="#ffffff" stroke-width="2.0"
+          <caption k="name" style="bold" size="10" fill="#2d51bc" stroke="#ffffff" stroke-width="2.0"
           />
           </m> -->
 
@@ -1126,13 +1129,13 @@
         <m k="railway">
             <m v="station" zoom-min="14">
                 <symbol src="assets:symbols/transport/train_station2.svg" />
-                <caption style="bold" dy="20" fill="#ec2d2d" k="name" size="14" stroke="#ffffff"
+                <caption style="bold" dy="20" fill="#af3a3a" k="name" size="14" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
 
             <m v="halt|tram_stop">
                 <symbol src="assets:symbols/transport/tram_stop.svg" />
-                <caption style="bold" dy="20" fill="#ec2d2d" k="name" size="14" stroke="#ffffff"
+                <caption style="bold" dy="20" fill="#af3a3a" k="name" size="14" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
             <m v="level_crossing">
@@ -1283,10 +1286,14 @@
                     <symbol src="assets:symbols/amenity/toilets.svg" />
                 </m>
             </m>
+
+            <m zoom-min="15">
+                <text use="caption-small-blue" />
+            </m>
         </m>
 
         <m k="shop">
-            <m select="first" zoom-min="15">
+            <m select="first" zoom-min="16">
                 <m v="bakery">
                     <symbol src="assets:symbols/shopping/bakery.svg" />
                 </m>
@@ -1307,6 +1314,10 @@
                 <m select="when-matched" zoom-min="17">
                     <text use="poi" />
                 </m>
+            </m>
+
+            <m zoom-min="15">
+                <text use="caption-small-blue" />
             </m>
         </m>
 
@@ -1349,6 +1360,9 @@
                 <symbol src="assets:symbols/tourist/museum.svg" />
             </m>
 
+            <m zoom-min="15">
+                <text use="caption-small-blue" />
+            </m>
         </m>
 
         <m k="natural" v="peak" zoom-min="12">
@@ -1361,7 +1375,8 @@
 
         <!-- house numbers -->
         <m k="addr:housenumber" zoom-min="17">
-            <caption style="bold" fill="#606060" k="addr:housenumber" size="12" stroke="#ffffff"
+            <caption font-family="condensed" style="bold" fill="#606060" k="addr:housenumber"
+                size="12" stroke="#ffffff"
                 stroke-width="2.0" />
         </m>
     </m>

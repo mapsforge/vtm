@@ -3,7 +3,8 @@
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
-    <style-text style="bold" caption="true" dy="20" fill="#4040ff" id="caption-small-blue" k="name"
+    <style-text font-family="medium" caption="true" dy="20" fill="#2d51bc" id="caption-small-blue"
+        k="name"
         size="16" stroke="#ffffff" stroke-width="2.0" />
 
     <style-text style="bold" fill="#eeffee" id="road" k="name" priority="2" size="18"
@@ -540,9 +541,10 @@
                 <extrusion line-color="#50ff00ff" side-color="#cc707070" top-color="#cc707070" />
             </m>
             <m zoom-min="17">
-                <caption style="bold" fill="#4040ff" k="name" priority="9" size="14"
+                <caption style="bold" fill="#2d51bc" k="name" priority="9" size="14"
                     stroke="#ffffff" stroke-width="2.0" />
-                <caption style="bold" fill="#ffffff" k="addr:housenumber" priority="10" size="12"
+                <caption font-family="condensed" style="bold" fill="#ffffff" k="addr:housenumber"
+                    priority="10" size="12"
                     stroke="#606060" stroke-width="2.0" />
             </m>
         </m>
@@ -1009,7 +1011,7 @@
 
         <!-- historic -->
         <!-- <m k="historic" v="ruins" zoom-min="17">
-          <caption k="name" style="bold" size="10" fill="#4040ff" stroke="#ffffff" stroke-width="2.0"
+          <caption k="name" style="bold" size="10" fill="#2d51bc" stroke="#ffffff" stroke-width="2.0"
           />
           </m> -->
 
@@ -1274,12 +1276,12 @@
             </m>
             <m v="station" zoom-min="14">
                 <symbol src="assets:symbols/transport/train_station2.svg" />
-                <caption style="bold" dy="20" fill="#ec2d2d" k="name" size="14" stroke="#ffffff"
+                <caption style="bold" dy="20" fill="#af3a3a" k="name" size="14" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
             <m v="halt|tram_stop" zoom-min="15">
                 <symbol src="assets:symbols/transport/tram_stop.svg" />
-                <caption style="bold" dy="20" fill="#ec2d2d" k="name" size="14" stroke="#ffffff"
+                <caption style="bold" dy="20" fill="#af3a3a" k="name" size="14" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
         </m>
@@ -1330,7 +1332,8 @@
 
         <!-- house numbers -->
         <m k="addr:housenumber" zoom-min="17">
-            <caption style="bold" fill="#ffffff" k="addr:housenumber" size="12" stroke="#606060"
+            <caption font-family="condensed" style="bold" fill="#ffffff" k="addr:housenumber"
+                size="12" stroke="#606060"
                 stroke-width="2.0" />
         </m>
     </m>

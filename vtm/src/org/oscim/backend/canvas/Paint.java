@@ -41,7 +41,7 @@ public interface Paint {
     }
 
     enum FontFamily {
-        DEFAULT, DEFAULT_BOLD, MONOSPACE, SANS_SERIF, SERIF
+        DEFAULT, DEFAULT_BOLD, MONOSPACE, SANS_SERIF, SERIF, THIN, LIGHT, MEDIUM, BLACK, CONDENSED
     }
 
     enum FontStyle {
