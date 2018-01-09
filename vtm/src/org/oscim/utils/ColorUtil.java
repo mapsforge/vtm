@@ -45,13 +45,21 @@ public class ColorUtil {
         return hsvToRgb(hsl.x, clamp(saturation * hsl.y, 0, 1), hsl.z);
     }
 
+    /**
+     * @param hue        the hue
+     * @param saturation the saturation
+     * @param value      the lightness (usual a range from 0 to 2)
+     * @param relative   indicate if colors are modified relative to their values
+     *                   (e.g black not changes if relative)
+     */
     public static synchronized int modHsv(int color, double hue, double saturation, double value,
                                           boolean relative) {
         Vec3 hsl = TMP_VEC;
         rgbToHsv(r(color), g(color), b(color), hsl);
         return hsvToRgb(clamp(hue * hsl.x, 0, 1),
                 clamp(saturation * hsl.y, 0, 1),
-                clamp(value * hsl.z, 0, 1));
+                clamp(relative || (value - 1) < 0 ? value * hsl.z :
+                        hsl.z + (value - 1) * (1 - hsl.z), 0, 1));
     }
 
     // functions ported from http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
