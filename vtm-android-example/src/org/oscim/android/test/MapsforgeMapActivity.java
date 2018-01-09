@@ -173,6 +173,7 @@ public class MapsforgeMapActivity extends MapActivity {
                 mTileLayer = mMap.setBaseMap(mTileSource);
                 loadTheme(null);
 
+                //mMap.layers().add(new S3DBLayer(mMap, mTileLayer));
                 mMap.layers().add(new BuildingLayer(mMap, mTileLayer));
                 mMap.layers().add(new LabelLayer(mMap, mTileLayer));
 

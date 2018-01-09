@@ -124,6 +124,7 @@ public class Samples extends Activity {
 
         linearLayout.addView(createLabel("Experiments"));
         linearLayout.addView(createButton(ReverseGeocodeActivity.class));
+        /*linearLayout.addView(createButton(MapsforgeMapS3DBMapActivity.class));*/
         linearLayout.addView(createButton(OSciMapS3DBMapActivity.class));
         linearLayout.addView(createButton(ThemeStylerActivity.class));
         linearLayout.addView(createButton(JeoIndoorMapActivity.class));
