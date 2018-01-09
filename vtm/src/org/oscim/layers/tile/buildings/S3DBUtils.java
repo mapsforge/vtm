@@ -667,19 +667,20 @@ public final class S3DBUtils {
 
             List<Byte> simpleAngles = getSimpleAngles(normVectors);
 
-            Integer indexStart = getStartIndex(simpleAngles, lengths, orientationAcross);
+            Integer indexStart = getIndexStart(simpleAngles, lengths, orientationAcross);
 
             int countConcavAngles = 0;
             for (Byte simpleAngle : simpleAngles) {
-                if (simpleAngle > 0)
+                if (simpleAngle > 1)
                     countConcavAngles++;
             }
 
-
-            // Calc pyramidal mesh, if roof has no nearly right angle
+            // Calc different mesh, if roof has no nearly right angle
             if (indexStart == null) {
-                calcPyramidalMesh(element, minHeight, maxHeight);
-                return true;
+                if (isGabled)
+                    return calcSimpleGabledMesh(element, minHeight, maxHeight, orientationAcross, specialParts);
+                else
+                    return calcPyramidalMesh(element, minHeight, maxHeight);
             }
 
             List<float[]> bisections = getBisections(normVectors);
@@ -1235,6 +1236,7 @@ public final class S3DBUtils {
         // List<Float> angles = new ArrayList<>();
         List<Byte> simpAngls = new ArrayList<>();
         float tmpAnlgeSum = 0;
+        float threshold = MathUtils.PI / 12;
         for (int k = 0; k < size; k++) {
             // Check angle between next and this vector
             float[] v2 = normVectors.get(k);
@@ -1245,13 +1247,13 @@ public final class S3DBUtils {
 
             // Positive is turns right, negative turns left
             byte simpAngle = (byte) Math.signum(v1[0] * (-v2[1]) + v1[1] * v2[0]);
-            if (angle > (MathUtils.PI / 2) - 0.2) {
+            if (angle > (MathUtils.PI / 2) - threshold) {
                 // Right angle
                 simpAngle *= 2;
                 tmpAnlgeSum = 0;
-            } else if (angle < MathUtils.PI / 20) {
+            } else if (angle < threshold) {
                 tmpAnlgeSum += simpAngle * angle; // Many small angles, indicate a corner
-                if (Math.abs(tmpAnlgeSum) > MathUtils.PI / 20) {
+                if (Math.abs(tmpAnlgeSum) > threshold) {
                     // Can improve sum of concave/convex shapes
                     simpAngle = (byte) Math.signum(tmpAnlgeSum);
                     tmpAnlgeSum = 0;
@@ -1336,16 +1338,17 @@ public final class S3DBUtils {
     /**
      * @return the best index to begin a calculation
      */
-    private static Integer getStartIndex(List<Byte> simpleAngles, List<Float> lengths, boolean directionAcross) {
+    private static Integer getIndexStart(List<Byte> simpleAngles, List<Float> lengths, boolean directionAcross) {
         int size = simpleAngles.size();
         Integer indexStart = null;
         Integer concaveStart = null;
         for (int i = 0; i < size; i++) {
             if (indexStart != null && concaveStart != null) break;
-            if (indexStart == null && simpleAngles.get(i) < 0) {
+            if (indexStart == null && simpleAngles.get(i) < -1) {
                 // Use first angle as start index;
                 indexStart = i;
-            } else if (concaveStart == null && simpleAngles.get(i) > 0) {
+            } else if (concaveStart == null && simpleAngles.get(i) > 1) {
+                // A real concave corner
                 concaveStart = i;
             }
         }
