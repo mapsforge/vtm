@@ -28,6 +28,7 @@ import org.robovm.apple.foundation.NSAttributedString;
 import org.robovm.apple.uikit.NSAttributedStringAttributes;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIFont;
+import org.robovm.apple.uikit.UIFontDescriptor;
 import org.robovm.apple.uikit.UIFontWeight;
 
 import java.util.HashMap;
@@ -60,10 +61,6 @@ public class IosPaint implements Paint {
         }
         return CGLineJoin.Miter;
     }
-
-    private static final String DEFAULT_FONT_NAME = UIFont.getSystemFont(1, UIFontWeight.Semibold).getFontDescriptor().getPostscriptName();
-    private static final String DEFAULT_FONT_NAME_BOLD = UIFont.getSystemFont(1, UIFontWeight.Bold).getFontDescriptor().getPostscriptName();
-    private static final String DEFAULT_FONT_NAME_ITALIC = UIFont.getItalicSystemFont(1).getFontDescriptor().getPostscriptName();
 
     private Align align;
     private final NSAttributedStringAttributes attribs = new NSAttributedStringAttributes();
@@ -210,100 +207,126 @@ public class IosPaint implements Paint {
         /*
           DEVICE_DEFAULT = [iOS == getDeviceDefault()], [Android == 'Roboto']
           MONOSPACE      = [iOS == 'Courier'], [Android == 'Droid Sans Mono']
-          SANS_SERIF     = [iOS == 'Verdena'], [Android == 'Droid Sans']
+          SANS_SERIF     = [iOS == 'HelveticaNeue'], [Android == 'Droid Sans']
           SERIF          = [iOS == 'Georgia'], [Android == 'Droid Serif']
          */
 
-        String fontname = DEFAULT_FONT_NAME;
+        // Better approach: use font descriptor
+        // UIFontDescriptor fontD = font.getFontDescriptor();
+
+        UIFontWeight weight = UIFontWeight.Regular;
         switch (this.fontFamily) {
-            case DEFAULT:
-                // set Style
-                switch (this.fontStyle) {
-                    case NORMAL:
-                        fontname = DEFAULT_FONT_NAME;
-                        break;
-                    case BOLD:
-                        fontname = DEFAULT_FONT_NAME_BOLD;
-                        break;
-                    case BOLD_ITALIC:
-                        fontname = DEFAULT_FONT_NAME_BOLD;
-                        break;
-                    case ITALIC:
-                        fontname = DEFAULT_FONT_NAME_ITALIC;
-                        break;
-                }
-                break;
             case DEFAULT_BOLD:
-                // ignore style
-                fontname = DEFAULT_FONT_NAME_BOLD;
+                weight = UIFontWeight.Bold;
                 break;
-            case MONOSPACE:
-                // set Style
-                switch (this.fontStyle) {
-                    case NORMAL:
-                        fontname = "CourierNewPS-BoldMT";
-                        break;
-                    case BOLD:
-                        fontname = "CourierNewPS-BoldMT";
-                        break;
-                    case BOLD_ITALIC:
-                        fontname = "CourierNewPS-BoldMT";
-                        break;
-                    case ITALIC:
-                        fontname = "CourierNewPS-BoldMT";
-                        break;
-                }
+            case MEDIUM:
+                weight = UIFontWeight.Medium;
                 break;
-            case SANS_SERIF:
-                // set Style
-                switch (this.fontStyle) {
-                    case NORMAL:
-                        fontname = "Verdana";
-                        break;
-                    case BOLD:
-                        fontname = "Verdana-Bold";
-                        break;
-                    case BOLD_ITALIC:
-                        fontname = "Verdana-BoldItalic";
-                        break;
-                    case ITALIC:
-                        fontname = "Verdana-Italic";
-                        break;
-                }
+            case THIN:
+                weight = UIFontWeight.Thin;
                 break;
-            case SERIF:
-                // set Style
-                switch (this.fontStyle) {
-                    case NORMAL:
-                        fontname = "Georgia";
-                        break;
-                    case BOLD:
-                        fontname = "Georgia-Bold";
-                        break;
-                    case BOLD_ITALIC:
-                        fontname = "Georgia-BoldItalic";
-                        break;
-                    case ITALIC:
-                        fontname = "Georgia-Italic";
-                        break;
-                }
+            case LIGHT:
+                weight = UIFontWeight.Light;
                 break;
+            case BLACK:
+                weight = UIFontWeight.Black;
+                break;
+//            case SANS_SERIF:
+//                break;
+//            case CONDENSED:
+//                break;
+//            case SERIF:
+//                break;
+//            case MONOSPACE:
+//                break;
         }
 
         synchronized (attribs) {
-            String key = fontname + this.textSize;
+            UIFont font = null;
+            String fontname = null;
 
-            //try to get buffered font
-            UIFont font = fontHashMap.get(key);
+            switch (this.fontStyle) {
+                case BOLD:
+                    switch (this.fontFamily) {
+                        case CONDENSED:
+                            fontname = "HelveticaNeue-CondensedBold";
+                            break;
+                        case SERIF:
+                            fontname = "Georgia-Bold";
+                            break;
+                        case MONOSPACE:
+                            fontname = "CourierNewPS-BoldMT";
+                            break;
+                        default:
+                            // Always bold
+                            font = UIFont.getSystemFont(textSize, UIFontWeight.Bold);
+                    }
+                    break;
+                case ITALIC:
+                    switch (this.fontFamily) {
+                        case CONDENSED:
+                            fontname = "HelveticaNeue-Italic";
+                            break;
+                        case SERIF:
+                            fontname = "Georgia-Italic";
+                            break;
+                        case MONOSPACE:
+                            fontname = "CourierNewPS-ItalicMT";
+                            break;
+                        default:
+                            // Add differences in italic weight
+                            font = UIFont.getItalicSystemFont(textSize);
+                    }
+                    break;
+                case BOLD_ITALIC:
+                    switch (this.fontFamily) {
+                        case CONDENSED:
+                            fontname = "HelveticaNeue-BoldItalic";
+                            break;
+                        case SERIF:
+                            fontname = "Georgia-BoldItalic";
+                            break;
+                        case MONOSPACE:
+                            fontname = "CourierNewPS-BoldItalicMT";
+                            break;
+                        default:
+                            // Always bold and italic
+                            fontname = "HelveticaNeue-BoldItalic";
+                    }
+                    break;
+                default:
+                    switch (this.fontFamily) {
+                        case CONDENSED:
+                            fontname = "HelveticaNeue";
+                            // or if better "HelveticaNeue-CondensedBold", cond. regular not available
+                            break;
+                        case SERIF:
+                            fontname = "Georgia";
+                            break;
+                        case MONOSPACE:
+                            fontname = "CourierNewPSMT";
+                            break;
+                        default:
+                            font = UIFont.getSystemFont(textSize, weight);
+                    }
+                    break;
+            }
 
             if (font == null) {
-                CTFont ctFont = CTFont.create(fontname, this.textSize, CGAffineTransform.Identity());
+                String key = fontname + this.textSize;
 
-                descent = (float) ctFont.getDescent();
-                fontHeight = (float) ctFont.getBoundingBox().getHeight();
+                //try to get buffered font
+                font = fontHashMap.get(key);
 
-                font = ctFont.as(UIFont.class);
-                fontHashMap.put(key, font);
+                if (font == null) {
+                    CTFont ctFont = CTFont.create(fontname, this.textSize, CGAffineTransform.Identity());
+
+                    descent = (float) ctFont.getDescent();
+                    fontHeight = (float) ctFont.getBoundingBox().getHeight();
+
+                    font = ctFont.as(UIFont.class);
+                    fontHashMap.put(key, font);
+                }
             }
 
             CTFont ctFont = font.as(CTFont.class);
