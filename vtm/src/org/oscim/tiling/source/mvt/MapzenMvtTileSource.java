@@ -66,6 +66,6 @@ public class MapzenMvtTileSource extends UrlTileSource {
 
     @Override
     public ITileDataSource getDataSource() {
-        return new UrlTileDataSource(this, new TileDecoder(locale), getHttpEngine());
+        return new UrlTileDataSource(this, new MvtTileDecoder(locale), getHttpEngine());
     }
 }
