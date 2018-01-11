@@ -1155,7 +1155,7 @@
 
             <m v="halt|tram_stop">
                 <symbol src="assets:symbols/transport/tram_stop.svg" />
-                <caption style="bold" dy="20" fill="#af3a3a" k="name" size="14" stroke="#ffffff"
+                <caption style="bold" dy="20" fill="#af3a3a" k="name" size="12" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
             <m v="level_crossing">

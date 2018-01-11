@@ -12,6 +12,9 @@
     <style-text style="bold" fill="#101010" id="major-road" k="name" priority="1" size="16"
         stroke="#eeeeee" stroke-width="2.0" />
 
+    <style-text font-family="medium" caption="true" dy="20" fill="#2d51bc" id="caption-small-blue"
+        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+
     <style-text style="bold" fill="#606060" id="ref" k="ref" priority="2" size="12" stroke="#ffffff"
         stroke-width="2.0" />
     <style-text caption="true" id="ref-caption" use="ref" />
@@ -403,6 +406,9 @@
                 <symbol src="assets:symbols/tourist/museum.svg" />
             </m>
 
+            <m zoom-min="14">
+                <text use="caption-small-blue" />
+            </m>
         </m>
     </m>
 </rendertheme>

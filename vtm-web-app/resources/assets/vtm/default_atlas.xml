@@ -12,6 +12,9 @@
     <style-text style="bold" fill="#101010" id="major-road" k="name" priority="1" size="16"
         stroke="#eeeeee" stroke-width="2.0" />
 
+    <style-text font-family="medium" caption="true" dy="20" fill="#2d51bc" id="caption-small-blue"
+        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+
     <style-text caption="true" dy="16" fill="#777744" id="poi" k="name" size="16" stroke="#aaffffff"
         stroke-width="2.0" />
 
@@ -590,8 +593,7 @@
                 <extrusion line-color="#ffd9d8d6" side-color="#eaecebe9" top-color="#eaf9f8f6" />
             </m>
             <m zoom-min="17">
-                <caption style="bold" fill="#2d51bc" k="name" size="10" stroke="#ffffff"
-                    stroke-width="2.0" />
+                <text priority="9" use="caption-small-blue" />
                 <caption font-family="condensed" style="bold" fill="#606060" k="addr:housenumber"
                     size="10" stroke="#ffffff"
                     stroke-width="2.0" />
@@ -1055,13 +1057,13 @@
         <m k="railway">
             <m v="station" zoom-min="14">
                 <circle fill="#af3a3a" radius="6" stroke="#606060" stroke-width="1.5" />
-                <caption style="bold" dy="15" fill="#af3a3a" k="name" size="13" stroke="#ffffff"
+                <caption style="bold" dy="15" fill="#af3a3a" k="name" size="14" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
 
             <m v="halt|tram_stop">
                 <circle fill="#af3a3a" radius="4" stroke="#606060" stroke-width="1.5" />
-                <caption style="bold" dy="10" fill="#af3a3a" k="name" size="11" stroke="#ffffff"
+                <caption style="bold" dy="10" fill="#af3a3a" k="name" size="12" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
             <m v="level_crossing">
@@ -1200,6 +1202,10 @@
                     <symbol src="toilets" />
                 </m>
             </m>
+
+            <m zoom-min="15">
+                <text use="caption-small-blue" />
+            </m>
         </m>
 
         <m k="shop">
@@ -1224,6 +1230,9 @@
                 <m select="when-matched" zoom-min="17">
                     <text use="poi" />
                 </m>
+            </m>
+            <m zoom-min="15">
+                <text use="caption-small-blue" />
             </m>
         </m>
 
@@ -1266,6 +1275,9 @@
                 <symbol src="museum" />
             </m>
 
+            <m zoom-min="15">
+                <text use="caption-small-blue" />
+            </m>
         </m>
 
         <m k="natural" v="tree" zoom-min="15">

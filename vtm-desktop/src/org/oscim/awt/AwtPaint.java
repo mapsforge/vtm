@@ -49,35 +49,46 @@ public class AwtPaint implements Paint {
         throw new IllegalArgumentException("unknown cap: " + cap);
     }
 
-    private static String getFontFamily(FontFamily fontFamily, Map<Attribute, Object> optTextAttr) {
+    private static Font getFont(FontFamily fontFamily, FontStyle fontStyle, int textSize) {
+        Map<Attribute, Object> attributes = null;
+        String name = null;
+
         switch (fontFamily) {
             case MONOSPACE:
-                return Font.MONOSPACED;
-            case DEFAULT:
-            case DEFAULT_BOLD:
-                return null;
+                attributes = TEXT_ATTRIBUTES;
+                name = Font.MONOSPACED;
+                break;
             case SANS_SERIF:
-                return Font.SANS_SERIF;
+                attributes = TEXT_ATTRIBUTES;
+                name = Font.SANS_SERIF;
+                break;
             case SERIF:
-                return Font.SERIF;
+                attributes = TEXT_ATTRIBUTES;
+                name = Font.SERIF;
+                break;
             case THIN:
-                optTextAttr.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_EXTRA_LIGHT);
-                return null;
+                attributes = new HashMap<>(TEXT_ATTRIBUTES);
+                attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_EXTRA_LIGHT);
+                break;
             case LIGHT:
-                optTextAttr.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_LIGHT);
-                return null;
+                attributes = new HashMap<>(TEXT_ATTRIBUTES);
+                attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_LIGHT);
+                break;
             case MEDIUM:
-                optTextAttr.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_MEDIUM);
-                return null;
+                attributes = new HashMap<>(TEXT_ATTRIBUTES);
+                attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_MEDIUM);
+                break;
             case BLACK:
-                optTextAttr.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_HEAVY);
-                return null;
+                attributes = new HashMap<>(TEXT_ATTRIBUTES);
+                attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_HEAVY);
+                break;
             case CONDENSED:
-                optTextAttr.put(TextAttribute.WIDTH, TextAttribute.WIDTH_CONDENSED);
-                return null;
+                attributes = new HashMap<>(TEXT_ATTRIBUTES);
+                attributes.put(TextAttribute.WEIGHT, TextAttribute.WIDTH_CONDENSED);
+                break;
         }
 
-        throw new IllegalArgumentException("unknown fontFamily: " + fontFamily);
+        return new Font(name, getFontStyle(fontStyle), textSize).deriveFont(attributes);
     }
 
     private static int getFontStyle(FontStyle fontStyle) {
@@ -124,8 +135,6 @@ public class AwtPaint implements Paint {
     Stroke stroke;
     Style style = Style.FILL;
     private int cap = getCap(Cap.BUTT);
-    private String fontName = DEFAULT_FONT.getFontName();
-    private int fontStyle = DEFAULT_FONT.getStyle();
     private int join = getJoin(Join.MITER);
     private float strokeWidth;
     private float textSize = DEFAULT_FONT.getSize();
@@ -185,10 +194,7 @@ public class AwtPaint implements Paint {
 
     @Override
     public void setTypeface(FontFamily fontFamily, FontStyle fontStyle) {
-        Map<Attribute, Object> tmpAttributes = new HashMap<>(this.TEXT_ATTRIBUTES);
-        this.fontName = getFontFamily(fontFamily, tmpAttributes);
-        this.fontStyle = getFontStyle(fontStyle);
-        this.font = new Font(this.fontName, this.fontStyle, (int) this.textSize).deriveFont(tmpAttributes);
+        this.font = getFont(fontFamily, fontStyle, (int) this.textSize);
     }
 
     @Override
