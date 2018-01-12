@@ -30,7 +30,7 @@ public class OpenMapTilesMvtTileSource extends UrlTileSource {
         private String locale = "";
 
         public Builder() {
-            super(DEFAULT_URL, DEFAULT_PATH, 1, 17);
+            super(DEFAULT_URL, DEFAULT_PATH, 1, 14);
             keyName("key");
         }
 
