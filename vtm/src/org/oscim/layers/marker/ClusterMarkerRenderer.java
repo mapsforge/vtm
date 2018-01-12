@@ -311,6 +311,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
         /* keep position for current state */
         mMapPosition.copy(v.pos);
         mMapPosition.bearing = -mMapPosition.bearing;
+        mMapPosition.roll = -mMapPosition.roll;
 
         // why do we sort ? z-index?
         sort(mItems, 0, mItems.length);

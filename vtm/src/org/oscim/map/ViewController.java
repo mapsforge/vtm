@@ -200,6 +200,19 @@ public class ViewController extends Viewport {
         updateMatrices();
     }
 
+    public void setRoll(double degree) {
+        ThreadUtils.assertMainThread();
+
+        while (degree > 360)
+            degree -= 360;
+        while (degree < 0)
+            degree += 360;
+
+        mPos.roll = (float) degree;
+
+        updateMatrices();
+    }
+
     public boolean tiltMap(float move) {
         return setTilt(mPos.tilt + move);
     }
@@ -234,7 +247,8 @@ public class ViewController extends Viewport {
     private void updateMatrices() {
         /* - view matrix:
          * 0. apply rotate
-         * 1. apply tilt */
+         * 1. apply tilt
+         * 2. apply roll */
 
         mRotationMatrix.setRotation(mPos.bearing, 0, 0, 1);
         mTmpMatrix.setRotation(mPos.tilt, 1, 0, 0);
@@ -245,6 +259,9 @@ public class ViewController extends Viewport {
         mViewMatrix.copy(mRotationMatrix);
 
         mTmpMatrix.setTranslation(0, mPivotY * mHeight, 0);
+        mViewMatrix.multiplyLhs(mTmpMatrix);
+
+        mTmpMatrix.setRotation(mPos.roll, 0, 0, 1);
         mViewMatrix.multiplyLhs(mTmpMatrix);
 
         mViewProjMatrix.multiplyMM(mProjMatrix, mViewMatrix);

@@ -48,6 +48,11 @@ public class MapPosition {
     public float tilt;
 
     /**
+     * Perspective roll
+     */
+    public float roll;
+
+    /**
      * Zoom-level for current scale.
      * - To be removed: FastMath.log2(scale)
      * - use setZoomLevel() to modify
@@ -60,6 +65,7 @@ public class MapPosition {
         this.y = 0.5;
         this.zoomLevel = 1;
         this.bearing = 0;
+        this.roll = 0;
     }
 
     public MapPosition(double latitude, double longitude, double scale) {
@@ -103,6 +109,15 @@ public class MapPosition {
         return this;
     }
 
+    public float getRoll() {
+        return roll;
+    }
+
+    public MapPosition setRoll(float roll) {
+        this.roll = roll;
+        return this;
+    }
+
     public double getScale() {
         return scale;
     }
@@ -142,6 +157,7 @@ public class MapPosition {
         this.scale = other.scale;
         this.tilt = other.tilt;
         this.zoomLevel = other.zoomLevel;
+        this.roll = other.roll;
     }
 
     public void set(double x, double y, double scale, float bearing, float tilt) {
@@ -154,12 +170,21 @@ public class MapPosition {
         this.zoomLevel = FastMath.log2((int) scale);
     }
 
+    public void set(double x, double y, double scale, float bearing, float tilt, float roll) {
+        this.set(x, y, scale, bearing, tilt);
+        this.roll = clampRoll(roll);
+    }
+
     private static float clampBearing(float bearing) {
         while (bearing > 180)
             bearing -= 360;
         while (bearing < -180)
             bearing += 360;
         return bearing;
+    }
+
+    private static float clampRoll(float roll) {
+        return clampBearing(roll); // Uses the same logic
     }
 
     /**
@@ -197,6 +222,7 @@ public class MapPosition {
         y = miny + dy / 2;
         bearing = 0;
         tilt = 0;
+        roll = 0;
     }
 
     @Override

@@ -52,6 +52,7 @@ class GwtMap extends GdxMap {
 
     BuildingLayer mBuildingLayer;
     BuildingSolutionControl mBuildingSolutionControl;
+    CameraRollControl mCameraRollControl;
     SearchBox mSearchBox;
 
     @Override
@@ -77,7 +78,7 @@ class GwtMap extends GdxMap {
 
         super.create();
 
-        MapPosition p = new MapPosition();
+        final MapPosition p = new MapPosition();
         p.setZoomLevel(c.getZoom());
         p.setPosition(c.getLatitude(), c.getLongitude());
 
@@ -175,6 +176,18 @@ class GwtMap extends GdxMap {
                 mMap.updateMap(true);
             }
         });
+
+        mCameraRollControl = new CameraRollControl("#camera-roll-input");
+        mCameraRollControl.addValueChangeListener(new BuildingSolutionControl.ValueChangeListener() {
+            @Override
+            public void onValueChange(int val, int max) {
+                MapPosition p = mMap.getMapPosition();
+                p.setRoll((float) val / (float) max * 360.0f);
+                mMap.setMapPosition(p);
+            }
+        });
+
         mBuildingSolutionControl.init();
+        mCameraRollControl.init();
     }
 }
