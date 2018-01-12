@@ -137,6 +137,7 @@ public class GwtPaint implements Paint {
                 break;
             case MONOSPACE:
                 name = "'Courier New'";
+                break;
             case CONDENSED:
                 sb.append("condensed ");
         }
@@ -146,11 +147,11 @@ public class GwtPaint implements Paint {
                 weight = "bold";
                 break;
             case ITALIC:
-                sb.append("italic");
+                sb.append("italic ");
                 break;
             case BOLD_ITALIC:
                 weight = "bold";
-                sb.append("italic");
+                sb.append("italic ");
         }
         if (weight != null)
             sb.append(weight).append(" ");

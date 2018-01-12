@@ -50,7 +50,7 @@ public class AwtPaint implements Paint {
     }
 
     private static Font getFont(FontFamily fontFamily, FontStyle fontStyle, int textSize) {
-        Map<Attribute, Object> attributes = null;
+        Map<Attribute, Object> attributes;
         String name = null;
 
         switch (fontFamily) {
@@ -66,26 +66,18 @@ public class AwtPaint implements Paint {
                 attributes = TEXT_ATTRIBUTES;
                 name = Font.SERIF;
                 break;
-            case THIN:
-                attributes = new HashMap<>(TEXT_ATTRIBUTES);
-                attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_EXTRA_LIGHT);
-                break;
-            case LIGHT:
-                attributes = new HashMap<>(TEXT_ATTRIBUTES);
-                attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_LIGHT);
-                break;
-            case MEDIUM:
-                attributes = new HashMap<>(TEXT_ATTRIBUTES);
-                attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_MEDIUM);
-                break;
+            case MEDIUM: // Java deriveFont does not differ this weight
             case BLACK:
                 attributes = new HashMap<>(TEXT_ATTRIBUTES);
-                attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_HEAVY);
+                attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
                 break;
             case CONDENSED:
                 attributes = new HashMap<>(TEXT_ATTRIBUTES);
-                attributes.put(TextAttribute.WEIGHT, TextAttribute.WIDTH_CONDENSED);
+                attributes.put(TextAttribute.WIDTH, TextAttribute.WIDTH_CONDENSED);
                 break;
+            default:
+                // THIN and LIGHT aren't differed from DEFAULT in Java deriveFont
+                attributes = TEXT_ATTRIBUTES;
         }
 
         return new Font(name, getFontStyle(fontStyle), textSize).deriveFont(attributes);
