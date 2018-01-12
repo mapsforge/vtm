@@ -4,7 +4,7 @@ apply plugin: 'maven'
 dependencies {
     api "org.slf4j:slf4j-api:$slf4jVersion"
     compileOnly 'com.google.code.findbugs:jsr305:3.0.1'
-    compile 'uk.os.vt:vt-legacy-parser:2.0.7'
+    compile 'com.wdtinc:mapbox-vector-tile:2.0.0'
 }
 
 sourceSets {

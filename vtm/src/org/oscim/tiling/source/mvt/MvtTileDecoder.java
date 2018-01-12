@@ -27,6 +27,10 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.wdtinc.mapbox_vector_tile.adapt.jts.MvtReader;
+import com.wdtinc.mapbox_vector_tile.adapt.jts.TagKeyValueMapConverter;
+import com.wdtinc.mapbox_vector_tile.adapt.jts.model.JtsLayer;
+import com.wdtinc.mapbox_vector_tile.adapt.jts.model.JtsMvt;
 
 import org.oscim.core.MapElement;
 import org.oscim.core.Tag;
@@ -37,11 +41,6 @@ import org.oscim.tiling.source.ITileDecoder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-
-import uk.os.vt.mvt.adapt.jts.MvtReader;
-import uk.os.vt.mvt.adapt.jts.TagKeyValueMapConverter;
-import uk.os.vt.mvt.adapt.jts.model.JtsLayer;
-import uk.os.vt.mvt.adapt.jts.model.JtsMvt;
 
 public class MvtTileDecoder implements ITileDecoder {
     private final String mLocale;
@@ -74,32 +73,25 @@ public class MvtTileDecoder implements ITileDecoder {
         JtsMvt jtsMvt = MvtReader.loadMvt(
                 is,
                 geomFactory,
-                new TagKeyValueMapConverter());
+                new TagKeyValueMapConverter(),
+                MvtReader.RING_CLASSIFIER_V1);
 
 
         for (JtsLayer layer : jtsMvt.getLayers()) {
             for (Geometry geometry : layer.getGeometries()) {
-                try {
-                    parseGeometry(layer, geometry);
-                } catch (Exception e) {
-                    System.out.println("Error Occured");
-                    System.err.println(e.getMessage());
-                    e.printStackTrace();
-                }
-
+                parseGeometry(layer.getName(), geometry, (Map<String, Object>) geometry.getUserData());
             }
         }
 
         return true;
     }
 
-    private void parseGeometry(JtsLayer layer, Geometry geometry) {
+    private void parseGeometry(String layerName, Geometry geometry, Map<String, Object> tags) {
         mMapElement.clear();
         mMapElement.tags.clear();
 
-        parseTags(layer, geometry);
+        parseTags(tags, layerName);
         if (mMapElement.tags.size() == 0) {
-            System.out.println("Cannot find anything for geometry " + geometry + " " + geometry.getUserData());
             return;
         }
 
@@ -128,11 +120,11 @@ public class MvtTileDecoder implements ITileDecoder {
             for (int i = 0; i < multiPolygon.getNumGeometries(); i++) {
                 processPolygon((Polygon) multiPolygon.getGeometryN(i));
             }
-        }else{
+        } else {
             err = true;
         }
 
-        if(!err){
+        if (!err) {
             mTileDataSink.process(mMapElement);
         }
     }
@@ -158,16 +150,14 @@ public class MvtTileDecoder implements ITileDecoder {
         }
     }
 
-    private void parseTags(JtsLayer layer, Geometry geometry) {
-        mMapElement.tags.add(new Tag("layer", layer.getName()));
+    private void parseTags(Map<String, Object> map, String layerName) {
+        mMapElement.tags.add(new Tag("layer", layerName));
         boolean hasName = false;
         String fallbackName = null;
-        Map<String, Object> map = (Map<String, Object>) geometry.getUserData();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
             String val = (value instanceof String) ? (String) value : String.valueOf(value);
-
             if (key.startsWith(Tag.KEY_NAME)) {
                 int len = key.length();
                 if (len == 4) {
