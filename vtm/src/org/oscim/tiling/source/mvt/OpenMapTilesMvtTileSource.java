@@ -21,17 +21,17 @@ import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.source.UrlTileDataSource;
 import org.oscim.tiling.source.UrlTileSource;
 
-public class MapzenMvtTileSource extends UrlTileSource {
+public class OpenMapTilesMvtTileSource extends UrlTileSource {
 
-    private final static String DEFAULT_URL = "https://tile.mapzen.com/mapzen/vector/v1/all";
-    private final static String DEFAULT_PATH = "/{Z}/{X}/{Y}.mvt";
+    private final static String DEFAULT_URL = "https://free.tilehosting.com/data/v3";
+    private final static String DEFAULT_PATH = "/{Z}/{X}/{Y}.pbf.pict";
 
     public static class Builder<T extends Builder<T>> extends UrlTileSource.Builder<T> {
         private String locale = "";
 
         public Builder() {
-            super(DEFAULT_URL, DEFAULT_PATH, 1, 17);
-            keyName("api_key");
+            super(DEFAULT_URL, DEFAULT_PATH, 1, 14);
+            keyName("key");
         }
 
         public T locale(String locale) {
@@ -39,8 +39,8 @@ public class MapzenMvtTileSource extends UrlTileSource {
             return self();
         }
 
-        public MapzenMvtTileSource build() {
-            return new MapzenMvtTileSource(this);
+        public OpenMapTilesMvtTileSource build() {
+            return new OpenMapTilesMvtTileSource(this);
         }
     }
 
@@ -51,16 +51,16 @@ public class MapzenMvtTileSource extends UrlTileSource {
 
     private final String locale;
 
-    public MapzenMvtTileSource(Builder<?> builder) {
+    public OpenMapTilesMvtTileSource(Builder<?> builder) {
         super(builder);
         this.locale = builder.locale;
     }
 
-    public MapzenMvtTileSource() {
+    public OpenMapTilesMvtTileSource() {
         this(builder());
     }
 
-    public MapzenMvtTileSource(String urlString) {
+    public OpenMapTilesMvtTileSource(String urlString) {
         this(builder().url(urlString));
     }
 
