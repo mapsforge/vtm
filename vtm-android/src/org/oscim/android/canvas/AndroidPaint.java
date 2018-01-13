@@ -26,33 +26,46 @@ import org.oscim.backend.canvas.Paint;
 
 class AndroidPaint implements Paint {
 
-    private static int getStyle(org.oscim.backend.canvas.Paint.FontStyle fontStyle) {
+    private static Typeface getTypeface(org.oscim.backend.canvas.Paint.FontFamily fontFamily,
+                                        org.oscim.backend.canvas.Paint.FontStyle fontStyle) {
+        int style;
+
         switch (fontStyle) {
             case BOLD:
-                return Typeface.BOLD;
+                style = Typeface.BOLD;
+                break;
             case BOLD_ITALIC:
-                return Typeface.BOLD_ITALIC;
+                style = Typeface.BOLD_ITALIC;
+                break;
             case ITALIC:
-                return Typeface.ITALIC;
+                style = Typeface.ITALIC;
+                break;
             case NORMAL:
-                return Typeface.NORMAL;
+            default:
+                style = Typeface.NORMAL;
         }
 
-        throw new IllegalArgumentException("unknown font style: " + fontStyle);
-    }
-
-    private static Typeface getTypeface(org.oscim.backend.canvas.Paint.FontFamily fontFamily) {
         switch (fontFamily) {
             case DEFAULT:
-                return Typeface.DEFAULT;
+                return Typeface.create(Typeface.DEFAULT, style);
             case DEFAULT_BOLD:
-                return Typeface.DEFAULT_BOLD;
+                return Typeface.create(Typeface.DEFAULT_BOLD, style);
             case MONOSPACE:
-                return Typeface.MONOSPACE;
+                return Typeface.create(Typeface.MONOSPACE, style);
             case SANS_SERIF:
-                return Typeface.SANS_SERIF;
+                return Typeface.create(Typeface.SANS_SERIF, style);
             case SERIF:
-                return Typeface.SERIF;
+                return Typeface.create(Typeface.SERIF, style);
+            case MEDIUM:
+                return Typeface.create("sans-serif-medium", style);
+            case LIGHT:
+                return Typeface.create("sans-serif-light", style);
+            case THIN:
+                return Typeface.create("sans-serif-thin", style);
+            case BLACK:
+                return Typeface.create("sans-serif-black", style);
+            case CONDENSED:
+                return Typeface.create("sans-serif-condensed", style);
         }
 
         throw new IllegalArgumentException("unknown font family: " + fontFamily);
@@ -111,8 +124,7 @@ class AndroidPaint implements Paint {
 
     @Override
     public void setTypeface(FontFamily fontFamily, FontStyle fontStyle) {
-        Typeface typeface = Typeface.create(getTypeface(fontFamily),
-                getStyle(fontStyle));
+        Typeface typeface = getTypeface(fontFamily, fontStyle);
         mPaint.setTypeface(typeface);
     }
 

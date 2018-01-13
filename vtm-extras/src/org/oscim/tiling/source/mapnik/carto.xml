@@ -296,7 +296,7 @@
                 -->
             </m>
             <m zoom-min="17">
-                <caption fill="#4040ff" font-size="10" font-style="bold" k="name" stroke="#ffffff"
+                <caption fill="#2d51bc" font-size="10" font-style="bold" k="name" stroke="#ffffff"
                     stroke-width="2.0" />
                 <caption fill="#606060" font-size="10" font-style="bold" k="addr:housenumber"
                     stroke="#ffffff" stroke-width="2.0" />
@@ -629,9 +629,9 @@
         -->
         <!-- historic -->
         <!--
-          <m k="historic"> <circle r="3" fill="#4040ff" stroke="#606060"
+          <m k="historic"> <circle r="3" fill="#2d51bc" stroke="#606060"
           width="1.5" /> <m zoom-min="17"> <caption
-          k="name" dy="10" font-style="bold" font-size="10" fill="#4040ff" stroke="#ffffff"
+          k="name" dy="10" font-style="bold" font-size="10" fill="#2d51bc" stroke="#ffffff"
           width="2.0" /> </m> </m>
         -->
         <!-- house numbers -->
@@ -672,16 +672,16 @@
         <!-- railway -->
         <m k="railway">
             <m v="station" zoom-min="14">
-                <circle fill="#ec2d2d" r="6" stroke="#606060" stroke-width="1.5" />
+                <circle fill="#af3a3a" r="6" stroke="#606060" stroke-width="1.5" />
                 <!--
-                  <caption k="name" dy="15" font-style="bold" font-size="13" fill="#ec2d2d"
+                  <caption k="name" dy="15" font-style="bold" font-size="13" fill="#af3a3a"
                   stroke="#ffffff" stroke-width="2.0" />
                 -->
             </m>
             <m v="halt|tram_stop" zoom-min="17">
-                <circle fill="#ec2d2d" r="4" stroke="#606060" stroke-width="1.5" />
+                <circle fill="#af3a3a" r="4" stroke="#606060" stroke-width="1.5" />
                 <!--
-                  <caption k="name" dy="10" font-style="bold" font-size="11" fill="#ec2d2d"
+                  <caption k="name" dy="10" font-style="bold" font-size="11" fill="#af3a3a"
                   stroke="#ffffff" stroke-width="2.0" />
                 -->
             </m>

@@ -33,7 +33,7 @@ public class GwtPaint implements Paint {
     float fontSize = 12;
 
     private FontStyle fontStyle = FontStyle.NORMAL;
-    //private FontFamily fontFamily = FontFamily.DEFAULT;
+    private FontFamily fontFamily = FontFamily.DEFAULT;
 
     //String font = "12px sans-serif";
     String font = "13px Helvetica";
@@ -91,7 +91,7 @@ public class GwtPaint implements Paint {
     @Override
     public void setTypeface(FontFamily fontFamily, FontStyle fontStyle) {
         this.fontStyle = fontStyle;
-        //this.fontFamily = fontFamily;
+        this.fontFamily = fontFamily;
         buildFont();
     }
 
@@ -111,21 +111,54 @@ public class GwtPaint implements Paint {
         return 4 + strokeWidth;
     }
 
-    void buildFont() {
+    private void buildFont() {
         StringBuilder sb = new StringBuilder();
+        String weight = null; // Default 400 -> normal
+        String name = "Helvetica";
 
-        if (this.fontStyle == FontStyle.BOLD)
-            sb.append("bold ");
-        else if (this.fontStyle == FontStyle.ITALIC)
-            sb.append("italic ");
+        switch (this.fontFamily) {
+            case MEDIUM:
+                weight = "500";
+                break;
+            case BLACK:
+                weight = "900";
+                break;
+            case DEFAULT_BOLD:
+                weight = "bold"; // 700
+                break;
+            case LIGHT:
+                weight = "300";
+                break;
+            case THIN:
+                weight = "200"; //lighter
+                break;
+            case SERIF:
+                name = "Georgia";
+                break;
+            case MONOSPACE:
+                name = "'Courier New'";
+                break;
+            case CONDENSED:
+                sb.append("condensed ");
+        }
 
+        switch (this.fontStyle) {
+            case BOLD:
+                weight = "bold";
+                break;
+            case ITALIC:
+                sb.append("italic ");
+                break;
+            case BOLD_ITALIC:
+                weight = "bold";
+                sb.append("italic ");
+        }
+        if (weight != null)
+            sb.append(weight).append(" ");
         sb.append(Math.round(this.fontSize));
-        sb.append("px ");
-
-        sb.append("Helvetica");
+        sb.append("px ").append(name);
 
         this.font = sb.toString();
-
     }
 
     @Override

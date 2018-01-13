@@ -49,6 +49,11 @@
             <xs:enumeration value="monospace" />
             <xs:enumeration value="sans_serif" />
             <xs:enumeration value="serif" />
+            <xs:enumeration value="thin" />
+            <xs:enumeration value="light" />
+            <xs:enumeration value="medium" />
+            <xs:enumeration value="black" />
+            <xs:enumeration value="condensed" />
         </xs:restriction>
     </xs:simpleType>
 
