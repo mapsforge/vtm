@@ -3,29 +3,51 @@
     map-background="#fffcfa" version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
-    <!-- base style for fixed width lines -->
-    <style-line cap="butt" fix="true" id="fix" width="1.0" />
+    <!--###### TEXT styles ######-->
 
+    <!--default label-->
     <style-text caption="true" dy="20" fill="#2d51bc" font-family="medium" id="caption-small-blue"
         k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
-
+    <!--shop-->
+    <style-text caption="true" dy="20" fill="#ac39ac" font-family="medium" id="shop" k="name"
+        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--tavern-->
+    <style-text caption="true" dy="20" fill="#734a08" font-family="medium" id="tavern" k="name"
+        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--accommodation-->
+    <style-text caption="true" dy="20" fill="#0092da" font-family="medium" id="accommodation"
+        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--education-->
+    <style-text caption="true" dy="20" fill="#0a4f0a" font-family="medium" id="education" k="name"
+        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--health-->
+    <style-text caption="true" dy="20" fill="#da0092" font-family="medium" id="health" k="name"
+        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--other POIs-->
+    <style-text caption="true" dy="16" fill="#777744" id="poi" k="name" size="16" stroke="#aaffffff"
+        stroke-width="2.0" />
+    <!--roads-->
     <style-text fill="#101010" id="road" k="name" priority="2" size="16" stroke="#eeeeee"
         stroke-width="2.0" />
-
+    <!--major roads-->
     <style-text style="bold" fill="#101010" id="major-road" k="name" priority="1" size="16"
         stroke="#eeeeee" stroke-width="2.0" />
 
-    <style-text caption="true" dy="16" fill="#777744" id="poi" k="name" size="16" stroke="#aaffffff"
-        stroke-width="2.0" />
 
+    <!--###### AREA styles ######-->
+
+    <!--residential-->
     <style-area fade="11" fill="#e8e7e3" id="residential" />
-
+    <!--railway-->
     <style-area fade="10" fill="#e6e3e5" id="railway|industrial" />
 
-
+    <!--wood-->
     <!-- fade out at z=7, blend over to 'blend-fill' in z=11 -->
     <!-- src="textures/wood.png" -->
     <!-- <style-area id="wood" fill="#d1dbc7" fade="8" blend="11" blend-fill="#9ac56e" /> -->
+    <style-area blend="11" blend-fill="#83aa5b" fade="8" fill="#b3d095" id="wood" use="park" />
+    <!-- <style-line id="wood" fix="true" cap="butt" width="1.0" stroke="#9ac56e" /> -->
+    <!-- <style-area id="wood" use="park" fill="#9ac56e" fade="8" stroke="#d1dbc7" stroke-width="1.0"/> -->
 
     <style-area id="tex1" src="textures/rough.png" />
 
@@ -38,23 +60,18 @@
     <!-- grassland|scrub -->
     <style-area fade="10" fill="#c2cba5" id="darkgreen" use="tex1" />
 
+    <!-- <style-area id="greens" fill="#d2e5ce" fade="10" /> -->
+
+    <!--farmland-->
     <style-area fade="12" fill="#e4dab5" id="farmland" stroke="#d1dbc7" stroke-width="1.0"
         use="tex1" />
-
-    <!-- <style-area id="greens" fill="#d2e5ce" fade="10" /> -->
 
     <!-- marsh|wetland|mud|nature_reserve -->
     <style-area fade="12" fill="#deecb9" id="greens2" />
 
     <!-- park|common|green|cemetery|golf_course|dog_park -->
     <style-area fade="11" fill="#9ac56e" id="park" use="tex1" />
-    <!-- <style-area id="wood" use="park" fill="#9ac56e" fade="8" stroke="#d1dbc7" stroke-width="1.0"/> -->
-
-    <style-area blend="11" blend-fill="#83aa5b" fade="8" fill="#b3d095" id="wood" use="park" />
-    <!-- <style-line id="wood" fix="true" cap="butt" width="1.0" stroke="#9ac56e" /> -->
-
     <!-- <style-area id="park" fill="#a3ca7b" fade="11" /> -->
-    <style-line cap="butt" fade="14" fix="true" id="park" stroke="#9ac56e" width="1.0" />
 
     <!-- de:Kleingartengebiet -->
     <style-area fade="12" fill="#efeae0" id="allotments" use="tex1" />
@@ -62,6 +79,23 @@
     <!-- de:Steinbruch, Schotter-, Kies-, Sand- und Tongrube -->
     <style-area fade="10" fill="#ddddcc" id="quarry" />
     <style-area fade="10" fill="#eeedea" id="military" />
+
+    <!--building-->
+    <style-area fade="15" fill="#f2f0eb" id="building" stroke="#b7b6b3" stroke-width="1.0" />
+    <!--<style-area id="building" fill="#e9e6e3" fade="15"/>-->
+
+    <!--water-->
+    <!--<style-area id="water" fill="#97b7e5" afc5e3 /> -->
+    <!-- src="textures/water.png" -->
+    <style-area fade="-1" fill="#99badf" id="water" use="tex1" />
+
+
+    <!--###### LINE styles ######-->
+
+    <!-- base style for fixed width lines -->
+    <style-line cap="butt" fix="true" id="fix" width="1.0" />
+
+    <!--residential-->
     <style-line id="residential" stroke="#ffffff" width="1.3" />
     <style-line cap="butt" id="residential:bridge" use="residential" />
 
@@ -88,31 +122,31 @@
     <!-- <style-line id="footway:z16" use="footway" width="-0.95" fixed="false" fade="-1"/> -->
     <style-line id="footway:z17" stroke="#faf8f5" width="0.3" />
 
-    <!-- de: ein Weg der für Reiter vorgeshen ist.. -->
+    <!-- de: ein Weg der für Reiter vorgesehen ist.. -->
     <style-line cap="butt" id="bridleway" stipple-stroke="#837b58" stroke="#d3cb98" use="footway"
         width="0.1" />
     <style-line cap="butt" fix="true" id="steps" stipple="2" stipple-stroke="#be6253"
         stipple-width="1.0" stroke="#aaffffff" width="4.2" />
     <style-line cap="butt" fix="true" id="water:outline" stroke="#a4bbcc" width="1.0" />
 
-    <style-line cap="butt" fix="true" id="water" stroke="#a4bbcc" width="1.0" />
-    <style-line fix="false" id="river" stroke="#a4bbcc" use="water" />
-
-    <!--<style-area id="water" fill="#97b7e5" afc5e3 /> -->
-    <!-- src="textures/water.png" -->
-    <style-area fade="-1" fill="#99badf" id="water" use="tex1" />
-
     <!-- no-go area boundary -->
     <style-line cap="butt" fix="true" id="fence" stroke="#444444" width="1.2" />
     <style-line cap="butt" id="aeroway:runway" stroke="#c8ccbe" width="1.8" />
 
+    <!--park-->
+    <style-line cap="butt" fade="14" fix="true" id="park" stroke="#9ac56e" width="1.0" />
+
+    <!--building-->
     <!-- <style-line id="building" stroke="#c9c3c1" width="1.0" fix="true" cap="butt" fade="15"/> -->
-    <!-- <style-line id="building" stroke="#d0cec8" width="1.0" fix="true" cap="butt" fade="15"/>
-      <style-area id="building" fill="#e9e6e3" fade="15"/> -->
-
+    <!-- <style-line id="building" stroke="#d0cec8" width="1.0" fix="true" cap="butt" fade="15"/> -->
     <style-line fade="15" id="building" stroke="#eeb7b6b3" use="fix" />
-    <style-area fade="15" fill="#f2f0eb" id="building" stroke="#b7b6b3" stroke-width="1.0" />
 
+    <!--water-->
+    <style-line cap="butt" fix="true" id="water" stroke="#a4bbcc" width="1.0" />
+    <style-line fix="false" id="river" stroke="#a4bbcc" use="water" />
+
+
+    <!--###### ASSIGNMENT ######-->
 
     <atlas img="atlas/osm.png">
         <rect id="airport" pos="1 40 16 16" />
@@ -121,7 +155,7 @@
         <rect id="cafe" pos="67 88 16 16" />
         <rect id="camping" pos="71 110 16 16" />
         <rect id="cinema" pos="1 102 24 24" />
-        <rect id="city" pos="55 11 10 10" />
+        <rect id="city" pos="55 11 10 10" /> <!--used as dot-->
         <rect id="department_store" pos="67 70 16 16" />
         <rect id="fast_food" pos="67 52 16 16" />
         <rect id="florist" pos="67 34 16 16" />
@@ -592,10 +626,14 @@
             <m zoom-min="17">
                 <extrusion line-color="#ffd9d8d6" side-color="#eaecebe9" top-color="#eaf9f8f6" />
             </m>
-            <m zoom-min="17">
-                <text priority="9" use="caption-small-blue" />
-                <caption style="bold" fill="#606060" font-family="condensed" k="addr:housenumber"
-                    size="10" stroke="#ffffff" stroke-width="2.0" />
+
+            <!--Only add house numbers where no name exist-->
+            <m k="addr:housenumber" zoom-min="17">
+                <m k="name" v="~">
+                    <caption style="bold" fill="#606060" font-family="condensed"
+                        k="addr:housenumber" priority="10" size="10" stroke="#ffffff"
+                        stroke-width="2.0" />
+                </m>
             </m>
         </m>
 
@@ -947,11 +985,11 @@
         <m k="admin_level">
             <m k="admin_level" v="4">
                 <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0"
-                    stroke="#dadada" width="1.3" />
+                    stroke="#dadada" width="2.0" />
             </m>
             <m k="admin_level" v="2">
                 <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0"
-                    stroke="#dadada" width="1.6" />
+                    stroke="#bbbbbb" width="2.5" />
             </m>
         </m>
         <!-- </m> -->
@@ -976,7 +1014,17 @@
 
     </m><!-- end e="way" -->
 
-    <m e="node" select="first">
+    <m k="name" select="first">
+
+        <!-- aeroway -->
+        <m k="aeroway">
+            <m k="aeroway" v="helipad" zoom-min="16">
+                <symbol src="heliport" />
+            </m>
+            <m k="aeroway" v="aerodrome|airport">
+                <symbol src="airport" />
+            </m>
+        </m>
 
         <m k="barrier">
             <m zoom-min="10">
@@ -1070,99 +1118,108 @@
             </m>
         </m>
 
-        <!-- aeroway -->
-        <m k="aeroway">
-            <m k="aeroway" v="helipad" zoom-min="16">
-                <symbol src="heliport" />
-            </m>
-            <m k="aeroway" v="aerodrome|airport">
-                <symbol src="airport" />
-            </m>
-        </m>
-
         <m k="amenity">
-
             <m select="first" zoom-min="15">
                 <m v="hospital">
                     <symbol src="hospital" />
+                    <m zoom-min="16">
+                        <text priority="9" use="health" />
+                    </m>
                 </m>
-                <m k="amenity" v="school">
-                    <symbol src="school" />
-                </m>
-                <m k="amenity" v="university|college">
-                    <symbol src="university" />
-                </m>
-                <m k="amenity" v="library">
+                <m v="library">
                     <symbol src="library" />
+                    <m zoom-min="16">
+                        <text priority="9" use="caption-small-blue" />
+                    </m>
                 </m>
-                <m k="amenity" v="cinema">
+                <m v="cinema">
                     <symbol src="cinema" />
+                    <m zoom-min="16">
+                        <text priority="9" use="caption-small-blue" />
+                    </m>
                 </m>
 
-                <m select="when-matched">
-                    <text use="poi" />
+                <m>
+                    <m v="school">
+                        <symbol src="school" />
+                    </m>
+                    <m v="university|college">
+                        <symbol src="university" />
+                    </m>
+
+                    <m select="when-matched" zoom-min="17">
+                        <text priority="9" use="education" />
+                    </m>
                 </m>
             </m>
 
             <m select="first" zoom-min="16">
-                <m v="atm" zoom-min="17">
-                    <symbol src="atm" />
+                <m>
+                    <m v="cafe">
+                        <symbol src="cafe" />
+                    </m>
+                    <m v="pub">
+                        <symbol src="pub" />
+                    </m>
+                    <m v="bar">
+                        <symbol src="bar" />
+                    </m>
+                    <m v="fast_food">
+                        <symbol src="fast_food" />
+                    </m>
+                    <m v="restaurant">
+                        <symbol src="restaurant" />
+                    </m>
+
+                    <m select="when-matched">
+                        <text use="tavern" />
+                    </m>
                 </m>
-                <m v="cafe">
-                    <symbol src="cafe" />
-                </m>
-                <m v="pub">
-                    <symbol src="pub" />
-                </m>
-                <m v="bar">
-                    <symbol src="bar" />
-                </m>
-                <m v="fast_food">
-                    <symbol src="fast_food" />
-                </m>
-                <m v="restaurant">
-                    <symbol src="restaurant" />
-                </m>
-                <m k="amenity" v="bus_station">
+
+                <m v="bus_station">
                     <symbol src="bus_station" />
-                </m>
-                <m select="when-matched">
                     <text use="poi" />
                 </m>
             </m>
 
             <m select="first" zoom-min="17">
-                <m k="amenity" v="bank">
+                <m v="atm" zoom-min="17">
+                    <symbol src="atm" />
+                </m>
+                <m v="bank">
                     <symbol src="bank" />
                 </m>
-                <m k="amenity" v="bench">
+                <m v="bench">
                     <symbol src="bench" />
                 </m>
-                <m k="amenity" v="bicycle_rental">
+                <m v="bicycle_rental">
                     <symbol src="bicycle_rental" />
                 </m>
-                <m k="amenity" v="drinking_water">
+                <m v="drinking_water">
                     <symbol src="drinking_water" />
                 </m>
-                <m k="amenity" v="fire_station">
+                <m v="fire_station">
                     <symbol src="fire_station" />
                 </m>
-                <m k="amenity" v="fountain">
+                <m v="fountain">
                     <symbol src="fountain" />
                 </m>
-                <m k="amenity" v="fuel">
+                <m v="fuel">
                     <symbol src="petrolStation" />
                 </m>
-                <m k="amenity" v="kindergarten">
+                <m v="kindergarten">
                     <symbol src="kindergarten" />
+                    <text priority="9" use="education" />
                 </m>
-                <m k="amenity" v="parking">
+                <m v="parking">
                     <symbol src="parking" />
+                    <text priority="9" use="accommodation" />
                 </m>
-                <m k="amenity" v="pharmacy">
+                <m v="pharmacy">
                     <symbol src="pharmacy" />
+                    <text priority="9" use="health" />
                 </m>
-                <m k="amenity" v="place_of_worship">
+                <m v="place_of_worship">
                     <m k="denomination|religion" v="jewish">
                         <symbol src="synagogue" />
                     </m>
@@ -1173,22 +1230,22 @@
                         <symbol src="church" />
                     </m>
                 </m>
-                <m k="amenity" v="post_box">
+                <m v="post_box">
                     <symbol src="postbox" />
                 </m>
-                <m k="amenity" v="post_office">
+                <m v="post_office">
                     <symbol src="postoffice" />
                 </m>
-                <m k="amenity" v="recycling">
+                <m v="recycling">
                     <symbol src="recycling" />
                 </m>
-                <m k="amenity" v="shelter">
+                <m v="shelter">
                     <symbol src="shelter" />
                 </m>
-                <m k="amenity" v="telephone">
+                <m v="telephone">
                     <symbol src="telephone" />
                 </m>
-                <m k="amenity" v="theatre">
+                <m v="theatre">
                     <symbol src="theatre" />
                 </m>
                 <m select="when-matched">
@@ -1197,14 +1254,15 @@
             </m>
 
             <m zoom-min="17">
-                <m k="amenity" v="toilets">
+                <m v="toilets">
                     <symbol src="toilets" />
                 </m>
             </m>
 
-            <m zoom-min="15">
-                <text use="caption-small-blue" />
-            </m>
+            <!--Style all missed amenities-->
+            <!--<m select="when-missed" zoom-min="17">-->
+            <!--<text use="caption-small-blue" />-->
+            <!--</m>-->
         </m>
 
         <m k="shop">
@@ -1226,12 +1284,7 @@
                     <symbol src="city" />
                 </m>
 
-                <m select="when-matched" zoom-min="17">
-                    <text use="poi" />
-                </m>
-            </m>
-            <m zoom-min="15">
-                <text use="caption-small-blue" />
+                <text priority="9" use="shop" />
             </m>
         </m>
 
@@ -1251,7 +1304,7 @@
                 </m>
 
                 <m select="when-matched">
-                    <text use="poi" />
+                    <text priority="8" use="accommodation" />
                 </m>
             </m>
 
@@ -1267,15 +1320,20 @@
               </m>
               </m>
             -->
-            <m v="viewpoint">
-                <symbol src="view_point" />
-            </m>
-            <m v="museum">
-                <symbol src="museum" />
-            </m>
+            <m select="first" zoom-min="15">
+                <m v="viewpoint">
+                    <symbol src="view_point" />
+                </m>
+                <m v="attraction">
+                    <symbol src="city" />
+                </m>
+                <m v="museum">
+                    <symbol src="museum" />
+                </m>
 
-            <m zoom-min="15">
-                <text use="caption-small-blue" />
+                <m select="when-matched">
+                    <text priority="8" use="poi" />
+                </m>
             </m>
         </m>
 

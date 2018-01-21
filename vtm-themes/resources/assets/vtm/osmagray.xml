@@ -3,23 +3,36 @@
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
+    <!--###### TEXT styles ######-->
+
+    <!--default label-->
+    <style-text caption="true" dy="20" fill="#4d4d4d" font-family="medium" id="caption-small-blue"
+        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--roads-->
+    <style-text style="bold" id="highway-road" k="name" size="16" stroke="#d0d0d0"
+        stroke-width="2.0" />
+    <style-text style="bold" id="highway-track" k="name" size="16" stroke="#f3f3f3"
+        stroke-width="2.0" />
+    <!--references-->
+    <style-text style="bold" fill="#606060" id="ref" k="ref" priority="2" size="12" stroke="#ffffff"
+        stroke-width="2.0" />
+    <style-text caption="true" id="ref-caption" use="ref" />
+
+
+    <!--###### AREA styles ######-->
+    <!--no styles-->
+
+
+    <!--###### LINE styles ######-->
+
     <style-line id="trunk" stroke="#b4b4b4" width="1.5" />
     <style-line id="motorway" stroke="#979797" width="1.7" />
     <style-line id="primary" stroke="#868686" width="1.5" />
     <style-line id="secondary" stroke="#c6c6c6" width="1.4" />
     <style-line id="tertiary" stroke="#f7f7f7" width="1.15" />
 
-    <style-text caption="true" dy="20" fill="#4d4d4d" font-family="medium" id="caption-small-blue"
-        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
 
-    <style-text style="bold" id="highway-road" k="name" size="16" stroke="#d0d0d0"
-        stroke-width="2.0" />
-    <style-text style="bold" id="highway-track" k="name" size="16" stroke="#f3f3f3"
-        stroke-width="2.0" />
-
-    <style-text style="bold" fill="#606060" id="ref" k="ref" priority="2" size="12" stroke="#ffffff"
-        stroke-width="2.0" />
-    <style-text caption="true" id="ref-caption" use="ref" />
+    <!--###### ASSIGNMENT ######-->
 
     <m e="way" k="natural" v="issea|sea">
         <area fill="#d0d0d0" mesh="true" />
@@ -118,15 +131,9 @@
                     <m k="access" v="private" zoom-min="15">
                         <area src="assets:patterns/access-private.png" />
                     </m>
-                    <m zoom-min="17">
-                        <symbol src="assets:symbols/transport/parking.svg" />
-                    </m>
                 </m>
                 <m closed="yes" v="fountain">
                     <area fill="#d0d0d0" stroke="#080808" stroke-width="0.15" />
-                    <m zoom-min="17">
-                        <symbol src="assets:symbols/amenity/fountain2.svg" />
-                    </m>
                 </m>
                 <m v="hospital" zoom-min="15">
                     <symbol src="assets:symbols/health/hospital.svg" />
@@ -137,9 +144,6 @@
                 <m v="toilets" zoom-min="17">
                     <symbol src="assets:symbols/amenity/toilets.svg" />
                 </m>
-            </m>
-            <m k="name" zoom-min="17">
-                <text use="caption-small-blue" />
             </m>
         </m>
 
@@ -557,10 +561,13 @@
                 <extrusion line-color="#cc616161" side-color="#bbd9d9d9" top-color="#ccdddddd" />
             </m>
 
-            <m zoom-min="17">
-                <text priority="9" use="caption-small-blue" />
-                <caption style="bold" fill="#606060" font-family="condensed" k="addr:housenumber"
-                    priority="10" size="12" stroke="#ffffff" stroke-width="2.0" />
+            <!--Only add house numbers where no name exist-->
+            <m k="addr:housenumber" zoom-min="17">
+                <m k="name" v="~">
+                    <caption style="bold" fill="#606060" font-family="condensed"
+                        k="addr:housenumber" priority="10" size="12" stroke="#ffffff"
+                        stroke-width="2.0" />
+                </m>
             </m>
         </m>
 
@@ -1106,7 +1113,8 @@
     </m>
 
 
-    <m e="node" select="first">
+    <!--All POIs and WAYs with names-->
+    <m k="name" select="first">
 
         <m k="aeroway">
             <m v="helipad" zoom-min="17">
@@ -1257,7 +1265,7 @@
             <symbol src="assets:symbols/tourist/monument.svg" />
 
             <m zoom-min="17">
-                <text use="caption-small-blue" />
+                <text priority="7" use="caption-small-blue" />
             </m>
         </m>
 
@@ -1377,6 +1385,9 @@
             <m v="hotel" zoom-min="17">
                 <symbol src="assets:symbols/accommodation/hotel2.svg" />
             </m>
+            <m v="museum">
+                <symbol src="assets:symbols/tourist/museum.svg" />
+            </m>
             <!--  <m v="information" zoom-min="17">
                <symbol src="assets:symbols/tourist/information.svg" />
              </m> -->
@@ -1389,11 +1400,20 @@
             </m>
         </m>
 
+        <!--Match all missed buildings-->
+        <m k="building|building:part" zoom-min="17">
+            <text priority="9" use="caption-small-blue" />
+            <symbol src="assets:symbols/dot_blue_dark.svg" />
+        </m>
+    </m>
 
-        <!-- house numbers -->
+    <m e="node" select="first">
+        <!--Only add house numbers where no name exist-->
         <m k="addr:housenumber" zoom-min="17">
-            <caption style="bold" fill="#606060" font-family="condensed" k="addr:housenumber"
-                size="12" stroke="#ffffff" stroke-width="2.0" />
+            <m k="name" v="~">
+                <caption style="bold" fill="#606060" font-family="condensed" k="addr:housenumber"
+                    priority="10" size="12" stroke="#ffffff" stroke-width="2.0" />
+            </m>
         </m>
     </m>
 
