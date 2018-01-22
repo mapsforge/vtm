@@ -1147,7 +1147,7 @@
                     <symbol src="assets:symbols/amenity/telephone.svg" />
                 </m>
                 <m v="toilets" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/toilets.svg" />
+                    <symbol src="assets:symbols/customized/amenity/toilets.svg" />
                 </m>
                 <m select="when-matched" zoom-min="17">
                     <text priority="9" use="caption-small-blue" />
@@ -1174,7 +1174,7 @@
                     <symbol src="assets:symbols/education/nursery3.svg" />
                 </m>
                 <m v="library" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/library.svg" />
+                    <symbol src="assets:symbols/customized/amenity/library.svg" />
                 </m>
                 <m v="school" zoom-min="17">
                     <symbol src="assets:symbols/education/school.svg" />
@@ -1189,13 +1189,13 @@
 
             <m select="first"> <!--Entertainment-->
                 <m v="cinema" zoom-min="17">
-                    <symbol src="assets:symbols/tourist/cinema2.svg" />
+                    <symbol src="assets:symbols/customized/tourist/cinema2.svg" />
                 </m>
                 <m v="fountain" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/fountain2.svg" />
+                    <symbol src="assets:symbols/customized/amenity/fountain2.svg" />
                 </m>
                 <m v="theatre" zoom-min="17">
-                    <symbol src="assets:symbols/tourist/theatre.svg" />
+                    <symbol src="assets:symbols/customized/tourist/theatre.svg" />
                 </m>
                 <m select="when-matched" zoom-min="17">
                     <text priority="9" use="entertainment" />
@@ -1216,7 +1216,7 @@
 
             <m select="first"> <!--Shop-->
                 <m v="atm" zoom-min="17">
-                    <symbol src="assets:symbols/money/atm2.svg" />
+                    <symbol src="assets:symbols/customized/money/atm2.svg" />
                 </m>
                 <m v="bank" zoom-min="17">
                     <symbol src="assets:symbols/money/bank2.svg" />
@@ -1276,7 +1276,7 @@
 
 
         <m k="historic" zoom-min="10">
-            <symbol src="assets:symbols/tourist/monument.svg" />
+            <symbol src="assets:symbols/customized/tourist/monument.svg" />
 
             <m zoom-min="17">
                 <text priority="7" use="entertainment" />
@@ -1290,7 +1290,7 @@
 
 
         <m k="man_made" v="windmill" zoom-min="17">
-            <symbol src="assets:symbols/tourist/windmill.svg" />
+            <symbol src="assets:symbols/customized/tourist/windmill.svg" />
         </m>
 
 
@@ -1410,18 +1410,18 @@
             </m>
             <!-- <m v="information" zoom-min="17">
               <m k="name" v="*">
-              <symbol src="assets:symbols/tourist/information.svg" />
+              <symbol src="assets:symbols/customized/tourist/information.svg" />
               </m>
             </m>-->
             <m select="first"> <!--Entertainment-->
                 <m v="attraction" zoom-min="16">
-                    <symbol src="assets:symbols/tourist/attraction.svg" />
+                    <symbol src="assets:symbols/customized/tourist/attraction.svg" />
                 </m>
                 <m v="museum" zoom-min="15">
-                    <symbol src="assets:symbols/tourist/museum.svg" />
+                    <symbol src="assets:symbols/customized/tourist/museum.svg" />
                 </m>
                 <m v="viewpoint" zoom-min="15">
-                    <symbol src="assets:symbols/tourist/view_point.svg" />
+                    <symbol src="assets:symbols/customized/tourist/view_point.svg" />
                 </m>
                 <m select="when-matched" zoom-min="17">
                     <text priority="8" use="entertainment" />

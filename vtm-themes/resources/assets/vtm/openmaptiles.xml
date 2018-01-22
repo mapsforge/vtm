@@ -436,10 +436,10 @@
             </m>
 
             <m v="viewpoint">
-                <symbol src="assets:symbols/tourist/view_point.svg" />
+                <symbol src="assets:symbols/customized/tourist/view_point.svg" />
             </m>
             <m v="museum">
-                <symbol src="assets:symbols/tourist/museum.svg" />
+                <symbol src="assets:symbols/customized/tourist/museum.svg" />
             </m>
 
             <m zoom-min="14">
