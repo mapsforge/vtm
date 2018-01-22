@@ -342,7 +342,7 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
                     mCanTilt = false;
                     mTwoFingersDone = true;
 
-                    mAngle = rad;
+                    mAngle = rad; /* remove to rotate from motion beginning position, not from recognition position */
                 } else if (!mDoScale) {
                     /* reduce pinch trigger by the amount of rotation */
                     deltaPinch *= 1 - (r / PINCH_ROTATE_THRESHOLD);
@@ -359,7 +359,7 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
                 /* start rotate again */
                 mDoRotate = true;
                 mCanRotate = true;
-                mAngle = rad;
+                mAngle = rad; /* remove to rotate from motion beginning position, not from recognition position */
                 mTwoFingersDone = true;
             }
         }
