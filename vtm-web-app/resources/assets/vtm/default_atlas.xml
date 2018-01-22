@@ -23,9 +23,9 @@
     <!--health-->
     <style-text caption="true" dy="20" fill="#da0092" font-family="medium" id="health" k="name"
         size="14" stroke="#ffffff" stroke-width="2.0" />
-    <!--other POIs-->
-    <style-text caption="true" dy="16" fill="#777744" id="poi" k="name" size="16" stroke="#aaffffff"
-        stroke-width="2.0" />
+    <!--entertainment-->
+    <style-text caption="true" dy="20" fill="#b7650c" font-family="medium" id="entertainment"
+        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
     <!--roads-->
     <style-text fill="#101010" id="road" k="name" priority="2" size="16" stroke="#eeeeee"
         stroke-width="2.0" />
@@ -78,8 +78,9 @@
 
     <!-- de:Steinbruch, Schotter-, Kies-, Sand- und Tongrube -->
     <style-area fade="10" fill="#ddddcc" id="quarry" />
-    <style-area fade="10" fill="#eeedea" id="military" />
 
+    <!--military-->
+    <style-area fade="10" fill="#eeedea" id="military" />
     <!--building-->
     <style-area fade="15" fill="#f2f0eb" id="building" stroke="#b7b6b3" stroke-width="1.0" />
     <!--<style-area id="building" fill="#e9e6e3" fade="15"/>-->
@@ -99,7 +100,7 @@
     <style-line id="residential" stroke="#ffffff" width="1.3" />
     <style-line cap="butt" id="residential:bridge" use="residential" />
 
-    <!-- when inheriting another style with 'from' then 'witdth' is relative to the parent -->
+    <!-- when inheriting another style with 'from' then 'width' is relative to the parent -->
     <style-line id="pedestrian" use="residential" width="-0.4" />
     <style-line cap="butt" id="pedestrian:bridge" use="pedestrian" />
     <style-line id="highway:z11" stroke="#fcba5a" width="1.8" />
@@ -630,9 +631,8 @@
             <!--Only add house numbers where no name exist-->
             <m k="addr:housenumber" zoom-min="17">
                 <m k="name" v="~">
-                    <caption style="bold" fill="#606060" font-family="condensed"
-                        k="addr:housenumber" priority="10" size="10" stroke="#ffffff"
-                        stroke-width="2.0" />
+                    <caption fill="#606060" font-family="condensed" k="addr:housenumber"
+                        priority="10" size="10" stroke="#ffffff" stroke-width="2.0" style="bold" />
                 </m>
             </m>
         </m>
@@ -1014,16 +1014,167 @@
 
     </m><!-- end e="way" -->
 
+    <!--All POIs and WAYs with names-->
     <m k="name" select="first">
 
         <!-- aeroway -->
         <m k="aeroway">
-            <m k="aeroway" v="helipad" zoom-min="16">
+            <m v="helipad" zoom-min="16">
                 <symbol src="heliport" />
             </m>
-            <m k="aeroway" v="aerodrome|airport">
+            <m v="aerodrome|airport" zoom-min="9">
                 <symbol src="airport" />
             </m>
+            <m k="name" zoom-min="16">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+        <m k="amenity">
+            <m select="first">
+                <!--<m v="bench" zoom-min="17">
+                    <symbol src="assets:symbols/bench.svg" />
+                </m>-->
+                <m v="drinking_water" zoom-min="17">
+                    <!--<symbol src="drinking_water" />-->
+                </m>
+                <m v="fire_station" zoom-min="17">
+                    <!--<symbol src="fire_station" />-->
+                </m>
+                <m v="place_of_worship" zoom-min="17">
+                    <m k="denomination|religion" v="jewish">
+                        <symbol src="synagogue" />
+                    </m>
+                    <m k="denomination|religion" v="muslim|moslem">
+                        <symbol src="mosque" />
+                    </m>
+                    <m k="denomination|religion" v="christian">
+                        <symbol src="church" />
+                    </m>
+                </m>
+                <m v="post_box" zoom-min="17">
+                    <!--<symbol src="postbox" />-->
+                </m>
+                <m v="recycling" zoom-min="17">
+                    <!--<symbol src="recycling" />-->
+                </m>
+                <m v="shelter" zoom-min="17">
+                    <symbol src="shelter" />
+                </m>
+                <m v="telephone" zoom-min="17">
+                    <symbol src="telephone" />
+                </m>
+                <m v="toilets" zoom-min="17">
+                    <symbol src="toilets" />
+                </m>
+                <m select="when-matched" zoom-min="17">
+                    <text priority="9" use="caption-small-blue" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Accomodation-->
+                <m v="parking" zoom-min="17">
+                    <symbol src="parking" />
+                </m>
+                <m v="bicycle_rental" zoom-min="17">
+                    <symbol src="bicycle_rental" />
+                </m>
+                <m v="bus_station" zoom-min="17">
+                    <symbol src="bus_station" />
+                </m>
+                <m select="when-matched" zoom-min="17">
+                    <text priority="9" use="accommodation" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Education-->
+                <m v="kindergarten" zoom-min="17">
+                    <!--<symbol src="kindergarten" />-->
+                </m>
+                <m v="library" zoom-min="17">
+                    <symbol src="library" />
+                </m>
+                <m v="school" zoom-min="17">
+                    <symbol src="school" />
+                </m>
+                <m v="university|college" zoom-min="17">
+                    <!--<symbol src="university" />-->
+                </m>
+                <m select="when-matched" zoom-min="17">
+                    <text priority="9" use="education" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Entertainment-->
+                <m v="cinema" zoom-min="17">
+                    <symbol src="cinema" />
+                </m>
+                <m v="fountain" zoom-min="17">
+                    <!--<symbol src="fountain" />-->
+                </m>
+                <m v="theatre" zoom-min="17">
+                    <symbol src="theatre" />
+                </m>
+                <m select="when-matched" zoom-min="17">
+                    <text priority="9" use="entertainment" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Health-->
+                <m v="hospital" zoom-min="15">
+                    <symbol src="hospital" />
+                </m>
+                <m v="pharmacy" zoom-min="17">
+                    <symbol src="pharmacy" />
+                </m>
+                <m select="when-matched" zoom-min="17">
+                    <text priority="9" use="health" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Shop-->
+                <m v="atm" zoom-min="17">
+                    <symbol src="atm" />
+                </m>
+                <m v="bank" zoom-min="17">
+                    <!--<symbol src="bank" />-->
+                </m>
+                <m v="fuel" zoom-min="17">
+                    <!--<symbol src="fuel" />-->
+                </m>
+                <m v="post_office" zoom-min="17">
+                    <!--<symbol src="post_office" />-->
+                </m>
+                <m select="when-matched">
+                    <text priority="9" use="shop" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Tavern-->
+                <m v="cafe" zoom-min="17">
+                    <symbol src="cafe" />
+                </m>
+                <m v="bar" zoom-min="17">
+                    <symbol src="bar" />
+                </m>
+                <m v="fast_food" zoom-min="17">
+                    <symbol src="fast_food" />
+                </m>
+                <m v="pub" zoom-min="17">
+                    <symbol src="pub" />
+                </m>
+                <m v="restaurant" zoom-min="17">
+                    <symbol src="restaurant" />
+                </m>
+                <m select="when-matched">
+                    <text priority="9" use="tavern" />
+                </m>
+            </m>
+
+            <!--Style all missed amenities-->
+            <!--<m select="when-missed" zoom-min="17">-->
+            <!--<text use="caption-small-blue" />-->
+            <!--</m>-->
         </m>
 
         <m k="barrier">
@@ -1118,172 +1269,23 @@
             </m>
         </m>
 
-        <m k="amenity">
-            <m select="first" zoom-min="15">
-                <m v="hospital">
-                    <symbol src="hospital" />
-                    <m zoom-min="16">
-                        <text priority="9" use="health" />
-                    </m>
-                </m>
-                <m v="library">
-                    <symbol src="library" />
-                    <m zoom-min="16">
-                        <text priority="9" use="caption-small-blue" />
-                    </m>
-                </m>
-                <m v="cinema">
-                    <symbol src="cinema" />
-                    <m zoom-min="16">
-                        <text priority="9" use="caption-small-blue" />
-                    </m>
-                </m>
-
-                <m>
-                    <m v="school">
-                        <symbol src="school" />
-                    </m>
-                    <m v="university|college">
-                        <symbol src="university" />
-                    </m>
-
-                    <m select="when-matched" zoom-min="17">
-                        <text priority="9" use="education" />
-                    </m>
-                </m>
+        <m k="shop" select="first">
+            <m v="bakery" zoom-min="15">
+                <symbol src="shop_bakery" />
             </m>
-
-            <m select="first" zoom-min="16">
-                <m>
-                    <m v="cafe">
-                        <symbol src="cafe" />
-                    </m>
-                    <m v="pub">
-                        <symbol src="pub" />
-                    </m>
-                    <m v="bar">
-                        <symbol src="bar" />
-                    </m>
-                    <m v="fast_food">
-                        <symbol src="fast_food" />
-                    </m>
-                    <m v="restaurant">
-                        <symbol src="restaurant" />
-                    </m>
-
-                    <m select="when-matched">
-                        <text use="tavern" />
-                    </m>
-                </m>
-
-                <m v="bus_station">
-                    <symbol src="bus_station" />
-                    <text use="poi" />
-                </m>
+            <m v="florist" zoom-min="15">
+                <symbol src="florist" />
             </m>
-
-            <m select="first" zoom-min="17">
-                <m v="atm" zoom-min="17">
-                    <symbol src="atm" />
-                </m>
-                <m v="bank">
-                    <symbol src="bank" />
-                </m>
-                <m v="bench">
-                    <symbol src="bench" />
-                </m>
-                <m v="bicycle_rental">
-                    <symbol src="bicycle_rental" />
-                </m>
-                <m v="drinking_water">
-                    <symbol src="drinking_water" />
-                </m>
-                <m v="fire_station">
-                    <symbol src="fire_station" />
-                </m>
-                <m v="fountain">
-                    <symbol src="fountain" />
-                </m>
-                <m v="fuel">
-                    <symbol src="petrolStation" />
-                </m>
-                <m v="kindergarten">
-                    <symbol src="kindergarten" />
-                    <text priority="9" use="education" />
-                </m>
-                <m v="parking">
-                    <symbol src="parking" />
-                    <text priority="9" use="accommodation" />
-                </m>
-                <m v="pharmacy">
-                    <symbol src="pharmacy" />
-                    <text priority="9" use="health" />
-                </m>
-                <m v="place_of_worship">
-                    <m k="denomination|religion" v="jewish">
-                        <symbol src="synagogue" />
-                    </m>
-                    <m k="denomination|religion" v="muslim|moslem">
-                        <symbol src="mosque" />
-                    </m>
-                    <m k="denomination|religion" v="christian">
-                        <symbol src="church" />
-                    </m>
-                </m>
-                <m v="post_box">
-                    <symbol src="postbox" />
-                </m>
-                <m v="post_office">
-                    <symbol src="postoffice" />
-                </m>
-                <m v="recycling">
-                    <symbol src="recycling" />
-                </m>
-                <m v="shelter">
-                    <symbol src="shelter" />
-                </m>
-                <m v="telephone">
-                    <symbol src="telephone" />
-                </m>
-                <m v="theatre">
-                    <symbol src="theatre" />
-                </m>
-                <m select="when-matched">
-                    <text use="poi" />
-                </m>
+            <m v="hairdresser" zoom-min="16">
+                <symbol src="shop_hairdresser" />
             </m>
-
+            <m v="supermarket|organic" zoom-min="15">
+                <symbol src="shop_supermarket" />
+            </m>
             <m zoom-min="17">
-                <m v="toilets">
-                    <symbol src="toilets" />
-                </m>
+                <symbol src="city" />
             </m>
-
-            <!--Style all missed amenities-->
-            <!--<m select="when-missed" zoom-min="17">-->
-            <!--<text use="caption-small-blue" />-->
-            <!--</m>-->
-        </m>
-
-        <m k="shop">
-            <m select="first" zoom-min="15">
-                <m v="bakery">
-                    <symbol src="shop_bakery" />
-                </m>
-                <m v="florist">
-                    <symbol src="florist" />
-                </m>
-                <m v="hairdresser" zoom-min="16">
-                    <symbol src="shop_hairdresser" />
-                </m>
-                <m v="supermarket|organic">
-                    <symbol src="shop_supermarket" />
-                </m>
-
-                <m zoom-min="17">
-                    <symbol src="city" />
-                </m>
-
+            <m select="when-matched" zoom-min="17">
                 <text priority="9" use="shop" />
             </m>
         </m>
@@ -1302,37 +1304,28 @@
                 <m v="hotel">
                     <symbol src="hotel" />
                 </m>
-
                 <m select="when-matched">
                     <text priority="8" use="accommodation" />
                 </m>
             </m>
 
-            <!-- <m zoom-min="16" select="first">
-              <m v="information" select="first">
-              <m k="name">
+            <!-- <m v="information" zoom-min="17">
+              <m k="name" v="*">
               <symbol src="information" />
-              <text use="poi" />
               </m>
-              <m>
-              <circle r="1.5" fill="#ff0000" />
-              </m>
-              </m>
-              </m>
-            -->
+            </m>-->
             <m select="first" zoom-min="15">
-                <m v="viewpoint">
-                    <symbol src="view_point" />
-                </m>
                 <m v="attraction">
                     <symbol src="city" />
                 </m>
                 <m v="museum">
                     <symbol src="museum" />
                 </m>
-
+                <m v="viewpoint">
+                    <symbol src="view_point" />
+                </m>
                 <m select="when-matched">
-                    <text priority="8" use="poi" />
+                    <text priority="8" use="entertainment" />
                 </m>
             </m>
         </m>
