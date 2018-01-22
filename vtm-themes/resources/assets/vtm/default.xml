@@ -23,9 +23,9 @@
     <!--health-->
     <style-text caption="true" dy="20" fill="#da0092" font-family="medium" id="health" k="name"
         size="14" stroke="#ffffff" stroke-width="2.0" />
-    <!--other POIs-->
-    <style-text caption="true" dy="20" fill="#404000" id="poi" k="name" size="14" stroke="#ffffff"
-        stroke-width="2.0" />
+    <!--entertainment-->
+    <style-text caption="true" dy="20" fill="#b7650c" font-family="medium" id="entertainment"
+        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
     <!--roads-->
     <style-text fill="#101010" id="road" k="name" priority="2" size="16" stroke="#eeeeee"
         stroke-width="2.0" />
@@ -597,7 +597,6 @@
                     <caption area-size="0.1" dy="18" fill="#000000" k="name" priority="5" size="19"
                         stroke="#ffffff" stroke-width="2.0" />
                 </m>
-                <symbol src="assets:symbols/transport/airport2.svg" />
             </m>
             <!-- A place where planes are parked -->
             <m v="apron">
@@ -1091,6 +1090,163 @@
             <m v="aerodrome|airport" zoom-min="9">
                 <symbol src="assets:symbols/transport/airport2.svg" />
             </m>
+            <m k="name" zoom-min="16">
+                <text use="caption-small-blue" />
+            </m>
+        </m>
+
+        <m k="amenity">
+            <m select="first">
+                <!--<m v="bench" zoom-min="17">
+                    <symbol src="assets:symbols/bench.svg" />
+                </m>-->
+                <m v="drinking_water" zoom-min="17">
+                    <symbol src="assets:symbols/food/drinkingtap.svg" />
+                </m>
+                <m v="fire_station" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/firestation3.svg" />
+                </m>
+                <m v="place_of_worship" zoom-min="17">
+                    <m k="denomination|religion" v="buddhist">
+                        <symbol src="assets:symbols/place_of_worship/buddhist.svg" />
+                    </m>
+                    <m k="denomination|religion" v="christian">
+                        <symbol src="assets:symbols/place_of_worship/christian.svg" />
+                    </m>
+                    <m k="denomination|religion" v="hindu">
+                        <symbol src="assets:symbols/place_of_worship/hindu.svg" />
+                    </m>
+                    <m k="denomination|religion" v="jewish">
+                        <symbol src="assets:symbols/place_of_worship/jewish.svg" />
+                    </m>
+                    <m k="denomination|religion" v="muslim|moslem">
+                        <symbol src="assets:symbols/place_of_worship/islamic.svg" />
+                    </m>
+                    <m k="denomination|religion" v="shinto">
+                        <symbol src="assets:symbols/place_of_worship/shinto.svg" />
+                    </m>
+                    <m k="denomination|religion" v="~|*">
+                        <symbol src="assets:symbols/place_of_worship/unknown.svg" />
+                    </m>
+                </m>
+                <m v="post_box" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/post_box.svg" />
+                </m>
+                <m v="recycling" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/recycling.svg" />
+                </m>
+                <m v="shelter" zoom-min="17">
+                    <symbol src="assets:symbols/accommodation/shelter2.svg" />
+                </m>
+                <m v="telephone" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/telephone.svg" />
+                </m>
+                <m v="toilets" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/toilets.svg" />
+                </m>
+                <m select="when-matched" zoom-min="17">
+                    <text priority="9" use="caption-small-blue" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Accomodation-->
+                <m v="parking" zoom-min="17">
+                    <symbol src="assets:symbols/transport/parking.svg" />
+                </m>
+                <m v="bicycle_rental" zoom-min="17">
+                    <symbol src="assets:symbols/transport/rental_bicycle.svg" />
+                </m>
+                <m v="bus_station" zoom-min="17">
+                    <symbol src="assets:symbols/transport/bus_station.svg" />
+                </m>
+                <m select="when-matched" zoom-min="17">
+                    <text priority="9" use="accommodation" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Education-->
+                <m v="kindergarten" zoom-min="17">
+                    <symbol src="assets:symbols/education/nursery3.svg" />
+                </m>
+                <m v="library" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/library.svg" />
+                </m>
+                <m v="school" zoom-min="17">
+                    <symbol src="assets:symbols/education/school.svg" />
+                </m>
+                <m v="university|college" zoom-min="17">
+                    <symbol src="assets:symbols/education/university.svg" />
+                </m>
+                <m select="when-matched" zoom-min="17">
+                    <text priority="9" use="education" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Entertainment-->
+                <m v="cinema" zoom-min="17">
+                    <symbol src="assets:symbols/tourist/cinema2.svg" />
+                </m>
+                <m v="fountain" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/fountain2.svg" />
+                </m>
+                <m v="theatre" zoom-min="17">
+                    <symbol src="assets:symbols/tourist/theatre.svg" />
+                </m>
+                <m select="when-matched" zoom-min="17">
+                    <text priority="9" use="entertainment" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Health-->
+                <m v="hospital" zoom-min="15">
+                    <symbol src="assets:symbols/health/hospital.svg" />
+                </m>
+                <m v="pharmacy" zoom-min="17">
+                    <symbol src="assets:symbols/health/pharmacy.svg" />
+                </m>
+                <m select="when-matched" zoom-min="17">
+                    <text priority="9" use="health" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Shop-->
+                <m v="atm" zoom-min="17">
+                    <symbol src="assets:symbols/money/atm2.svg" />
+                </m>
+                <m v="bank" zoom-min="17">
+                    <symbol src="assets:symbols/money/bank2.svg" />
+                </m>
+                <m v="fuel" zoom-min="17">
+                    <symbol src="assets:symbols/transport/fuel.svg" />
+                </m>
+                <m v="post_office" zoom-min="17">
+                    <symbol src="assets:symbols/amenity/post_office.svg" />
+                </m>
+                <m select="when-matched">
+                    <text priority="9" use="shop" />
+                </m>
+            </m>
+
+            <m select="first"> <!--Tavern-->
+                <m v="cafe" zoom-min="17">
+                    <symbol src="assets:symbols/food/cafe.svg" />
+                </m>
+                <m v="bar" zoom-min="17">
+                    <symbol src="assets:symbols/food/bar.svg" />
+                </m>
+                <m v="fast_food" zoom-min="17">
+                    <symbol src="assets:symbols/food/fastfood.svg" />
+                </m>
+                <m v="pub" zoom-min="17">
+                    <symbol src="assets:symbols/food/pub.svg" />
+                </m>
+                <m v="restaurant" zoom-min="17">
+                    <symbol src="assets:symbols/food/restaurant.svg" />
+                </m>
+                <m select="when-matched">
+                    <text priority="9" use="tavern" />
+                </m>
+            </m>
         </m>
 
         <m k="barrier">
@@ -1127,8 +1283,16 @@
             <symbol src="assets:symbols/tourist/monument.svg" />
 
             <m zoom-min="17">
-                <text priority="7" use="poi" />
+                <text priority="7" use="entertainment" />
             </m>
+        </m>
+
+        <m k="natural" v="peak" zoom-min="12">
+            <symbol src="assets:symbols/peak.svg" />
+            <caption style="bold" dy="12" fill="#4D2F08" k="name" size="14" stroke="#ffffff"
+                stroke-width="2.0" />
+            <caption style="bold" dy="-12" fill="#4D2F08" k="ele" size="12" stroke="#ffffff"
+                stroke-width="2.0" />
         </m>
 
         <!-- place -->
@@ -1187,169 +1351,28 @@
             </m>
         </m>
 
-        <m k="amenity">
-            <m select="first">
-                <m v="atm" zoom-min="17">
-                    <symbol src="assets:symbols/money/atm2.svg" />
-                </m>
-                <m v="bank" zoom-min="17">
-                    <symbol src="assets:symbols/money/bank2.svg" />
-                </m>
-                <!--<m v="bench" zoom-min="17">
-                    <symbol src="assets:symbols/bench.svg" />
-                </m>-->
-                <m v="bicycle_rental" zoom-min="17">
-                    <symbol src="assets:symbols/transport/rental_bicycle.svg" />
-                </m>
-                <m v="bus_station" zoom-min="17">
-                    <symbol src="assets:symbols/transport/bus_station.svg" />
-                </m>
-                <m v="cinema" zoom-min="17">
-                    <symbol src="assets:symbols/tourist/cinema2.svg" />
-                </m>
-                <m v="drinking_water" zoom-min="17">
-                    <symbol src="assets:symbols/food/drinkingtap.svg" />
-                </m>
-                <m v="fire_station" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/firestation3.svg" />
-                </m>
-                <m v="fountain" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/fountain2.svg" />
-                </m>
-                <m v="fuel" zoom-min="17">
-                    <symbol src="assets:symbols/transport/fuel.svg" />
-                </m>
-                <m v="library" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/library.svg" />
-                </m>
-                <m v="place_of_worship" zoom-min="17">
-                    <m k="denomination|religion" v="buddhist">
-                        <symbol src="assets:symbols/place_of_worship/buddhist.svg" />
-                    </m>
-                    <m k="denomination|religion" v="christian">
-                        <symbol src="assets:symbols/place_of_worship/christian.svg" />
-                    </m>
-                    <m k="denomination|religion" v="hindu">
-                        <symbol src="assets:symbols/place_of_worship/hindu.svg" />
-                    </m>
-                    <m k="denomination|religion" v="jewish">
-                        <symbol src="assets:symbols/place_of_worship/jewish.svg" />
-                    </m>
-                    <m k="denomination|religion" v="muslim|moslem">
-                        <symbol src="assets:symbols/place_of_worship/islamic.svg" />
-                    </m>
-                    <m k="denomination|religion" v="shinto">
-                        <symbol src="assets:symbols/place_of_worship/shinto.svg" />
-                    </m>
-                    <m k="denomination|religion" v="~|*">
-                        <symbol src="assets:symbols/place_of_worship/unknown.svg" />
-                    </m>
-                </m>
-                <m v="post_box" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/post_box.svg" />
-                </m>
-                <m v="post_office" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/post_office.svg" />
-                </m>
-                <m v="recycling" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/recycling.svg" />
-                </m>
-                <m v="shelter" zoom-min="17">
-                    <symbol src="assets:symbols/accommodation/shelter2.svg" />
-                </m>
-                <m v="telephone" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/telephone.svg" />
-                </m>
-                <m v="theatre" zoom-min="17">
-                    <symbol src="assets:symbols/tourist/theatre.svg" />
-                </m>
-                <m v="toilets" zoom-min="17">
-                    <symbol src="assets:symbols/amenity/toilets.svg" />
-                </m>
-                <m select="when-matched" zoom-min="17">
-                    <text priority="9" use="caption-small-blue" />
-                </m>
+        <m k="shop" select="first">
+            <m v="bakery" zoom-min="17">
+                <symbol src="assets:symbols/shopping/bakery.svg" />
             </m>
-
-            <m v="parking" zoom-min="17"> <!--Accomodation-->
-                <symbol src="assets:symbols/transport/parking.svg" />
-                <text priority="9" use="accommodation" />
-            </m>
-
-            <m select="first"> <!--Education-->
-                <m v="kindergarten" zoom-min="17">
-                    <symbol src="assets:symbols/education/nursery3.svg" />
-                </m>
-                <m v="school" zoom-min="17">
-                    <symbol src="assets:symbols/education/school.svg" />
-                </m>
-                <m v="university|college" zoom-min="17">
-                    <symbol src="assets:symbols/education/university.svg" />
-                </m>
-                <m select="when-matched" zoom-min="17">
-                    <text priority="9" use="education" />
-                </m>
-            </m>
-
-            <m select="first"> <!--Health-->
-                <m v="hospital" zoom-min="15">
-                    <symbol src="assets:symbols/health/hospital.svg" />
-                </m>
-                <m v="pharmacy" zoom-min="17">
-                    <symbol src="assets:symbols/health/pharmacy.svg" />
-                </m>
-                <m select="when-matched" zoom-min="17">
-                    <text priority="9" use="health" />
-                </m>
-            </m>
-
-            <m select="first"> <!--Tavern-->
-                <m v="cafe" zoom-min="17">
-                    <symbol src="assets:symbols/food/cafe.svg" />
-                </m>
-                <m v="bar" zoom-min="17">
-                    <symbol src="assets:symbols/food/bar.svg" />
-                </m>
-                <m v="fast_food" zoom-min="17">
-                    <symbol src="assets:symbols/food/fastfood.svg" />
-                </m>
-                <m v="pub" zoom-min="17">
-                    <symbol src="assets:symbols/food/pub.svg" />
-                </m>
-                <m v="restaurant" zoom-min="17">
-                    <symbol src="assets:symbols/food/restaurant.svg" />
-                </m>
-                <m select="when-matched">
-                    <text priority="9" use="tavern" />
-                </m>
-            </m>
-        </m>
-
-        <m k="shop">
-            <m select="first" zoom-min="16">
-                <m v="bakery">
-                    <symbol src="assets:symbols/shopping/bakery.svg" />
-                </m>
-                <!--<m v="florist">
-                    <symbol src="assets:symbols/shopping/florist.svg" />
-                </m>-->
-                <!--<m v="hairdresser" zoom-min="16">
+            <!--<m v="florist" zoom-min="17">
+                <symbol src="assets:symbols/shopping/florist.svg" />
+            </m>-->
+            <!--<m v="hairdresser" zoom-min="16">
                     <symbol src="assets:symbols/shopping/hairdresser.svg" />
                 </m>-->
-                <m v="supermarket|organic">
-                    <symbol src="assets:symbols/shopping/supermarket.svg" />
-                </m>
+            <m v="supermarket|organic" zoom-min="17">
+                <symbol src="assets:symbols/shopping/supermarket.svg" />
+            </m>
 
-                <m zoom-min="17">
-                    <symbol src="assets:symbols/dot_magenta.svg" />
-                </m>
-
+            <m zoom-min="17">
+                <symbol src="assets:symbols/dot_magenta.svg" />
                 <text priority="9" use="shop" />
             </m>
         </m>
 
         <m k="tourism">
-            <m select="first"> <!--accomodation-->
+            <m select="first"> <!--Accomodation-->
                 <m v="alpine_hut" zoom-min="16">
                     <symbol src="assets:symbols/accommodation/alpinehut.svg" />
                 </m>
@@ -1371,7 +1394,7 @@
               <symbol src="assets:symbols/tourist/information.svg" />
               </m>
             </m>-->
-            <m select="first"> <!--poi-->
+            <m select="first"> <!--Entertainment-->
                 <m v="attraction" zoom-min="16">
                     <symbol src="assets:symbols/tourist/attraction.svg" />
                 </m>
@@ -1382,17 +1405,9 @@
                     <symbol src="assets:symbols/tourist/view_point.svg" />
                 </m>
                 <m select="when-matched" zoom-min="17">
-                    <text priority="8" use="poi" />
+                    <text priority="8" use="entertainment" />
                 </m>
             </m>
-        </m>
-
-        <m k="natural" v="peak" zoom-min="12">
-            <symbol src="assets:symbols/peak.svg" />
-            <caption style="bold" dy="12" fill="#4D2F08" k="name" size="14" stroke="#ffffff"
-                stroke-width="2.0" />
-            <caption style="bold" dy="-12" fill="#4D2F08" k="ele" size="12" stroke="#ffffff"
-                stroke-width="2.0" />
         </m>
 
         <!--Match all buildings-->
