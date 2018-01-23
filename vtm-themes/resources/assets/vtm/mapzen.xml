@@ -1075,19 +1075,19 @@
         <!-- historic -->
         <m k="historic">
             <m v="memorial">
-                <symbol src="assets:symbols/tourist/memorial.svg" />
+                <symbol src="assets:symbols/customized/tourist/memorial.svg" />
             </m>
             <m v="monument">
-                <symbol src="assets:symbols/tourist/monument.svg" />
+                <symbol src="assets:symbols/customized/tourist/monument.svg" />
             </m>
             <m v="information">
-                <symbol src="assets:symbols/tourist/information.svg" />
+                <symbol src="assets:symbols/customized/tourist/information.svg" />
             </m>
             <m v="viewpoint">
-                <symbol src="assets:symbols/tourist/view_point.svg" />
+                <symbol src="assets:symbols/customized/tourist/view_point.svg" />
             </m>
             <m v="museum">
-                <symbol src="assets:symbols/tourist/museum.svg" />
+                <symbol src="assets:symbols/customized/tourist/museum.svg" />
             </m>
             <m zoom-min="17">
                 <text use="poi" />
@@ -1185,10 +1185,10 @@
                     <symbol src="assets:symbols/education/university.svg" />
                 </m>
                 <m v="library">
-                    <symbol src="assets:symbols/amenity/library.svg" />
+                    <symbol src="assets:symbols/customized/amenity/library.svg" />
                 </m>
                 <m v="cinema">
-                    <symbol src="assets:symbols/tourist/cinema2.svg" />
+                    <symbol src="assets:symbols/customized/tourist/cinema2.svg" />
                 </m>
 
                 <m select="when-matched">
@@ -1198,7 +1198,7 @@
 
             <m select="first" zoom-min="16">
                 <m v="atm" zoom-min="17">
-                    <symbol src="assets:symbols/money/atm2.svg" />
+                    <symbol src="assets:symbols/customized/money/atm2.svg" />
                 </m>
                 <m v="cafe">
                     <symbol src="assets:symbols/food/cafe.svg" />
@@ -1240,7 +1240,7 @@
                     <symbol src="assets:symbols/amenity/firestation3.svg" />
                 </m>
                 <m v="fountain">
-                    <symbol src="assets:symbols/amenity/fountain2.svg" />
+                    <symbol src="assets:symbols/customized/amenity/fountain2.svg" />
                 </m>
                 <m v="fuel">
                     <symbol src="assets:symbols/transport/fuel.svg" />
@@ -1293,7 +1293,7 @@
                     <symbol src="assets:symbols/amenity/telephone.svg" />
                 </m>
                 <m v="theatre">
-                    <symbol src="assets:symbols/tourist/theatre.svg" />
+                    <symbol src="assets:symbols/customized/tourist/theatre.svg" />
                 </m>
                 <m select="when-matched">
                     <text use="poi" />
@@ -1302,7 +1302,7 @@
 
             <m zoom-min="17">
                 <m v="toilets">
-                    <symbol src="assets:symbols/amenity/toilets.svg" />
+                    <symbol src="assets:symbols/customized/amenity/toilets.svg" />
                 </m>
             </m>
         </m>
@@ -1356,7 +1356,7 @@
             <!-- <m zoom-min="16" select="first">
               <m v="information" select="first">
               <m k="name">
-              <symbol src="assets:symbols/tourist/information.svg" />
+              <symbol src="assets:symbols/customized/tourist/information.svg" />
               <text use="poi" />
               </m>
               <m>
@@ -1366,10 +1366,10 @@
               </m>
             -->
             <m v="viewpoint">
-                <symbol src="assets:symbols/tourist/view_point.svg" />
+                <symbol src="assets:symbols/customized/tourist/view_point.svg" />
             </m>
             <m v="museum">
-                <symbol src="assets:symbols/tourist/museum.svg" />
+                <symbol src="assets:symbols/customized/tourist/museum.svg" />
             </m>
 
         </m>

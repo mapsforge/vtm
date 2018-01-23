@@ -3,32 +3,50 @@
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
-    <!-- base style for fixed width lines -->
-    <style-line cap="butt" fix="true" id="fix" width="1.0" />
+    <!--###### TEXT styles ######-->
 
+    <!--default label-->
     <style-text caption="true" dy="20" fill="#2d51bc" font-family="medium" id="caption-small-blue"
         k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
-
+    <!--shop-->
+    <style-text caption="true" dy="20" fill="#ac39ac" font-family="medium" id="shop" k="name"
+        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--tavern-->
+    <style-text caption="true" dy="20" fill="#734a08" font-family="medium" id="tavern" k="name"
+        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--accommodation-->
+    <style-text caption="true" dy="20" fill="#0092da" font-family="medium" id="accommodation"
+        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--education-->
+    <style-text caption="true" dy="20" fill="#0a4f0a" font-family="medium" id="education" k="name"
+        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--health-->
+    <style-text caption="true" dy="20" fill="#da0092" font-family="medium" id="health" k="name"
+        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <!--other POIs-->
+    <style-text caption="true" dy="20" fill="#404000" id="poi" k="name" size="16" stroke="#aaffffff"
+        stroke-width="2.0" />
+    <!--roads-->
     <style-text fill="#101010" id="road" k="name" priority="2" size="16" stroke="#eeeeee"
         stroke-width="2.0" />
-
+    <!--major roads-->
     <style-text style="bold" fill="#101010" id="major-road" k="name" priority="1" size="16"
         stroke="#eeeeee" stroke-width="2.0" />
-
+    <!--references-->
     <style-text style="bold" fill="#606060" id="ref" k="ref" priority="2" size="12" stroke="#ffffff"
         stroke-width="2.0" />
     <style-text caption="true" id="ref-caption" use="ref" />
-
+    <!--ferry-->
     <style-text style="bold" fill="#606060" id="ferry" k="name" size="12" stroke="#ffffff"
         stroke-width="2.0" />
 
-    <style-text caption="true" dy="20" fill="#404000" id="poi" k="name" size="16" stroke="#aaffffff"
-        stroke-width="2.0" />
 
+    <!--###### AREA styles ######-->
+
+    <!--residential-->
     <style-area fade="11" fill="#e8e7e3" id="residential" />
-
+    <!--railway-->
     <style-area fade="10" fill="#e6e3e5" id="railway|industrial" />
-
 
     <!-- fade out at z=7, blend over to 'blend-fill' in z=11 -->
     <!-- src="assets:textures/wood.png" -->
@@ -45,6 +63,7 @@
     <!-- grassland|scrub -->
     <style-area fade="10" fill="#c2cba5" id="darkgreen" use="tex1" />
 
+    <!--farmland-->
     <style-area fade="12" fill="#e4dab5" id="farmland" stroke="#d1dbc7" stroke-width="1.0"
         use="tex1" />
 
@@ -60,21 +79,40 @@
     <style-area blend="11" blend-fill="#83aa5b" fade="8" fill="#b3d095" id="wood" use="park" />
     <!-- <style-line id="wood" fix="true" cap="butt" width="1.0" stroke="#9ac56e" /> -->
 
-    <!-- <style-area id="park" fill="#a3ca7b" fade="11" /> -->
-    <style-line cap="butt" fade="14" fix="true" id="park" stroke="#9ac56e" width="1.0" />
-
     <!-- de:Kleingartengebiet -->
     <style-area fade="12" fill="#efeae0" id="allotments" use="tex1" />
 
     <!-- de:Steinbruch, Schotter-, Kies-, Sand- und Tongrube -->
     <style-area fade="10" fill="#ddddcc" id="quarry" />
+
+    <!--military-->
     <style-area fade="10" fill="#eeedea" id="military" />
+    <!--building-->
+    <style-area fade="15" fill="#f2f0eb" id="building" stroke="#b7b6b3" stroke-width="1.0" />
+    <!--<style-area id="building" fill="#e9e6e3" fade="15"/>-->
+
+    <!--water-->
+    <!--<style-area id="water" fill="#97b7e5" afc5e3 /> -->
+    <!-- src="assets:textures/water.png" -->
+    <style-area fade="-1" fill="#99badf" id="water" use="tex1" />
+
+
+    <!--###### LINE styles ######-->
+
+    <!-- <style-area id="park" fill="#a3ca7b" fade="11" /> -->
+    <style-line cap="butt" fade="14" fix="true" id="park" stroke="#9ac56e" width="1.0" />
+
+    <!-- base style for fixed width lines -->
+    <style-line cap="butt" fix="true" id="fix" width="1.0" />
+
+    <!--residential-->
     <style-line id="residential" stroke="#ffffff" width="1.3" />
     <style-line cap="butt" id="residential:bridge" use="residential" />
 
     <!-- when inheriting another style with 'from' then 'width' is relative to the parent -->
     <style-line id="pedestrian" use="residential" width="-0.4" />
     <style-line cap="butt" id="pedestrian:bridge" use="pedestrian" />
+
     <style-line id="highway:z11" stroke="#fcba5a" width="1.8" />
     <!-- <style-line id="highway:z11:bridge" use="highway:z11" cap="butt" /> -->
     <style-line cap="butt" id="trunk_link" stroke="#fee16e" width="1.3" />
@@ -95,41 +133,39 @@
     <!-- <style-line id="footway:z16" use="footway" width="-0.95" fixed="false" fade="-1"/> -->
     <style-line id="footway:z17" stroke="#faf8f5" width="0.3" />
 
-    <!-- de: ein Weg der für Reiter vorgeshen ist.. -->
+    <!-- de: ein Weg der für Reiter vorgesehen ist.. -->
     <style-line cap="butt" id="bridleway" stipple-stroke="#837b58" stroke="#d3cb98" use="footway"
         width="0.1" />
     <style-line cap="butt" fix="true" id="steps" stipple="2" stipple-stroke="#be6253"
         stipple-width="1.0" stroke="#aaffffff" width="4.2" />
     <style-line cap="butt" fix="true" id="water:outline" stroke="#a4bbcc" width="1.0" />
 
+    <!--water-->
     <style-line cap="butt" fix="true" id="water" stroke="#a4bbcc" width="1.0" />
     <style-line fix="false" id="river" stroke="#a4bbcc" use="water" />
-
-    <!--<style-area id="water" fill="#97b7e5" afc5e3 /> -->
-    <!-- src="assets:textures/water.png" -->
-    <style-area fade="-1" fill="#99badf" id="water" use="tex1" />
 
     <!-- no-go area boundary -->
     <style-line cap="butt" fix="true" id="fence" stroke="#444444" width="1.2" />
     <style-line cap="butt" id="aeroway:runway" stroke="#c8ccbe" width="1.8" />
 
+    <!--building-->
     <!-- <style-line id="building" stroke="#c9c3c1" width="1.0" fix="true" cap="butt" fade="15"/> -->
-    <!-- <style-line id="building" stroke="#d0cec8" width="1.0" fix="true" cap="butt" fade="15"/>
-      <style-area id="building" fill="#e9e6e3" fade="15"/> -->
-
+    <!-- <style-line id="building" stroke="#d0cec8" width="1.0" fix="true" cap="butt" fade="15"/> -->
     <style-line fade="15" id="building" stroke="#eeb7b6b3" use="fix" />
-    <style-area fade="15" fill="#f2f0eb" id="building" stroke="#b7b6b3" stroke-width="1.0" />
+
+
+    <!--###### ASSIGNMENT ######-->
 
     <!-- boundary -->
     <m e="way" k="layer" v="boundary">
         <m k="admin_level">
             <m v="4">
                 <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0"
-                    stroke="#dadada" width="1.3" />
+                    stroke="#dadada" width="2.0" />
             </m>
             <m v="2">
                 <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0"
-                    stroke="#dadada" width="1.6" />
+                    stroke="#bbbbbb" width="2.5" />
             </m>
         </m>
     </m>
@@ -400,10 +436,10 @@
             </m>
 
             <m v="viewpoint">
-                <symbol src="assets:symbols/tourist/view_point.svg" />
+                <symbol src="assets:symbols/customized/tourist/view_point.svg" />
             </m>
             <m v="museum">
-                <symbol src="assets:symbols/tourist/museum.svg" />
+                <symbol src="assets:symbols/customized/tourist/museum.svg" />
             </m>
 
             <m zoom-min="14">
