@@ -1225,13 +1225,13 @@
         <!-- railway -->
         <m k="railway">
             <m v="station" zoom-min="14">
-                <circle fill="#af3a3a" radius="6" stroke="#606060" stroke-width="1.5" />
+                <!--<circle fill="#af3a3a" radius="6" stroke="#606060" stroke-width="1.5" />-->
                 <caption style="bold" dy="15" fill="#af3a3a" k="name" size="14" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
 
             <m v="halt|tram_stop">
-                <circle fill="#af3a3a" radius="4" stroke="#606060" stroke-width="1.5" />
+                <!--<circle fill="#af3a3a" radius="4" stroke="#606060" stroke-width="1.5" />-->
                 <caption style="bold" dy="10" fill="#af3a3a" k="name" size="12" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
@@ -1299,41 +1299,41 @@
         </m>
     </m>
 
-    <m e="node" select="first">
-        <m k="barrier">
-            <m zoom-min="10">
-                <m v="bollard">
-                    <circle fill="#909090" radius="1.5" />
-                </m>
-                <m v="block">
-                    <circle fill="#909090" radius="1.5" />
-                </m>
-                <m v="gate">
-                    <circle fill="#909090" radius="1.5" />
-                </m>
-                <m v="lift_gate">
-                    <circle fill="#909090" radius="1.5" />
-                </m>
-            </m>
-        </m>
+    <!--<m e="node" select="first">-->
+        <!--<m k="barrier">-->
+            <!--<m zoom-min="10">-->
+                <!--<m v="bollard">-->
+                    <!--<circle fill="#909090" radius="1.5" />-->
+                <!--</m>-->
+                <!--<m v="block">-->
+                    <!--<circle fill="#909090" radius="1.5" />-->
+                <!--</m>-->
+                <!--<m v="gate">-->
+                    <!--<circle fill="#909090" radius="1.5" />-->
+                <!--</m>-->
+                <!--<m v="lift_gate">-->
+                    <!--<circle fill="#909090" radius="1.5" />-->
+                <!--</m>-->
+            <!--</m>-->
+        <!--</m>-->
 
-        <m k="highway">
-            <m v="traffic_signals">
-                <circle fill="#ff0000" radius="1.5" />
-            </m>
-            <m v="bus_stop">
-                <circle fill="#ff0000" radius="1.5" />
-            </m>
-            <m v="turning_circle">
-                <circle fill="#ffffff" radius="1.4" scale-radius="true" />
-            </m>
-        </m>
+        <!--<m k="highway">-->
+            <!--<m v="traffic_signals">-->
+                <!--<circle fill="#ff0000" radius="1.5" />-->
+            <!--</m>-->
+            <!--<m v="bus_stop">-->
+                <!--<circle fill="#ff0000" radius="1.5" />-->
+            <!--</m>-->
+            <!--<m v="turning_circle">-->
+                <!--<circle fill="#ffffff" radius="1.4" scale-radius="true" />-->
+            <!--</m>-->
+        <!--</m>-->
 
-        <m k="natural">
-            <m select="first">
-                <m k="natural" v="tree" zoom-min="15">
-                    <circle radius="10" />
-                </m>
+        <!--<m k="natural">-->
+            <!--<m select="first">-->
+                <!--<m k="natural" v="tree" zoom-min="15">-->
+                    <!--<circle radius="10" />-->
+                <!--</m>-->
                 <!--<m v="cave_entrance" zoom-min="15">-->
                     <!--<symbol src="assets:symbols/poi/cave.svg" />-->
                     <!--<m zoom-min="17">-->
@@ -1354,14 +1354,14 @@
                     <!--<caption style="bold" dy="-12" fill="#4D2F08" k="ele" size="12" stroke="#ffffff"-->
                         <!--stroke-width="2.0" />-->
                 <!--</m>-->
-            </m>
-        </m>
+            <!--</m>-->
+        <!--</m>-->
 
-        <m k="railway">
-            <m v="level_crossing">
-                <circle fill="#ff0000" radius="1.5" />
-            </m>
-        </m>
-    </m>
+        <!--<m k="railway">-->
+            <!--<m v="level_crossing">-->
+                <!--<circle fill="#ff0000" radius="1.5" />-->
+            <!--</m>-->
+        <!--</m>-->
+    <!--</m>-->
 
 </rendertheme>

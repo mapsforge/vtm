@@ -1417,9 +1417,9 @@
             <m v="traffic_signals" zoom-min="17">
                 <symbol src="assets:symbols/transport/traffic_lights.svg" />
             </m>
-            <m v="turning_circle" zoom-min="15">
-                <circle fill="#ffffff" radius="1.4" scale-radius="true" />
-            </m>
+            <!--<m v="turning_circle" zoom-min="15">-->
+                <!--<circle fill="#ffffff" radius="1.4" scale-radius="true" />-->
+            <!--</m>-->
         </m>
 
         <m k="natural">
