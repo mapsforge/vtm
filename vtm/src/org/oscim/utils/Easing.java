@@ -88,12 +88,10 @@ public class Easing {
 
     static private float sineIn(float x, float t, float b, float c, float d) {
         return -c * (float) Math.cos(t/d * (Math.PI/2)) + c + b;
-
     }
 
     static private float sineOut(float x, float t, float b, float c, float d) {
         return c * (float) Math.sin(t / d * (Math.PI / 2)) + b;
-
     }
 
     static private float expoOut(float x, float t, float b, float c, float d) {
