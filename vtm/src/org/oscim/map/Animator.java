@@ -47,7 +47,6 @@ public class Animator {
     public final static int ANIM_ROTATE = 1 << 2;
     public final static int ANIM_TILT = 1 << 3;
     public final static int ANIM_FLING = 1 << 4;
-    public final static float ANIM_DEFAULT_DURATION = 500;
 
     private final Map mMap;
 
@@ -59,7 +58,7 @@ public class Animator {
     private final Point mPivot = new Point();
     private final Point mVelocity = new Point();
 
-    private float mDuration = ANIM_DEFAULT_DURATION;
+    private float mDuration = 500;
     private long mAnimEnd = -1;
     private Easing.Type mEasingType = Easing.Type.LINEAR;
 
@@ -168,7 +167,7 @@ public class Animator {
     }
 
     public void animateTo(GeoPoint p) {
-        animateTo((long) ANIM_DEFAULT_DURATION, p, 1, true, Easing.Type.LINEAR);
+        animateTo(500, p, 1, true, Easing.Type.LINEAR);
     }
 
     public void animateTo(long duration, MapPosition pos) {
@@ -226,15 +225,6 @@ public class Animator {
 
     public void animateFling(float velocityX, float velocityY,
                              int xmin, int xmax, int ymin, int ymax) {
-        // Smooth fling: Uses velocity to calculate duration.
-        // Increase velocity with 500 as reference, cause duration decelerates animation.
-        float duration = (Math.abs(velocityX) + Math.abs(velocityY)) / 2;
-        animateFling(velocityX * (duration / ANIM_DEFAULT_DURATION),
-                velocityY * (duration / ANIM_DEFAULT_DURATION), xmin, xmax, ymin, ymax, duration);
-    }
-
-    public void animateFling(float velocityX, float velocityY,
-        int xmin, int xmax, int ymin, int ymax, float duration) {
 
         ThreadUtils.assertMainThread();
 
@@ -245,6 +235,8 @@ public class Animator {
 
         mScroll.x = 0;
         mScroll.y = 0;
+
+        float duration = 500;
 
         float flingFactor = CanvasAdapter.DEFAULT_DPI / CanvasAdapter.dpi;
         mVelocity.x = velocityX * flingFactor;
