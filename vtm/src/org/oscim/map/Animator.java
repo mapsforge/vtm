@@ -4,6 +4,7 @@
  * Copyright 2016 devemux86
  * Copyright 2016 Izumi Kawashima
  * Copyright 2017 Wolfgang Schramm
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -247,7 +248,7 @@ public class Animator {
             return;
         }
 
-        animStart(duration, ANIM_FLING, Easing.Type.LINEAR);
+        animStart(duration, ANIM_FLING, Easing.Type.SINE_OUT);
     }
 
     private void animStart(float duration, int state, Easing.Type easingType) {

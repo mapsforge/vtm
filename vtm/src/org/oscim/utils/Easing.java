@@ -22,6 +22,8 @@ public class Easing {
     public enum Type {
         LINEAR,
         SINE_INOUT,
+        SINE_IN,
+        SINE_OUT,
         EXPO_OUT,
         QUAD_INOUT,
         CUBIC_INOUT,
@@ -47,6 +49,12 @@ public class Easing {
                 break;
             case SINE_INOUT:
                 adv = sineInout(x, t, b, c, d);
+                break;
+            case SINE_IN:
+                adv = sineIn(x, t, b, c, d);
+                break;
+            case SINE_OUT:
+                adv = sineOut(x, t, b, c, d);
                 break;
             case EXPO_OUT:
                 adv = expoOut(x, t, b, c, d);
@@ -76,6 +84,14 @@ public class Easing {
 
     static private float sineInout(float x, float t, float b, float c, float d) {
         return -c / 2 * (float) (Math.cos(Math.PI * t / d) - 1) + b;
+    }
+
+    static private float sineIn(float x, float t, float b, float c, float d) {
+        return -c * (float) Math.cos(t/d * (Math.PI/2)) + c + b;
+    }
+
+    static private float sineOut(float x, float t, float b, float c, float d) {
+        return c * (float) Math.sin(t / d * (Math.PI / 2)) + b;
     }
 
     static private float expoOut(float x, float t, float b, float c, float d) {
