@@ -41,6 +41,7 @@ public class GestureHandlerImpl extends GestureDetector.GestureAdapter {
         // Handle double tap zoom
         if (button == Input.Buttons.LEFT) {
             if (count == 2) {
+                //System.out.println("Double tap desktop not necessary with MapEventLayer2");
                 float pivotX = x - map.getWidth() / 2;
                 float pivotY = y - map.getHeight() / 2;
                 map.animator().animateZoom(300, 2, pivotX, pivotY);

@@ -137,6 +137,11 @@ public class MarkerOverlayActivity extends SimpleMapActivity
                 Toast.makeText(MarkerOverlayActivity.this, "Map long press\n" + p, Toast.LENGTH_SHORT).show();
                 return true;
             }
+            if (g instanceof Gesture.TripleTap) {
+                GeoPoint p = mMap.viewport().fromScreenPoint(e.getX(), e.getY());
+                Toast.makeText(MarkerOverlayActivity.this, "Map triple tap\n" + p, Toast.LENGTH_SHORT).show();
+                return true;
+            }
             return false;
         }
     }

@@ -71,12 +71,17 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
     private long mStartMove;
 
     /**
+     * 1in = 25.4mm
+     */
+    private static final float INCH = 25.4f;
+
+    /**
      * 2mm as minimal distance to start move: dpi / 25.4
      */
-    private static final float MIN_SLOP = 25.4f / 2;
+    private static final float MIN_SLOP = INCH / 2;
 
-    private static final float PINCH_ZOOM_THRESHOLD = MIN_SLOP / 2;
-    private static final float PINCH_TILT_THRESHOLD = MIN_SLOP / 2;
+    private static final float PINCH_ZOOM_THRESHOLD = INCH / 4; // 4mm
+    private static final float PINCH_TILT_THRESHOLD = INCH / 4; // 4mm
     private static final float PINCH_TILT_SLOPE = 0.75f;
     private static final float PINCH_ROTATE_THRESHOLD = 0.2f;
     private static final float PINCH_ROTATE_THRESHOLD2 = 0.5f;

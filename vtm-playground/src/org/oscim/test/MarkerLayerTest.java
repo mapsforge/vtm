@@ -134,6 +134,11 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
                 System.out.println("Map long press " + p);
                 return true;
             }
+            if (g instanceof Gesture.TripleTap) {
+                GeoPoint p = mMap.viewport().fromScreenPoint(e.getX(), e.getY());
+                System.out.println("Map triple tap " + p);
+                return true;
+            }
             return false;
         }
     }
