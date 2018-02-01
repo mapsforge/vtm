@@ -19,6 +19,7 @@
  */
 package org.oscim.layers;
 
+import org.oscim.backend.CanvasAdapter;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
 import org.oscim.event.Event;
@@ -205,7 +206,7 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
                     vy *= t * t;
                     vx *= t * t;
                 }
-                doFling(vx, vy);
+                doFlingScroll(vx, vy);
             }
             return true;
         }
@@ -464,13 +465,20 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
         return !withinSquaredDist(mx, my, minSlop * minSlop);
     }
 
-    private boolean doFling(float velocityX, float velocityY) {
+    private boolean doFlingScroll(float velocityX, float velocityY) {
 
         int w = Tile.SIZE * 5;
         int h = Tile.SIZE * 5;
 
-        mMap.animator().animateFling(velocityX * 2, velocityY * 2,
-                -w, w, -h, h);
+        if (CanvasAdapter.platform.isDesktop()) {
+            velocityX /= 4;
+            velocityY /= 4;
+        } else {
+            velocityX *= 2;
+            velocityY *= 2;
+        }
+
+        mMap.animator().animateFlingScroll(velocityX, velocityY, -w, w, -h, h);
         return true;
     }
 
@@ -552,6 +560,13 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
 
         float getVelocityX() {
             return getVelocity(mMeanX);
+        }
+
+        @Override
+        public String toString() {
+            return "VelocityX: " + getVelocityX()
+                    + "\tVelocityY: " + getVelocityY()
+                    + "\tNumSamples: " + mNumSamples;
         }
     }
 }
