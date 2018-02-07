@@ -86,12 +86,12 @@ public class ViewController extends Viewport {
      * @param mx the amount of pixels to move the map horizontally.
      * @param my the amount of pixels to move the map vertically.
      */
-    public void moveMap(float mx, float my) {
+    public synchronized void moveMap(float mx, float my) {
         ThreadUtils.assertMainThread();
 
-        Point p = applyRotation(mx, my);
+        applyRotation(mx, my, mPos.bearing, mMovePoint);
         double tileScale = mPos.scale * Tile.SIZE;
-        moveTo(mPos.x - p.x / tileScale, mPos.y - p.y / tileScale);
+        moveTo(mPos.x - mMovePoint.x / tileScale, mPos.y - mMovePoint.y / tileScale);
     }
 
     /* used by MapAnimator */
@@ -120,18 +120,26 @@ public class ViewController extends Viewport {
             mPos.y = mMinY;
     }
 
-    private synchronized Point applyRotation(double mx, double my) {
-        if (mPos.bearing == 0) {
-            mMovePoint.x = mx;
-            mMovePoint.y = my;
+    /**
+     *
+     * @param mx        the amount of pixels to move the map horizontally.
+     * @param my        the amount of pixels to move the map vertically.
+     * @param bearing   the current bearing
+     * @param out       the position where to move
+     */
+    public static void applyRotation(double mx, double my, float bearing, Point out) {
+        if (out == null)
+            out = new Point();
+        if (bearing == 0) {
+            out.x = mx;
+            out.y = my;
         } else {
-            double rad = Math.toRadians(mPos.bearing);
+            double rad = Math.toRadians(bearing);
             double rcos = Math.cos(rad);
             double rsin = Math.sin(rad);
-            mMovePoint.x = mx * rcos + my * rsin;
-            mMovePoint.y = mx * -rsin + my * rcos;
+            out.x = mx * rcos + my * rsin;
+            out.y = mx * -rsin + my * rcos;
         }
-        return mMovePoint;
     }
 
     /**

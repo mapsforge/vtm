@@ -15,11 +15,20 @@
 package org.oscim.utils;
 
 public final class Parameters {
+    /**
+     * If true the <code>Animator2</code> will be used instead of default <code>Animator</code>.
+     */
+    public static boolean ANIMATOR2 = false;
 
     /**
      * Allow custom tile size instead of the calculated one.
      */
     public static boolean CUSTOM_TILE_SIZE = false;
+
+    /**
+     * If true physical fling animations are used (instead of kinetic animation) in <code>Animator2</code>.
+     */
+    public static boolean FLING = ANIMATOR2 && true;
 
     /**
      * If true the <code>MapEventLayer2</code> will be used instead of default <code>MapEventLayer</code>.

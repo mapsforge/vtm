@@ -28,7 +28,7 @@ import org.oscim.core.MapPosition;
 import org.oscim.core.Point;
 import org.oscim.core.Tile;
 import org.oscim.renderer.MapRenderer;
-import org.oscim.utils.Easing;
+import org.oscim.utils.animation.Easing;
 import org.oscim.utils.ThreadUtils;
 import org.oscim.utils.async.Task;
 import org.slf4j.Logger;
@@ -48,21 +48,21 @@ public class Animator {
     public final static int ANIM_TILT = 1 << 3;
     public final static int ANIM_FLING = 1 << 4;
 
-    private final Map mMap;
+    protected final Map mMap;
 
-    private final MapPosition mCurPos = new MapPosition();
-    private final MapPosition mStartPos = new MapPosition();
-    private final MapPosition mDeltaPos = new MapPosition();
+    protected final MapPosition mCurPos = new MapPosition();
+    protected final MapPosition mStartPos = new MapPosition();
+    protected final MapPosition mDeltaPos = new MapPosition();
 
-    private final Point mScroll = new Point();
-    private final Point mPivot = new Point();
-    private final Point mVelocity = new Point();
+    protected final Point mScroll = new Point();
+    protected final Point mPivot = new Point();
+    protected final Point mVelocity = new Point();
 
-    private float mDuration = 500;
-    private long mAnimEnd = -1;
-    private Easing.Type mEasingType = Easing.Type.LINEAR;
+    protected float mDuration = 500;
+    protected long mAnimEnd = -1;
+    protected Easing.Type mEasingType = Easing.Type.LINEAR;
 
-    private int mState = ANIM_NONE;
+    protected int mState = ANIM_NONE;
 
     public Animator(Map map) {
         mMap = map;
@@ -251,7 +251,7 @@ public class Animator {
         animStart(duration, ANIM_FLING, Easing.Type.SINE_OUT);
     }
 
-    private void animStart(float duration, int state, Easing.Type easingType) {
+    protected void animStart(float duration, int state, Easing.Type easingType) {
         if (!isActive())
             mMap.events.fire(Map.ANIM_START, mMap.mMapPosition);
         mCurPos.copy(mStartPos);
@@ -332,7 +332,7 @@ public class Animator {
         }
     }
 
-    private Task updateTask = new Task() {
+    protected Task updateTask = new Task() {
         @Override
         public int go(boolean canceled) {
             if (!canceled)
@@ -341,7 +341,7 @@ public class Animator {
         }
     };
 
-    private double doScale(ViewController v, float adv) {
+    protected double doScale(ViewController v, float adv) {
         double newScale = mStartPos.scale + mDeltaPos.scale * Math.sqrt(adv);
 
         v.scaleMap((float) (newScale / mCurPos.scale),

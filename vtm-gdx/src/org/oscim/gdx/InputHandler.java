@@ -31,7 +31,7 @@ import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.map.Map;
 import org.oscim.map.ViewController;
 import org.oscim.theme.VtmThemes;
-import org.oscim.utils.Easing;
+import org.oscim.utils.animation.Easing;
 
 import java.util.List;
 
