@@ -21,7 +21,9 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 
 import org.oscim.core.Tile;
+import org.oscim.map.Animator2;
 import org.oscim.map.Map;
+import org.oscim.utils.Parameters;
 
 public class GestureHandler implements GestureListener {
     private boolean mayFling = true;
@@ -84,7 +86,11 @@ public class GestureHandler implements GestureListener {
         //log.debug("fling " + button + " " + velocityX + "/" + velocityY);
         if (mayFling && button == Buttons.LEFT) {
             int m = Tile.SIZE * 4;
-            mMap.animator().animateEaseScroll((int) velocityX, (int) velocityY, -m, m, -m, m);
+            if(Parameters.FLING && mMap.animator() instanceof Animator2)
+                ((Animator2) mMap.animator())
+                        .animateFlingScroll((int) velocityX, (int) velocityY, -m, m, -m, m);
+            else
+                mMap.animator().animateFling((int) velocityX, (int) velocityY, -m, m, -m, m);
             return true;
         }
         return false;

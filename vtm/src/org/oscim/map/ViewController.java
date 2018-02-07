@@ -125,18 +125,20 @@ public class ViewController extends Viewport {
      * @param mx        the amount of pixels to move the map horizontally.
      * @param my        the amount of pixels to move the map vertically.
      * @param bearing   the current bearing
-     * @param movePoint the out position where to move
+     * @param out       the position where to move
      */
-    public static void applyRotation(double mx, double my, float bearing, Point movePoint) {
+    public static void applyRotation(double mx, double my, float bearing, Point out) {
+        if (out == null)
+            out = new Point();
         if (bearing == 0) {
-            movePoint.x = mx;
-            movePoint.y = my;
+            out.x = mx;
+            out.y = my;
         } else {
             double rad = Math.toRadians(bearing);
             double rcos = Math.cos(rad);
             double rsin = Math.sin(rad);
-            movePoint.x = mx * rcos + my * rsin;
-            movePoint.y = mx * -rsin + my * rcos;
+            out.x = mx * rcos + my * rsin;
+            out.y = mx * -rsin + my * rcos;
         }
     }
 

@@ -20,15 +20,18 @@
 package org.oscim.layers;
 
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.backend.Platform;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
 import org.oscim.event.Event;
 import org.oscim.event.Gesture;
 import org.oscim.event.GestureListener;
 import org.oscim.event.MotionEvent;
+import org.oscim.map.Animator2;
 import org.oscim.map.Map;
 import org.oscim.map.Map.InputListener;
 import org.oscim.map.ViewController;
+import org.oscim.utils.Parameters;
 
 import static org.oscim.backend.CanvasAdapter.dpi;
 import static org.oscim.utils.FastMath.withinSquaredDist;
@@ -470,8 +473,15 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
         int w = Tile.SIZE * 5;
         int h = Tile.SIZE * 5;
 
-        mMap.animator().animateEaseScroll(velocityX * 2, velocityY * 2,
-                -w, w, -h, h);
+        if(Parameters.FLING && mMap.animator() instanceof Animator2) {
+            if (!(CanvasAdapter.platform.isDesktop() || CanvasAdapter.platform.equals(Platform.WEBGL))) {
+                velocityX *= 2;
+                velocityY *= 2;
+            }
+            ((Animator2) mMap.animator())
+                    .animateFlingScroll((int) velocityX, (int) velocityY, -w, w, -h, h);
+        } else
+            mMap.animator().animateFling((int) velocityX * 2, (int) velocityY * 2, -w, w, -h, h);
         return true;
     }
 

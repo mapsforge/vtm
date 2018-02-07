@@ -132,7 +132,10 @@ public abstract class Map implements TaskQueue {
         ThreadUtils.init();
 
         mViewport = new ViewController();
-        mAnimator = new Animator(this);
+        if (Parameters.ANIMATOR2)
+            mAnimator = new Animator2(this);
+        else
+            mAnimator = new Animator(this);
         mLayers = new Layers(this);
 
         input = new EventDispatcher<InputListener, MotionEvent>() {
