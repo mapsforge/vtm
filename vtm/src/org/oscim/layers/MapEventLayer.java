@@ -206,7 +206,7 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
                     vy *= t * t;
                     vx *= t * t;
                 }
-                doFlingScroll(vx, vy);
+                doFling(vx, vy);
             }
             return true;
         }
@@ -465,20 +465,13 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
         return !withinSquaredDist(mx, my, minSlop * minSlop);
     }
 
-    private boolean doFlingScroll(float velocityX, float velocityY) {
+    private boolean doFling(float velocityX, float velocityY) {
 
         int w = Tile.SIZE * 5;
         int h = Tile.SIZE * 5;
 
-        if (CanvasAdapter.platform.isDesktop()) {
-            velocityX /= 4;
-            velocityY /= 4;
-        } else {
-            velocityX *= 2;
-            velocityY *= 2;
-        }
-
-        mMap.animator().animateFlingScroll(velocityX, velocityY, -w, w, -h, h);
+        mMap.animator().animateEaseScroll(velocityX * 2, velocityY * 2,
+                -w, w, -h, h);
         return true;
     }
 
@@ -560,13 +553,6 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
 
         float getVelocityX() {
             return getVelocity(mMeanX);
-        }
-
-        @Override
-        public String toString() {
-            return "VelocityX: " + getVelocityX()
-                    + "\tVelocityY: " + getVelocityY()
-                    + "\tNumSamples: " + mNumSamples;
         }
     }
 }

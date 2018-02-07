@@ -71,9 +71,6 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
     private float mPrevX2;
     private float mPrevY2;
 
-    private float mPivotX;
-    private float mPivotY;
-
     private double mAngle;
     private double mPrevPinchWidth;
     private long mStartMove;
@@ -107,18 +104,14 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
     private static final long DOUBLE_TAP_THRESHOLD = 300;
     private static final long LONG_PRESS_THRESHOLD = 500;
 
-    private final VelocityTracker mScrollTracker;
-    private final VelocityTracker mScaleTracker;
-    private final VelocityTracker mRotateTracker;
+    private final VelocityTracker mTracker;
     private Task mGestureTask;
 
     private final MapPosition mapPosition = new MapPosition();
 
     public MapEventLayer2(Map map) {
         super(map);
-        mScrollTracker = new VelocityTracker();
-        mScaleTracker = new VelocityTracker();
-        mRotateTracker = new VelocityTracker();
+        mTracker = new VelocityTracker();
     }
 
     @Override
@@ -235,9 +228,9 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
             }
             if (mStartMove > 0) {
                 /* handle fling gesture */
-                mScrollTracker.update(e.getX(), e.getY(), e.getTime());
-                float vx = mScrollTracker.getVelocityX();
-                float vy = mScrollTracker.getVelocityY();
+                mTracker.update(e.getX(), e.getY(), e.getTime());
+                float vx = mTracker.getVelocityX();
+                float vy = mTracker.getVelocityY();
 
                 /* reduce velocity for short moves */
                 float t = e.getTime() - mStartMove;
@@ -247,17 +240,7 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
                     vx *= t * t;
                 }
                 if (mEnableMove)
-                    doFlingScroll(vx, vy);
-            }
-            if (mRotateTracker.mNumSamples >= 0) {
-                mDoRotate = mCanRotate = false;
-                mMap.animator().animateFlingRotate(mRotateTracker.getVelocityX(), mPivotX, mPivotY);
-                mRotateTracker.mNumSamples = -1;
-            }
-            if (mScaleTracker.mNumSamples >= 0) {
-                mDoScale = mCanScale = false;
-                mMap.animator().animateFlingZoom(mScaleTracker.getVelocityX(), mPivotX, mPivotY);
-                mScaleTracker.mNumSamples = -1;
+                    doFling(vx, vy);
             }
 
             if (time - mStartDown > LONG_PRESS_THRESHOLD) {
@@ -392,11 +375,11 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
                 }
 
                 mStartMove = e.getTime();
-                mScrollTracker.start(x1, y1, mStartMove);
+                mTracker.start(x1, y1, mStartMove);
                 return;
             }
             mViewport.moveMap(mx, my);
-            mScrollTracker.update(x1, y1, e.getTime());
+            mTracker.update(x1, y1, e.getTime());
             mMap.updateMap(true);
             if (mMap.viewport().getMapPosition(mapPosition))
                 mMap.events.fire(Map.MOVE_EVENT, mapPosition);
@@ -448,12 +431,6 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
                     mAngle = rad;
 
                     deltaPinch = 0;
-
-                    if (mRotateTracker.mNumSamples < 0) {
-                        mRotateTracker.start(mRotateTracker.mLastX + (float) da, 0, e.getTime());
-                    } else {
-                        mRotateTracker.update(mRotateTracker.mLastX + (float) da, 0, e.getTime());
-                    }
                 }
             } else {
                 r = Math.abs(r);
@@ -506,31 +483,25 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
             if (mDoScale || mDoRotate) {
                 scaleBy = (float) (pinchWidth / mPrevPinchWidth);
                 mPrevPinchWidth = pinchWidth;
-
-                if (mDoScale && scaleBy != 1f) {
-                    if (mScaleTracker.mNumSamples < 0) {
-                        mScaleTracker.start((float) pinchWidth, 0, e.getTime());
-                    } else {
-                        mScaleTracker.update((float) pinchWidth, 0, e.getTime());
-                    }
-                }
             }
         }
 
         if (!(mDoRotate || mDoScale || mDoTilt))
             return;
 
+        float pivotX = 0, pivotY = 0;
+
         if (!mFixOnCenter) {
-            mPivotX = (x2 + x1) / 2 - width / 2;
-            mPivotY = (y2 + y1) / 2 - height / 2;
+            pivotX = (x2 + x1) / 2 - width / 2;
+            pivotY = (y2 + y1) / 2 - height / 2;
         }
 
         synchronized (mViewport) {
             if (!mDoTilt) {
                 if (rotateBy != 0)
-                    mViewport.rotateMap(rotateBy, mPivotX, mPivotY);
+                    mViewport.rotateMap(rotateBy, pivotX, pivotY);
                 if (scaleBy != 1)
-                    mViewport.scaleMap(scaleBy, mPivotX, mPivotY);
+                    mViewport.scaleMap(scaleBy, pivotX, pivotY);
 
                 if (!mFixOnCenter)
                     mViewport.moveMap(mx, my);
@@ -593,24 +564,17 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
         return !withinSquaredDist(mx, my, minSlop * minSlop);
     }
 
-    private boolean doFlingScroll(float velocityX, float velocityY) {
+    private boolean doFling(float velocityX, float velocityY) {
 
         int w = Tile.SIZE * 5;
         int h = Tile.SIZE * 5;
 
-        if (CanvasAdapter.platform.isDesktop()) {
-            velocityX /= 4;
-            velocityY /= 4;
-        } else {
-            velocityX *= 2;
-            velocityY *= 2;
-        }
-
-        mMap.animator().animateFlingScroll(velocityX, velocityY, -w, w, -h, h);
+        mMap.animator().animateEaseScroll(velocityX * 2, velocityY * 2,
+                -w, w, -h, h);
         return true;
     }
 
-    private class VelocityTracker {
+    private static class VelocityTracker {
         /* sample window, 200ms */
         private static final int MAX_MS = 200;
         private static final int SAMPLES = 32;
@@ -679,13 +643,6 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
 
         float getVelocityX() {
             return getVelocity(mMeanX);
-        }
-
-        @Override
-        public String toString() {
-            return "VelocityX: " + getVelocityX()
-                    + "\tVelocityY: " + getVelocityY()
-                    + "\tNumSamples: " + mNumSamples;
         }
     }
 }

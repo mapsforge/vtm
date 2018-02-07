@@ -28,7 +28,8 @@ import org.oscim.core.MapPosition;
 import org.oscim.core.Point;
 import org.oscim.core.Tile;
 import org.oscim.renderer.MapRenderer;
-import org.oscim.utils.Easing;
+import org.oscim.utils.animation.DragForce;
+import org.oscim.utils.animation.Easing;
 import org.oscim.utils.ThreadUtils;
 import org.oscim.utils.async.Task;
 import org.slf4j.Logger;
@@ -47,6 +48,7 @@ public class Animator {
     public final static int ANIM_ROTATE = 1 << 2;
     public final static int ANIM_TILT = 1 << 3;
     public final static int ANIM_FLING = 1 << 4;
+    public final static int ANIM_EASE_FLING = 1 << 5;
 
     /**
      * The minimum changes that are pleasant for users.
@@ -239,6 +241,49 @@ public class Animator {
     }
 
     /**
+     * Use animateEaseScroll instead
+     */
+    @Deprecated
+    public void animateFling(float velocityX, float velocityY,
+                             int xmin, int xmax, int ymin, int ymax) {
+        animateEaseScroll(velocityX, velocityY, xmin, xmax, ymin, ymax);
+    }
+
+    /**
+     * @param velocityX the x velocity depends on screen resolution
+     * @param velocityY the y velocity depends on screen resolution
+     */
+    public void animateEaseScroll(float velocityX, float velocityY,
+                                   int xmin, int xmax, int ymin, int ymax) {
+        ThreadUtils.assertMainThread();
+
+        if (velocityX * velocityX + velocityY * velocityY < 2048)
+            return;
+
+        mMap.getMapPosition(mStartPos);
+
+        float duration = 500;
+
+        float screenFactor = CanvasAdapter.DEFAULT_DPI / CanvasAdapter.dpi;
+        velocityX = velocityX * screenFactor;
+        velocityY = velocityY * screenFactor;
+        velocityX = clamp(velocityX, xmin, xmax);
+        velocityY = clamp(velocityY, ymin, ymax);
+        if (Float.isNaN(velocityX) || Float.isNaN(velocityY)) {
+            log.debug("fling NaN!");
+            return;
+        }
+
+        double tileScale = mStartPos.scale * Tile.SIZE;
+        Point p = new Point();
+        ViewController.applyRotation(-velocityX, -velocityY, mStartPos.bearing, p);
+        mDeltaPos.setX(p.x / tileScale);
+        mDeltaPos.setY(p.y / tileScale);
+
+        animEaseStart(duration, ANIM_EASE_FLING | ANIM_MOVE, Easing.Type.SINE_OUT);
+    }
+
+    /**
      * @param velocityX the x velocity depends on screen resolution
      * @param velocityY the y velocity depends on screen resolution
      */
@@ -251,7 +296,7 @@ public class Animator {
 
         mMap.getMapPosition(mStartPos);
 
-        float flingFactor = 2.3f; // Can be changed but should be standardized for all callers
+        float flingFactor = 2.0f; // Can be changed but should be standardized for all callers
         float screenFactor = CanvasAdapter.DEFAULT_DPI / CanvasAdapter.dpi;
 
         velocityX *= screenFactor * flingFactor;
@@ -370,6 +415,10 @@ public class Animator {
                 scaleAdv = doScale(v, adv);
             }
 
+            if ((mState & ANIM_EASE_FLING) != 0) {
+                adv = (float) Math.sqrt(adv);
+            }
+
             if ((mState & ANIM_MOVE) != 0) {
                 v.moveTo(mStartPos.x + mDeltaPos.x * (adv / scaleAdv),
                         mStartPos.y + mDeltaPos.y * (adv / scaleAdv));
@@ -484,92 +533,5 @@ public class Animator {
      */
     public MapPosition getEndPosition() {
         return mDeltaPos;
-    }
-
-
-    /*
-     * Copyright (C) 2017 The Android Open Source Project
-     *
-     * Licensed under the Apache License, Version 2.0 (the "License");
-     * you may not use this file except in compliance with the License.
-     * You may obtain a copy of the License at
-     *
-     *      http://www.apache.org/licenses/LICENSE-2.0
-     *
-     * Unless required by applicable law or agreed to in writing, software
-     * distributed under the License is distributed on an "AS IS" BASIS,
-     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     * See the License for the specific language governing permissions and
-     * limitations under the License.
-     */
-
-    /**
-     * See: https://developer.android.com/reference/android/support/animation/FlingAnimation.html
-     * Package: android.support.animation.FlingAnimation
-     */
-    private final class DragForce {
-
-        private static final float DEFAULT_FRICTION = -4.2f;
-
-        // This multiplier is used to calculate the velocity threshold given a certain value
-        // threshold. The idea is that if it takes >= 1 frame to move the value threshold amount,
-        // then the velocity is a reasonable threshold.
-        private static final float VELOCITY_THRESHOLD_MULTIPLIER = 1000f / 16f; // 1 frame ≙ 16 ms (62.5 fps)
-        private float mFriction = DEFAULT_FRICTION;
-        private float mVelocityThreshold = DEFAULT_MIN_VISIBLE_CHANGE_PIXELS * VELOCITY_THRESHOLD_MULTIPLIER;
-
-        // Internal state to hold a value/velocity pair.
-        private float mValue;
-        private float mVelocity;
-
-        void setFrictionScalar(float frictionScalar) {
-            mFriction = frictionScalar * DEFAULT_FRICTION;
-        }
-
-        float getFrictionScalar() {
-            return mFriction / DEFAULT_FRICTION;
-        }
-
-        /**
-         * Updates the animation state (i.e. value and velocity).
-         *
-         * @param deltaT time elapsed in millisecond since last frame
-         * @return the value delta since last frame
-         */
-        float updateValueAndVelocity(long deltaT) {
-            float velocity = mVelocity;
-            mVelocity = (float) (velocity * Math.exp((deltaT / 1000f) * mFriction));
-            float valueDelta = (mVelocity - velocity);
-            mValue += valueDelta;
-            if (isAtEquilibrium(mValue, mVelocity)) {
-                mVelocity = 0f;
-            }
-            return valueDelta;
-        }
-
-        public void setValueAndVelocity(float value, float velocity) {
-            mValue = value;
-            mVelocity = velocity;
-        }
-
-        public float getValue() {
-            return mValue;
-        }
-
-        public float getVelocity() {
-            return mVelocity;
-        }
-
-        public float getAcceleration(float position, float velocity) {
-            return velocity * mFriction;
-        }
-
-        public boolean isAtEquilibrium(float value, float velocity) {
-            return Math.abs(velocity) < mVelocityThreshold;
-        }
-
-        void setValueThreshold(float threshold) {
-            mVelocityThreshold = threshold * VELOCITY_THRESHOLD_MULTIPLIER;
-        }
     }
 }
