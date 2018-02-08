@@ -42,8 +42,12 @@ public class Animator2 extends Animator {
      * The minimum changes that are pleasant for users.
      */
     private static final float DEFAULT_MIN_VISIBLE_CHANGE_PIXELS = 0.5f;
+    private static final float DEFAULT_MIN_VISIBLE_CHANGE_DEGREE = 0.001f;
+    private static final float DEFAULT_MIN_VISIBLE_CHANGE_SCALE = 1f;
 
     private static final float FLING_FRICTION_MOVE = 0.9f;
+    private static final float FLING_FRICTION_ROTATE = 1.0f;
+    private static final float FLING_FRICTION_SCALE = 1.2f;
 
     private final DragForce mFlingRotateForce = new DragForce();
     private final DragForce mFlingScaleForce = new DragForce();
@@ -60,6 +64,8 @@ public class Animator2 extends Animator {
     }
 
     /**
+     * Animates a physical fling for scrolls
+     *
      * @param velocityX the x velocity depends on screen resolution
      * @param velocityY the y velocity depends on screen resolution
      */
@@ -92,6 +98,51 @@ public class Animator2 extends Animator {
         animFlingStart(ANIM_MOVE);
     }
 
+    /**
+     * Animates a physical fling for rotations
+     */
+     public void animateFlingRotate(float angularVelocity, float pivotX, float pivotY) {
+        ThreadUtils.assertMainThread();
+
+        mMap.getMapPosition(mStartPos);
+
+        mPivot.x = pivotX;
+        mPivot.y = pivotY;
+
+        float flingFactor = -0.4f; // Can be changed but should be standardized for all callers
+        angularVelocity *= flingFactor;
+
+        mFlingRotateForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_DEGREE);
+        mFlingRotateForce.setFrictionScalar(FLING_FRICTION_ROTATE);
+        mFlingRotateForce.setValueAndVelocity(0f, angularVelocity);
+
+        animFlingStart(ANIM_ROTATE);
+    }
+
+    /**
+     * Animates a physical fling for zooms
+     *
+     * @param scaleVelocity the scale velocity depends on screen resolution
+     */
+    public void animateFlingZoom(float scaleVelocity, float pivotX, float pivotY) {
+        ThreadUtils.assertMainThread();
+
+        mMap.getMapPosition(mStartPos);
+
+        mPivot.x = pivotX;
+        mPivot.y = pivotY;
+
+        float flingFactor = -1.0f; // Can be changed but should be standardized for all callers
+        float screenFactor = CanvasAdapter.DEFAULT_DPI / CanvasAdapter.dpi;
+        scaleVelocity *= flingFactor * screenFactor;
+
+        mFlingScaleForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_SCALE);
+        mFlingScaleForce.setFrictionScalar(FLING_FRICTION_SCALE);
+        mFlingScaleForce.setValueAndVelocity(0f, scaleVelocity);
+
+        animFlingStart(ANIM_SCALE);
+    }
+
     private void animFlingStart(int state) {
         if (!isActive())
             mMap.events.fire(Map.ANIM_START, mMap.mMapPosition);
@@ -102,6 +153,9 @@ public class Animator2 extends Animator {
     }
 
     /**
+     * Alternative implementation of Animator's <code>animateFling</code>.
+     * Uses scheme of predictable animations using mDeltaPos.
+     *
      * @param velocityX the x velocity depends on screen resolution
      * @param velocityY the y velocity depends on screen resolution
      */
@@ -171,6 +225,7 @@ public class Animator2 extends Animator {
             }
 
             if ((mState & ANIM_KINETIC) != 0) {
+                // Reduce value to simulate kinetic behaviour
                 adv = (float) Math.sqrt(adv);
             }
 
