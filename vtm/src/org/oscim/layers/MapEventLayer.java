@@ -360,16 +360,17 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
                 double da = rad - mAngle;
 
                 if (Math.abs(da) > 0.0001) {
-                    rotateBy = da;
+                    // Ensures rotation range is within (+/-)PI, if |da| < PI2
+                    rotateBy = (da + Math.PI * 3) % (Math.PI * 2) - Math.PI;
                     mAngle = rad;
 
                     deltaPinch = 0;
 
                     if (Parameters.ANIMATOR2) {
                         if (mRotateTracker.mNumSamples < 0)
-                            mRotateTracker.start(mRotateTracker.mLastX + (float) da, 0, e.getTime());
+                            mRotateTracker.start(mRotateTracker.mLastX + (float) rotateBy, 0, e.getTime());
                         else
-                            mRotateTracker.update(mRotateTracker.mLastX + (float) da, 0, e.getTime());
+                            mRotateTracker.update(mRotateTracker.mLastX + (float) rotateBy, 0, e.getTime());
                     }
                 }
             } else {
