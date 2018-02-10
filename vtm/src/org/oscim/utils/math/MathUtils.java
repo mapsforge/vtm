@@ -96,6 +96,17 @@ public class MathUtils {
         return Cos.table[(int) (degrees * degToIndex) & SIN_MASK];
     }
 
+    /**
+     * Returns normalized radian in range of -PI to +PI
+     */
+    public static double clampRadian(double radian){
+        while (radian > Math.PI)
+            radian -= 2 * Math.PI;
+        while (radian < -Math.PI)
+            radian += 2 * Math.PI;
+        return radian;
+    }
+
     // ---
 
     static private final int ATAN2_BITS = 7; // Adjust for accuracy.

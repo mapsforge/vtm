@@ -33,6 +33,7 @@ import org.oscim.map.Map;
 import org.oscim.map.Map.InputListener;
 import org.oscim.map.ViewController;
 import org.oscim.utils.Parameters;
+import org.oscim.utils.math.MathUtils;
 
 import static org.oscim.backend.CanvasAdapter.dpi;
 import static org.oscim.utils.FastMath.withinSquaredDist;
@@ -360,13 +361,13 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
                 double da = rad - mAngle;
 
                 if (Math.abs(da) > 0.0001) {
-                    // Ensures rotation range is within (+/-)PI, if |da| < PI2
-                    rotateBy = (da + Math.PI * 3) % (Math.PI * 2) - Math.PI;
+                    rotateBy = da;
                     mAngle = rad;
 
                     deltaPinch = 0;
 
                     if (Parameters.ANIMATOR2) {
+                        rotateBy = MathUtils.clampRadian(rotateBy);
                         if (mRotateTracker.mNumSamples < 0)
                             mRotateTracker.start(mRotateTracker.mLastX + (float) rotateBy, 0, e.getTime());
                         else
