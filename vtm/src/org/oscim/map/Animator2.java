@@ -41,8 +41,8 @@ public class Animator2 extends Animator {
     /**
      * The minimum changes that are pleasant for users.
      */
-    private static final float DEFAULT_MIN_VISIBLE_CHANGE_DEGREE = 0.001f;
     private static final float DEFAULT_MIN_VISIBLE_CHANGE_PIXELS = 0.5f;
+    private static final float DEFAULT_MIN_VISIBLE_CHANGE_RADIAN = 0.001f;
     private static final float DEFAULT_MIN_VISIBLE_CHANGE_SCALE = 1f;
 
     private static final float FLING_FRICTION_MOVE = 0.9f;
@@ -65,6 +65,8 @@ public class Animator2 extends Animator {
 
     /**
      * Animates a physical fling for rotations.
+     *
+     * @param angularVelocity angular velocity in radians
      */
     public void animateFlingRotate(float angularVelocity, float pivotX, float pivotY) {
         ThreadUtils.assertMainThread();
@@ -77,7 +79,7 @@ public class Animator2 extends Animator {
         float flingFactor = -0.4f; // Can be changed but should be standardized for all callers
         angularVelocity *= flingFactor;
 
-        mFlingRotateForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_DEGREE);
+        mFlingRotateForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_RADIAN);
         mFlingRotateForce.setFrictionScalar(FLING_FRICTION_ROTATE);
         mFlingRotateForce.setValueAndVelocity(0f, angularVelocity);
 
