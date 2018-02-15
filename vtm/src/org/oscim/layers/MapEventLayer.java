@@ -427,7 +427,7 @@ public class MapEventLayer extends AbstractMapEventLayer implements InputListene
                 mPrevPinchWidth = pinchWidth;
 
                 if (Parameters.ANIMATOR2) {
-                    if (mDoScale && scaleBy != 1f) {
+                    if (scaleBy != 1f) {
                         if (mScaleTracker.mNumSamples < 0)
                             mScaleTracker.start((float) pinchWidth, 0, e.getTime());
                         else

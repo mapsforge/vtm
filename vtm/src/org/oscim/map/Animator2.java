@@ -41,13 +41,24 @@ public class Animator2 extends Animator {
     /**
      * The minimum changes that are pleasant for users.
      */
-    private static final float DEFAULT_MIN_VISIBLE_CHANGE_PIXELS = 0.5f;
+    private static final float DEFAULT_MIN_VISIBLE_CHANGE_PIXELS = 0.6f;
     private static final float DEFAULT_MIN_VISIBLE_CHANGE_RADIAN = 0.001f;
     private static final float DEFAULT_MIN_VISIBLE_CHANGE_SCALE = 1f;
 
-    private static final float FLING_FRICTION_MOVE = 0.9f;
-    private static final float FLING_FRICTION_ROTATE = 1.0f;
-    private static final float FLING_FRICTION_SCALE = 1.2f;
+    /**
+     * The friction scalar for fling movements (1 as default).
+     */
+    public static float FLING_FRICTION_MOVE = 1.0f;
+
+    /**
+     * The friction scalar for fling rotations (1 as default).
+     */
+    public static float FLING_FRICTION_ROTATE = 1.2f;
+
+    /**
+     * The friction scalar for fling scales (1 as default).
+     */
+    public static float FLING_FRICTION_SCALE = 1.2f;
 
     private final DragForce mFlingRotateForce = new DragForce();
     private final DragForce mFlingScaleForce = new DragForce();
@@ -61,6 +72,11 @@ public class Animator2 extends Animator {
 
     public Animator2(Map map) {
         super(map);
+
+        // Init fling force thresholds
+        mFlingRotateForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_RADIAN);
+        mFlingScrollForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_PIXELS);
+        mFlingScaleForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_SCALE);
     }
 
     /**
@@ -71,19 +87,22 @@ public class Animator2 extends Animator {
     public void animateFlingRotate(float angularVelocity, float pivotX, float pivotY) {
         ThreadUtils.assertMainThread();
 
-        mMap.getMapPosition(mStartPos);
-
-        mPivot.x = pivotX;
-        mPivot.y = pivotY;
-
-        float flingFactor = -0.4f; // Can be changed but should be standardized for all callers
+        float flingFactor = -0.25f; // Can be changed but should be standardized for all callers
         angularVelocity *= flingFactor;
 
-        mFlingRotateForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_RADIAN);
         mFlingRotateForce.setFrictionScalar(FLING_FRICTION_ROTATE);
         mFlingRotateForce.setValueAndVelocity(0f, angularVelocity);
 
-        animFlingStart(ANIM_ROTATE);
+        if (!isActive()) {
+            mMap.getMapPosition(mStartPos);
+
+            mPivot.x = pivotX;
+            mPivot.y = pivotY;
+
+            animFlingStart(ANIM_ROTATE);
+        } else {
+            mState |= ANIM_ROTATE;
+        }
     }
 
     /**
@@ -99,8 +118,6 @@ public class Animator2 extends Animator {
         if (velocityX * velocityX + velocityY * velocityY < 2048)
             return;
 
-        mMap.getMapPosition(mStartPos);
-
         float flingFactor = 2.0f; // Can be changed but should be standardized for all callers
         float screenFactor = CanvasAdapter.DEFAULT_DPI / CanvasAdapter.dpi;
 
@@ -114,11 +131,16 @@ public class Animator2 extends Animator {
         mScrollRatio.y = velocityY / sumVelocity;
         mScrollDet2D = (float) (mScrollRatio.x * mScrollRatio.x + mScrollRatio.y * mScrollRatio.y);
 
-        mFlingScrollForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_PIXELS);
         mFlingScrollForce.setFrictionScalar(FLING_FRICTION_MOVE);
         mFlingScrollForce.setValueAndVelocity(0f, (float) Math.sqrt(velocityX * velocityX + velocityY * velocityY));
 
-        animFlingStart(ANIM_MOVE);
+        if (!isActive()) {
+            mMap.getMapPosition(mStartPos);
+
+            animFlingStart(ANIM_MOVE);
+        } else {
+            mState |= ANIM_MOVE;
+        }
     }
 
     /**
@@ -129,20 +151,23 @@ public class Animator2 extends Animator {
     public void animateFlingZoom(float scaleVelocity, float pivotX, float pivotY) {
         ThreadUtils.assertMainThread();
 
-        mMap.getMapPosition(mStartPos);
-
-        mPivot.x = pivotX;
-        mPivot.y = pivotY;
-
         float flingFactor = -1.0f; // Can be changed but should be standardized for all callers
         float screenFactor = CanvasAdapter.DEFAULT_DPI / CanvasAdapter.dpi;
         scaleVelocity *= flingFactor * screenFactor;
 
-        mFlingScaleForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_SCALE);
         mFlingScaleForce.setFrictionScalar(FLING_FRICTION_SCALE);
         mFlingScaleForce.setValueAndVelocity(0f, scaleVelocity);
 
-        animFlingStart(ANIM_SCALE);
+        if (!isActive()) {
+            mMap.getMapPosition(mStartPos);
+
+            mPivot.x = pivotX;
+            mPivot.y = pivotY;
+
+            animFlingStart(ANIM_SCALE);
+        } else {
+            mState |= ANIM_SCALE;
+        }
     }
 
     private void animFlingStart(int state) {
@@ -252,7 +277,6 @@ public class Animator2 extends Animator {
             // Do physical fling animation
             long deltaT = currentFrametime - mFrameStart;
             mFrameStart = currentFrametime;
-            boolean isAnimationFinished = true;
 
             if ((mState & ANIM_SCALE) != 0) {
                 float valueDelta = mFlingScaleForce.updateValueAndVelocity(deltaT) / 1000f;
@@ -261,7 +285,10 @@ public class Animator2 extends Animator {
                     valueDelta = valueDelta > 0 ? valueDelta + 1 : -1 / (valueDelta - 1);
                     v.scaleMap(valueDelta, (float) mPivot.x, (float) mPivot.y);
                 }
-                isAnimationFinished = (velocity == 0);
+
+                if (velocity == 0) {
+                    mState &= (~ANIM_SCALE); // End scale mode
+                }
             }
 
             if ((mState & ANIM_MOVE) != 0) {
@@ -276,7 +303,9 @@ public class Animator2 extends Animator {
                     v.moveMap(dx, dy);
                 }
 
-                isAnimationFinished = isAnimationFinished && (velocity == 0);
+                if (velocity == 0) {
+                    mState &= (~ANIM_MOVE); // End move mode
+                }
             }
 
             if ((mState & ANIM_ROTATE) != 0) {
@@ -285,15 +314,19 @@ public class Animator2 extends Animator {
 
                 v.rotateMap(valueDelta, (float) mPivot.x, (float) mPivot.y);
 
-                isAnimationFinished = isAnimationFinished && (velocity == 0);
+                if (velocity == 0) {
+                    mState &= (~ANIM_ROTATE); // End rotate mode
+                }
             }
 
             /*if ((mState & ANIM_TILT) != 0) {
                 // Do some tilt fling
-                isAnimationFinished = isAnimationFinished && (velocity == 0);
+                if(velocity == 0){
+                    mState &= (~ANIM_TILT); // End tilt mode
+                }
             }*/
 
-            if (isAnimationFinished) {
+            if ((mState & (ANIM_MOVE | ANIM_ROTATE | ANIM_SCALE)) == 0) {
                 //log.debug("animate END");
                 cancel();
             }
