@@ -17,6 +17,7 @@
  */
 package org.oscim.gdx;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
@@ -62,6 +63,14 @@ public class GdxMapApp extends GdxMap {
         LwjglApplicationConfiguration.disableAudio = true;
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = title != null ? title : "vtm-gdx";
+
+        String[] imgDimensions = new String[]{"16", "32", "64", "128"};
+        for (String imgDimension : imgDimensions) {
+            String path = "assets/launcher/ic_vtm_" + imgDimension + ".png";
+            //if (Gdx.files.internal(path).exists()) // Check if file exist!
+            cfg.addIcon(path, Files.FileType.Internal);
+        }
+
         cfg.width = 800;
         cfg.height = 600;
         cfg.stencil = 8;

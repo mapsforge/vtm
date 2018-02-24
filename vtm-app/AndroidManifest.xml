@@ -14,7 +14,7 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@drawable/globe2"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/application_name">
 
         <!-- android:theme="@style/Theme.TileMap" -->
