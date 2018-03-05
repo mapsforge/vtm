@@ -158,9 +158,10 @@ public abstract class TileRenderer extends LayerRenderer {
 
             /* load tile that is referenced by this holder */
             MapTile proxy = tile.holder;
-            if (proxy != null && proxy.state(NEW_DATA)) {
-                uploadCnt += uploadTileData(proxy);
-                tile.state = proxy.state;
+            if (proxy != null && (proxy.state(NEW_DATA) || proxy.state(READY))) {
+                tile.state = NEW_DATA; // Changing independently of tile state, as long as it isn't READY
+                //uploadCnt += uploadTileData(proxy); // Should already been done in separate call
+                uploadCnt += uploadTileData(tile); // Actual tile must be loaded immediately
                 continue;
             }
 
@@ -168,7 +169,7 @@ public abstract class TileRenderer extends LayerRenderer {
             proxy = tile.getProxy(PROXY_PARENT, NEW_DATA);
             if (proxy != null) {
                 uploadCnt += uploadTileData(proxy);
-                /* dont load child proxies */
+                /* don't load child proxies */
                 continue;
             }
 
