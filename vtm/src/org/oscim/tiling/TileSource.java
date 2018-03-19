@@ -81,7 +81,6 @@ public abstract class TileSource {
         }
     }
 
-    // FIXME Same as BuildingLayer.MAX_ZOOM
     public static final int MAX_ZOOM = 17;
 
     protected float mAlpha = 1;

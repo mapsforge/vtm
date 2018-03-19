@@ -30,6 +30,7 @@ import org.oscim.core.MercatorProjection;
 import org.oscim.core.Tag;
 import org.oscim.core.Tile;
 import org.oscim.layers.tile.MapTile;
+import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.TileSource;
@@ -954,10 +955,11 @@ public class MapDatabase implements ITileDataSource {
                     e.setLabelPosition(e.points[0] + labelPosition[0], e.points[1] + labelPosition[1]);
                 mTileProjection.project(e);
 
-                // At large query zoom levels clip everything
+                // Avoid clipping for mass of buildings, which slows rendering.
+                // But clip everything if BuildingLayer is displayed.
                 if ((!e.tags.containsKey(Tag.KEY_BUILDING)
                         && !e.tags.containsKey(Tag.KEY_BUILDING_PART))
-                        || queryParameters.queryZoomLevel > TileSource.MAX_ZOOM) {
+                        || queryParameters.queryZoomLevel >= BuildingLayer.MIN_ZOOM) {
                     if (!mTileClipper.clip(e)) {
                         continue;
                     }
