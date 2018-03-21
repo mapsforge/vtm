@@ -24,6 +24,7 @@ import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.buildings.S3DBLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.persistence.PersistenceUtils;
 import org.oscim.renderer.BitmapRenderer;
 import org.oscim.renderer.GLViewport;
 import org.oscim.scalebar.DefaultMapScaleBar;
@@ -80,8 +81,18 @@ public class MapsforgeTest extends GdxMapImpl {
 
         MapInfo info = tileSource.getMapInfo();
         MapPosition pos = new MapPosition();
-        pos.setByBoundingBox(info.boundingBox, Tile.SIZE * 4, Tile.SIZE * 4);
+        PersistenceUtils.loadMapPosPrefs(pos);
+        if (!info.boundingBox.contains(pos.getGeoPoint())) {
+            // Set position to map bounds, if prefs position not located inside it
+            pos.setByBoundingBox(info.boundingBox, Tile.SIZE * 4, Tile.SIZE * 4);
+        }
         mMap.setMapPosition(pos);
+    }
+
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(mMap.getMapPosition());
+        super.dispose();
     }
 
     static File getMapFile(String[] args) {

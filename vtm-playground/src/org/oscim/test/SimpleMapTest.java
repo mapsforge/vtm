@@ -16,12 +16,14 @@
  */
 package org.oscim.test;
 
+import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.GroupLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.map.Map;
+import org.oscim.persistence.PersistenceUtils;
 import org.oscim.renderer.BitmapRenderer;
 import org.oscim.renderer.GLViewport;
 import org.oscim.scalebar.DefaultMapScaleBar;
@@ -63,7 +65,10 @@ public class SimpleMapTest extends GdxMapApp {
         map.layers().add(mapScaleBarLayer);
 
         map.setTheme(VtmThemes.DEFAULT);
-        map.setMapPosition(53.075, 8.808, 1 << 17);
+
+        MapPosition position = map.getMapPosition();
+        PersistenceUtils.loadMapPosPrefs(position);
+        map.setMapPosition(position);
     }
 
     public static void main(String[] args) {

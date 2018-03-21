@@ -16,10 +16,12 @@
  */
 package org.oscim.test;
 
+import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.buildings.S3DBTileLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.persistence.PersistenceUtils;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
@@ -46,8 +48,9 @@ public class OSciMapS3DBTest extends GdxMapApp {
         mMap.layers().add(tl);
         mMap.layers().add(new LabelLayer(mMap, l));
 
-        mMap.setMapPosition(53.08, 8.82, 1 << 17);
-
+        MapPosition position = mMap.getMapPosition();
+        PersistenceUtils.loadMapPosPrefs(position);
+        mMap.setMapPosition(position);
     }
 
     public static void main(String[] args) {

@@ -19,6 +19,7 @@ import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeoPoint;
+import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.marker.ClusterMarkerRenderer;
 import org.oscim.layers.marker.ItemizedLayer;
@@ -28,6 +29,7 @@ import org.oscim.layers.marker.MarkerRenderer;
 import org.oscim.layers.marker.MarkerRendererFactory;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
+import org.oscim.persistence.PersistenceUtils;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.bitmap.DefaultSources;
@@ -52,7 +54,9 @@ public class ClusterMarkerLayerTest extends MarkerLayerTest {
                     .build();
             mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
-            mMap.setMapPosition(53.08, 8.83, 1 << 15);
+            MapPosition position = mMap.getMapPosition();
+            PersistenceUtils.loadMapPosPrefs(position);
+            mMap.setMapPosition(position);
 
             Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
             final MarkerSymbol symbol;

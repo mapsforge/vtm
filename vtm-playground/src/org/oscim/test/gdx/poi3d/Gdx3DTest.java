@@ -16,11 +16,13 @@
  */
 package org.oscim.test.gdx.poi3d;
 
+import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.gdx.GdxMapImpl;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.persistence.PersistenceUtils;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
@@ -33,7 +35,9 @@ public class Gdx3DTest extends GdxMapImpl {
     public void createLayers() {
         MapRenderer.setBackgroundColor(0xff888888);
 
-        mMap.setMapPosition(53.1, 8.8, 1 << 15);
+        MapPosition position = mMap.getMapPosition();
+        PersistenceUtils.loadMapPosPrefs(position);
+        mMap.setMapPosition(position);
 
         TileSource ts = OSciMap4TileSource.builder()
                 .httpFactory(new OkHttpEngine.OkHttpFactory())
