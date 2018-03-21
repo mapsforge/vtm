@@ -18,10 +18,12 @@ package org.oscim.test;
 
 import org.oscim.backend.canvas.Color;
 import org.oscim.backend.canvas.Paint.Cap;
+import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.gdx.GdxMapImpl;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.persistence.PersistenceUtils;
 import org.oscim.theme.RenderTheme;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
@@ -67,8 +69,15 @@ public class ThemeBuilderTest extends GdxMapImpl {
 
         mMap.layers().add(new LabelLayer(mMap, l));
 
-        mMap.setMapPosition(53.08, 8.82, 1 << 17);
+        MapPosition position = mMap.getMapPosition();
+        PersistenceUtils.loadMapPosPrefs(position);
+        mMap.setMapPosition(position);
+    }
 
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(mMap.getMapPosition());
+        super.dispose();
     }
 
     public static void main(String[] args) {

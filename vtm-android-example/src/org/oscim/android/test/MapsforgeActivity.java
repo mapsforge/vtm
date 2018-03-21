@@ -204,11 +204,13 @@ public class MapsforgeActivity extends MapActivity {
                 mMap.layers().add(mapScaleBarLayer);
 
                 MapInfo info = mTileSource.getMapInfo();
-                MapPosition pos = new MapPosition();
-                pos.setByBoundingBox(info.boundingBox, Tile.SIZE * 4, Tile.SIZE * 4);
-                mMap.setMapPosition(pos);
-
-                mPrefs.clear();
+                if (!info.boundingBox.contains(mMap.getMapPosition().getGeoPoint())) {
+                    // Set position to map bounds, if prefs position not located inside it
+                    MapPosition pos = new MapPosition();
+                    pos.setByBoundingBox(info.boundingBox, Tile.SIZE * 4, Tile.SIZE * 4);
+                    mMap.setMapPosition(pos);
+                    mPrefs.clear();
+                }
             }
         } else if (requestCode == SELECT_THEME_FILE) {
             if (resultCode != RESULT_OK || intent == null || intent.getStringExtra(FilePicker.SELECTED_FILE) == null) {

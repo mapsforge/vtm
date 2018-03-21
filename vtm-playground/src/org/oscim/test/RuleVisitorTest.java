@@ -18,9 +18,11 @@ package org.oscim.test;
 
 import com.badlogic.gdx.Input;
 
+import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.gdx.GdxMapImpl;
 import org.oscim.layers.tile.vector.VectorTileLayer;
+import org.oscim.persistence.PersistenceUtils;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.RenderTheme;
 import org.oscim.theme.VtmThemes;
@@ -87,7 +89,15 @@ public class RuleVisitorTest extends GdxMapImpl {
 
         //mMap.setMapPosition(7.707, 81.689, 1 << 16);
 
-        mMap.setMapPosition(53.08, 8.82, 1 << 16);
+        MapPosition position = mMap.getMapPosition();
+        PersistenceUtils.loadMapPosPrefs(position);
+        mMap.setMapPosition(position);
+    }
+
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(mMap.getMapPosition());
+        super.dispose();
     }
 
     public static void main(String[] args) {

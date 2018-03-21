@@ -18,10 +18,12 @@ package org.oscim.test;
 
 import com.badlogic.gdx.Input;
 
+import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.gdx.GdxMapImpl;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.persistence.PersistenceUtils;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.IRenderTheme.ThemeException;
@@ -60,7 +62,9 @@ public class ExternalRenderThemeTest extends GdxMapImpl {
 
     @Override
     public void createLayers() {
-        mMap.setMapPosition(53.08, 8.83, 1 << 14);
+        MapPosition position = mMap.getMapPosition();
+        PersistenceUtils.loadMapPosPrefs(position);
+        mMap.setMapPosition(position);
 
         /*TileSource tileSource = OSciMap4TileSource.builder()
                 .httpFactory(new OkHttpEngine.OkHttpFactory())
@@ -90,6 +94,12 @@ public class ExternalRenderThemeTest extends GdxMapImpl {
 
         // mMap.getLayers().add(new GenericLayer(mMap, new MeshRenderer()));
         // mMap.getLayers().add(new GenericLayer(mMap, new GridRenderer()));
+    }
+
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(mMap.getMapPosition());
+        super.dispose();
     }
 
     public static void main(String[] args) {

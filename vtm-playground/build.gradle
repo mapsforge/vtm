@@ -11,6 +11,7 @@ dependencies {
     implementation project(':vtm-jts')
     implementation project(':vtm-mvt')
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    implementation 'org.mapsforge:mapsforge-map-awt:master-SNAPSHOT'
     implementation "org.slf4j:slf4j-jdk14:$slf4jVersion"
 }
 
