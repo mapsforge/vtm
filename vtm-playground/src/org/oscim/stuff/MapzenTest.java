@@ -49,6 +49,12 @@ public class MapzenTest extends GdxMapImpl {
         mMap.setMapPosition(position);
     }
 
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(mMap.getMapPosition());
+        super.dispose();
+    }
+
     public static void main(String[] args) {
         GdxMapApp.init();
         GdxMapApp.run(new MapzenTest());

@@ -53,6 +53,12 @@ public class OSciMapS3DBTest extends GdxMapApp {
         mMap.setMapPosition(position);
     }
 
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(mMap.getMapPosition());
+        super.dispose();
+    }
+
     public static void main(String[] args) {
         init();
         run(new OSciMapS3DBTest());

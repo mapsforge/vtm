@@ -102,6 +102,12 @@ public class ClusterMarkerLayerTest extends MarkerLayerTest {
         }
     }
 
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(mMap.getMapPosition());
+        super.dispose();
+    }
+
     public static void main(String[] args) {
         GdxMapApp.init();
         GdxMapApp.run(new ClusterMarkerLayerTest());

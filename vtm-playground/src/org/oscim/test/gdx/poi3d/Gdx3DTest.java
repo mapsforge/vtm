@@ -64,6 +64,12 @@ public class Gdx3DTest extends GdxMapImpl {
         mMap.layers().add(new LabelLayer(mMap, mMapLayer));
     }
 
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(mMap.getMapPosition());
+        super.dispose();
+    }
+
     public static void main(String[] args) {
         GdxMapApp.init();
         GdxMapApp.run(new Gdx3DTest());

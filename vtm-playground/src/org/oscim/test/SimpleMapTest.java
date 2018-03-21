@@ -71,6 +71,12 @@ public class SimpleMapTest extends GdxMapApp {
         map.setMapPosition(position);
     }
 
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(getMap().getMapPosition());
+        super.dispose();
+    }
+
     public static void main(String[] args) {
         GdxMapApp.init();
         GdxMapApp.run(new SimpleMapTest());

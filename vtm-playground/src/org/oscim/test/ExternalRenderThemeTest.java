@@ -96,6 +96,12 @@ public class ExternalRenderThemeTest extends GdxMapImpl {
         // mMap.getLayers().add(new GenericLayer(mMap, new GridRenderer()));
     }
 
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(mMap.getMapPosition());
+        super.dispose();
+    }
+
     public static void main(String[] args) {
         GdxMapApp.init();
         GdxMapApp.run(new ExternalRenderThemeTest(), null, 256);

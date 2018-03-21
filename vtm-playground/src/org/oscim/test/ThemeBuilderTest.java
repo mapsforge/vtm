@@ -72,7 +72,12 @@ public class ThemeBuilderTest extends GdxMapImpl {
         MapPosition position = mMap.getMapPosition();
         PersistenceUtils.loadMapPosPrefs(position);
         mMap.setMapPosition(position);
+    }
 
+    @Override
+    public void dispose() {
+        PersistenceUtils.saveMapPosPrefs(mMap.getMapPosition());
+        super.dispose();
     }
 
     public static void main(String[] args) {
