@@ -1,5 +1,6 @@
 /*
  * Copyright 2018 devemux86
+ * Copyright 2018 Gustl22
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -19,12 +20,14 @@ import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tile;
 import org.oscim.utils.geom.TileClipper;
+import org.oscim.utils.geom.TileSeparator;
 
 class OverzoomDataSink implements ITileDataSink {
 
     private final ITileDataSink sink;
 
     private final TileClipper clipper;
+    private final TileSeparator separator;
     private final float dx, dy, scale;
 
     OverzoomDataSink(ITileDataSink sink, Tile overzoomTile, Tile tile) {
@@ -37,12 +40,18 @@ class OverzoomDataSink implements ITileDataSink {
         float buffer = 32 * CanvasAdapter.getScale();
         clipper = new TileClipper((dx - buffer) / scale, (dy - buffer) / scale,
                 (dx + Tile.SIZE + buffer) / scale, (dy + Tile.SIZE + buffer) / scale);
+        separator = new TileSeparator(dx / scale, dy / scale,
+                (dx + Tile.SIZE) / scale, (dy + Tile.SIZE) / scale);
     }
 
     @Override
     public void process(MapElement element) {
-        if (!clipper.clip(element))
+        if (element.isBuilding() || element.isBuildingPart()) {
+            if (!separator.separate(element))
+                return;
+        } else if (!clipper.clip(element)) {
             return;
+        }
         element.scale(scale, scale);
         element.translate(-dx, -dy);
         sink.process(element);

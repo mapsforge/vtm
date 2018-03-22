@@ -91,8 +91,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
     @Override
     public boolean process(MapTile tile, RenderBuckets buckets, MapElement element,
                            RenderStyle style, int level) {
-        // FIXME check why some buildings are processed up to 4 times (should avoid overhead)
-        // FIXME fix artifacts at tile borders
+        // FIXME artifacts at tile borders at tilesource's last extraction zoom as they are clipped.
 
         if (!(style instanceof ExtrusionStyle))
             return false;
