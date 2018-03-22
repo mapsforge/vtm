@@ -60,14 +60,40 @@ public class MapElement extends GeometryBuffer {
         this.setLayer(element.layer);
     }
 
+    /**
+     * @return height in meters, if present
+     */
+    public Float height() {
+        String v = tags.getValue(Tag.KEY_HEIGHT); // Mapsforge & OSciMap & Mapzen
+        if (v == null)
+            v = tags.getValue("render_height"); // OpenMapTiles
+        if (v != null)
+            return Float.parseFloat(v);
+        return null;
+    }
+
     public boolean isBuilding() {
         return tags.containsKey(Tag.KEY_BUILDING)
+                || "building".equals(tags.getValue("layer")) // OpenMapTiles
                 || "building".equals(tags.getValue("kind")); // Mapzen
     }
 
     public boolean isBuildingPart() {
         return tags.containsKey(Tag.KEY_BUILDING_PART)
+                || "building:part".equals(tags.getValue("layer")) // OpenMapTiles
                 || "building_part".equals(tags.getValue("kind")); // Mapzen
+    }
+
+    /**
+     * @return minimum height in meters, if present
+     */
+    public Float minHeight() {
+        String v = tags.getValue(Tag.KEY_MIN_HEIGHT); // Mapsforge & OSciMap & Mapzen
+        if (v == null)
+            v = tags.getValue("render_min_height"); // OpenMapTiles
+        if (v != null)
+            return Float.parseFloat(v);
+        return null;
     }
 
     public void setLabelPosition(float x, float y) {
