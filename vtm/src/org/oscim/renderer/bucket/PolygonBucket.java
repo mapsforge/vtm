@@ -349,8 +349,8 @@ public final class PolygonBucket extends RenderBucket {
                      * be completly contained within box */
                     if ((out != LineClipper.INSIDE) && (out != LineClipper.OUTSIDE)) {
                         mScreenClip.clipStart(box[6], box[7]);
-                        out = LineClipper.INSIDE;
-                        for (int i = 0; i < 8 && out == LineClipper.INSIDE; i += 2)
+                        out = LineClipper.OUTSIDE;
+                        for (int i = 0; i < 8 && out == LineClipper.OUTSIDE; i += 2)
                             out = mScreenClip.clipNext(box[i], box[i + 1]);
 
                         if (out == LineClipper.OUTSIDE) {
