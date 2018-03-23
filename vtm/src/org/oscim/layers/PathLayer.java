@@ -412,7 +412,7 @@ public class PathLayer extends Layer implements GestureListener {
                     }
                     i = 0;
                     // if the end point is inside, add it
-                    if (mClipper.getPrevOutcode() == LineClipper.OUTSIDE) {
+                    if (mClipper.getPrevOutcode() == LineClipper.INSIDE) {
                         projected[i++] = prevX;
                         projected[i++] = prevY;
                     }
