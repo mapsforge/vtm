@@ -1,6 +1,7 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
  * Copyright 2016 Bezzu
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -27,10 +28,13 @@ import org.oscim.core.GeometryBuffer;
 public class LineClipper {
 
     public static final int INSIDE = 0; // 0000
+    public static final int OUTSIDE = 0xF; // 1111
     public static final int LEFT = 1; // 0001
     public static final int RIGHT = 2; // 0010
     public static final int BOTTOM = 4; // 0100
     public static final int TOP = 8; // 1000
+
+    public static final int INTERSECTION = -1;
 
     private float xmin, xmax, ymin, ymax;
 
@@ -90,8 +94,8 @@ public class LineClipper {
     }
 
     /**
-     * @return 0 if not intersection, 1 fully within, -1 clipped (and 'out' set
-     * to new points)
+     * @return OUTSIDE (= 1111) if not intersection, INSIDE (= 0) if fully within,
+     * INTERSECTION (= -1) if clipped (and 'out' set to new points)
      */
     public int clipNext(float x1, float y1) {
         int accept;
@@ -109,12 +113,12 @@ public class LineClipper {
 
         if ((mPrevOutcode | outcode) == 0) {
             // Bitwise OR is 0. Trivially accept
-            accept = 1;
+            accept = INSIDE;
         } else if ((mPrevOutcode & outcode) != 0) {
             // Bitwise AND is not 0. Trivially reject
-            accept = 0;
+            accept = OUTSIDE;
         } else {
-            accept = clip(mPrevX, mPrevY, x1, y1, mPrevOutcode, outcode) ? -1 : 0;
+            accept = clip(mPrevX, mPrevY, x1, y1, mPrevOutcode, outcode) ? INTERSECTION : OUTSIDE;
         }
         mPrevOutcode = outcode;
         mPrevX = x1;
@@ -258,10 +262,10 @@ public class LineClipper {
                 y = in.points[inPos++];
 
                 int clip = clipNext(x, y);
-                if (clip == 0) {
+                if (clip == OUTSIDE) {
                     /* current segment is fully outside */
                     inside = false; // needed?
-                } else if (clip == 1) {
+                } else if (clip == INSIDE) {
                     /* current segment is fully within */
                     out.addPoint(x, y);
                 } else { /* clip == -1 */

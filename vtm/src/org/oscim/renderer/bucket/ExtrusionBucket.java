@@ -556,7 +556,7 @@ public class ExtrusionBucket extends RenderBucket {
             }
 
             /* check if face is within tile */
-            if (mClipper.clipNext((int) nx, (int) ny) == 0) {
+            if (mClipper.clipNext((int) nx, (int) ny) == LineClipper.OUTSIDE) {
                 even = ++even % 2;
                 continue;
             }

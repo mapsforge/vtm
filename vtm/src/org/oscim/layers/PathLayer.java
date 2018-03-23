@@ -396,11 +396,11 @@ public class PathLayer extends Layer implements GestureListener {
                 }
 
                 int clip = mClipper.clipNext(x, y);
-                if (clip < 1) {
+                if (clip != LineClipper.INSIDE) {
                     if (i > 2)
                         ll.addLine(projected, i, false);
 
-                    if (clip < 0) {
+                    if (clip == LineClipper.INTERSECTION) {
                         /* add line segment */
                         segment = mClipper.getLine(segment, 0);
                         ll.addLine(segment, 4, false);
@@ -412,7 +412,7 @@ public class PathLayer extends Layer implements GestureListener {
                     }
                     i = 0;
                     // if the end point is inside, add it
-                    if (mClipper.getPrevOutcode() == 0) {
+                    if (mClipper.getPrevOutcode() == LineClipper.OUTSIDE) {
                         projected[i++] = prevX;
                         projected[i++] = prevY;
                     }
