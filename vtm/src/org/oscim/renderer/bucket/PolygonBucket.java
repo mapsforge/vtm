@@ -333,28 +333,27 @@ public final class PolygonBucket extends RenderBucket {
                     /* project bbox of polygon to screen */
                     v.mvp.prj2D(pb.bbox, 0, box, 0, 4);
 
-                    int out = 0;
+                    int out = LineClipper.INSIDE;
                     for (int i = 0; i < 8; i += 2) {
                         int o = mScreenClip.outcode(box[i], box[i + 1]);
 
-                        if (o == 0) {
+                        if (o == LineClipper.INSIDE) {
                             /* at least one corner is inside */
-                            out = 0;
+                            out = LineClipper.INSIDE;
                             break;
                         }
                         out |= o;
                     }
                     /* Check if any polygon-bucket edge intersects the screen.
                      * Also check the very unlikely case where the view might
-                     * be
-                     * completly contained within box */
-                    if ((out != 0) && (out != 0xF)) {
+                     * be completly contained within box */
+                    if ((out != LineClipper.INSIDE) && (out != LineClipper.OUTSIDE)) {
                         mScreenClip.clipStart(box[6], box[7]);
-                        out = 0;
-                        for (int i = 0; i < 8 && out == 0; i += 2)
+                        out = LineClipper.OUTSIDE;
+                        for (int i = 0; i < 8 && out == LineClipper.OUTSIDE; i += 2)
                             out = mScreenClip.clipNext(box[i], box[i + 1]);
 
-                        if (out == 0) {
+                        if (out == LineClipper.OUTSIDE) {
                             //log.debug("out {}\n {}\n {}", out, Arrays.toString(pb.bbox), Arrays.toString(box));
 
                             //    log.debug("outside {} {} {}", out,
