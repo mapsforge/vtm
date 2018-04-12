@@ -33,7 +33,7 @@ public class ViewController extends Viewport {
 
     private final float[] mat = new float[16];
 
-    public void setFrameSize(int width, int height) {
+    public void setViewSize(int width, int height) {
         ThreadUtils.assertMainThread();
 
         mHeight = height;
@@ -72,11 +72,11 @@ public class ViewController extends Viewport {
     }
 
     /**
-     * Set pivot height relative to frame center. E.g. 0.5 is usually preferred
-     * for navigation, moving the center to 25% of the frame height.
+     * Set pivot height relative to view center. E.g. 0.5 is usually preferred
+     * for navigation, moving the center to 25% of the view height.
      * Range is [-1, 1].
      */
-    public void setMapFrameCenter(float pivotY) {
+    public void setMapViewCenter(float pivotY) {
         mPivotY = FastMath.clamp(pivotY, -1, 1) * 0.5f;
     }
 
@@ -144,7 +144,7 @@ public class ViewController extends Viewport {
 
     /**
      * Scale map by scale width center at pivot in pixel relative to
-     * frame center. Map scale is clamp to MIN_SCALE and MAX_SCALE.
+     * view center. Map scale is clamp to MIN_SCALE and MAX_SCALE.
      *
      * @return true if scale was changed
      */
@@ -178,7 +178,7 @@ public class ViewController extends Viewport {
 
     /**
      * Rotate map by radians around pivot. Pivot is in pixel relative
-     * to frame center.
+     * to view center.
      */
     public void rotateMap(double radians, float pivotX, float pivotY) {
         ThreadUtils.assertMainThread();
