@@ -1,6 +1,7 @@
 /*
  * Copyright 2012 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2018 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,10 +20,13 @@ package org.oscim.android;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Point;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.GestureDetector;
+import android.view.WindowManager;
 
 import org.oscim.android.canvas.AndroidGraphics;
 import org.oscim.android.gl.AndroidGL;
@@ -45,7 +49,7 @@ import javax.microedition.khronos.opengles.GL10;
  * <p/>
  * add it your App, have a map!
  * <p/>
- * Dont forget to call onPause / onResume!
+ * Don't forget to call onPause / onResume!
  */
 public class MapView extends GLSurfaceView {
 
@@ -180,6 +184,25 @@ public class MapView extends GLSurfaceView {
             return mMapView.getHeight();
         }
 
+        @Override
+        public int getScreenWidth() {
+            return getScreenSize().x;
+        }
+
+        @Override
+        public int getScreenHeight() {
+            return getScreenSize().y;
+        }
+
+        private Point getScreenSize() {
+            WindowManager wm = (WindowManager) mMapView.getContext()
+                    .getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            return size;
+        }
+
         private final Runnable mRedrawCb = new Runnable() {
             @Override
             public void run() {
@@ -208,7 +231,7 @@ public class MapView extends GLSurfaceView {
             if (mPausing)
                 return;
 
-            /** TODO should not need to call prepareFrame in mRedrawCb */
+            /* TODO should not need to call prepareFrame in mRedrawCb */
             updateMap(false);
         }
 

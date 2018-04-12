@@ -51,6 +51,16 @@ public class MapAdapter extends Map implements Map.UpdateListener {
         return height;
     }
 
+    @Override
+    public int getScreenWidth() {
+        return Gdx.graphics.getDisplayMode().width;
+    }
+
+    @Override
+    public int getScreenHeight() {
+        return Gdx.graphics.getDisplayMode().height;
+    }
+
     private final Runnable mRedrawCb = new Runnable() {
         @Override
         public void run() {

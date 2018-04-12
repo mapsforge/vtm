@@ -2,8 +2,9 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Andrey Novikov
  * Copyright 2016 Stephan Leuschner
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2018 devemux86
  * Copyright 2016 Longri
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -272,14 +273,24 @@ public abstract class Map implements TaskQueue {
     }
 
     /**
-     * Return screen width in pixel.
+     * Return frame width in pixel.
      */
     public abstract int getWidth();
 
     /**
-     * Return screen height in pixel.
+     * Return frame height in pixel.
      */
     public abstract int getHeight();
+
+    /**
+     * Return screen width in pixel.
+     */
+    public abstract int getScreenWidth();
+
+    /**
+     * Return screen height in pixel.
+     */
+    public abstract int getScreenHeight();
 
     /**
      * Request to clear all layers before rendering next frame
