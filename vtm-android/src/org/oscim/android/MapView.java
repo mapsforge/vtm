@@ -149,7 +149,7 @@ public class MapView extends GLSurfaceView {
 
         if (!isInEditMode()) {
             if (width > 0 && height > 0)
-                mMap.viewport().setScreenSize(width, height);
+                mMap.viewport().setFrameSize(width, height);
         }
     }
 

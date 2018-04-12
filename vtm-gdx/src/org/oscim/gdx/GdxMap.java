@@ -76,7 +76,7 @@ public abstract class GdxMap implements ApplicationListener {
         int w = Gdx.graphics.getWidth();
         int h = Gdx.graphics.getHeight();
 
-        mMap.viewport().setScreenSize(w, h);
+        mMap.viewport().setFrameSize(w, h);
         mMapRenderer.onSurfaceCreated();
         mMapRenderer.onSurfaceChanged(w, h);
 
@@ -116,7 +116,7 @@ public abstract class GdxMap implements ApplicationListener {
 
     @Override
     public void resize(int w, int h) {
-        mMap.viewport().setScreenSize(w, h);
+        mMap.viewport().setFrameSize(w, h);
         mMapRenderer.onSurfaceChanged(w, h);
         mMap.render();
     }

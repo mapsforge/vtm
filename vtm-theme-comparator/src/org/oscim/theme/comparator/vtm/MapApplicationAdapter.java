@@ -76,7 +76,7 @@ public class MapApplicationAdapter extends ApplicationAdapter {
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run() {
-                    map.viewport().setScreenSize(MapApplicationAdapter.this.width, MapApplicationAdapter.this.height);
+                    map.viewport().setFrameSize(MapApplicationAdapter.this.width, MapApplicationAdapter.this.height);
                     mapRenderer.onSurfaceChanged(MapApplicationAdapter.this.width, MapApplicationAdapter.this.height);
                 }
             });
@@ -129,7 +129,7 @@ public class MapApplicationAdapter extends ApplicationAdapter {
         int w = Gdx.graphics.getWidth();
         int h = Gdx.graphics.getHeight();
 
-        map.viewport().setScreenSize(w, h);
+        map.viewport().setFrameSize(w, h);
         mapRenderer.onSurfaceCreated();
         mapRenderer.onSurfaceChanged(w, h);
 
