@@ -19,9 +19,11 @@
 package org.oscim.android;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Point;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -164,6 +166,8 @@ public class MapView extends GLSurfaceView {
     static class AndroidMap extends Map {
 
         private final MapView mMapView;
+        private final WindowManager mWindowManager;
+        private final Point mScreenSize = new Point();
 
         private boolean mRenderRequest;
         private boolean mRenderWait;
@@ -172,6 +176,8 @@ public class MapView extends GLSurfaceView {
         public AndroidMap(MapView mapView) {
             super();
             mMapView = mapView;
+            mWindowManager = (WindowManager) mMapView.getContext()
+                    .getSystemService(Context.WINDOW_SERVICE);
         }
 
         @Override
@@ -194,13 +200,17 @@ public class MapView extends GLSurfaceView {
             return getScreenSize().y;
         }
 
+        @SuppressWarnings("deprecation")
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
         private Point getScreenSize() {
-            WindowManager wm = (WindowManager) mMapView.getContext()
-                    .getSystemService(Context.WINDOW_SERVICE);
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            return size;
+            Display display = mWindowManager.getDefaultDisplay();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+                display.getSize(mScreenSize);
+            } else {
+                mScreenSize.x = display.getWidth();
+                mScreenSize.y = display.getHeight();
+            }
+            return mScreenSize;
         }
 
         private final Runnable mRedrawCb = new Runnable() {
