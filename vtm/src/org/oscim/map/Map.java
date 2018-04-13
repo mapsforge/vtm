@@ -273,12 +273,12 @@ public abstract class Map implements TaskQueue {
     }
 
     /**
-     * Return frame width in pixel.
+     * Return view width in pixel.
      */
     public abstract int getWidth();
 
     /**
-     * Return frame height in pixel.
+     * Return view height in pixel.
      */
     public abstract int getHeight();
 
