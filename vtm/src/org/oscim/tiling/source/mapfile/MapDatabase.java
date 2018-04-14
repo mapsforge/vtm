@@ -39,7 +39,6 @@ import org.oscim.tiling.source.mapfile.header.SubFileParameter;
 import org.oscim.utils.Parameters;
 import org.oscim.utils.geom.TileClipper;
 import org.oscim.utils.geom.TileSeparator;
-import org.oscim.utils.math.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
