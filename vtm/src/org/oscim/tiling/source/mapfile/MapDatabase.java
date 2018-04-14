@@ -432,17 +432,17 @@ public class MapDatabase implements ITileDataSource {
 
         if (numRows > 0) {
             /* If blocks are at a border, sometimes too less blocks are requested,
-             * so the dimensions of tile are increased to the next pow of 2.
+             * so the divisor for tile dimensions is increased to base tile subdivision.
              */
             boolean isTopBorder = subFileParameter.boundaryTileTop > queryParameters.fromBaseTileY;
             boolean isLeftBorder = subFileParameter.boundaryTileLeft > queryParameters.fromBaseTileX;
-            int numPowX = MathUtils.nextPowerOfTwo(numCols + 1);
-            int numPowY = MathUtils.nextPowerOfTwo(numRows + 1);
-            int numDifX = numPowX - (numCols + 1); // Is 0, except at map borders
-            int numDifY = numPowY - (numRows + 1); // Is 0, except at map borders
+            int numSubX = (int) (queryParameters.toBaseTileX - queryParameters.fromBaseTileX) + 1;
+            int numSubY = (int) (queryParameters.toBaseTileY - queryParameters.fromBaseTileY) + 1;
+            int numDifX = numSubX - (numCols + 1); // Is 0, except at map borders
+            int numDifY = numSubY - (numRows + 1); // Is 0, except at map borders
 
-            int w = Tile.SIZE / numPowX;
-            int h = Tile.SIZE / numPowY;
+            int w = Tile.SIZE / numSubX;
+            int h = Tile.SIZE / numSubY;
 
             if (currentCol > 0)
                 xSmin = xmin = (int) ((currentCol + (isLeftBorder ? numDifX : 0)) * w);
