@@ -1,3 +1,20 @@
+/*
+ * Copyright 2014-2015 Hannes Janetzek
+ * Copyright 2018 Gustl22
+ *
+ * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.oscim.layers.vector;
 
 import org.oscim.core.Box;
@@ -20,19 +37,26 @@ public abstract class AbstractVectorLayer<T> extends Layer implements UpdateList
     public static final Logger log = LoggerFactory.getLogger(AbstractVectorLayer.class);
 
     protected final static double UNSCALE_COORD = 4;
+    protected final static int MAX_CLIP = 1024;
 
     protected final GeometryBuffer mGeom = new GeometryBuffer(128, 4);
-    protected final TileClipper mClipper = new TileClipper(-1024, -1024, 1024, 1024);
+    protected final TileClipper mClipper = new TileClipper(-MAX_CLIP, -MAX_CLIP, MAX_CLIP, MAX_CLIP);
 
     protected final Worker mWorker;
     protected long mUpdateDelay = 50;
 
     protected boolean mUpdate = true;
+    protected final boolean useInt;
 
     public AbstractVectorLayer(Map map) {
+        this(map, false);
+    }
+
+    public AbstractVectorLayer(Map map, boolean useInt) {
         super(map);
-        mWorker = new Worker(mMap);
-        mRenderer = new Renderer();
+        this.useInt = useInt;
+        mWorker = new Worker(mMap, useInt);
+        mRenderer = new Renderer(useInt);
     }
 
     @Override
@@ -60,14 +84,23 @@ public abstract class AbstractVectorLayer<T> extends Layer implements UpdateList
     abstract protected void processFeatures(Task t, Box b);
 
     protected static class Task {
-        public final RenderBuckets buckets = new RenderBuckets();
-        public final MapPosition position = new MapPosition();
+        public final RenderBuckets buckets;
+        public final MapPosition position;
+
+        public Task() {
+            this(false);
+        }
+
+        public Task(boolean useInt) {
+            buckets = new RenderBuckets(useInt);
+            position = new MapPosition();
+        }
     }
 
     protected class Worker extends SimpleWorker<Task> {
 
-        public Worker(Map map) {
-            super(map, 50, new Task(), new Task());
+        public Worker(Map map, boolean useInt) {
+            super(map, 50, new Task(useInt), new Task(useInt));
         }
 
         /**
@@ -144,6 +177,11 @@ public abstract class AbstractVectorLayer<T> extends Layer implements UpdateList
         MapPosition mTmpPos = new MapPosition();
 
         public Renderer() {
+            this(false);
+        }
+
+        public Renderer(boolean useInt) {
+            super(useInt);
             mFlipOnDateLine = true;
         }
 

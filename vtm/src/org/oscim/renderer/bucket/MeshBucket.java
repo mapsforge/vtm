@@ -61,7 +61,7 @@ public class MeshBucket extends RenderBucket {
     }
 
     public void addConvexMesh(GeometryBuffer geom) {
-        short start = (short) numVertices;
+        int start = numVertices;
 
         if (numVertices >= (1 << 16)) {
             return;
@@ -72,7 +72,7 @@ public class MeshBucket extends RenderBucket {
 
         vertexItems.add(geom.points[2] * COORD_SCALE,
                 geom.points[3] * COORD_SCALE);
-        short prev = (short) (start + 1);
+        int prev = start + 1;
 
         numVertices += 2;
 
@@ -132,7 +132,7 @@ public class MeshBucket extends RenderBucket {
             if (size > VertexData.SIZE)
                 size = VertexData.SIZE;
 
-            Chunk chunk = vertexItems.obtainChunk();
+            Chunk chunk = ((VertexData) vertexItems).obtainChunk();
 
             tess.getVertices(chunk.vertices, offset, size, COORD_SCALE);
             offset += size;

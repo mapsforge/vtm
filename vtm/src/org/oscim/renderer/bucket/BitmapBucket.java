@@ -23,6 +23,7 @@ import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.bucket.TextureItem.TexturePool;
 
+import java.nio.Buffer;
 import java.nio.ShortBuffer;
 
 import static org.oscim.backend.GLAdapter.gl;
@@ -122,17 +123,17 @@ public class BitmapBucket extends TextureBucket {
         buf[pos++] = texMax;
         buf[pos++] = texMax;
 
-        this.vertexOffset = vboData.position() * 2;
+        this.vertexOffset = vboData.position() * SHORT_BYTES;
         vboData.put(buf);
     }
 
     @Override
-    protected void compile(ShortBuffer vboData, ShortBuffer iboData) {
+    protected void compile(Buffer vboData, ShortBuffer iboData) {
 
         if (mBitmap == null)
             return;
 
-        setVertices(vboData);
+        setVertices((ShortBuffer) vboData);
 
         textures.upload();
 

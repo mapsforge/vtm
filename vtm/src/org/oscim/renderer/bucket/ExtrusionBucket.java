@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
- * Copyright 2017 Gustl22
+ * Copyright 2017-2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -30,6 +30,7 @@ import org.oscim.utils.pool.Pool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.Buffer;
 import java.nio.ShortBuffer;
 
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
@@ -283,7 +284,7 @@ public class ExtrusionBucket extends RenderBucket {
         if (addVertex)
             vertexItems.add(v.x, v.y, v.z, v.n);
 
-        mIndices[IND_MESH].add((short) v.id);
+        mIndices[IND_MESH].add(v.id);
         numIndices++;
     }
 
@@ -473,11 +474,11 @@ public class ExtrusionBucket extends RenderBucket {
         float ux, uy;
 
         float a = (float) Math.sqrt(vx * vx + vy * vy);
-        short color1 = (short) ((1 + vx / a) * 127);
+        int color1 = (int) ((1 + vx / a) * 127);
 
-        short fcolor = color1, color2 = 0;
+        int fcolor = color1, color2 = 0;
 
-        short h = (short) height, mh = (short) minHeight;
+        int h = (int) height, mh = (int) minHeight;
 
         int even = 0;
         int changeX = 0, changeY = 0, angleSign = 0;
@@ -502,10 +503,10 @@ public class ExtrusionBucket extends RenderBucket {
                 nx = points[pos + 0];
                 ny = points[pos + 1];
             } else { // if (addFace)
-                short c = (short) (color1 | fcolor << 8);
+                int c = (color1 | fcolor << 8);
                 /* add bottom and top vertex for each point */
-                vertexItems.add((short) (cx * COORD_SCALE), (short) (cy * COORD_SCALE), mh, c);
-                vertexItems.add((short) (cx * COORD_SCALE), (short) (cy * COORD_SCALE), h, c);
+                vertexItems.add((int) (cx * COORD_SCALE), (int) (cy * COORD_SCALE), mh, c);
+                vertexItems.add((int) (cx * COORD_SCALE), (int) (cy * COORD_SCALE), h, c);
 
                 //v += 8;
                 break;
@@ -516,17 +517,17 @@ public class ExtrusionBucket extends RenderBucket {
 
             /* set lighting (by direction) */
             a = (float) Math.sqrt(vx * vx + vy * vy);
-            color2 = (short) ((1 + vx / a) * 127);
+            color2 = (int) ((1 + vx / a) * 127);
 
-            short c;
+            int c;
             if (even == 0)
-                c = (short) (color1 | color2 << 8);
+                c = (color1 | color2 << 8);
             else
-                c = (short) (color2 | color1 << 8);
+                c = (color2 | color1 << 8);
 
             /* add bottom and top vertex for each point */
-            vertexItems.add((short) (cx * COORD_SCALE), (short) (cy * COORD_SCALE), mh, c);
-            vertexItems.add((short) (cx * COORD_SCALE), (short) (cy * COORD_SCALE), h, c);
+            vertexItems.add((int) (cx * COORD_SCALE), (int) (cy * COORD_SCALE), mh, c);
+            vertexItems.add((int) (cx * COORD_SCALE), (int) (cy * COORD_SCALE), h, c);
 
             color1 = color2;
 
@@ -562,11 +563,11 @@ public class ExtrusionBucket extends RenderBucket {
             }
 
             /* add ZigZagQuadIndices(tm) for sides */
-            short vert = (short) (vOffset + (i - 2));
-            short s0 = vert++;
-            short s1 = vert++;
-            short s2 = vert++;
-            short s3 = vert++;
+            int vert = vOffset + (i - 2);
+            int s0 = vert++;
+            int s1 = vert++;
+            int s2 = vert++;
+            int s3 = vert++;
 
             /* connect last to first (when number of faces is even) */
             if (!addFace && i == len) {
@@ -591,7 +592,7 @@ public class ExtrusionBucket extends RenderBucket {
     }
 
     @Override
-    public void compile(ShortBuffer vboData, ShortBuffer iboData) {
+    public void compile(Buffer vboData, ShortBuffer iboData) {
 
         if (numVertices == 0)
             return;
@@ -606,7 +607,7 @@ public class ExtrusionBucket extends RenderBucket {
                 iOffset += idx[i];
             }
         }
-        vertexOffset = vboData.position() * 2;
+        vertexOffset = vboData.position() * SHORT_BYTES;
         vertexItems.compile(vboData);
 
         clear();

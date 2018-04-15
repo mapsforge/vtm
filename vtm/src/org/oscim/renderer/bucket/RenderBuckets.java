@@ -1,5 +1,6 @@
 /*
  * Copyright 2012-2014 Hannes Janetzek
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -27,6 +28,8 @@ import org.oscim.theme.styles.LineStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.Buffer;
+import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
@@ -58,9 +61,12 @@ public class RenderBuckets extends TileData {
             2, // CIRCLE
     };
 
-    private final static int SHORT_BYTES = 2;
-
     private RenderBucket buckets;
+
+    /**
+     * Indicate if VBO is using GL_INT or GL_SHORT
+     */
+    private final boolean useInt;
 
     /**
      * VBO holds all vertex data to draw lines and polygons after compilation.
@@ -82,6 +88,14 @@ public class RenderBuckets extends TileData {
     public int[] offset = {0, 0};
 
     private RenderBucket mCurBucket;
+
+    public RenderBuckets() {
+        this(false);
+    }
+
+    public RenderBuckets(boolean useInt) {
+        this.useInt = useInt;
+    }
 
     /**
      * add the LineBucket for a level with a given Line style. Levels are
@@ -201,11 +215,7 @@ public class RenderBuckets extends TileData {
         if (mCurBucket != null && mCurBucket.level == level) {
             bucket = mCurBucket;
             if (bucket.type != type) {
-                log.error("BUG wrong bucket {} {} on level {}",
-                        Integer.valueOf(bucket.type),
-                        Integer.valueOf(type),
-                        Integer.valueOf(level));
-
+                log.error("BUG wrong bucket {} {} on level {}", bucket.type, type, level);
                 throw new IllegalArgumentException();
             }
             return bucket;
@@ -236,7 +246,7 @@ public class RenderBuckets extends TileData {
         if (bucket == null) {
             /* add a new RenderElement */
             if (type == LINE)
-                bucket = new LineBucket(level);
+                bucket = new LineBucket(level, useInt);
             else if (type == POLYGON)
                 bucket = new PolygonBucket(level);
             else if (type == TEXLINE)
@@ -263,11 +273,7 @@ public class RenderBuckets extends TileData {
 
         /* check if found buckets matches requested type */
         if (bucket.type != type) {
-            log.error("BUG wrong bucket {} {} on level {}",
-                    Integer.valueOf(bucket.type),
-                    Integer.valueOf(type),
-                    Integer.valueOf(level));
-
+            log.error("BUG wrong bucket {} {} on level {}", bucket.type, type, level);
             throw new IllegalArgumentException();
         }
 
@@ -277,12 +283,21 @@ public class RenderBuckets extends TileData {
     }
 
     private int countVboSize() {
-        int vboShorts = 0;
+        int vboSize = 0;
 
-        for (RenderBucket l = buckets; l != null; l = l.next)
-            vboShorts += l.numVertices * VERTEX_SHORT_CNT[l.type];
+        for (RenderBucket l = buckets; l != null; l = l.next) {
+            if (!useInt && !l.useInt)
+                vboSize += l.numVertices * VERTEX_SHORT_CNT[l.type];
+            else if (useInt && l.useInt)
+                vboSize += l.numVertices * VERTEX_SHORT_CNT[l.type];
+            else {
+                log.error("BUG bucket (int: {}) not matches RenderBuckets (int: {})",
+                        l.useInt, useInt);
+                throw new IllegalArgumentException();
+            }
+        }
 
-        return vboShorts;
+        return vboSize;
     }
 
     private int countIboSize() {
@@ -360,10 +375,18 @@ public class RenderBuckets extends TileData {
         if (addFill)
             vboSize += 8;
 
-        ShortBuffer vboData = MapRenderer.getShortBuffer(vboSize);
+        Buffer vboData;
+        if (useInt)
+            vboData = MapRenderer.getIntBuffer(vboSize);
+        else
+            vboData = MapRenderer.getShortBuffer(vboSize);
 
-        if (addFill)
-            vboData.put(fillCoords, 0, 8);
+        if (addFill) {
+            if (useInt)
+                ((IntBuffer) vboData).put(fillIntCoords, 0, 8);
+            else
+                ((ShortBuffer) vboData).put(fillShortCoords, 0, 8);
+        }
 
         ShortBuffer iboData = null;
 
@@ -382,7 +405,11 @@ public class RenderBuckets extends TileData {
             }
         }
 
-        offset[LINE] = vboData.position() * SHORT_BYTES;
+        if (useInt)
+            offset[LINE] = vboData.position() * RenderBucket.INT_BYTES;
+        else
+            offset[LINE] = vboData.position() * RenderBucket.SHORT_BYTES;
+
         pos = 0;
         for (RenderBucket l = buckets; l != null; l = l.next) {
             if (l.type == LINE) {
@@ -417,26 +444,34 @@ public class RenderBuckets extends TileData {
             return false;
         }
 
-        if (vbo == null)
+        if (vbo == null) {
             vbo = BufferObject.get(GL.ARRAY_BUFFER, vboSize);
+        }
 
-        vbo.loadBufferData(vboData.flip(), vboSize * 2);
+        // Set VBO data to READ mode
+        if (!useInt)
+            vbo.loadBufferData(vboData.flip(), vboSize * RenderBucket.SHORT_BYTES);
+        else
+            vbo.loadBufferData(vboData.flip(), vboSize * RenderBucket.INT_BYTES);
 
         if (iboSize > 0) {
             if (ibo == null)
                 ibo = BufferObject.get(GL.ELEMENT_ARRAY_BUFFER, iboSize);
 
-            ibo.loadBufferData(iboData.flip(), iboSize * 2);
+            // Set IBO data to READ mode
+            ibo.loadBufferData(iboData.flip(), iboSize * RenderBucket.SHORT_BYTES);
         }
 
         return true;
     }
 
-    private static short[] fillCoords;
+    private static short[] fillShortCoords;
+    private static int[] fillIntCoords;
 
     static {
         short s = (short) (Tile.SIZE * COORD_SCALE);
-        fillCoords = new short[]{0, s, s, s, 0, 0, s, 0};
+        fillShortCoords = new short[]{0, s, s, s, 0, 0, s, 0};
+        fillIntCoords = new int[]{0, s, s, s, 0, 0, s, 0};
     }
 
     public static void initRenderer() {

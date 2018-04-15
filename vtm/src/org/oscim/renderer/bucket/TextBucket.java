@@ -161,19 +161,19 @@ public class TextBucket extends TextureBucket {
     protected void addItem(TextItem it,
                            float width, float height, float x, float y) {
         /* texture coordinates */
-        short u1 = (short) (COORD_SCALE * x);
-        short v1 = (short) (COORD_SCALE * y);
-        short u2 = (short) (COORD_SCALE * (x + width));
-        short v2 = (short) (COORD_SCALE * (y + height));
+        int u1 = (int) (COORD_SCALE * x);
+        int v1 = (int) (COORD_SCALE * y);
+        int u2 = (int) (COORD_SCALE * (x + width));
+        int v2 = (int) (COORD_SCALE * (y + height));
 
-        short x1, x2, x3, x4, y1, y3, y2, y4;
+        int x1, x2, x3, x4, y1, y3, y2, y4;
         float hw = width / 2.0f;
         float hh = height / 2.0f;
         if (it.text.caption) {
-            x1 = x3 = (short) (COORD_SCALE * -hw);
-            x2 = x4 = (short) (COORD_SCALE * hw);
-            y1 = y2 = (short) (COORD_SCALE * (it.text.dy + hh));
-            y3 = y4 = (short) (COORD_SCALE * (it.text.dy - hh));
+            x1 = x3 = (int) (COORD_SCALE * -hw);
+            x2 = x4 = (int) (COORD_SCALE * hw);
+            y1 = y2 = (int) (COORD_SCALE * (it.text.dy + hh));
+            y3 = y4 = (int) (COORD_SCALE * (it.text.dy - hh));
         } else {
             float vx = it.x1 - it.x2;
             float vy = it.y1 - it.y2;
@@ -191,23 +191,23 @@ public class TextBucket extends TextureBucket {
             vy *= hw;
 
             /* top-left */
-            x1 = (short) (COORD_SCALE * (vx - ux));
-            y1 = (short) (COORD_SCALE * (vy - uy));
+            x1 = (int) (COORD_SCALE * (vx - ux));
+            y1 = (int) (COORD_SCALE * (vy - uy));
             /* top-right */
-            x2 = (short) (COORD_SCALE * (-vx - ux));
-            y2 = (short) (COORD_SCALE * (-vy - uy));
+            x2 = (int) (COORD_SCALE * (-vx - ux));
+            y2 = (int) (COORD_SCALE * (-vy - uy));
             /* bot-right */
-            x4 = (short) (COORD_SCALE * (-vx + ux2));
-            y4 = (short) (COORD_SCALE * (-vy + uy2));
+            x4 = (int) (COORD_SCALE * (-vx + ux2));
+            y4 = (int) (COORD_SCALE * (-vy + uy2));
             /* bot-left */
-            x3 = (short) (COORD_SCALE * (vx + ux2));
-            y3 = (short) (COORD_SCALE * (vy + uy2));
+            x3 = (int) (COORD_SCALE * (vx + ux2));
+            y3 = (int) (COORD_SCALE * (vy + uy2));
         }
 
         /* add vertices */
         int tmp = (int) (COORD_SCALE * it.x) & LBIT_MASK;
-        short tx = (short) (tmp | (it.text.caption ? 1 : 0));
-        short ty = (short) (COORD_SCALE * it.y);
+        int tx = (tmp | (it.text.caption ? 1 : 0));
+        int ty = (int) (COORD_SCALE * it.y);
 
         vertexItems.add(tx, ty, x1, y1, u1, v2);
         vertexItems.add(tx, ty, x3, y3, u1, v1);

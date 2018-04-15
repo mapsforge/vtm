@@ -2,6 +2,7 @@
  * Copyright 2016 Andrey Novikov
  * Copyright 2016 devemux86
  * Copyright 2017 schedul-xor
+ * Copyright 2018 Gustl22
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -52,32 +53,32 @@ public class CircleBucket extends RenderBucket {
 
         if (GLAdapter.CIRCLE_QUADS) {
             // Create quad
-            vertexItems.add((short) ((x + circle.radius) * COORD_SCALE), (short) ((y - circle.radius) * COORD_SCALE));
+            vertexItems.add((int) ((x + circle.radius) * COORD_SCALE), (int) ((y - circle.radius) * COORD_SCALE));
             int ne = numVertices++;
-            vertexItems.add((short) ((x - circle.radius) * COORD_SCALE), (short) ((y - circle.radius) * COORD_SCALE));
+            vertexItems.add((int) ((x - circle.radius) * COORD_SCALE), (int) ((y - circle.radius) * COORD_SCALE));
             int nw = numVertices++;
-            vertexItems.add((short) ((x - circle.radius) * COORD_SCALE), (short) ((y + circle.radius) * COORD_SCALE));
+            vertexItems.add((int) ((x - circle.radius) * COORD_SCALE), (int) ((y + circle.radius) * COORD_SCALE));
             int sw = numVertices++;
-            vertexItems.add((short) ((x + circle.radius) * COORD_SCALE), (short) ((y + circle.radius) * COORD_SCALE));
+            vertexItems.add((int) ((x + circle.radius) * COORD_SCALE), (int) ((y + circle.radius) * COORD_SCALE));
             int se = numVertices++;
 
-            indiceItems.add((short) ne);
+            indiceItems.add(ne);
             numIndices++;
-            indiceItems.add((short) nw);
+            indiceItems.add(nw);
             numIndices++;
-            indiceItems.add((short) sw);
+            indiceItems.add(sw);
             numIndices++;
 
-            indiceItems.add((short) sw);
+            indiceItems.add(sw);
             numIndices++;
-            indiceItems.add((short) se);
+            indiceItems.add(se);
             numIndices++;
-            indiceItems.add((short) ne);
+            indiceItems.add(ne);
             numIndices++;
         } else {
             // Use point
-            vertexItems.add((short) (x * COORD_SCALE), (short) (y * COORD_SCALE));
-            indiceItems.add((short) numVertices++);
+            vertexItems.add((int) (x * COORD_SCALE), (int) (y * COORD_SCALE));
+            indiceItems.add(numVertices++);
             numIndices++;
         }
     }

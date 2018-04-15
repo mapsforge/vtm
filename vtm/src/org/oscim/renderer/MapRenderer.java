@@ -189,7 +189,7 @@ public class MapRenderer {
 
         mNewSurface = false;
 
-        /** initialize quad indices used by Texture- and LineTexRenderer */
+        /* initialize quad indices used by Texture- and LineTexRenderer */
         int[] vboIds = GLUtils.glGenBuffers(2);
 
         mQuadIndicesID = vboIds[0];
@@ -214,7 +214,7 @@ public class MapRenderer {
                 GL.STATIC_DRAW);
         GLState.bindElementBuffer(0);
 
-        /** initialize default quad */
+        /* initialize default quad */
         FloatBuffer floatBuffer = MapRenderer.getFloatBuffer(8);
         float[] quad = new float[]{-1, -1, -1, 1, 1, -1, 1, 1};
         floatBuffer.put(quad);

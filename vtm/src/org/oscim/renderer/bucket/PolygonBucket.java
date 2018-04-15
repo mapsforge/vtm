@@ -2,6 +2,7 @@
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016 Longri
  * Copyright 2016 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -35,6 +36,7 @@ import org.oscim.utils.math.Interpolation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.Buffer;
 import java.nio.ShortBuffer;
 
 import static org.oscim.backend.GLAdapter.gl;
@@ -73,7 +75,7 @@ public final class PolygonBucket extends RenderBucket {
     final float[] bbox = new float[8];
 
     public void addPolygon(float[] points, int[] index) {
-        short center = (short) ((Tile.SIZE >> 1) * COORD_SCALE);
+        int center = (int) ((Tile.SIZE >> 1) * COORD_SCALE);
 
         boolean outline = area.strokeWidth > 0;
 
@@ -102,21 +104,21 @@ public final class PolygonBucket extends RenderBucket {
                 ymin = Math.min(ymin, y);
 
                 if (outline) {
-                    indiceItems.add((short) numVertices);
+                    indiceItems.add(numVertices);
                     numIndices++;
                 }
 
-                vertexItems.add((short) x, (short) y);
+                vertexItems.add((int) x, (int) y);
                 numVertices++;
 
                 if (outline) {
-                    indiceItems.add((short) numVertices);
+                    indiceItems.add(numVertices);
                     numIndices++;
                 }
             }
 
-            vertexItems.add((short) (points[pos + 0] * COORD_SCALE),
-                    (short) (points[pos + 1] * COORD_SCALE));
+            vertexItems.add((int) (points[pos + 0] * COORD_SCALE),
+                    (int) (points[pos + 1] * COORD_SCALE));
             numVertices++;
 
             pos += length;
@@ -129,7 +131,7 @@ public final class PolygonBucket extends RenderBucket {
     }
 
     @Override
-    protected void compile(ShortBuffer vboData, ShortBuffer iboData) {
+    protected void compile(Buffer vboData, ShortBuffer iboData) {
         if (area.strokeWidth == 0) {
             /* add vertices to shared VBO */
             compileVertexItems(vboData);

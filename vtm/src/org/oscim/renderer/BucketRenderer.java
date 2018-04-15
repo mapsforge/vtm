@@ -70,7 +70,11 @@ public class BucketRenderer extends LayerRenderer {
     public final RenderBuckets buckets;
 
     public BucketRenderer() {
-        buckets = new RenderBuckets();
+        this(false);
+    }
+
+    public BucketRenderer(boolean useInt) {
+        buckets = new RenderBuckets(useInt);
         mMapPosition = new MapPosition();
     }
 
