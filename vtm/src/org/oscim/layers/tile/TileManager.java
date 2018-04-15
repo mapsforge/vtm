@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2018 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -34,6 +35,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.oscim.layers.tile.MapTile.State.CANCEL;
 import static org.oscim.layers.tile.MapTile.State.DEADBEEF;
@@ -55,6 +59,12 @@ public class TileManager {
 
     private int mMinZoom;
     private int mMaxZoom;
+
+    /**
+     * Internal sorted list, to save zoom limits, which some layers need to get rendered.
+     * Uses a <Code>List</Code> cause <Code>Set</Code> doesn't save doubles.
+     */
+    private List<Integer> mZoomLimits;
 
     private int[] mZoomTable;
 
@@ -155,6 +165,7 @@ public class TileManager {
 
     public TileManager(Map map, int cacheLimit) {
         mMap = map;
+        mZoomLimits = new ArrayList<>();
         mMaxZoom = map.viewport().getMaxZoomLevel();
         mMinZoom = map.viewport().getMinZoomLevel();
         mCacheLimit = cacheLimit;
@@ -304,6 +315,14 @@ public class TileManager {
         /* scan visible tiles. callback function calls 'addTile'
          * which updates mNewTiles */
         mNewTiles.cnt = 0;
+
+        for (Integer zoom : new HashSet<>(mZoomLimits)) {
+            if (zoom < tileZoom) {
+                // Add tiles which are needed for layers which avoid multiple rendering
+                mScanBox.scan(pos.x, pos.y, pos.scale, zoom, mMapPlane);
+            }
+        }
+        // Get regular tiles at tileZoom
         mScanBox.scan(pos.x, pos.y, pos.scale, tileZoom, mMapPlane);
 
         MapTile[] newTiles = mNewTiles.tiles;
@@ -392,7 +411,7 @@ public class TileManager {
     }
 
     /**
-     * Retrive a TileSet of current tiles. Tiles remain locked in cache until
+     * Retrieve a TileSet of current tiles. Tiles remain locked in cache until
      * the set is unlocked by either passing it again to this function or to
      * releaseTiles.
      *
@@ -728,5 +747,22 @@ public class TileManager {
     public void setZoomLevel(int zoomLevelMin, int zoomLevelMax) {
         mMinZoom = zoomLevelMin;
         mMaxZoom = zoomLevelMax;
+    }
+
+    /**
+     * Allows loading tiles at specified zoom level if higher zoom levels are requested.
+     */
+    public void addZoomLimit(int zoomLimit) {
+        if (zoomLimit > mMinZoom && zoomLimit < mMaxZoom) {
+            mZoomLimits.add(zoomLimit);
+            Collections.sort(mZoomLimits);
+        }
+    }
+
+    /**
+     * Remove zoom limit. Tiles of that zoom level won't be requested anymore on higher zoom levels.
+     */
+    public void removeZoomLimit(int zoomLimit) {
+        mZoomLimits.remove(zoomLimit);
     }
 }
