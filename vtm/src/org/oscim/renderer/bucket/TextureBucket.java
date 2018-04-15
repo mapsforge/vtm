@@ -26,6 +26,7 @@ import org.oscim.renderer.bucket.TextureItem.TexturePool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.Buffer;
 import java.nio.ShortBuffer;
 
 import static org.oscim.backend.GLAdapter.gl;
@@ -67,7 +68,7 @@ public class TextureBucket extends RenderBucket {
     public boolean fixed;
 
     @Override
-    protected void compile(ShortBuffer vboData, ShortBuffer iboData) {
+    protected void compile(Buffer vboData, ShortBuffer iboData) {
 
         for (TextureItem t = textures; t != null; t = t.next)
             t.upload();

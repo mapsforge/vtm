@@ -1,6 +1,7 @@
 /*
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016-2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -45,6 +46,7 @@ import org.oscim.utils.FastMath;
 import org.oscim.utils.QuadTree;
 import org.oscim.utils.SpatialIndex;
 import org.oscim.utils.geom.GeomBuilder;
+import org.oscim.utils.math.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,11 +99,15 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
     protected Polygon mEnvelope;
 
     public VectorLayer(Map map, SpatialIndex<Drawable> index) {
-        this(map);
+        this(map, false);
     }
 
     public VectorLayer(Map map) {
-        super(map);
+        this(map, false);
+    }
+
+    public VectorLayer(Map map, boolean useInt) {
+        super(map, useInt);
         mConverter = new JtsConverter(Tile.SIZE / UNSCALE_COORD);
     }
 
@@ -194,6 +200,12 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
         mConverter.setPosition(t.position.x, t.position.y, t.position.scale);
 
         bbox.scale(1E6);
+
+        /* Set clipper */
+        if (useInt) {
+            int clipBound = getClipBound(t.position);
+            mClipper.setRect(-clipBound, -clipBound, clipBound, clipBound);
+        }
 
         int level = 0;
         Style lastStyle = null;
@@ -364,6 +376,12 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
                 return true;
         }
         return false;
+    }
+
+    /* Returns maximum visible bounds, dependent on tilt */
+    private int getClipBound(MapPosition mapPosition) {
+        float rad = mapPosition.getTilt() * MathUtils.degreesToRadians;
+        return (int) (useInt ? ((1 / Math.cos(rad)) * MAX_CLIP) : MAX_CLIP);
     }
 
     @Override

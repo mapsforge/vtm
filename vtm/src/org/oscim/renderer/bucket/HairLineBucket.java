@@ -41,7 +41,7 @@ public class HairLineBucket extends RenderBucket {
     }
 
     public void addLine(GeometryBuffer geom) {
-        short id = (short) numVertices;
+        int id = numVertices;
 
         float pts[] = geom.points;
 
@@ -60,17 +60,16 @@ public class HairLineBucket extends RenderBucket {
 
             int end = inPos + len;
 
-            vertexItems.add((short) (pts[inPos++] * COORD_SCALE),
-                    (short) (pts[inPos++] * COORD_SCALE));
-            short first = id;
+            vertexItems.add((int) (pts[inPos++] * COORD_SCALE),
+                    (int) (pts[inPos++] * COORD_SCALE));
+            int first = id;
 
             indiceItems.add(id++);
             numIndices++;
 
             while (inPos < end) {
-
-                vertexItems.add((short) (pts[inPos++] * COORD_SCALE),
-                        (short) (pts[inPos++] * COORD_SCALE));
+                vertexItems.add((int) (pts[inPos++] * COORD_SCALE),
+                        (int) (pts[inPos++] * COORD_SCALE));
 
                 indiceItems.add(id);
                 numIndices++;

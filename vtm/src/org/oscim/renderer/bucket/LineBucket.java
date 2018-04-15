@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -35,8 +36,8 @@ import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 
 /**
  * Note:
- * Coordinates must be in range [-4096..4096] and the maximum
- * resolution for coordinates is 0.25 as points will be converted
+ * Coordinates must be in range [-4096..4096[ if using GL_SHORT.
+ * The maximum resolution for coordinates is 0.25 as points will be converted
  * to fixed point values.
  */
 public class LineBucket extends RenderBucket {
@@ -77,7 +78,11 @@ public class LineBucket extends RenderBucket {
     private int tmin = Integer.MIN_VALUE, tmax = Integer.MAX_VALUE;
 
     public LineBucket(int layer) {
-        super(RenderBucket.LINE, false, false);
+        this(layer, false);
+    }
+
+    public LineBucket(int layer, boolean useInt) {
+        super(RenderBucket.LINE, false, false, useInt);
         this.level = layer;
     }
 
@@ -191,7 +196,7 @@ public class LineBucket extends RenderBucket {
         }
     }
 
-    private void addVertex(VertexData vi,
+    private void addVertex(IVertexData vi,
                            float x, float y,
                            float vNextX, float vNextY,
                            float vPrevX, float vPrevY) {
@@ -210,22 +215,18 @@ public class LineBucket extends RenderBucket {
             uy /= a;
         }
 
-        short ox = (short) (x * COORD_SCALE);
-        short oy = (short) (y * COORD_SCALE);
+        int ox = (int) (x * COORD_SCALE);
+        int oy = (int) (y * COORD_SCALE);
 
         int ddx = (int) (ux * DIR_SCALE);
         int ddy = (int) (uy * DIR_SCALE);
 
-        vi.add(ox, oy,
-                (short) (0 | ddx & DIR_MASK),
-                (short) (1 | ddy & DIR_MASK));
+        vi.add(ox, oy, (0 | ddx & DIR_MASK), (1 | ddy & DIR_MASK));
 
-        vi.add(ox, oy,
-                (short) (2 | -ddx & DIR_MASK),
-                (short) (1 | -ddy & DIR_MASK));
+        vi.add(ox, oy, (2 | -ddx & DIR_MASK), (1 | -ddy & DIR_MASK));
     }
 
-    private void addLine(VertexData vertices, float[] points, int start, int length,
+    private void addLine(IVertexData vertices, float[] points, int start, int length,
                          boolean rounded, boolean squared, boolean closed) {
 
         float ux, uy;
@@ -262,12 +263,12 @@ public class LineBucket extends RenderBucket {
         int ddx, ddy;
 
         /* vertex point coordinate */
-        short ox = (short) (curX * COORD_SCALE);
-        short oy = (short) (curY * COORD_SCALE);
+        int ox = (int) (curX * COORD_SCALE);
+        int oy = (int) (curY * COORD_SCALE);
 
         /* vertex extrusion vector, last two bit
          * encode texture coord. */
-        short dx, dy;
+        int dx, dy;
 
         /* when the endpoint is outside the tile region omit round caps. */
         boolean outside = (curX < tmin || curX > tmax || curY < tmin || curY > tmax);
@@ -275,30 +276,24 @@ public class LineBucket extends RenderBucket {
         if (rounded && !outside) {
             ddx = (int) ((ux - vPrevX) * DIR_SCALE);
             ddy = (int) ((uy - vPrevY) * DIR_SCALE);
-            dx = (short) (0 | ddx & DIR_MASK);
-            dy = (short) (2 | ddy & DIR_MASK);
+            dx = (0 | ddx & DIR_MASK);
+            dy = (2 | ddy & DIR_MASK);
 
-            vertices.add(ox, oy, (short) dx, (short) dy);
-            vertices.add(ox, oy, (short) dx, (short) dy);
+            vertices.add(ox, oy, dx, dy);
+            vertices.add(ox, oy, dx, dy);
 
             ddx = (int) (-(ux + vPrevX) * DIR_SCALE);
             ddy = (int) (-(uy + vPrevY) * DIR_SCALE);
 
-            vertices.add(ox, oy,
-                    (short) (2 | ddx & DIR_MASK),
-                    (short) (2 | ddy & DIR_MASK));
+            vertices.add(ox, oy, (2 | ddx & DIR_MASK), (2 | ddy & DIR_MASK));
 
             /* Start of line */
             ddx = (int) (ux * DIR_SCALE);
             ddy = (int) (uy * DIR_SCALE);
 
-            vertices.add(ox, oy,
-                    (short) (0 | ddx & DIR_MASK),
-                    (short) (1 | ddy & DIR_MASK));
+            vertices.add(ox, oy, (0 | ddx & DIR_MASK), (1 | ddy & DIR_MASK));
 
-            vertices.add(ox, oy,
-                    (short) (2 | -ddx & DIR_MASK),
-                    (short) (1 | -ddy & DIR_MASK));
+            vertices.add(ox, oy, (2 | -ddx & DIR_MASK), (1 | -ddy & DIR_MASK));
         } else {
             /* outside means line is probably clipped
              * TODO should align ending with tile boundary
@@ -320,18 +315,16 @@ public class LineBucket extends RenderBucket {
             /* add first vertex twice */
             ddx = (int) ((ux - tx) * DIR_SCALE);
             ddy = (int) ((uy - ty) * DIR_SCALE);
-            dx = (short) (0 | ddx & DIR_MASK);
-            dy = (short) (1 | ddy & DIR_MASK);
+            dx = (0 | ddx & DIR_MASK);
+            dy = (1 | ddy & DIR_MASK);
 
-            vertices.add(ox, oy, (short) dx, (short) dy);
-            vertices.add(ox, oy, (short) dx, (short) dy);
+            vertices.add(ox, oy, dx, dy);
+            vertices.add(ox, oy, dx, dy);
 
             ddx = (int) (-(ux + tx) * DIR_SCALE);
             ddy = (int) (-(uy + ty) * DIR_SCALE);
 
-            vertices.add(ox, oy,
-                    (short) (2 | ddx & DIR_MASK),
-                    (short) (1 | ddy & DIR_MASK));
+            vertices.add(ox, oy, (2 | ddx & DIR_MASK), (1 | ddy & DIR_MASK));
         }
 
         curX = nextX;
@@ -360,7 +353,7 @@ public class LineBucket extends RenderBucket {
             vNextX = nextX - curX;
             vNextY = nextY - curY;
             a = Math.sqrt(vNextX * vNextX + vNextY * vNextY);
-            /* skip too short segmets */
+            /* skip two vertex segments */
             if (a < mMinDist) {
                 numVertices -= 2;
                 continue;
@@ -445,34 +438,28 @@ public class LineBucket extends RenderBucket {
 
         outside = (curX < tmin || curX > tmax || curY < tmin || curY > tmax);
 
-        ox = (short) (curX * COORD_SCALE);
-        oy = (short) (curY * COORD_SCALE);
+        ox = (int) (curX * COORD_SCALE);
+        oy = (int) (curY * COORD_SCALE);
 
         if (rounded && !outside) {
             ddx = (int) (ux * DIR_SCALE);
             ddy = (int) (uy * DIR_SCALE);
 
-            vertices.add(ox, oy,
-                    (short) (0 | ddx & DIR_MASK),
-                    (short) (1 | ddy & DIR_MASK));
+            vertices.add(ox, oy, (0 | ddx & DIR_MASK), (1 | ddy & DIR_MASK));
 
-            vertices.add(ox, oy,
-                    (short) (2 | -ddx & DIR_MASK),
-                    (short) (1 | -ddy & DIR_MASK));
+            vertices.add(ox, oy, (2 | -ddx & DIR_MASK), (1 | -ddy & DIR_MASK));
 
             /* For rounded line edges */
             ddx = (int) ((ux - vPrevX) * DIR_SCALE);
             ddy = (int) ((uy - vPrevY) * DIR_SCALE);
 
-            vertices.add(ox, oy,
-                    (short) (0 | ddx & DIR_MASK),
-                    (short) (0 | ddy & DIR_MASK));
+            vertices.add(ox, oy, (0 | ddx & DIR_MASK), (0 | ddy & DIR_MASK));
 
             /* last vertex */
             ddx = (int) (-(ux + vPrevX) * DIR_SCALE);
             ddy = (int) (-(uy + vPrevY) * DIR_SCALE);
-            dx = (short) (2 | ddx & DIR_MASK);
-            dy = (short) (0 | ddy & DIR_MASK);
+            dx = (2 | ddx & DIR_MASK);
+            dy = (0 | ddy & DIR_MASK);
 
         } else {
             if (!rounded && !squared) {
@@ -489,20 +476,18 @@ public class LineBucket extends RenderBucket {
             ddx = (int) ((ux - vPrevX) * DIR_SCALE);
             ddy = (int) ((uy - vPrevY) * DIR_SCALE);
 
-            vertices.add(ox, oy,
-                    (short) (0 | ddx & DIR_MASK),
-                    (short) (1 | ddy & DIR_MASK));
+            vertices.add(ox, oy, (0 | ddx & DIR_MASK), (1 | ddy & DIR_MASK));
 
             /* last vertex */
             ddx = (int) (-(ux + vPrevX) * DIR_SCALE);
             ddy = (int) (-(uy + vPrevY) * DIR_SCALE);
-            dx = (short) (2 | ddx & DIR_MASK);
-            dy = (short) (1 | ddy & DIR_MASK);
+            dx = (2 | ddx & DIR_MASK);
+            dy = (1 | ddy & DIR_MASK);
         }
 
         /* add last vertex twice */
-        vertices.add(ox, oy, (short) dx, (short) dy);
-        vertices.add(ox, oy, (short) dx, (short) dy);
+        vertices.add(ox, oy, dx, dy);
+        vertices.add(ox, oy, dx, dy);
     }
 
     static class Shader extends GLShader {
@@ -600,7 +585,7 @@ public class LineBucket extends RenderBucket {
             int uLineWidth = s.uWidth;
             int uLineHeight = s.uHeight;
 
-            gl.vertexAttribPointer(s.aPos, 4, GL.SHORT, false, 0,
+            gl.vertexAttribPointer(s.aPos, 4, b.useInt ? GL.INT : GL.SHORT, false, 0,
                     buckets.offset[LINE]);
 
             v.mvp.setAsUniform(s.uMVP);

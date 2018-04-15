@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
  * Copyright 2017 Longri
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -30,6 +31,7 @@ import org.oscim.utils.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
@@ -112,7 +114,7 @@ public final class LineTexBucket extends LineBucket {
              * allocated memory */
             numVertices = 1;
         }
-        VertexData vi = vertexItems;
+        IVertexData vi = vertexItems;
 
         /* reset offset to last written position */
         if (!evenSegment)
@@ -163,15 +165,15 @@ public final class LineTexBucket extends LineBucket {
                 //    vy /= a;
                 
                 /* normalized perpendicular to line segment */
-                short dx = (short) ((-vy / a) * DIR_SCALE);
-                short dy = (short) ((vx / a) * DIR_SCALE);
+                int dx = (int) ((-vy / a) * DIR_SCALE);
+                int dy = (int) ((vx / a) * DIR_SCALE);
 
-                vi.add((short) x, (short) y, dx, dy, (short) lineLength, (short) 0);
+                vi.add((int) x, (int) y, dx, dy, (int) lineLength, 0);
 
                 lineLength += a;
 
                 vi.seek(6);
-                vi.add((short) nx, (short) ny, dx, dy, (short) lineLength, (short) 0);
+                vi.add((int) nx, (int) ny, dx, dy, (int) lineLength, 0);
 
                 x = nx;
                 y = ny;
@@ -209,7 +211,7 @@ public final class LineTexBucket extends LineBucket {
     }
 
     @Override
-    protected void compile(ShortBuffer vboData, ShortBuffer iboData) {
+    protected void compile(Buffer vboData, ShortBuffer iboData) {
         compileVertexItems(vboData);
         /* add additional vertex for interleaving, see TexLineLayer. */
         vboData.position(vboData.position() + 6);

@@ -40,6 +40,8 @@ import java.util.List;
  */
 public class PathLayer extends VectorLayer {
 
+    private static final boolean USE_INT = true;
+
     protected final ArrayList<GeoPoint> mPoints;
 
     protected Style mStyle;
@@ -49,7 +51,7 @@ public class PathLayer extends VectorLayer {
     private final Point mPoint2 = new Point();
 
     public PathLayer(Map map, Style style) {
-        super(map);
+        super(map, USE_INT);
         mStyle = style;
 
         mPoints = new ArrayList<>();
