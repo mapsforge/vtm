@@ -246,23 +246,23 @@ public class PathLayer extends Layer implements GestureListener {
                 return;
 
             /* keep position to render relative to current state */
-            mMapPosition.copy(t.position);
+            mMapPosition.copy(t.pos);
 
             /* compile new layers */
-            buckets.set(t.buckets.get());
+            buckets.set(t.bucket.get());
             compile();
         }
     }
 
     final static class Task {
-        final RenderBuckets buckets = new RenderBuckets();
-        final MapPosition position = new MapPosition();
+        RenderBuckets bucket = new RenderBuckets();
+        MapPosition pos = new MapPosition();
     }
 
     final class Worker extends SimpleWorker<Task> {
 
         // limit coords to maximum resolution of GL.Short
-        private final int MAX_CLIP = (int) ((Tile.SIZE * Tile.TILE_SIZE_MULTIPLE) / MapRenderer.COORD_SCALE) - 1;
+        private final int MAX_CLIP = (int) (Short.MAX_VALUE / MapRenderer.COORD_SCALE);
 
         public Worker(Map map) {
             super(map, 0, new Task(), new Task());
@@ -322,8 +322,8 @@ public class PathLayer extends Layer implements GestureListener {
 
             }
             if (size == 0) {
-                if (task.buckets.get() != null) {
-                    task.buckets.clear();
+                if (task.bucket.get() != null) {
+                    task.bucket.clear();
                     mMap.render();
                 }
                 return true;
@@ -332,22 +332,22 @@ public class PathLayer extends Layer implements GestureListener {
             LineBucket ll;
 
             if (mLineStyle.stipple == 0 && mLineStyle.texture == null)
-                ll = task.buckets.getLineBucket(0);
+                ll = task.bucket.getLineBucket(0);
             else
-                ll = task.buckets.getLineTexBucket(0);
+                ll = task.bucket.getLineTexBucket(0);
 
             ll.line = mLineStyle;
 
             //ll.scale = ll.line.width;
 
-            mMap.getMapPosition(task.position);
+            mMap.getMapPosition(task.pos);
 
-            int zoomlevel = task.position.zoomLevel;
-            task.position.scale = 1 << zoomlevel;
+            int zoomlevel = task.pos.zoomLevel;
+            task.pos.scale = 1 << zoomlevel;
 
-            double mx = task.position.x;
-            double my = task.position.y;
-            double scale = Tile.SIZE * task.position.scale;
+            double mx = task.pos.x;
+            double my = task.pos.y;
+            double scale = Tile.SIZE * task.pos.scale;
 
             // flip around dateline
             int flip = 0;
@@ -439,7 +439,7 @@ public class PathLayer extends Layer implements GestureListener {
 
         @Override
         public void cleanup(Task task) {
-            task.buckets.clear();
+            task.bucket.clear();
         }
 
         private int addPoint(float[] points, int i, int x, int y) {

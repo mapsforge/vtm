@@ -20,7 +20,6 @@ package org.oscim.layers.vector;
 import org.oscim.core.Box;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.core.MapPosition;
-import org.oscim.core.Tile;
 import org.oscim.event.Event;
 import org.oscim.layers.Layer;
 import org.oscim.map.Map;
@@ -41,7 +40,7 @@ public abstract class AbstractVectorLayer<T> extends Layer implements UpdateList
     protected final static double UNSCALE_COORD = 4;
 
     // limit coords to maximum resolution of GL.Short
-    private final int MAX_CLIP = (int) ((Tile.SIZE * Tile.TILE_SIZE_MULTIPLE) / MapRenderer.COORD_SCALE) - 1;
+    private final int MAX_CLIP = (int) (Short.MAX_VALUE / MapRenderer.COORD_SCALE);
 
     protected final GeometryBuffer mGeom = new GeometryBuffer(128, 4);
     protected final TileClipper mClipper = new TileClipper(-MAX_CLIP, -MAX_CLIP, MAX_CLIP, MAX_CLIP);
