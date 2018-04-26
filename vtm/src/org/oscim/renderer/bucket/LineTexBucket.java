@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
  * Copyright 2017 Longri
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -147,7 +148,7 @@ public final class LineTexBucket extends LineBucket {
             float y = points[pos++] * COORD_SCALE;
 
             /* randomize a bit */
-            float lineLength = line.randomOffset ? (x * x + y * y) % 80 : 0;
+            float lineLength = line.randomOffset ? (x * x + y * y) % 80 : Short.MIN_VALUE;
 
             while (pos < end) {
                 float nx = points[pos++] * COORD_SCALE;
@@ -158,46 +159,67 @@ public final class LineTexBucket extends LineBucket {
                 float vy = ny - y;
 
                 //    /* normalize vector */
-                double a = Math.sqrt(vx * vx + vy * vy);
-                //    vx /= a;
-                //    vy /= a;
-                
+                double dist = Math.sqrt(vx * vx + vy * vy);
+                //    vx /= dist;
+                //    vy /= dist;
+
                 /* normalized perpendicular to line segment */
-                short dx = (short) ((-vy / a) * DIR_SCALE);
-                short dy = (short) ((vx / a) * DIR_SCALE);
+                short dx = (short) ((-vy / dist) * DIR_SCALE);
+                short dy = (short) ((vx / dist) * DIR_SCALE);
 
-                vi.add((short) x, (short) y, dx, dy, (short) lineLength, (short) 0);
+                if (lineLength + dist > Short.MAX_VALUE)
+                    lineLength = Short.MIN_VALUE; // reset lineLength (would cause minimal shift)
 
-                lineLength += a;
-
-                vi.seek(6);
-                vi.add((short) nx, (short) ny, dx, dy, (short) lineLength, (short) 0);
-
+                if (dist > (Short.MAX_VALUE - Short.MIN_VALUE)) {
+                    // In rare cases sloping lines are larger than max range of short:
+                    // sqrt(x² + y²) > short range. So need to split them in 2 parts.
+                    // Alternatively can set max clip value to:
+                    // (Short.MAX_VALUE / Math.sqrt(2)) / MapRenderer.COORD_SCALE
+                    float ix = (x + (vx / 2));
+                    float iy = (y + (vy / 2));
+                    addShortVertex(vi, (short) x, (short) y, (short) ix, (short) iy,
+                            dx, dy, (short) lineLength, (int) (dist / 2));
+                    addShortVertex(vi, (short) ix, (short) iy, (short) nx, (short) ny,
+                            dx, dy, (short) lineLength, (int) (dist / 2));
+                } else {
+                    addShortVertex(vi, (short) x, (short) y, (short) nx, (short) ny,
+                            dx, dy, (short) lineLength, (int) dist);
+                    lineLength += dist;
+                }
                 x = nx;
                 y = ny;
-
-                if (evenSegment) {
-                    /* go to second segment */
-                    vi.seek(-12);
-                    evenSegment = false;
-
-                    /* vertex 0 and 2 were added */
-                    numVertices += 3;
-                    evenQuads++;
-                } else {
-                    /* go to next block */
-                    evenSegment = true;
-
-                    /* vertex 1 and 3 were added */
-                    numVertices += 1;
-                    oddQuads++;
-                }
             }
         }
 
         /* advance offset to last written position */
         if (!evenSegment)
             vi.seek(12);
+    }
+
+    private void addShortVertex(VertexData vi, short x, short y, short nx, short ny,
+                                short dx, short dy, short lineLength, int dist) {
+
+        vi.add(x, y, dx, dy, lineLength, (short) 0);
+
+        vi.seek(6);
+        vi.add(nx, ny, dx, dy, (short) (lineLength + dist), (short) 0);
+
+        if (evenSegment) {
+            /* go to second segment */
+            vi.seek(-12);
+            evenSegment = false;
+
+            /* vertex 0 and 2 were added */
+            numVertices += 3;
+            evenQuads++;
+        } else {
+            /* go to next block */
+            evenSegment = true;
+
+            /* vertex 1 and 3 were added */
+            numVertices += 1;
+            oddQuads++;
+        }
     }
 
     @Override
@@ -234,9 +256,9 @@ public final class LineTexBucket extends LineBucket {
             uPatternWidth = getUniform("u_pwidth");
             uPatternScale = getUniform("u_pscale");
 
-            aPos0 = getAttrib("a_pos0");
+            aPos0 = getAttrib("a_pos0"); // posX, posY, extrX, extrY
             aPos1 = getAttrib("a_pos1");
-            aLen0 = getAttrib("a_len0");
+            aLen0 = getAttrib("a_len0"); // line length, unused
             aLen1 = getAttrib("a_len1");
             aFlip = getAttrib("a_flip");
         }
