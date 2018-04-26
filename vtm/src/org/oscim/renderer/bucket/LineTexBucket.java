@@ -204,7 +204,7 @@ public final class LineTexBucket extends LineBucket {
         vi.add(x, y, dx, dy, lineLength, Short.MIN_VALUE);
 
         vi.seek(6);
-        vi.add(nx, ny, dx, dy, lineLength + dist, Short.MIN_VALUE + dist);
+        vi.add(nx, ny, dx, dy, (short) (lineLength + dist), (short) (Short.MIN_VALUE + dist));
 
         if (evenSegment) {
             /* go to second segment */
