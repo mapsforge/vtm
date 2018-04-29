@@ -5,11 +5,11 @@ uniform mat4 u_mvp;
 uniform vec4 u_color;
 uniform float u_pscale;
 uniform float u_width;
-attribute vec4 a_pos0;
+attribute vec4 a_pos0; // x:posX, y:posY, z:extrusX, w:extrusY
 attribute vec4 a_pos1;
-attribute vec2 a_len0;
+attribute vec2 a_len0; // x:lineLength, y:unused
 attribute vec2 a_len1;
-attribute float a_flip;
+attribute float a_flip; // flip state
 varying vec2 v_st;
 void
 main(){
@@ -44,15 +44,19 @@ uniform float u_mode;
 void
 main(){
   if (u_mode >= 1.0) {
+    /* Dash array or texture */
     float step = 2.0;
     if (u_mode == 2.0) { // dashed texture
       step = 1.0;
     }
-    vec4 c = texture2D(tex, vec2(abs(mod(v_st.s + 1.0, step)), (v_st.t + 1.0) * 0.5));
+    // use linelength mod texture step (mod is always positiv)
+    vec4 c = texture2D(tex, vec2(mod(v_st.s, step), (v_st.t + 1.0) * 0.5));
     float fuzz = fwidth(c.a);
     gl_FragColor = (c * u_color) * smoothstep(0.5 - fuzz, 0.5 + fuzz, c.a);
   }
   else {
+    /* Without dash or texture */
+
     /* distance on perpendicular to the line */
     float dist = abs(v_st.t);
     float fuzz = fwidth(v_st.t);
