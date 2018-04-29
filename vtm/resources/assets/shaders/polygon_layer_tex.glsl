@@ -12,6 +12,7 @@ main(){
   v_st2 = clamp(a_pos.xy, 0.0, 1.0) * (4.0 / u_scale.y);
   gl_Position = u_mvp * a_pos;
 }
+
 $$
 
 #ifdef GLES

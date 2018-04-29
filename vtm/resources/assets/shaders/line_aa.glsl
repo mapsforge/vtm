@@ -22,7 +22,9 @@ main(){
   // last two bits hold the texture coordinates.
   v_st = abs(mod(dir, 4.0)) - 1.0;
 }
+
 $$
+
 #ifdef GLES
 precision highp float;
 #endif

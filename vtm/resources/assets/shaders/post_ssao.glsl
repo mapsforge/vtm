@@ -38,7 +38,7 @@ float compareDepths(in float depth1, in float depth2, inout float far) {
   // if far reduce left bell width to avoid self-shadowing
   float garea = max((1.0 - far) * 2.0, 0.1);
 
-  //return (step(diff, 0.0) * -0.1) + pow(2.7182, -2.0 * pow(diff - gdisplace,2.0) / pow(garea, 2.0));
+  //return (step(diff, 0.0) * -0.1) + pow(2.7182, -2.0 * pow(diff - gdisplace, 2.0) / pow(garea, 2.0));
   return  pow(2.7182, -2.0 * pow(diff - gdisplace,2.0) / pow(garea, 2.0));
 }
 
@@ -85,7 +85,7 @@ main(void){
   vec4 color = texture2D(u_texColor, tex_pos);
   float depth = texture2D(u_tex, tex_pos).x;
 
-  float fog = pow(depth,3.0);
+  float fog = pow(depth, 3.0);
   //return;
   depth = getDepth(depth);
 
@@ -137,7 +137,7 @@ main(void){
 
   // }
   //	 gl_FragColor = vec4(vao, 1.0) * texture2D(u_texColor, tex_pos.xy);
-  //	gl_FragColor = vec4(gl_TexCoord[0].xy,0.0,1.0);
-  //	gl_FragColor = vec4(tex_pos.xy,0.0,1.0);
+  //	gl_FragColor = vec4(gl_TexCoord[0].xy, 0.0, 1.0);
+  //	gl_FragColor = vec4(tex_pos.xy, 0.0, 1.0);
   //	 gl_FragColor = vec4(gl_FragCoord.xy / u_screen, 0.0, 1.0);
 }

@@ -21,7 +21,6 @@ uniform vec2 u_pixel;
 varying vec2 tex_pos;
 
 void main(){
-  
   gl_FragColor = texture2D(u_texColor, tex_pos) * 0.8;
 }
 

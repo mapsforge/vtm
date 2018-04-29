@@ -50,9 +50,9 @@ main(){
       step = 1.0;
     }
     // use linelength mod texture step (mod is always positiv)
-    vec4 c=texture2D(tex,vec2(mod(v_st.s,step),(v_st.t+1.0)*0.5));
-    float fuzz=fwidth(c.a);
-    gl_FragColor=(c * u_color) * smoothstep(0.5-fuzz,0.5+fuzz,c.a);
+    vec4 c = texture2D(tex, vec2(mod(v_st.s, step), (v_st.t + 1.0) * 0.5));
+    float fuzz = fwidth(c.a);
+    gl_FragColor = (c * u_color) * smoothstep(0.5 - fuzz, 0.5 + fuzz, c.a);
   }
   else {
     /* Without dash or texture */

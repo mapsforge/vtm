@@ -12,7 +12,8 @@ void main() {
 	gl_Position = u_mvp * a_pos;
 }
 
-§
+$$
+
 #ifdef GLES
 precision highp float;
 #endif
