@@ -1,3 +1,20 @@
+/*
+ * Copyright 2014-2015 Hannes Janetzek
+ * Copyright 2018 Gustl22
+ *
+ * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.oscim.layers.vector;
 
 import org.oscim.core.Box;
@@ -10,6 +27,7 @@ import org.oscim.map.Map.UpdateListener;
 import org.oscim.map.Viewport;
 import org.oscim.renderer.BucketRenderer;
 import org.oscim.renderer.GLViewport;
+import org.oscim.renderer.MapRenderer;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.utils.async.SimpleWorker;
 import org.oscim.utils.geom.TileClipper;
@@ -21,8 +39,11 @@ public abstract class AbstractVectorLayer<T> extends Layer implements UpdateList
 
     protected final static double UNSCALE_COORD = 4;
 
+    // limit coords to maximum resolution of GL.Short
+    private final int MAX_CLIP = (int) (Short.MAX_VALUE / MapRenderer.COORD_SCALE);
+
     protected final GeometryBuffer mGeom = new GeometryBuffer(128, 4);
-    protected final TileClipper mClipper = new TileClipper(-1024, -1024, 1024, 1024);
+    protected final TileClipper mClipper = new TileClipper(-MAX_CLIP, -MAX_CLIP, MAX_CLIP, MAX_CLIP);
 
     protected final Worker mWorker;
     protected long mUpdateDelay = 50;

@@ -35,7 +35,7 @@ import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 
 /**
  * Note:
- * Coordinates must be in range [-4096..4096] and the maximum
+ * Coordinates must be in range +/- (Short.MAX_VALUE / COORD_SCALE) and the maximum
  * resolution for coordinates is 0.25 as points will be converted
  * to fixed point values.
  */

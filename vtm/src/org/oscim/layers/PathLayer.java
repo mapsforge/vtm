@@ -5,6 +5,7 @@
  * Copyright 2016 Bezzu
  * Copyright 2016 Pedinel
  * Copyright 2017 Andrey Novikov
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -35,6 +36,7 @@ import org.oscim.event.MotionEvent;
 import org.oscim.map.Map;
 import org.oscim.renderer.BucketRenderer;
 import org.oscim.renderer.GLViewport;
+import org.oscim.renderer.MapRenderer;
 import org.oscim.renderer.bucket.LineBucket;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.theme.styles.LineStyle;
@@ -259,12 +261,12 @@ public class PathLayer extends Layer implements GestureListener {
 
     final class Worker extends SimpleWorker<Task> {
 
-        // limit coords
-        private final int max = 2048;
+        // limit coords to maximum resolution of GL.Short
+        private final int MAX_CLIP = (int) (Short.MAX_VALUE / MapRenderer.COORD_SCALE);
 
         public Worker(Map map) {
             super(map, 0, new Task(), new Task());
-            mClipper = new LineClipper(-max, -max, max, max);
+            mClipper = new LineClipper(-MAX_CLIP, -MAX_CLIP, MAX_CLIP, MAX_CLIP);
             mPPoints = new float[0];
         }
 
