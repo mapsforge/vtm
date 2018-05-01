@@ -147,8 +147,8 @@ public final class LineTexBucket extends LineBucket {
             float x = points[pos++] * COORD_SCALE;
             float y = points[pos++] * COORD_SCALE;
 
-            /* randomize a bit */
-            float lineLength = line.randomOffset ? (x * x + y * y) % 80 : Short.MIN_VALUE;
+            /* randomize a bit (must be within range of +/- Short.MAX_VALUE) */
+            float lineLength = line.randomOffset ? (x * x + y * y) % 80 : 0;
 
             while (pos < end) {
                 float nx = points[pos++] * COORD_SCALE;
