@@ -18,6 +18,7 @@
 package org.oscim.layers.tile;
 
 import org.oscim.layers.tile.MapTile.TileNode;
+import org.oscim.map.Viewport;
 import org.oscim.renderer.BufferObject;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.LayerRenderer;
@@ -209,15 +210,27 @@ public abstract class TileRenderer extends LayerRenderer {
      * visible tiles
      */
     public boolean getVisibleTiles(TileSet tileSet) {
+        return getVisibleTiles(tileSet, false) != null;
+    }
+
+    /**
+     * Update tileSet with currently visible tiles and replace tile with ancestor (parent, etc.)
+     * if tile is not loaded yet
+     *
+     * @return original zoom level, otherwise null (if nothing can be loaded)
+     */
+    public Integer getVisibleTiles(TileSet tileSet, boolean replace) {
         if (tileSet == null)
-            return false;
+            return null;
 
         if (mDrawTiles == null) {
             releaseTiles(tileSet);
-            return false;
+            return null;
         }
 
         int prevSerial = tileSet.serial;
+
+        Integer zoom = null;
 
         /* ensure tiles keep visible state */
         synchronized (tilelock) {
@@ -238,19 +251,36 @@ public abstract class TileRenderer extends LayerRenderer {
                     t.lock();
             }
 
+            // Set main zoom level, even if no tile is ready
+            if (cnt > 0) zoom = (int) newTiles[0].zoomLevel;
+
             /* unlock previous tiles */
             tileSet.releaseTiles();
 
             for (int i = 0; i < cnt; i++) {
                 MapTile t = newTiles[i];
-                if (t.isVisible && t.state(READY))
-                    tileSet.tiles[tileSet.cnt++] = t;
+                if (t.isVisible) {
+                    if (t.state(READY))
+                        tileSet.tiles[tileSet.cnt++] = t;
+                    else if (replace) {
+                        // Replace by next available ancestor
+                        for (int j = t.zoomLevel - 1; j > Viewport.MIN_ZOOM_LEVEL; j--) {
+                            int diff = t.zoomLevel - j;
+                            MapTile tmp = mTileManager.getTile(t.tileX >> diff, t.tileY >> diff, j);
+                            if (tmp != null && tmp.state(READY)) {
+                                tileSet.tiles[tileSet.cnt++] = tmp;
+                                tmp.lock();
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
             tileSet.serial = mUploadSerial;
         }
 
-        return prevSerial != tileSet.serial;
+        return prevSerial == tileSet.serial ? null : zoom;
     }
 
     public void releaseTiles(TileSet tileSet) {

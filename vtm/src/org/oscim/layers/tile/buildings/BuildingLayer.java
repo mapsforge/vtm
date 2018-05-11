@@ -22,6 +22,7 @@ package org.oscim.layers.tile.buildings;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tag;
 import org.oscim.layers.Layer;
+import org.oscim.layers.tile.ZoomLimiter;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer.TileLoaderThemeHook;
@@ -39,17 +40,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class BuildingLayer extends Layer implements TileLoaderThemeHook {
+public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLimiter.IZoomLimiter {
 
     protected final static int BUILDING_LEVEL_HEIGHT = 280; // cm
 
     public final static int MIN_ZOOM = 17;
-    public final static int MAX_ZOOM = 17;
+    public final static int MAX_ZOOM = 17; // TODO set to Viewport.MAX_ZOOM_LEVEL;
 
     public static boolean POST_AA = false;
     public static boolean TRANSLUCENT = true;
 
     private static final Object BUILDING_DATA = BuildingLayer.class.getName();
+    private ZoomLimiter mZoomLimiter;
 
     // Can be replaced with Multimap in Java 8
     protected java.util.Map<Integer, List<BuildingElement>> mBuildings = new HashMap<>();
@@ -73,16 +75,32 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
     }
 
     public BuildingLayer(Map map, VectorTileLayer tileLayer, int zoomMin, int zoomMax, boolean mesh) {
-
         super(map);
 
         tileLayer.addHook(this);
 
-        mRenderer = new BuildingRenderer(tileLayer.tileRenderer(),
-                zoomMin, zoomMax,
+        // Use zoomMin as zoomLimit to render buildings only once
+        this.setZoomLimiter(new ZoomLimiter(tileLayer.getManager(), zoomMin, zoomMax, zoomMin));
+
+        mRenderer = new BuildingRenderer(tileLayer.tileRenderer(), mZoomLimiter,
                 mesh, !mesh && TRANSLUCENT); // alpha must be disabled for mesh renderer
         if (POST_AA)
             mRenderer = new OffscreenRenderer(Mode.SSAO_FXAA, mRenderer);
+    }
+
+    @Override
+    public void setZoomLimiter(ZoomLimiter zoomLimiter) {
+        mZoomLimiter = zoomLimiter;
+    }
+
+    @Override
+    public void addZoomLimit() {
+        mZoomLimiter.addZoomLimit();
+    }
+
+    @Override
+    public void removeZoomLimit() {
+        mZoomLimiter.removeZoomLimit();
     }
 
     /**
@@ -95,6 +113,9 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook {
 
         if (!(style instanceof ExtrusionStyle))
             return false;
+        if (tile.zoomLevel > mZoomLimiter.getZoomLimit()) {
+            return false;
+        }
 
         ExtrusionStyle extrusion = (ExtrusionStyle) style.current();
 

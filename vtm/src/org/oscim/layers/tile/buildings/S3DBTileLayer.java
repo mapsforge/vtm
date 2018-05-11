@@ -19,6 +19,7 @@ package org.oscim.layers.tile.buildings;
 import org.oscim.layers.tile.TileLayer;
 import org.oscim.layers.tile.TileManager;
 import org.oscim.layers.tile.TileRenderer;
+import org.oscim.layers.tile.ZoomLimiter;
 import org.oscim.map.Map;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.LayerRenderer;
@@ -49,7 +50,7 @@ public class S3DBTileLayer extends TileLayer {
      */
     public S3DBTileLayer(Map map, TileSource tileSource, boolean fxaa, boolean ssao) {
         super(map, new TileManager(map, MAX_CACHE));
-        setRenderer(new S3DBTileRenderer(fxaa, ssao));
+        setRenderer(new S3DBTileRenderer(getManager(), fxaa, ssao));
 
         mTileManager.setZoomLevel(MIN_ZOOM, MAX_ZOOM);
         mTileSource = tileSource;
@@ -64,8 +65,8 @@ public class S3DBTileLayer extends TileLayer {
     public static class S3DBTileRenderer extends TileRenderer {
         LayerRenderer mRenderer;
 
-        public S3DBTileRenderer(boolean fxaa, boolean ssao) {
-            mRenderer = new BuildingRenderer(this, MIN_ZOOM, MAX_ZOOM, true, false);
+        public S3DBTileRenderer(TileManager manager, boolean fxaa, boolean ssao) {
+            mRenderer = new BuildingRenderer(this, new ZoomLimiter(manager, MIN_ZOOM, MAX_ZOOM, MIN_ZOOM), true, false);
 
             if (fxaa || ssao) {
                 Mode mode = Mode.FXAA;

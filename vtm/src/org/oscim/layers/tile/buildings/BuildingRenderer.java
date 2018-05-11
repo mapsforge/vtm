@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2018 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -21,6 +22,7 @@ import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.TileDistanceSort;
 import org.oscim.layers.tile.TileRenderer;
 import org.oscim.layers.tile.TileSet;
+import org.oscim.layers.tile.ZoomLimiter;
 import org.oscim.renderer.ExtrusionRenderer;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.MapRenderer;
@@ -28,6 +30,9 @@ import org.oscim.renderer.bucket.ExtrusionBuckets;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.lang.System.currentTimeMillis;
 import static org.oscim.layers.tile.MapTile.State.NEW_DATA;
@@ -40,8 +45,7 @@ public class BuildingRenderer extends ExtrusionRenderer {
     private final TileRenderer mTileRenderer;
     private final TileSet mTileSet;
 
-    private final int mZoomMin;
-    private final int mZoomMax;
+    private final ZoomLimiter mZoomLimiter;
 
     private final float mFadeInTime = 250;
     private final float mFadeOutTime = 400;
@@ -49,12 +53,11 @@ public class BuildingRenderer extends ExtrusionRenderer {
     private long mAnimTime;
     private boolean mShow;
 
-    public BuildingRenderer(TileRenderer tileRenderer, int zoomMin, int zoomMax,
+    public BuildingRenderer(TileRenderer tileRenderer, ZoomLimiter zoomLimiter,
                             boolean mesh, boolean alpha) {
         super(mesh, alpha);
 
-        mZoomMax = zoomMax;
-        mZoomMin = zoomMin;
+        mZoomLimiter = zoomLimiter;
         mTileRenderer = tileRenderer;
         mTileSet = new TileSet();
     }
@@ -69,7 +72,7 @@ public class BuildingRenderer extends ExtrusionRenderer {
     @Override
     public void update(GLViewport v) {
 
-        int diff = (v.pos.zoomLevel - mZoomMin);
+        int diff = (v.pos.zoomLevel - mZoomLimiter.getMinZoom());
 
         /* if below min zoom or already faded out */
         if (diff < -1) {
@@ -106,9 +109,9 @@ public class BuildingRenderer extends ExtrusionRenderer {
             return;
         }
 
-        mTileRenderer.getVisibleTiles(mTileSet);
+        Integer zoom = mTileRenderer.getVisibleTiles(mTileSet, true);
 
-        if (mTileSet.cnt == 0) {
+        if (mTileSet.cnt == 0 || zoom == null) {
             mTileRenderer.releaseTiles(mTileSet);
             setReady(false);
             return;
@@ -126,9 +129,8 @@ public class BuildingRenderer extends ExtrusionRenderer {
         boolean compiled = false;
 
         int activeTiles = 0;
-        int zoom = tiles[0].zoomLevel;
 
-        if (zoom >= mZoomMin && zoom <= mZoomMax) {
+        if (zoom <= mZoomLimiter.getZoomLimit() && zoom >= mZoomLimiter.getMinZoom()) {
             /* TODO - if tile is not available try parent or children */
 
             for (int i = 0; i < mTileSet.cnt; i++) {
@@ -143,15 +145,16 @@ public class BuildingRenderer extends ExtrusionRenderer {
                     compiled = true;
                 }
             }
-        }
-        /*else if (zoom == mZoomMax + 1) {
-            // special case for s3db: render from parent tiles
+        } else if (zoom > mZoomLimiter.getZoomLimit() && zoom <= mZoomLimiter.getMaxZoom()) {
+            // render from zoom limit tile, and avoid doubles
+            Set<MapTile> hashTiles = new HashSet<>();
             for (int i = 0; i < mTileSet.cnt; i++) {
-                MapTile t = tiles[i].node.parent();
+                hashTiles.add(mZoomLimiter.getTile(tiles[i]));
+            }
 
-                if (t == null)
-                    continue;
+            hashTiles.remove(null); // Remove possible null value
 
+            for (MapTile t : hashTiles) {
                 ExtrusionBuckets ebs = getBuckets(t);
                 if (ebs == null)
                     continue;
@@ -164,8 +167,7 @@ public class BuildingRenderer extends ExtrusionRenderer {
                     compiled = true;
                 }
             }
-        }*/
-        else if (zoom == mZoomMin - 1) {
+        } else if (zoom == mZoomLimiter.getMinZoom() - 1) {
             /* check if proxy children are ready */
             for (int i = 0; i < mTileSet.cnt; i++) {
                 MapTile t = tiles[i];

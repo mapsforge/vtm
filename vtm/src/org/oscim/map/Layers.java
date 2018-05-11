@@ -3,6 +3,7 @@
  * Copyright 2016-2017 devemux86
  * Copyright 2016 Andrey Novikov
  * Copyright 2017 Longri
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -24,6 +25,7 @@ import org.oscim.event.GestureListener;
 import org.oscim.event.MotionEvent;
 import org.oscim.layers.GroupLayer;
 import org.oscim.layers.Layer;
+import org.oscim.layers.tile.ZoomLimiter;
 import org.oscim.map.Map.InputListener;
 import org.oscim.map.Map.UpdateListener;
 import org.oscim.renderer.LayerRenderer;
@@ -78,6 +80,10 @@ public final class Layers extends AbstractList<Layer> {
             mMap.events.bind((UpdateListener) layer);
         if (layer instanceof InputListener)
             mMap.input.bind((InputListener) layer);
+        // add zoom limit to tile manager
+        if (layer instanceof ZoomLimiter.IZoomLimiter) {
+            ((ZoomLimiter.IZoomLimiter) layer).addZoomLimit();
+        }
 
         // bind added group layer
         if (layer instanceof GroupLayer) {
@@ -87,6 +93,9 @@ public final class Layers extends AbstractList<Layer> {
                     mMap.events.bind((UpdateListener) gl);
                 if (gl instanceof InputListener)
                     mMap.input.bind((InputListener) gl);
+                if (gl instanceof ZoomLimiter.IZoomLimiter) {
+                    ((ZoomLimiter.IZoomLimiter) gl).addZoomLimit();
+                }
             }
         }
 
@@ -128,6 +137,10 @@ public final class Layers extends AbstractList<Layer> {
             mMap.events.unbind((UpdateListener) remove);
         if (remove instanceof InputListener)
             mMap.input.unbind((InputListener) remove);
+        // remove zoom limit from tile manager
+        if (remove instanceof ZoomLimiter.IZoomLimiter) {
+            ((ZoomLimiter.IZoomLimiter) remove).removeZoomLimit();
+        }
 
         // unbind removed group layer
         if (remove instanceof GroupLayer) {
@@ -137,6 +150,9 @@ public final class Layers extends AbstractList<Layer> {
                     mMap.events.unbind((UpdateListener) gl);
                 if (gl instanceof InputListener)
                     mMap.input.unbind((InputListener) gl);
+                if (gl instanceof ZoomLimiter.IZoomLimiter) {
+                    ((ZoomLimiter.IZoomLimiter) gl).removeZoomLimit();
+                }
             }
         }
 
