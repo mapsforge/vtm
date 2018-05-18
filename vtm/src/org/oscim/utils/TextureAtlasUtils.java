@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Longri
+ * Copyright 2017-2018 Longri
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -17,14 +17,12 @@ package org.oscim.utils;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.renderer.atlas.TextureAtlas;
 import org.oscim.renderer.atlas.TextureRegion;
-import org.oscim.utils.math.MathUtils;
 
 import java.util.List;
 import java.util.Map;
 
 public class TextureAtlasUtils {
 
-    private static final int MAX_ATLAS_SIZE = 2048;
     private static final int PAD = 2;
 
     /**
@@ -37,41 +35,22 @@ public class TextureAtlasUtils {
      * @param flipY          texture items flip over y (needed on iOS)
      */
     public static void createTextureRegions(final Map<Object, Bitmap> inputMap,
-                                            Map<Object, TextureRegion> outputMap,
-                                            List<TextureAtlas> atlasList, boolean disposeBitmaps,
-                                            boolean flipY) {
-        // calculate atlas size
-        int completePixel = PAD * PAD;
-        int minHeight = Integer.MAX_VALUE;
-        int maxHeight = Integer.MIN_VALUE;
-        for (Map.Entry<Object, Bitmap> entry : inputMap.entrySet()) {
-            int height = entry.getValue().getHeight();
-            completePixel += (entry.getValue().getWidth() + PAD) * (height + PAD);
+                                             Map<Object, TextureRegion> outputMap,
+                                             List<TextureAtlas> atlasList, boolean disposeBitmaps,
+                                             boolean flipY) {
 
-            minHeight = Math.min(minHeight, height);
-            maxHeight = Math.max(maxHeight, height);
+        int maxTextureSize = BitmapPacker.getDeviceMaxGlTextureSize();
+        //Debug maxTextureSize=256;
+        BitmapPacker bitmapPacker = new BitmapPacker(true, maxTextureSize, PAD, flipY);
+if (true)return;
+        for (Map.Entry<Object, Bitmap> entry : inputMap.entrySet()) {
+            bitmapPacker.pack(entry.getKey(), entry.getValue());
         }
 
-        BitmapPacker.PackStrategy strategy = maxHeight - minHeight < 50
-                ? new BitmapPacker.SkylineStrategy()
-                : new BitmapPacker.GuillotineStrategy();
-        completePixel *= 1.2; // add estimated blank pixels
-        int atlasWidth = (int) Math.sqrt(completePixel);
-        // next power of two
-        atlasWidth = MathUtils.nextPowerOfTwo(MathUtils.nextPowerOfTwo(atlasWidth) + 1);
-        // limit to max
-        atlasWidth = Math.min(MAX_ATLAS_SIZE, atlasWidth);
-
-        BitmapPacker bitmapPacker = new BitmapPacker(atlasWidth, atlasWidth, PAD, strategy, flipY);
-
-        for (Map.Entry<Object, Bitmap> entry : inputMap.entrySet()) {
-            completePixel += (entry.getValue().getWidth() + PAD)
-                    * (entry.getValue().getHeight() + PAD);
-            bitmapPacker.add(entry.getKey(), entry.getValue());
-        }
+        bitmapPacker.generateTextureAtlas();
 
         for (int i = 0, n = bitmapPacker.getAtlasCount(); i < n; i++) {
-            BitmapPacker.PackerAtlasItem packerAtlasItem = bitmapPacker.getAtlasItem(i);
+            PackerAtlasItem packerAtlasItem = bitmapPacker.getAtlasItem(i);
             TextureAtlas atlas = packerAtlasItem.getAtlas();
             atlasList.add(atlas);
             outputMap.putAll(atlas.getRegions());

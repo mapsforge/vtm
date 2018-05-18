@@ -21,7 +21,7 @@ sourceSets {
     }
 }
 
-mainClassName = "org.oscim.test.MapsforgeTest"
+mainClassName = "org.oscim.test.AtlasMultiTextureTest"
 run {
     if (project.hasProperty("args")) {
         args project.getProperty("args").split(",")

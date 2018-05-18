@@ -18,6 +18,9 @@ dependencies {
     implementation 'org.mapsforge:spatialite-android:master-SNAPSHOT:natives-armeabi'
     implementation 'org.mapsforge:spatialite-android:master-SNAPSHOT:natives-armeabi-v7a'
     implementation 'org.mapsforge:spatialite-android:master-SNAPSHOT:natives-x86'
+    file("${rootDir}/vtm-android/natives").eachDir() { dir ->
+        implementation files(dir.path)
+    }
 }
 
 android {

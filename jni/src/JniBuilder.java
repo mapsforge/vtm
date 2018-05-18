@@ -13,12 +13,16 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.jnigen.*;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.StringBuilder;
 import org.apache.commons.cli.*;
+import org.oscim.utils.NativePacker;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Longri on 18.12.2017.
@@ -77,7 +81,8 @@ public class JniBuilder {
 
 
         //copy c/c++ src to 'jni' folder
-        for (String headerPath : new String[]{"nativeSrc/libtess2/Include", "nativeSrc/libtess2/Source", "nativeSrc/gl"}) {
+        for (String headerPath : new String[]{"nativeSrc/libtess2/Include", "nativeSrc/libtess2/Source"
+                , "nativeSrc/gl", "nativeSrc/rectpack2D"}) {
             FileDescriptor fd = new FileDescriptor(headerPath);
             FileDescriptor[] list = fd.list();
             for (FileDescriptor descriptor : list) {
@@ -111,7 +116,7 @@ public class JniBuilder {
             BuildTarget win64 = BuildTarget.newDefaultTarget(BuildTarget.TargetOs.Windows, true);
             if (buildSystemIsWin) win64.compilerSuffix = ".exe";
             win64.cFlags += cFlags;
-            win64.cppFlags += cFlags;
+            win64.cppFlags += cFlags + " -std=c++11";
             win64.headerDirs = headers;
             targets.add(win64);
         }
@@ -218,10 +223,49 @@ public class JniBuilder {
         //##############################################
         // Test native VTM
         //##############################################
-        runTest();
+
+        final AtomicBoolean WAIT = new AtomicBoolean(true);
+        Thread testThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runTest();
+                //wait for c++ printf
+                int cnt=0;
+                while (cnt++<100){
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                WAIT.set(false);
+            }
+        });
+        testThread.start();
+
+        while (WAIT.get()) {
+            //wait for test
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
 
         //print result
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+
+        System.out.println("#################################################################");
+        System.out.println(" ");
         System.out.println("Compilation results:");
         if (androidBuild) {
             if (androidBuildOk) {
@@ -336,7 +380,7 @@ public class JniBuilder {
         //iOS
         final FileDescriptor iosTargetPath = new FileDescriptor("../vtm-ios/natives/");
         if (iOsBuildOk)
-            iOsBuildOk &= copy(libsPath, iosTargetPath, "ios32", true);
+            iOsBuildOk &= copy(libsPath, iosTargetPath, "ios32", false);
 
         libsPath.deleteDirectory();
 
@@ -366,7 +410,62 @@ public class JniBuilder {
 
     private static void runTest() {
 
-        //TODO create some native tests
+        System.out.println("#################################################################");
+        System.out.println("#########  Run Native Test  #####################################");
+        System.out.println("#################################################################");
+
+        int randomTestRecCount = 20;
+        int maxTexSize = 600;
+
+
+        //delete alt test folder
+        FileHandle clear = new FileHandle("test");
+        clear.deleteDirectory();
+        loadLibrary();
+        short[] valueArray = new short[randomTestRecCount * 7];
+
+
+        // fill random test array
+        int index = 0;
+        for (int i = 0; i < randomTestRecCount; i++) {
+            valueArray[index + 0] = (short) i; // index
+            valueArray[index + 1] = 0; // x
+            valueArray[index + 2] = 0; // y
+            valueArray[index + 3] = (short) MathUtils.random(100, 300);// width
+            valueArray[index + 4] = (short) MathUtils.random(100, 300); // height
+            valueArray[index + 5] = 0;// flipped
+            valueArray[index + 6] = 0;
+            index += 7;
+        }
+
+        int[] result = NativePacker.packNative(valueArray, valueArray.length / 7,
+                maxTexSize, false, false);
+
+
+
+        int idx = 1;
+        for (int i = 0; i < result[0]; i++) {
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("Page[").append(i).append("] w=").append(result[idx++]).append(" h=").append(result[idx++]);
+
+            System.out.println(stringBuilder.toString());
+            index = 0;
+            for (int j = 0; j < randomTestRecCount; j++) {
+                if (valueArray[index + 6] == i) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("    ");
+                    sb.append("rec index=").append(valueArray[index + 0]);
+                    sb.append(" x=").append(valueArray[index + 1]);
+                    sb.append(" y=").append(valueArray[index + 2]);
+                    sb.append(" width=").append(valueArray[index + 3]);
+                    sb.append(" height=").append(valueArray[index + 4]);
+                    sb.append(" flipped=").append((valueArray[index + 5] > 0));
+                    System.out.println(sb.toString());
+                }
+                index += 7;
+            }
+        }
 
     }
 
@@ -385,7 +484,6 @@ public class JniBuilder {
         buffer.append(']');
         return buffer.toString();
     }
-
 
     private static CommandLine getCommandLine(String[] args) {
         Options options = new Options();
@@ -446,6 +544,35 @@ public class JniBuilder {
             return null;
         }
         return cmd;
+    }
+
+    private static void loadLibrary() {
+        boolean isWindows = System.getProperty("os.name").contains("Windows");
+        boolean isLinux = System.getProperty("os.name").contains("Linux");
+        boolean isMac = System.getProperty("os.name").contains("Mac");
+        boolean is64Bit = System.getProperty("os.arch").equals("amd64") || System.getProperty("os.arch").equals("x86_64");
+
+        String sharedLibName = "vtm-jni";
+
+        if (isWindows) {
+            if (!is64Bit)
+                System.load(new File("../vtm-desktop/natives/windows/" + sharedLibName + ".dll").getAbsolutePath());
+            else
+                System.load(new File("../vtm-desktop/natives/windows/" + sharedLibName + "64.dll").getAbsolutePath());
+        }
+        if (isLinux) {
+            if (!is64Bit) {
+                System.load(new File("../vtm-desktop/natives/linux/lib" + sharedLibName + ".so").getAbsolutePath());
+            } else {
+                System.load(new File("../vtm-desktop/natives/linux/lib" + sharedLibName + "64.so").getAbsolutePath());
+            }
+        }
+        if (isMac) {
+            if (!is64Bit)
+                System.load(new File("../vtm-desktop/natives/osx/lib" + sharedLibName + ".dylib").getAbsolutePath());
+            else
+                System.load(new File("../vtm-desktop/natives/osx/lib" + sharedLibName + "64.dylib").getAbsolutePath());
+        }
     }
 
 }
