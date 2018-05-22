@@ -14,14 +14,9 @@
  */
 package org.oscim.utils;
 
-import org.oscim.backend.GL;
-import org.oscim.backend.GLAdapter;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.utils.math.MathUtils;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +55,6 @@ public class BitmapPacker {
     int getAtlasCount() {
         return pages.length;
     }
-
 
     void generateTextureAtlas() {
         //create short array for call native
@@ -117,7 +111,6 @@ public class BitmapPacker {
         }
     }
 
-
     private static class objStruct {
         final int index;
         final Object ref;
@@ -131,20 +124,4 @@ public class BitmapPacker {
         }
     }
 
-
-    private static int maxTextureSize = -1;
-
-    public static int getDeviceMaxGlTextureSize() {
-        if (maxTextureSize > -1) {
-            return maxTextureSize;
-        }
-        IntBuffer max = ByteBuffer.allocateDirect(16 * 4).order(ByteOrder.nativeOrder()).asIntBuffer();
-        GLAdapter.gl.getIntegerv(GL.MAX_TEXTURE_SIZE, max);
-        maxTextureSize = max.get(0);
-        if(maxTextureSize<=0){
-            maxTextureSize=-1;
-            return 512;
-        }
-        return maxTextureSize;
-    }
 }

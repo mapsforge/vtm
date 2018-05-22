@@ -15,6 +15,7 @@
 package org.oscim.utils;
 
 import org.oscim.backend.canvas.Bitmap;
+import org.oscim.renderer.GLState;
 import org.oscim.renderer.atlas.TextureAtlas;
 import org.oscim.renderer.atlas.TextureRegion;
 
@@ -39,10 +40,9 @@ public class TextureAtlasUtils {
                                              List<TextureAtlas> atlasList, boolean disposeBitmaps,
                                              boolean flipY) {
 
-        int maxTextureSize = BitmapPacker.getDeviceMaxGlTextureSize();
-        //Debug maxTextureSize=256;
+        int maxTextureSize = GLState.getDeviceMaxGlTextureSize();
         BitmapPacker bitmapPacker = new BitmapPacker(true, maxTextureSize, PAD, flipY);
-if (true)return;
+
         for (Map.Entry<Object, Bitmap> entry : inputMap.entrySet()) {
             bitmapPacker.pack(entry.getKey(), entry.getValue());
         }
