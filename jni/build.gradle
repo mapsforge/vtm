@@ -1,10 +1,20 @@
-apply plugin: 'java-library'
+apply plugin: 'application'
 
 dependencies {
-    api "com.badlogicgames.gdx:gdx-jnigen:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    implementation group: 'com.github.javaparser', name: 'javaparser-core', version: '2.0.0'
+
 }
 
 sourceSets {
     main.java.srcDirs = ['src']
-    main.resources.srcDirs = ['src']
+    main.resources.srcDirs = ['resources']
 }
+
+run {
+//    args  '-linux32', '-linux64', '-win64', '-win32', '-android', '-ndk=C:\\android-ndk-r16b'
+    args   '-win64', '-android', '-ndk=C:\\android-ndk-r16b'
+}
+
+mainClassName = "JniBuilder"

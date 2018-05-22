@@ -1,7 +1,8 @@
 <project name="android-natives" basedir="." default="postcompile">
 	<property environment="env" />
+	<property name="env.NDK_HOME" value="%ndk_home%"/>
 	<!--  the suffix ndk-build executable -->	
-	<property name="ndkSuffix" value="" />
+	<property name="ndkSuffix" value="%ndk-suffix%" />
 
 	<target name="clean" depends="check-for-ndk" if="has-ndk-build">
 		<exec executable="${env.NDK_HOME}/ndk-build${ndkSuffix}" failonerror="true">
@@ -10,7 +11,7 @@
 	</target>
 
 	<target name="precompile" depends="check-for-ndk">
-		
+		%precompile%
 	</target>
 
 	<target name="compile-natives" depends="precompile" if="has-ndk-build">
@@ -19,7 +20,7 @@
 	</target>
 	
 	<target name="postcompile" depends="compile-natives">
-		
+		%postcompile%
 	</target>
 
 	<target name="check-for-ndk">
