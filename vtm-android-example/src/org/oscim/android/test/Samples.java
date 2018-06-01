@@ -2,7 +2,7 @@
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
- * Copyright 2017 Longri
+ * Copyright 2017-2018 Longri
  * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -98,6 +98,7 @@ public class Samples extends Activity {
             }
         }));
         linearLayout.addView(createButton(LocationActivity.class));
+        linearLayout.addView(createButton(LocationTextureActivity.class));
         linearLayout.addView(createButton(PoiSearchActivity.class));
 
         linearLayout.addView(createLabel("Vector Features"));

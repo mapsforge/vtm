@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" width="249.667" height="254.667" viewBox="0 0 249.67 254.67" enable-background="new 0 0 249.67 254.67" xml:space="preserve">
+	<linearGradient id="SVGID_Fill1_" gradientUnits="objectBoundingBox" x1="-0.0161654" y1="0.500001" x2="1.01616" y2="0.500001">
+		<stop offset="0.0344828" stop-color="#FF0000" stop-opacity="1"/>
+		<stop offset="0.5" stop-color="#FF0000" stop-opacity="1"/>
+		<stop offset="1" stop-color="#F8E6E6" stop-opacity="1"/>
+	</linearGradient>
+	<path fill="url(#SVGID_Fill1_)" stroke-width="5" stroke-linejoin="round" stroke="#000000" stroke-opacity="1" d="M 47.5002,250.834L 124.833,2.50006L 202.167,252.167L 124.167,199.167L 47.5002,250.834 Z "/>
+	<linearGradient id="SVGID_Fill2_" gradientUnits="objectBoundingBox" x1="0.0255055" y1="0.518124" x2="0.986547" y2="0.518124" gradientTransform="rotate(42.130627 0.025506 0.518124)">
+		<stop offset="0.301724" stop-color="#ECECEC" stop-opacity="0.345098"/>
+		<stop offset="0.62931" stop-color="#1C1C1C" stop-opacity="0.776471"/>
+		<stop offset="0.689655" stop-color="#000000" stop-opacity="0.423529"/>
+		<stop offset="1" stop-color="#000000" stop-opacity="0.286275"/>
+	</linearGradient>
+	<filter id="Filter_GaussianBlur1_" filterUnits="userSpaceOnUse">
+		<feGaussianBlur stdDeviation="1.88976"/>
+	</filter>
+	<path fill="url(#SVGID_Fill2_)" stroke-width="0.2" stroke-linejoin="round" filter="url(#Filter_GaussianBlur1_)" d="M 56.8333,241.5L 124.833,31.0001L 123.5,195.167L 56.8333,241.5 Z "/>
+</svg>
