@@ -58,6 +58,9 @@
             android:name=".LocationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".LocationTextureActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".MapEventLayer2Activity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
