@@ -70,6 +70,9 @@ public class LocationTextureActivity extends BitmapTileActivity implements Locat
         // set color of indicator circle (Color.RED is default)
         locationLayer.locationRenderer.setIndicatorColor(Color.MAGENTA);
 
+        // set billboard rendering for TextureRegion ( false is default)
+        locationLayer.locationRenderer.setBillboard(false);
+
         locationLayer.setEnabled(false);
         mMap.layers().add(locationLayer);
     }
