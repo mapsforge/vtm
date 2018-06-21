@@ -1,5 +1,6 @@
 /*
  * Copyright 2016 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -21,7 +22,9 @@ import org.oscim.core.Tile;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.TileRenderer;
 import org.oscim.layers.tile.TileSet;
+import org.oscim.layers.tile.ZoomLimiter;
 import org.oscim.map.Map;
+import org.oscim.map.Viewport;
 import org.oscim.renderer.bucket.SymbolBucket;
 import org.oscim.renderer.bucket.SymbolItem;
 import org.oscim.renderer.bucket.TextItem;
@@ -30,6 +33,9 @@ import org.oscim.utils.FastMath;
 import org.oscim.utils.geom.OBB2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.oscim.layers.tile.MapTile.State.NEW_DATA;
 import static org.oscim.layers.tile.MapTile.State.READY;
@@ -67,9 +73,15 @@ public class LabelPlacement {
      */
     private int mRelabelCnt;
 
-    public LabelPlacement(Map map, TileRenderer tileRenderer) {
+    private final ZoomLimiter mZoomLimiter;
+
+    /* Zoom value of current tiles. Init value doesn't matter */
+    private Integer mZoom = Viewport.MIN_ZOOM_LEVEL;
+
+    public LabelPlacement(Map map, TileRenderer tileRenderer, ZoomLimiter zoomLimiter) {
         mMap = map;
         mTileRenderer = tileRenderer;
+        mZoomLimiter = zoomLimiter;
     }
 
     /**
@@ -294,7 +306,15 @@ public class LabelPlacement {
     boolean updateLabels(LabelTask work) {
 
         /* get current tiles */
-        boolean changedTiles = mTileRenderer.getVisibleTiles(mTileSet);
+        int lastZoom = mZoom;
+        mZoom = mTileRenderer.getVisibleTiles(mTileSet, true);
+
+        boolean changedTiles = mZoom != null;
+
+        // set to last zoom in case of tiles didn't change
+        if (!changedTiles) {
+            mZoom = lastZoom;
+        }
 
         if (mTileSet.cnt == 0) {
             return false;
@@ -307,10 +327,32 @@ public class LabelPlacement {
         if (!changedTiles && !changedPos)
             return false;
 
-        mRelabelCnt++;
+        if (mZoom < mZoomLimiter.getMinZoom() || mZoom > mZoomLimiter.getMaxZoom())
+            return false;
 
-        MapTile[] tiles = mTileSet.tiles;
-        int zoom = tiles[0].zoomLevel;
+        int cnt = mTileSet.cnt;
+        int zoom;
+        MapTile[] tiles;
+
+        if (mZoom > mZoomLimiter.getZoomLimit()) {
+            // render from zoom limit tiles (avoid duplicates and null)
+            Set<MapTile> hashTiles = new HashSet<>();
+            for (int i = 0; i < mTileSet.cnt; i++) {
+                MapTile t = mZoomLimiter.getTile(mTileSet.tiles[i]);
+                if (t == null)
+                    continue;
+                hashTiles.add(t);
+            }
+
+            cnt = hashTiles.size();
+            tiles = hashTiles.toArray(new MapTile[hashTiles.size()]);
+            zoom = mZoomLimiter.getZoomLimit();
+        } else {
+            tiles = mTileSet.tiles;
+            zoom = mZoom;
+        }
+
+        mRelabelCnt++;
 
         /* estimation for visible area to be labeled */
         int mw = (mMap.getWidth() + Tile.SIZE) / 2;
@@ -398,7 +440,7 @@ public class LabelPlacement {
         }
 
         /* add way labels */
-        for (int i = 0, n = mTileSet.cnt; i < n; i++) {
+        for (int i = 0; i < cnt; i++) {
             MapTile t = tiles[i];
             if (!t.state(READY | NEW_DATA))
                 continue;
@@ -411,7 +453,7 @@ public class LabelPlacement {
         }
 
         /* add caption */
-        for (int i = 0, n = mTileSet.cnt; i < n; i++) {
+        for (int i = 0; i < cnt; i++) {
             MapTile t = tiles[i];
             if (!t.state(READY | NEW_DATA))
                 continue;
@@ -453,7 +495,7 @@ public class LabelPlacement {
         }
 
         /* add symbol items */
-        for (int i = 0, n = mTileSet.cnt; i < n; i++) {
+        for (int i = 0; i < cnt; i++) {
             MapTile t = tiles[i];
             if (!t.state(READY | NEW_DATA))
                 continue;

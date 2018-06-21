@@ -3,6 +3,7 @@
  * Copyright 2017 Wolfgang Schramm
  * Copyright 2017 devemux86
  * Copyright 2017 Andrey Novikov
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -24,13 +25,15 @@ import org.oscim.event.Event;
 import org.oscim.layers.Layer;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.TileManager;
+import org.oscim.layers.tile.ZoomLimiter;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.map.Map;
 import org.oscim.utils.async.SimpleWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LabelLayer extends Layer implements Map.UpdateListener, TileManager.Listener {
+public class LabelLayer extends Layer implements Map.UpdateListener, TileManager.Listener,
+        ZoomLimiter.IZoomLimiter {
 
     static final Logger log = LoggerFactory.getLogger(LabelLayer.class);
 
@@ -38,8 +41,12 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
 
     private static final long MAX_RELABEL_DELAY = 100;
 
+    /* Set to maximum "zoom-min" value for labels in render themes */
+    public static final int ZOOM_LIMIT = 18;
+
     private final LabelPlacement mLabelPlacer;
     private final Worker mWorker;
+    private final ZoomLimiter mZoomLimiter;
 
     public LabelLayer(Map map, VectorTileLayer l) {
         this(map, l, new LabelTileLoaderHook());
@@ -50,7 +57,10 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
         l.getManager().events.bind(this);
         l.addHook(h);
 
-        mLabelPlacer = new LabelPlacement(map, l.tileRenderer());
+        mZoomLimiter = new ZoomLimiter(l.getManager(), map.viewport().getMinZoomLevel(),
+                map.viewport().getMaxZoomLevel(), ZOOM_LIMIT);
+
+        mLabelPlacer = new LabelPlacement(map, l.tileRenderer(), mZoomLimiter);
         mWorker = new Worker(map);
         mRenderer = new TextRenderer(mWorker);
     }
@@ -84,6 +94,16 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
         public synchronized boolean isRunning() {
             return mRunning;
         }
+    }
+
+    @Override
+    public void addZoomLimit() {
+        mZoomLimiter.addZoomLimit();
+    }
+
+    @Override
+    public void removeZoomLimit() {
+        mZoomLimiter.removeZoomLimit();
     }
 
     public void clearLabels() {
