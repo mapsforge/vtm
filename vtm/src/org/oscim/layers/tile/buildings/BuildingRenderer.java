@@ -54,8 +54,8 @@ public class BuildingRenderer extends ExtrusionRenderer {
     private boolean mShow;
 
     public BuildingRenderer(TileRenderer tileRenderer, ZoomLimiter zoomLimiter,
-                            boolean mesh, boolean alpha) {
-        super(mesh, alpha);
+                            boolean mesh, boolean drawCovered) {
+        super(mesh, drawCovered);
 
         mZoomLimiter = zoomLimiter;
         mTileRenderer = tileRenderer;

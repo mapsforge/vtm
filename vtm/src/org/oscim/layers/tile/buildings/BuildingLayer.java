@@ -47,7 +47,11 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
     public final static int MIN_ZOOM = 17;
 
     public static boolean POST_AA = false;
-    public static boolean TRANSLUCENT = true;
+
+    /**
+     * Draw extrusions which are covered by others (especially if the side of extrusion is translucent).
+     */
+    public static boolean DRAW_COVERED = false;
 
     private static final Object BUILDING_DATA = BuildingLayer.class.getName();
 
@@ -84,7 +88,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
         mZoomLimiter = new ZoomLimiter(tileLayer.getManager(), zoomMin, zoomMax, zoomMin);
 
         mRenderer = new BuildingRenderer(tileLayer.tileRenderer(), mZoomLimiter,
-                mesh, !mesh && TRANSLUCENT); // alpha must be disabled for mesh renderer
+                mesh, mesh || DRAW_COVERED); // covered extrusions must be drawn for mesh renderer
         if (POST_AA)
             mRenderer = new OffscreenRenderer(Mode.SSAO_FXAA, mRenderer);
     }

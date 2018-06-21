@@ -66,7 +66,7 @@ public class S3DBTileLayer extends TileLayer {
         LayerRenderer mRenderer;
 
         public S3DBTileRenderer(TileManager manager, boolean fxaa, boolean ssao) {
-            mRenderer = new BuildingRenderer(this, new ZoomLimiter(manager, MIN_ZOOM, MAX_ZOOM, MIN_ZOOM), true, false);
+            mRenderer = new BuildingRenderer(this, new ZoomLimiter(manager, MIN_ZOOM, MAX_ZOOM, MIN_ZOOM), true, true);
 
             if (fxaa || ssao) {
                 Mode mode = Mode.FXAA;
