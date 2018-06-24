@@ -32,7 +32,7 @@ import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 public abstract class ExtrusionRenderer extends LayerRenderer {
     static final Logger log = LoggerFactory.getLogger(ExtrusionRenderer.class);
 
-    private final boolean mTranslucent;
+    private final boolean mTranslucent; // don't draw extrusions which are covered by others.
     private final int mMode;
     private Shader mShader;
 
@@ -42,9 +42,9 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
     private float mZLimit = Float.MAX_VALUE;
 
-    public ExtrusionRenderer(boolean mesh, boolean alpha) {
+    public ExtrusionRenderer(boolean mesh, boolean translucent) {
         mMode = mesh ? 1 : 0;
-        mTranslucent = alpha;
+        mTranslucent = translucent;
     }
 
     public static class Shader extends GLShader {
