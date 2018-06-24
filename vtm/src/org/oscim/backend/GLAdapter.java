@@ -49,8 +49,8 @@ public class GLAdapter {
         GDX_DESKTOP_QUIRKS = CanvasAdapter.platform.isDesktop();
         GDX_WEBGL_QUIRKS = (CanvasAdapter.platform == Platform.WEBGL);
 
-        // Buildings rendering does not work on macOS, see #61
+        // Buildings translucency does not work on macOS, see #61
         if (CanvasAdapter.platform == Platform.MACOS)
-            BuildingLayer.DRAW_COVERED = true;
+            BuildingLayer.TRANSLUCENT = false;
     }
 }

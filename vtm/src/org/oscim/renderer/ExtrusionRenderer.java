@@ -32,7 +32,7 @@ import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 public abstract class ExtrusionRenderer extends LayerRenderer {
     static final Logger log = LoggerFactory.getLogger(ExtrusionRenderer.class);
 
-    private final boolean mDrawCovered; // draw extrusions which are covered by others.
+    private final boolean mTranslucent; // don't draw extrusions which are covered by others.
     private final int mMode;
     private Shader mShader;
 
@@ -42,9 +42,9 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
     private float mZLimit = Float.MAX_VALUE;
 
-    public ExtrusionRenderer(boolean mesh, boolean drawCovered) {
+    public ExtrusionRenderer(boolean mesh, boolean translucent) {
         mMode = mesh ? 1 : 0;
-        mDrawCovered = drawCovered;
+        mTranslucent = translucent;
     }
 
     public static class Shader extends GLShader {
@@ -123,7 +123,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
         ExtrusionBuckets[] ebs = mExtrusionBucketSet;
 
-        if (!mDrawCovered) {
+        if (mTranslucent) {
             /* only draw to depth buffer */
             GLState.blend(false);
             gl.colorMask(false, false, false, false);
@@ -164,7 +164,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
             ebs[i].ibo.bind();
             ebs[i].vbo.bind();
 
-            if (mDrawCovered)
+            if (!mTranslucent)
                 setMatrix(s, v, ebs[i]);
 
             float alpha = mAlpha * getFade(ebs[i]);
@@ -192,7 +192,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
                 /* draw extruded outlines */
                 if (eb.idx[0] > 0) {
-                    if (!mDrawCovered) {
+                    if (mTranslucent) {
                         gl.depthFunc(GL.EQUAL);
                         setMatrix(s, v, ebs[i]);
                     }
@@ -212,7 +212,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
                     gl.drawElements(GL.TRIANGLES, eb.idx[1],
                             GL.UNSIGNED_SHORT, eb.off[1]);
 
-                    if (!mDrawCovered) {
+                    if (mTranslucent) {
                         /* drawing gl_lines with the same coordinates
                          * does not result in same depth values as
                          * polygons, so add offset and draw gl_lequal */
@@ -238,7 +238,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
             ebs[i] = null;
         }
 
-        if (mDrawCovered)
+        if (!mTranslucent)
             gl.depthMask(false);
 
         if (v.pos.zoomLevel < 18)
@@ -265,7 +265,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
         v.mvp.setValue(10, scale / 10);
         v.mvp.multiplyLhs(v.viewproj);
 
-        if (!mDrawCovered) {
+        if (mTranslucent) {
             /* should avoid z-fighting of overlapping
              * building from different tiles */
             int zoom = (1 << z);
