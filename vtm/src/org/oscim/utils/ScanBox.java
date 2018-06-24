@@ -116,20 +116,20 @@ public abstract class ScanBox {
         xmin = (int) min;
         xmax = (int) max;
 
-        // top-left -> top-right
+        // top-right -> top-left       🡐
         ab.set(box[0], box[1], box[2], box[3]);
-        // top-right ->  bottom-right
+        // top-left ->  bottom-left    🡓
         bc.set(box[2], box[3], box[4], box[5]);
-        // bottom-right -> bottom-left
+        // bottom-left -> top-right    🡕
         ca.set(box[4], box[5], box[0], box[1]);
 
         scanTriangle();
 
-        // top-left -> bottom-right
+        // top-right -> bottom-left    🡗
         ab.set(box[0], box[1], box[4], box[5]);
-        // bottom-right -> bottom-left
+        // bottom-left -> bottom-right 🡒
         bc.set(box[4], box[5], box[6], box[7]);
-        // bottom-left -> top-left
+        // bottom-right -> top-right   🡑
         ca.set(box[6], box[7], box[0], box[1]);
 
         scanTriangle();

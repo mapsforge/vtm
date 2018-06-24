@@ -46,6 +46,9 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
 
     public final static int MIN_ZOOM = 17;
 
+    /**
+     * Use Fast Approximate Anti-Aliasing (FXAA) and Screen Space Ambient Occlusion (SSAO)
+     */
     public static boolean POST_AA = false;
 
     /**
@@ -79,6 +82,13 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
         this(map, tileLayer, MIN_ZOOM, map.viewport().getMaxZoomLevel(), mesh);
     }
 
+    /**
+     * @param map       The map data to add
+     * @param tileLayer The vector tile layer which contains the tiles and the map elements
+     * @param zoomMin   The minimum zoom at which the layer appears
+     * @param zoomMax   The maximum zoom at which the layer appears
+     * @param mesh      Declare if using mesh or polygon renderer
+     */
     public BuildingLayer(Map map, VectorTileLayer tileLayer, int zoomMin, int zoomMax, boolean mesh) {
 
         super(map);
