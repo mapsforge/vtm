@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * 
+ * Copyright 2018 Gustl22
+ *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  * 
  * This program is free software: you can redistribute it and/or modify it under the
@@ -113,6 +114,22 @@ public final class Color {
 
     public static int b(int color) {
         return ((color) & 0xff);
+    }
+
+    public static int setA(int color, int a) {
+        return ((a << 24) | (color & 0xffffff));
+    }
+
+    public static int setR(int color, int r) {
+        return ((r << 16) | (color & 0xff00ffff));
+    }
+
+    public static int setG(int color, int g) {
+        return ((g << 8) | (color & 0xffff00ff));
+    }
+
+    public static int setB(int color, int b) {
+        return (b | (color & 0xffffff00));
     }
 
     public static int parseColorComponents(String str) {

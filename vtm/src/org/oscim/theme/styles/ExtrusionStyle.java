@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -54,6 +55,19 @@ public class ExtrusionStyle extends RenderStyle<ExtrusionStyle> {
         fillColors(colorSide, colorTop, colorLine, colors);
 
         this.defaultHeight = b.defaultHeight;
+    }
+
+    public static int blendAlpha(int color, float alpha) {
+        if (alpha == 1.0f) return color;
+        return Color.setA(color, (int) (Color.a(color) * alpha));
+    }
+
+    public static void blendAlpha(float colors[], float alpha) {
+        if (alpha != 1.0f) {
+            for (int i = 0; i < colors.length; i++) {
+                colors[i] = alpha * colors[i];
+            }
+        }
     }
 
     public static void fillColors(int side, int top, int line, float[] colors) {
