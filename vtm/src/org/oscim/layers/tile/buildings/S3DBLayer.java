@@ -52,6 +52,12 @@ public class S3DBLayer extends BuildingLayer {
         this(map, tileLayer, MIN_ZOOM, map.viewport().getMaxZoomLevel());
     }
 
+    /**
+     * @param map       The map data to add
+     * @param tileLayer The vector tile layer which contains the tiles and map elements
+     * @param zoomMin   The minimum zoom at which the layer appears
+     * @param zoomMax   The maximum zoom at which the layer appears
+     */
     public S3DBLayer(Map map, VectorTileLayer tileLayer, int zoomMin, int zoomMax) {
         super(map, tileLayer, zoomMin, zoomMax, true);
     }
@@ -60,6 +66,10 @@ public class S3DBLayer extends BuildingLayer {
         return mColored;
     }
 
+    /**
+     * @param colored true: use colour written in '*:colour' tag
+     *                false: use top colour of extrusion style
+     */
     public void setColored(boolean colored) {
         mColored = colored;
     }
@@ -69,7 +79,8 @@ public class S3DBLayer extends BuildingLayer {
     }
 
     /**
-     * @param transparent if true it adopts transparency of extrusion styles
+     * @param transparent if true coloured buildings blend transparency of extrusion style
+     *                    (only in combination with isColored = true)
      */
     public void setTransparent(boolean transparent) {
         mTransparent = transparent;

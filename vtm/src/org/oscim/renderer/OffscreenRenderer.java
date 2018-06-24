@@ -12,8 +12,8 @@ public class OffscreenRenderer extends LayerRenderer {
     final static Logger log = LoggerFactory.getLogger(OffscreenRenderer.class);
 
     public enum Mode {
-        FXAA,
-        SSAO,
+        FXAA, // Fast Approximate Anti-Aliasing
+        SSAO, // Screen Space Ambient Occlusion
         SSAO_FXAA,
         BYPASS
     }
