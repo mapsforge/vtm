@@ -273,5 +273,5 @@ The options available are:
 
 ### SVG Icon Design 
 
-If want to know how to design a your own icons, you can have a look at Google's [Material Design](https://material.io/design/iconography/system-icons.html) conventions.
+If want to know how to design your own icons, you can have a look at Google's [Material Design](https://material.io/design/iconography/system-icons.html) conventions.
 To keep SVG sizes down, it is advisable to make use of the reuse facilities within SVG files and to remove any unneccessary comments and metadata.
