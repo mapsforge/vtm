@@ -246,14 +246,15 @@ On Android, the stylemenus can thus be converted into standard Android settings,
 
 ## Priorities
 
-Labels and icons are now drawn in order of priority, higher priorities first. The default priority is 0, so anything with a priority less than 0 will only be drawn if the space is not yet taken up, priorities higher than 0 will be drawn before default priority labels.
+Labels and icons are drawn in order of priority. The default (and highest) priority is 0, so anything with a priority higher than 0 will only be drawn if the space is not yet taken up or has a lower priority value than its colliding elements.
+_Priorities have opposite meaning to the Mapsforge render-theme priorities_
 
 ```xml
 <m e="node" k="place" v="town" zoom-min="8">
-    <caption priority="30" k="name" style="bold" size="14" fill="#333380" stroke="#FFFFFF" stroke-width="2.0"/>
+    <caption priority="2" k="name" style="bold" size="14" fill="#333380" stroke="#FFFFFF" stroke-width="2.0"/>
 </m>
 <m e="node" k="place" v="city" zoom-min="6" zoom-max="6">
-    <caption priority="40" k="name" style="bold" size="11" fill="#333380" stroke="#FFFFFF" stroke-width="2.0"/>
+    <caption priority="0" k="name" style="bold" size="11" fill="#333380" stroke="#FFFFFF" stroke-width="2.0"/>
 </m>
 ```
 
@@ -273,5 +274,5 @@ The options available are:
 
 ### SVG Icon Design 
 
-If want to know how to design your own icons, you can have a look at Google's [Material Design](https://material.io/design/iconography/system-icons.html) conventions.
+If you want to know how to design your own icons, you can have a look at Google's [Material Design](https://material.io/design/iconography/system-icons.html) conventions.
 To keep SVG sizes down, it is advisable to make use of the reuse facilities within SVG files and to remove any unneccessary comments and metadata.
