@@ -247,7 +247,8 @@ On Android, the stylemenus can thus be converted into standard Android settings,
 ## Priorities
 
 Labels and icons are drawn in order of priority. The default (and highest) priority is 0, so anything with a priority higher than 0 will only be drawn if the space is not yet taken up or has a lower priority value than its colliding elements.
-_Priorities have opposite meaning to the Mapsforge render-theme priorities_
+
+_VTM priorities have the opposite meaning to the Mapsforge render-theme priorities._
 
 ```xml
 <m e="node" k="place" v="town" zoom-min="8">
