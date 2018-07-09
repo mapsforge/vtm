@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Longri
+ * Copyright 2017-2018 Longri
  * Copyright 2017-2018 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -17,6 +17,8 @@ package org.oscim.android.test;
 
 import android.os.Bundle;
 
+import org.oscim.event.Event;
+import org.oscim.renderer.GLState;
 import org.oscim.utils.Parameters;
 
 public class AtlasThemeActivity extends SimpleMapActivity {
@@ -24,8 +26,19 @@ public class AtlasThemeActivity extends SimpleMapActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Parameters.TEXTURE_ATLAS = true;
-
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    void createLayers() {
+        // wait for gl surface view is created
+        GLState.event.bind(new GLState.Listener() {
+            @Override
+            public void onGLStateInitEvent(Event event) {
+                // load Theme with TextureAtlas
+                AtlasThemeActivity.super.createLayers();
+            }
+        });
     }
 
     @Override

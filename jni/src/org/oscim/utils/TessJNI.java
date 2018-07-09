@@ -130,7 +130,7 @@ public class TessJNI {
      */
     static native long newTess(int size); /* {
         if (size <= 0)
-           return (long)tessNewTess(0);
+           return reinterpret_cast <jlong> (tessNewTess(0));
         if (size > 10)
             size = 10;
         TESSalloc ma;
@@ -146,7 +146,7 @@ public class TessJNI {
         ma.regionBucketSize = 1 << size;     // 256
         ma.extraVertices = 8;
         //ma.extraVertices = 256;
-        return (long)tessNewTess(&ma);
+        return reinterpret_cast <jlong> (tessNewTess(&ma));
     } */
 
     static native void freeTess(long inst); /* {
@@ -157,9 +157,9 @@ public class TessJNI {
      * Adds a contour to be tesselated.
      * The type of the vertex coordinates is assumed to be TESSreal.
      *
-     * @param tess    - pointer to tesselator object.
+     * @param inst    - pointer to tesselator object.
      * @param size    - number of coordinates per vertex. Must be 2 or 3.
-     * @param pointer - pointer to the first coordinate of the first vertex in the array.
+     * @param contour - pointer to the first coordinate of the first vertex in the array.
      * @param stride  - defines offset in bytes between consecutive vertices.
      * @param count   - number of vertices in contour.
      */
@@ -187,12 +187,11 @@ public class TessJNI {
     /**
      * Tesselate contours.
      *
-     * @param tess        - pointer to tesselator object.
+     * @param inst        - pointer to tesselator object.
      * @param windingRule - winding rules used for tesselation, must be one of TessWindingRule.
      * @param elementType - defines the tesselation result element type, must be one of TessElementType.
      * @param polySize    - defines maximum vertices per polygons if output is polygons.
      * @param vertexSize  - defines the number of coordinates in tesselation result vertex, must be 2 or 3.
-     * @param normal      - defines the normal of the input contours, of null the normal is calculated automatically.
      * @return 1 if succeed, 0 if failed.
      */
     static native int tessContour2D(long inst, int windingRule, int elementType, int polySize, int vertexSize);/*{

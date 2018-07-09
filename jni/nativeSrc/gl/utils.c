@@ -262,7 +262,8 @@ void JNI(prj3D)(JNIEnv* env, jclass* clazz, jlong ptr, jfloatArray obj_vec, int 
   float* vec = (float*) (*env)->GetPrimitiveArrayCritical(env, obj_vec, 0);
 
   int length = cnt * 3;
-  for (int i = offset * 3; i < length; i += 3)
+  int i;
+  for ( i = offset * 3; i < length; i += 3)
       matrix4_proj(m, (vec + i));
 
   (*env)->ReleasePrimitiveArrayCritical(env, obj_vec, vec, 0);
@@ -274,8 +275,9 @@ void JNI(prj2D)(JNIEnv* env, jclass* clazz, jlong ptr, jfloatArray obj_vec, int 
   float* vec = (float*) (*env)->GetPrimitiveArrayCritical(env, obj_vec, 0);
 
   offset *= 2;
+  int end;
 
-  for (int end = offset + cnt * 2; offset < end; offset += 2)
+  for ( end = offset + cnt * 2; offset < end; offset += 2)
     matrix4_proj2D(m, (vec + offset), (vec + offset));
 
   (*env)->ReleasePrimitiveArrayCritical(env, obj_vec, vec, 0);
@@ -293,7 +295,8 @@ void JNI(prj2D2)(JNIEnv* env, jclass* clazz, jlong ptr,
   int off_dst = dst_offset * 2;
 
 
-  for (int end = off_src + cnt * 2; off_src < end; off_src += 2, off_dst += 2)
+  int end;
+  for ( end = off_src + cnt * 2; off_src < end; off_src += 2, off_dst += 2)
     matrix4_proj2D(m, (src + off_src), (dst + off_dst));
 
   (*env)->ReleasePrimitiveArrayCritical(env, obj_dst_vec, dst, 0);
@@ -337,14 +340,16 @@ void JNI(addDepthOffset)(JNIEnv* env, jclass* clazz, jlong ptr, jint delta)
 static inline void
 multiplyMM(float* r, const float* lhs, const float* rhs)
 {
-  for (int i = 0; i < 4; i++)
+  int i;
+  for ( i = 0; i < 4; i++)
     {
       register const float rhs_i0 = rhs[I(i,0)];
       register float ri0 = lhs[I(0,0)] * rhs_i0;
       register float ri1 = lhs[I(0,1)] * rhs_i0;
       register float ri2 = lhs[I(0,2)] * rhs_i0;
       register float ri3 = lhs[I(0,3)] * rhs_i0;
-      for (int j = 1; j < 4; j++)
+      int j;
+      for ( j = 1; j < 4; j++)
         {
           register const float rhs_ij = rhs[I(i,j)];
           ri0 += lhs[I(j,0)] * rhs_ij;
@@ -483,8 +488,8 @@ setRotateM(float* rm, int rmOffset, float a, float x, float y, float z)
 static inline void
 transposeM(float* mTrans, int mTransOffset, float* m, int mOffset)
 {
-  for (int i = 0; i < 4; i++)
-    {
+  int i;
+  for( i = 0; i < 4; i++){
       int mBase = i * 4 + mOffset;
       mTrans[i + mTransOffset] = m[mBase];
       mTrans[i + 4 + mTransOffset] = m[mBase + 1];

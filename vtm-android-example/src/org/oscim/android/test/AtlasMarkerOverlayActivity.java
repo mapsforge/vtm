@@ -1,7 +1,7 @@
 /*
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016-2018 devemux86
- * Copyright 2017 Longri
+ * Copyright 2017-2018 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -20,11 +20,13 @@ package org.oscim.android.test;
 
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.GeoPoint;
+import org.oscim.event.Event;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
+import org.oscim.renderer.GLState;
 import org.oscim.renderer.atlas.TextureAtlas;
 import org.oscim.renderer.atlas.TextureRegion;
 import org.oscim.tiling.TileSource;
@@ -42,6 +44,17 @@ public class AtlasMarkerOverlayActivity extends MarkerOverlayActivity {
 
     @Override
     void createLayers() {
+        // wait for gl surface view is created
+        GLState.event.bind(new GLState.Listener() {
+            @Override
+            public void onGLStateInitEvent(Event event) {
+                createGlLayers();
+            }
+        });
+    }
+
+
+    void createGlLayers() {
         // Map events receiver
         mMap.layers().add(new MapEventsReceiver(mMap));
 

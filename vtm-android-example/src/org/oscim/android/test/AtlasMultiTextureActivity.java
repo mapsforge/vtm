@@ -1,7 +1,7 @@
 /*
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016-2018 devemux86
- * Copyright 2017 Longri
+ * Copyright 2017-2018 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -26,11 +26,13 @@ import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Color;
 import org.oscim.backend.canvas.Paint;
 import org.oscim.core.GeoPoint;
+import org.oscim.event.Event;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
+import org.oscim.renderer.GLState;
 import org.oscim.renderer.atlas.TextureAtlas;
 import org.oscim.renderer.atlas.TextureRegion;
 import org.oscim.tiling.TileSource;
@@ -46,6 +48,15 @@ public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
 
     @Override
     void createLayers() {
+        GLState.event.bind(new GLState.Listener() {
+            @Override
+            public void onGLStateInitEvent(Event event) {
+                createAfterGlInit();
+            }
+        });
+    }
+
+    public void createAfterGlInit(){
         // Map events receiver
         mMap.layers().add(new MapEventsReceiver(mMap));
 
@@ -57,7 +68,7 @@ public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
         // Create Atlas from Bitmaps
         java.util.Map<Object, Bitmap> inputMap = new LinkedHashMap<>();
         java.util.Map<Object, TextureRegion> regionsMap = new LinkedHashMap<>();
-        List<TextureAtlas> atlasList = new ArrayList<>();
+        final List<TextureAtlas> atlasList = new ArrayList<>();
 
         Canvas canvas = CanvasAdapter.newCanvas();
         Paint paint = CanvasAdapter.newPaint();
@@ -96,7 +107,12 @@ public class AtlasMultiTextureActivity extends MarkerOverlayActivity {
             item.setMarker(markerSymbol);
         }
 
-        Toast.makeText(this, "Atlas count: " + atlasList.size(), Toast.LENGTH_SHORT).show();
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(AtlasMultiTextureActivity.this, "Atlas count: " + atlasList.size(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

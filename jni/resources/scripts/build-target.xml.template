@@ -1,51 +1,41 @@
-<project name="vtm-jni-Linux-64" basedir="." default="postcompile">
+<project name="%projectName%" basedir="." default="postcompile">
 	<!-- include the environment -->
 	<property environment="env"/>	
 	<!-- output directory for temporary object files -->
-	<property name="buildDir" value="target/linux64" />
+	<property name="buildDir" value="%buildDir%" />
 	<!-- output directory for the shared library -->
-	<property name="libsDir" value="../libs/linux64" />
+	<property name="libsDir" value="%libsDir%" />
 	<!-- the name of the shared library -->
-	<property name="libName" value="libvtm-jni64.so"/>
+	<property name="libName" value="%libName%"/>
 	<!-- the jni header jniPlatform to use -->
-	<property name="jniPlatform" value="linux"/>
+	<property name="jniPlatform" value="%jniPlatform%"/>
 	<!-- the compilerPrefix for the C & C++ compilers -->
-	<property name="compilerPrefix" value=""/>
+	<property name="compilerPrefix" value="%compilerPrefix%"/>
 	<!--  the compilerSuffix for the C & C++ compilers -->	
-	<property name="compilerSuffix" value="" />	
+	<property name="compilerSuffix" value="%compilerSuffix%" />
 	
 	<!-- define gcc compiler, options and files to compile -->
 	<property name="gcc" value="${compilerPrefix}gcc${compilerSuffix}"/>	
-	<property name="gcc-opts" value="-c -Wall -O2 -mfpmath=sse -msse -fmessage-length=0 -m64 -fPIC -Wall -std=c99 -O2 -ffast-math -DNDEBUG"/>
+	<property name="gcc-opts" value="%cFlags%"/>
 	<fileset id="gcc-files" dir="./">
 		<exclude name="target/"/>		
-				<include name="memcpy_wrap.c"/>
-		<include name="gl/utils.c"/>
-		<include name="libtess2/Source/bucketalloc.c"/>
-		<include name="libtess2/Source/dict.c"/>
-		<include name="libtess2/Source/geom.c"/>
-		<include name="libtess2/Source/mesh.c"/>
-		<include name="libtess2/Source/priorityq.c"/>
-		<include name="libtess2/Source/sweep.c"/>
-		<include name="libtess2/Source/tess.c"/>
-
-		
+		%cIncludes%
+		%cExcludes%
 	</fileset>
 	
 	<!-- define g++ compiler, options and files to compile -->
 	<property name="g++" value="${compilerPrefix}g++${compilerSuffix}"/>
-	<property name="g++-opts" value="-c -Wall -O2 -mfpmath=sse -msse -fmessage-length=0 -m64 -fPIC -Wall -std=c99 -O2 -ffast-math -DNDEBUG"/>
+	<property name="g++-opts" value="%cppFlags%"/>
 	<fileset id="g++-files" dir="./">
 		<exclude name="target/"/>
-				<include name="**/*.cpp"/>
-
-		
+		%cppIncludes%
+		%cppExcludes%
 	</fileset>
 
 	<!-- define linker and options -->
 	<property name="linker" value="${compilerPrefix}g++${compilerSuffix}"/>
-	<property name="linker-opts" value="-shared -m64 -Wl,-wrap,memcpy"/>
-	<property name="libraries" value=""/>
+	<property name="linker-opts" value="%linkerFlags%"/>
+	<property name="libraries" value="%libraries%"/>
 	
 	<!-- cleans the build directory, removes all object files and shared libs -->
 	<target name="clean">
@@ -73,7 +63,7 @@
 		<condition property="has-compiler">
 			<equals arg1="${compiler-found}" arg2="true"/>
 		</condition>
-		
+		%precompile%
 	</target>
 	
 	<target name="create-build-dir" depends="precompile" if="has-compiler">
@@ -98,9 +88,7 @@
 			<arg value="-Ijni-headers"/>
 			<arg value="-Ijni-headers/${jniPlatform}"/>
 			<arg value="-I."/>
-						<arg value="-I."/>
-			<arg value="-Ilibtess2/Include"/>
-
+			%headerDirs%
 			<srcfile/>
 			<arg value="-o"/>
 			<targetfile/>
@@ -115,9 +103,7 @@
 			<arg value="-Ijni-headers"/>
 			<arg value="-Ijni-headers/${jniPlatform}"/>
 			<arg value="-I."/>
-						<arg value="-I."/>
-			<arg value="-Ilibtess2/Include"/>
-
+			%headerDirs%
 			<srcfile/>
 			<arg value="-o"/>
 			<targetfile/>
@@ -148,6 +134,6 @@
 	</target>	
 	
 	<target name="postcompile" depends="link">
-		
+		%postcompile%
 	</target>
 </project>

@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2018 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,8 +20,15 @@ package org.oscim.renderer;
 
 import org.oscim.backend.GL;
 import org.oscim.backend.GLAdapter;
+import org.oscim.event.Event;
+import org.oscim.event.EventDispatcher;
+import org.oscim.event.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 
 import static org.oscim.backend.GLAdapter.gl;
 
@@ -35,8 +43,22 @@ public class GLState {
     private static float[] clearColor;
     private static int glVertexBuffer;
     private static int glIndexBuffer;
-
     private static int currentTexId;
+    private static int MAX_TEXTURE_SIZE;
+    public static final Event GLStateInitEVENT = new Event();
+    private static boolean init = false;
+
+    public static final EventDispatcher<Listener, Object> event =
+            new EventDispatcher<Listener, Object>() {
+                @Override
+                public void tell(Listener listener, Event event, Object data) {
+                    listener.onGLStateInitEvent(event);
+                }
+            };
+
+    public interface Listener extends EventListener {
+        void onGLStateInitEvent(Event event);
+    }
 
     static void init() {
         vertexArray[0] = false;
@@ -53,6 +75,30 @@ public class GLState {
         gl.disable(GL.STENCIL_TEST);
         gl.disable(GL.DEPTH_TEST);
         gl.disable(GL.BLEND);
+
+        if (MAX_TEXTURE_SIZE <= 0) {
+            IntBuffer max = ByteBuffer.allocateDirect(16 * 4).order(ByteOrder.nativeOrder()).asIntBuffer();
+            gl.getIntegerv(GL.MAX_TEXTURE_SIZE, max);
+            MAX_TEXTURE_SIZE = max.get(0);
+            if (MAX_TEXTURE_SIZE > 4096) MAX_TEXTURE_SIZE = 4096;
+            init = true;
+            event.fire(GLStateInitEVENT, null);
+        }
+
+    }
+
+    public static int getDeviceMaxGlTextureSize() {
+        if (!init)
+            throw new RuntimeException("Can't get max TextureSize before GL_SurfaceView is created\n" +
+                    "You can catch the GLState init event like:\n" +
+                    "GLState.event.bind(new GLState.Listener() {\n" +
+                    "            @Override\n" +
+                    "            public void onGLStateInitEvent(Event event) {\n" +
+                    "                // load Theme with TextureAtlas\n" +
+                    "                ...                            \n" +
+                    "            }\n" +
+                    "        });");
+        return MAX_TEXTURE_SIZE;
     }
 
     public static boolean useProgram(int shaderProgram) {
