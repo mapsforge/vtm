@@ -72,7 +72,8 @@ class GwtMap extends GdxMap {
         GwtGdxGraphics.init();
         GdxAssets.init("");
         CanvasAdapter.textScale = 0.7f;
-        CanvasAdapter.dpi = (int) (GwtGraphics.getDevicePixelRatioJSNI() * CanvasAdapter.DEFAULT_DPI);
+        // 96dpi is the CSS reference-pixel density, see https://www.w3.org/TR/css3-values/#reference-pixel
+        CanvasAdapter.dpi = (int) (GwtGraphics.getDevicePixelRatioJSNI() * 96.0 * 2);
         Tile.SIZE = Tile.calculateTileSize();
 
         log.debug("GLAdapter.init");
