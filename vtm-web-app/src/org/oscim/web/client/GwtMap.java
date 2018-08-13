@@ -20,12 +20,14 @@ package org.oscim.web.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
+import com.badlogic.gdx.backends.gwt.GwtGraphics;
 
 import org.oscim.backend.AssetAdapter;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GL;
 import org.oscim.backend.GLAdapter;
 import org.oscim.core.MapPosition;
+import org.oscim.core.Tile;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
 import org.oscim.gdx.client.GwtGdxGraphics;
@@ -70,6 +72,8 @@ class GwtMap extends GdxMap {
         GwtGdxGraphics.init();
         GdxAssets.init("");
         CanvasAdapter.textScale = 0.7f;
+        CanvasAdapter.dpi = (int) (GwtGraphics.getDevicePixelRatioJSNI() * CanvasAdapter.DEFAULT_DPI);
+        Tile.SIZE = Tile.calculateTileSize();
 
         log.debug("GLAdapter.init");
         GLAdapter.init((GL) Gdx.graphics.getGL20());
