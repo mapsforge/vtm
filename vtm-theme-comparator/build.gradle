@@ -1,5 +1,12 @@
 apply plugin: 'application'
 
+/*
+configurations.all {
+    // Check latest snapshot on every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+*/
+
 dependencies {
     implementation project(':vtm-desktop')
     file("${rootDir}/vtm-desktop/natives").eachDir() { dir ->

@@ -2,7 +2,7 @@
 
 This article describes how to integrate the library in your project, with Gradle / Maven / Jars or SNAPSHOT builds.
 
-Current version is [![Maven Central](https://img.shields.io/maven-central/v/org.mapsforge/vtm.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.mapsforge%22)
+Current version is [![Maven Central](https://img.shields.io/maven-central/v/org.mapsforge/vtm.svg)](https://search.maven.org/search?q=g:org.mapsforge)
 
 ## Gradle
 
@@ -15,43 +15,30 @@ implementation 'org.slf4j:slf4j-api:1.7.25'
 
 ### Android
 ```groovy
-repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-}
-
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]'
-implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-arm64-v8a'
-implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-armeabi'
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-armeabi-v7a'
-implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-mips'
-implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-mips64'
+implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-arm64-v8a'
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-x86'
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-x86_64'
-implementation 'com.caverock:androidsvg:1.3-SNAPSHOT'
+implementation 'com.caverock:androidsvg:1.3'
 ```
 
 ### Android (libGDX)
 ```groovy
-repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-}
-
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]'
-implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-arm64-v8a'
-implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-armeabi'
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-armeabi-v7a'
+implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-arm64-v8a'
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-x86'
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-x86_64'
 implementation 'org.mapsforge:vtm-gdx:[CURRENT-VERSION]'
 implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]'
-implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]:natives-arm64-v8a'
-implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]:natives-armeabi'
 implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]:natives-armeabi-v7a'
+implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]:natives-arm64-v8a'
 implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]:natives-x86'
 implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]:natives-x86_64'
 implementation 'com.badlogicgames.gdx:gdx:1.9.8'
 implementation 'com.badlogicgames.gdx:gdx-backend-android:1.9.8'
-implementation 'com.caverock:androidsvg:1.3-SNAPSHOT'
+implementation 'com.caverock:androidsvg:1.3'
 ```
 
 ### iOS
@@ -60,6 +47,10 @@ Detailed iOS instructions can be found [here](ios.md).
 
 ### Desktop
 ```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 implementation 'org.mapsforge:vtm-gdx:[CURRENT-VERSION]'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-linux'
@@ -72,7 +63,7 @@ implementation 'org.lwjgl.lwjgl:lwjgl:2.9.3'
 implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-linux'
 implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-osx'
 implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-windows'
-implementation 'com.metsci.ext.com.kitfox.svg:svg-salamander:0.1.19'
+implementation 'com.github.blackears:svgSalamander:v1.1.1'
 ```
 
 ### JTS geometries
@@ -173,6 +164,6 @@ The dependencies for Maven are declared in a similar way. For example:
 
 ## Jars
 
-You can find release and snapshot jars (regular and with dependencies) in [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.mapsforge%22) and [Sonatype OSS Repository Hosting](https://oss.sonatype.org/content/repositories/snapshots/org/mapsforge/).
+You can find release and snapshot jars (regular and with dependencies) in [Maven Central](https://search.maven.org/search?q=g:org.mapsforge) and [Sonatype OSS Repository Hosting](https://oss.sonatype.org/content/repositories/snapshots/org/mapsforge/).
 
 Third party jars can be found at their respective sites or in Maven Central repository.

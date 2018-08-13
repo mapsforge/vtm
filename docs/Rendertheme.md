@@ -261,7 +261,7 @@ _VTM priorities have the opposite meaning to the Mapsforge render-theme prioriti
 
 ## Symbols
 
-Symbols can be either defined in the raster PNG format or as vector graphics in SVG format. VTM uses libraries for [Android](https://github.com/BigBadaboom/androidsvg) and [Java](https://svgsalamander.java.net) that support a large subset of the [Tiny SVG](http://www.w3.org/TR/SVGTiny12/index.html) specification.
+Symbols can be either defined in the raster PNG format or as vector graphics in SVG format. VTM uses libraries for [Android](https://github.com/BigBadaboom/androidsvg) and [Java](https://github.com/blackears/svgSalamander) that support a large subset of the [Tiny SVG](http://www.w3.org/TR/SVGTiny12/index.html) specification.
 
 ### SVG Scaling
 

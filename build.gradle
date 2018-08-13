@@ -30,8 +30,8 @@ allprojects {
 
 static def androidCompileSdk() { return 28 }
 
-// Minimum API Level by Support Library
-static def androidMinSdk() { return 14 }
+// 14 for Support Library, 16 for sqlite-android
+static def androidMinSdk() { return 16 }
 
 static def androidTargetSdk() { return 22 }
 
@@ -45,6 +45,7 @@ subprojects {
         maven { url 'https://repo.boundlessgeo.com/main/' }
         jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url 'https://jitpack.io' }
     }
 
     tasks.withType(JavaCompile) {

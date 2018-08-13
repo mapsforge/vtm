@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+/*
+configurations.all {
+    // Check latest snapshot on every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+*/
+
 dependencies {
     implementation project(':vtm-android')
     implementation project(':vtm-http')
@@ -15,9 +22,10 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
 
     implementation 'org.mapsforge:mapsforge-poi-android:master-SNAPSHOT'
-    implementation 'org.mapsforge:spatialite-android:master-SNAPSHOT:natives-armeabi'
-    implementation 'org.mapsforge:spatialite-android:master-SNAPSHOT:natives-armeabi-v7a'
-    implementation 'org.mapsforge:spatialite-android:master-SNAPSHOT:natives-x86'
+    implementation 'org.mapsforge:sqlite-android:master-SNAPSHOT:natives-armeabi-v7a'
+    implementation 'org.mapsforge:sqlite-android:master-SNAPSHOT:natives-arm64-v8a'
+    implementation 'org.mapsforge:sqlite-android:master-SNAPSHOT:natives-x86'
+    implementation 'org.mapsforge:sqlite-android:master-SNAPSHOT:natives-x86_64'
 }
 
 android {
