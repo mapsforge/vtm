@@ -71,8 +71,11 @@ public class GwtGraphics implements Graphics {
     float time = 0;
     int frames;
     GwtApplicationConfiguration config;
+    double pixelRatio;
 
     public GwtGraphics(Panel root, GwtApplicationConfiguration config) {
+        this.pixelRatio = getDevicePixelRatioJSNI();
+
         if (config.canvasId == null) {
             Canvas canvasWidget = Canvas.createIfSupported();
             if (canvasWidget == null)
@@ -82,8 +85,8 @@ public class GwtGraphics implements Graphics {
         } else {
             canvas = (CanvasElement) Document.get().getElementById(config.canvasId);
 
-            canvas.setWidth((int) (config.width));
-            canvas.setHeight((int) (config.height));
+            canvas.setWidth((int) (config.width * pixelRatio));
+            canvas.setHeight((int) (config.height * pixelRatio));
 
             canvas.getStyle().setWidth(config.width, Style.Unit.PX);
             canvas.getStyle().setHeight(config.height, Style.Unit.PX);
