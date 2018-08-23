@@ -52,8 +52,10 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
     public static boolean POST_AA = false;
 
     /**
-     * Don't draw extrusions which are covered by others.
-     * Especially if the side of extrusion is translucent.
+     * Let vanish extrusions/meshes which are covered by others.
+     * {@link org.oscim.renderer.bucket.RenderBucket#EXTRUSION}: roofs are always translucent.
+     *
+     * To better notice the difference, reduce the alpha value of extrusion colors in themes.
      */
     public static boolean TRANSLUCENT = true;
 
@@ -100,7 +102,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
 
         // Covered extrusions must be drawn for mesh renderer
         mRenderer = new BuildingRenderer(tileLayer.tileRenderer(), mZoomLimiter,
-                mesh, !mesh && TRANSLUCENT);
+                mesh, TRANSLUCENT);
         if (POST_AA)
             mRenderer = new OffscreenRenderer(Mode.SSAO_FXAA, mRenderer);
     }

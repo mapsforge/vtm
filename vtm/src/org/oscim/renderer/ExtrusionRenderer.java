@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2017 Izumi Kawashima
  * Copyright 2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -231,6 +232,11 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
                 /* draw triangle meshes */
                 if (eb.idx[4] > 0) {
+                    if (mTranslucent) {
+                        gl.depthFunc(GL.EQUAL);
+                        setMatrix(s, v, ebs[i]);
+                    }
+
                     gl.drawElements(GL.TRIANGLES, eb.idx[4],
                             GL.UNSIGNED_SHORT, eb.off[4]);
                 }
