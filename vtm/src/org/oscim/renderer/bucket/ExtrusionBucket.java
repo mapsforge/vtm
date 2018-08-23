@@ -47,7 +47,7 @@ public class ExtrusionBucket extends RenderBucket {
     private final int color;
 
     /**
-     * indices for: 0. even sides, 1. odd sides, 2. roof, 3. roof outline
+     * indices for: 0. even sides, 1. odd sides, 2. roof, 3. roof outline, (4. mesh)
      */
     public int idx[] = {0, 0, 0, 0, 0};
 
