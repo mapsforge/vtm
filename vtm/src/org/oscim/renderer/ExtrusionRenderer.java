@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2017 Izumi Kawashima
  * Copyright 2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -35,7 +36,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
     // Don't draw extrusions which are covered by others
     private final boolean mTranslucent;
 
-    private final int mMode;
+    private final boolean mMesh;
     private Shader mShader;
 
     protected ExtrusionBuckets[] mExtrusionBucketSet = {};
@@ -45,7 +46,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
     private float mZLimit = Float.MAX_VALUE;
 
     public ExtrusionRenderer(boolean mesh, boolean translucent) {
-        mMode = mesh ? 1 : 0;
+        mMesh = mesh;
         mTranslucent = translucent;
     }
 
@@ -68,7 +69,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
     @Override
     public boolean setup() {
-        if (mMode == 0)
+        if (!mMesh)
             mShader = new Shader("extrusion_layer_ext");
         else
             mShader = new Shader("extrusion_layer_mesh");
@@ -86,12 +87,12 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
             int sumIndices = eb.idx[0] + eb.idx[1] + eb.idx[2];
 
-            /* extrusion */
+            /* extrusion (mMesh == false) */
             if (sumIndices > 0)
                 gl.drawElements(GL.TRIANGLES, sumIndices,
                         GL.UNSIGNED_SHORT, eb.off[0]);
 
-            /* mesh */
+            /* mesh (mMesh == true) */
             if (eb.idx[4] > 0) {
                 gl.drawElements(GL.TRIANGLES, eb.idx[4],
                         GL.UNSIGNED_SHORT, eb.off[4]);
@@ -182,7 +183,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
                 if (eb.getColors() != currentColors) {
                     currentColors = eb.getColors();
                     GLUtils.glUniform4fv(s.uColor,
-                            mMode == 0 ? 4 : 1,
+                            mMesh ? 1 : 4,
                             currentColors);
                 }
 
@@ -192,7 +193,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
                 gl.vertexAttribPointer(s.aLight, 2, GL.UNSIGNED_BYTE,
                         false, 8, eb.getVertexOffset() + 6);
 
-                /* draw extruded outlines */
+                /* draw extruded outlines (mMesh == false) */
                 if (eb.idx[0] > 0) {
                     if (mTranslucent) {
                         gl.depthFunc(GL.EQUAL);
@@ -229,7 +230,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
                             GL.UNSIGNED_SHORT, eb.off[3]);
                 }
 
-                /* draw triangle meshes */
+                /* draw triangle meshes (mMesh == true) */
                 if (eb.idx[4] > 0) {
                     gl.drawElements(GL.TRIANGLES, eb.idx[4],
                             GL.UNSIGNED_SHORT, eb.off[4]);
