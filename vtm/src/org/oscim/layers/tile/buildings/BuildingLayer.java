@@ -99,10 +99,8 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
 
         // Use zoomMin as zoomLimit to render buildings only once
         mZoomLimiter = new ZoomLimiter(tileLayer.getManager(), zoomMin, zoomMax, zoomMin);
-
-        // Covered extrusions must be drawn for mesh renderer
-        mRenderer = new BuildingRenderer(tileLayer.tileRenderer(), mZoomLimiter,
-                mesh, TRANSLUCENT);
+        
+        mRenderer = new BuildingRenderer(tileLayer.tileRenderer(), mZoomLimiter, mesh, TRANSLUCENT);
         if (POST_AA)
             mRenderer = new OffscreenRenderer(Mode.SSAO_FXAA, mRenderer);
     }
