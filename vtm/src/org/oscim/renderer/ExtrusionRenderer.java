@@ -232,6 +232,11 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
                 /* draw triangle meshes (mMesh == true) */
                 if (eb.idx[4] > 0) {
+                    if (mTranslucent) {
+                        gl.depthFunc(GL.EQUAL);
+                        setMatrix(s, v, ebs[i]);
+                    }
+
                     gl.drawElements(GL.TRIANGLES, eb.idx[4],
                             GL.UNSIGNED_SHORT, eb.off[4]);
                 }
