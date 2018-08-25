@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -24,6 +25,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 
+import org.oscim.android.MapPreferences;
 import org.oscim.android.canvas.AndroidGraphics;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GLAdapter;
@@ -36,6 +38,7 @@ import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 public class GdxActivity extends AndroidApplication {
+    MapPreferences mPrefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,8 @@ public class GdxActivity extends AndroidApplication {
         new SharedLibraryLoader().load("vtm-jni");
 
         initialize(new GdxMapAndroid(), cfg);
+
+        mPrefs = new MapPreferences(GdxActivity.class.getName(), this);
     }
 
     class GdxMapAndroid extends GdxMap {
@@ -65,6 +70,17 @@ public class GdxActivity extends AndroidApplication {
                     .httpFactory(new OkHttpEngine.OkHttpFactory())
                     .build();
             initDefaultLayers(ts, false, true, true);
+            resume();
+        }
+
+        @Override
+        public void pause() {
+            mPrefs.save(getMap());
+        }
+
+        @Override
+        public void resume() {
+            mPrefs.load(getMap());
         }
     }
 }
