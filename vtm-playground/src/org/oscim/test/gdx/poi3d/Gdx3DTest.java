@@ -1,5 +1,6 @@
 /*
  * Copyright 2016-2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -16,11 +17,13 @@
  */
 package org.oscim.test.gdx.poi3d;
 
+import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.renderer.MapRenderer;
+import org.oscim.test.MapPreferences;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
@@ -31,8 +34,6 @@ public class Gdx3DTest extends GdxMapApp {
     @Override
     public void createLayers() {
         MapRenderer.setBackgroundColor(0xff888888);
-
-        mMap.setMapPosition(53.1, 8.8, 1 << 15);
 
         TileSource ts = OSciMap4TileSource.builder()
                 .httpFactory(new OkHttpEngine.OkHttpFactory())
@@ -57,6 +58,18 @@ public class Gdx3DTest extends GdxMapApp {
         mMap.layers().add(new Poi3DLayer(mMap, mMapLayer));
 
         mMap.layers().add(new LabelLayer(mMap, mMapLayer));
+
+        MapPosition pos = MapPreferences.getMapPosition();
+        if (pos != null)
+            mMap.setMapPosition(pos);
+        else
+            mMap.setMapPosition(53.1, 8.8, 1 << 15);
+    }
+
+    @Override
+    public void dispose() {
+        MapPreferences.saveMapPosition(mMap.getMapPosition());
+        super.dispose();
     }
 
     public static void main(String[] args) {
