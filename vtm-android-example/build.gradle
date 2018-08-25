@@ -90,3 +90,16 @@ task run(dependsOn: 'installDebug') {
         proc.waitFor()
     }
 }
+
+task copyGdxAssets(type: Copy) {
+    from "$rootDir/vtm-gdx/assets"
+    into "assets"
+}
+
+tasks.withType(JavaCompile) { compileTask ->
+    compileTask.dependsOn copyGdxAssets
+}
+
+clean {
+    delete "assets/data"
+}

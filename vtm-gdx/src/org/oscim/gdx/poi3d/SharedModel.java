@@ -1,4 +1,4 @@
-package org.oscim.test.gdx.poi3d;
+package org.oscim.gdx.poi3d;
 
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;

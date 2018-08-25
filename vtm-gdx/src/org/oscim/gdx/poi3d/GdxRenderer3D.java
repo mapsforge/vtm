@@ -1,4 +1,4 @@
-package org.oscim.test.gdx.poi3d;
+package org.oscim.gdx.poi3d;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
@@ -20,13 +21,14 @@ import org.oscim.map.Viewport;
 import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.LayerRenderer;
+import org.oscim.utils.geom.GeometryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.oscim.backend.GLAdapter.gl;
 
-public class GdxModelRenderer extends LayerRenderer {
-    static final Logger log = LoggerFactory.getLogger(GdxModelRenderer.class);
+public class GdxRenderer3D extends LayerRenderer {
+    static final Logger log = LoggerFactory.getLogger(GdxRenderer3D.class);
 
     ModelBatch modelBatch;
     public MapCamera cam;
@@ -41,9 +43,8 @@ public class GdxModelRenderer extends LayerRenderer {
     public Shader shader;
     public RenderContext renderContext;
     public Model model;
-    private ModelBatch mBatch = new ModelBatch();
 
-    public GdxModelRenderer(Map map) {
+    public GdxRenderer3D(Map map) {
         mMap = map;
     }
 
@@ -97,8 +98,8 @@ public class GdxModelRenderer extends LayerRenderer {
 
         gl.depthMask(true);
 
-        if (v.pos.zoomLevel < 16)
-            gl.clear(GL.DEPTH_BUFFER_BIT);
+        // if (position.zoomLevel < 17)
+        // GL.clear(GL20.DEPTH_BUFFER_BIT);
 
         gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, 0);
 
@@ -111,6 +112,10 @@ public class GdxModelRenderer extends LayerRenderer {
         GLState.blend(false);
 
         cam.update(v);
+        long time = System.currentTimeMillis();
+
+        int cnt = 0;
+        int rnd = 0;
 
         Viewport p = mMap.viewport();
         p.getMapExtents(mBox, 10);
@@ -128,47 +133,56 @@ public class GdxModelRenderer extends LayerRenderer {
             mBox[i + 1] -= dy;
         }
 
-        //int w = mMap.getWidth() / 2;
-        //int h = mMap.getHeight() / 2;
-        //float sqRadius = (w * w + h * h) / scale;
+        int w = mMap.getWidth() / 2;
+        int h = mMap.getHeight() / 2;
+
+        float sqRadius = (w * w + h * h) / scale;
 
         synchronized (this) {
             if (instances.size == 0)
                 return;
 
-            //renderContext.begin();
+            cnt = instances.size;
 
-            //            if (shader == null) {
-            //                r = instances.get(0).getRenderable(r);
-            //                DefaultShader.Config c = new DefaultShader.Config();
-            //                c.numBones = 0;
-            //                c.numDirectionalLights = 1;
-            //                r.environment = lights;
-            //
-            //                shader = new DefaultShader(r, c);
-            //                shader.init();
-            //            }
-            mBatch.begin(cam);
-            //shader.begin(cam, renderContext);
+            renderContext.begin();
+
+            if (shader == null) {
+                r = instances.get(0).getRenderable(r);
+                DefaultShader.Config c = new DefaultShader.Config();
+                c.numBones = 0;
+                c.numDirectionalLights = 1;
+                r.environment = lights;
+                // shader = new DefaultShader(r, true, false, false, false, 1,
+                // 0, 0, 0);
+                shader = new DefaultShader(r, c);
+                shader.init();
+            }
+
+            shader.begin(cam, renderContext);
 
             for (SharedModel instance : instances) {
                 instance.transform.getTranslation(tempVector);
-                //instance.getRenderables(renderables, pool);
-                //    if (tempVector.x * tempVector.x + tempVector.y * tempVector.y > sqRadius)
-                //     continue;
-                //    tempVector.scl(0.8f, 0.8f, 1);
-                //    if (!GeometryUtils.pointInPoly(tempVector.x, tempVector.y, mBox, 8, 0))
-                //    continue;
 
-                mBatch.render(instance);
+                if (tempVector.x * tempVector.x + tempVector.y * tempVector.y > sqRadius)
+                    continue;
 
-                //shader.render(r);
+                tempVector.scl(0.8f, 0.8f, 1);
+
+                if (!GeometryUtils.pointInPoly(tempVector.x, tempVector.y, mBox, 8, 0))
+                    continue;
+
+                instance.getRenderable(r);
+                // r.lights = lights;
+                // r.environment = lights;
+                shader.render(r);
+
+                rnd++;
             }
-            mBatch.end();
 
-            //shader.end();
-            //renderContext.end();
+            shader.end();
+            renderContext.end();
         }
+        log.debug(">>> " + (System.currentTimeMillis() - time) + " " + cnt + "/" + rnd);
 
         gl.depthMask(false);
         gl.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, 0);
