@@ -46,7 +46,7 @@ class OverzoomDataSink implements ITileDataSink {
 
     @Override
     public void process(MapElement element) {
-        if (element.isBuilding() || element.isBuildingPart()) {
+        if (element.isBuilding() || element.isBuildingPart() || element.isPoint()) {
             if (!separator.separate(element))
                 return;
         } else {
