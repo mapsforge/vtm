@@ -36,6 +36,13 @@ public class AndroidAssets extends AssetAdapter {
     }
 
     @Override
+    protected String getPlatformFilePath(String file) {
+        // TODO get android asset path
+        throw new UnsupportedOperationException("Get path of Android assets currently not supported");
+        // return "file:///android_asset/" + file;
+    }
+
+    @Override
     public InputStream openFileAsStream(String fileName) {
         try {
             return mContext.getAssets().open(fileName);

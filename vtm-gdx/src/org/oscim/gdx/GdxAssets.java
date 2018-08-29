@@ -37,6 +37,12 @@ public class GdxAssets extends AssetAdapter {
     }
 
     @Override
+    protected String getPlatformFilePath(String file) {
+        FileHandle fileHandle = Gdx.files.internal(pathPrefix + file);
+        return fileHandle.path();
+    }
+
+    @Override
     public InputStream openFileAsStream(String fileName) {
         FileHandle file = Gdx.files.internal(pathPrefix + fileName);
         if (file == null)

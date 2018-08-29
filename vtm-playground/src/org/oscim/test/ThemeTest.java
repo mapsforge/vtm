@@ -16,18 +16,24 @@ import java.io.InputStream;
 
 public class ThemeTest {
 
+    private final static String ASSETS_PATH = "/home/jeff/src/vtm/OpenScienceMap/vtm/assets/";
+
     public static void main(String[] args) {
         AwtGraphics.init();
         AssetAdapter.init(new AssetAdapter() {
             @Override
             public InputStream openFileAsStream(String name) {
                 try {
-                    return new FileInputStream("/home/jeff/src/vtm/OpenScienceMap/vtm/assets/"
-                            + name);
+                    return new FileInputStream(ASSETS_PATH + name);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     return null;
                 }
+            }
+
+            @Override
+            protected String getPlatformFilePath(String file) {
+                return ASSETS_PATH + file;
             }
         });
 
