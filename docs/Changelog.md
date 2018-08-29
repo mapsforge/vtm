@@ -1,6 +1,6 @@
 # Changelog
 
-## New since 0.9.2
+## Version 0.10.0 (2018-08-28)
 
 - Map overzoom [#393](https://github.com/mapsforge/vtm/issues/393)
 - Buildings overzoom [#503](https://github.com/mapsforge/vtm/issues/503)
