@@ -7,7 +7,6 @@ robovm-build
 *.o
 *.so
 *.class
-/vtm-android-example/assets/data
 /vtm-tests/tmp/
 /vtm-web/war/
 /vtm-web/assets/

@@ -82,7 +82,7 @@ public class GdxActivity extends AndroidApplication {
                     .build();
             VectorTileLayer vtLayer = initDefaultLayers(ts, false, true, true);
             if (mPoi3d && vtLayer != null) {
-                mMap.layers().add(new Poi3DLayer(mMap, vtLayer));
+                mMap.layers().add(new Poi3DLayer(mMap, vtLayer, true));
             }
             mPrefs.load(getMap());
         }
