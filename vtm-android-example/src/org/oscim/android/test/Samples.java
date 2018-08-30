@@ -89,6 +89,7 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(NextzenGeojsonActivity.class));
         linearLayout.addView(createButton(OpenMapTilesMvtActivity.class));
         linearLayout.addView(createButton(GdxActivity.class));
+        linearLayout.addView(createButton(GdxPoi3DActivity.class));
 
         linearLayout.addView(createLabel("Features"));
         linearLayout.addView(createButton(null, "GraphHopper Routing", new View.OnClickListener() {

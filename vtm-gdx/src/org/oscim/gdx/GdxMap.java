@@ -47,12 +47,13 @@ public abstract class GdxMap implements ApplicationListener {
     public GdxMap() {
     }
 
-    protected void initDefaultLayers(TileSource tileSource, boolean tileGrid, boolean labels,
-                                     boolean buildings) {
+    protected VectorTileLayer initDefaultLayers(TileSource tileSource, boolean tileGrid, boolean labels,
+                                                boolean buildings) {
+        VectorTileLayer mapLayer = null;
         Layers layers = mMap.layers();
 
         if (tileSource != null) {
-            VectorTileLayer mapLayer = mMap.setBaseMap(tileSource);
+            mapLayer = mMap.setBaseMap(tileSource);
             mMap.setTheme(VtmThemes.DEFAULT);
 
             if (buildings)
@@ -64,6 +65,8 @@ public abstract class GdxMap implements ApplicationListener {
 
         if (tileGrid)
             layers.add(new TileGridLayer(mMap));
+
+        return mapLayer;
     }
 
     @Override

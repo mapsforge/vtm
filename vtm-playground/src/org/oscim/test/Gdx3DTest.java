@@ -15,15 +15,17 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.test.gdx.poi3d;
+package org.oscim.test;
 
 import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.poi3d.GdxModelLayer;
+import org.oscim.gdx.poi3d.Poi3DLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.renderer.MapRenderer;
-import org.oscim.test.MapPreferences;
+import org.oscim.theme.VtmModels;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
@@ -55,7 +57,11 @@ public class Gdx3DTest extends GdxMapApp {
         // mMap.getLayers().add(tl);
         // mMap.getLayers().add(new BuildingLayer(mMap, tl.getTileLayer()));
 
-        mMap.layers().add(new Poi3DLayer(mMap, mMapLayer));
+        mMap.layers().add(new Poi3DLayer(mMap, mMapLayer, true));
+
+        GdxModelLayer gdxModelLayer = new GdxModelLayer(mMap);
+        gdxModelLayer.addModel(VtmModels.CAR, 53.56181, 10.16737, 0);
+        mMap.layers().add(gdxModelLayer);
 
         mMap.layers().add(new LabelLayer(mMap, mMapLayer));
 

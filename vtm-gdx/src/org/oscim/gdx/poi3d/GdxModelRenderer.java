@@ -1,8 +1,9 @@
-package org.oscim.test.gdx.poi3d;
+package org.oscim.gdx.poi3d;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -36,7 +37,7 @@ public class GdxModelRenderer extends LayerRenderer {
 
     public Environment lights;
 
-    public Array<SharedModel> instances = new Array<SharedModel>();
+    public Array<ModelInstance> instances = new Array<>();
 
     public Shader shader;
     public RenderContext renderContext;
@@ -151,7 +152,7 @@ public class GdxModelRenderer extends LayerRenderer {
             mBatch.begin(cam);
             //shader.begin(cam, renderContext);
 
-            for (SharedModel instance : instances) {
+            for (ModelInstance instance : instances) {
                 instance.transform.getTranslation(tempVector);
                 //instance.getRenderables(renderables, pool);
                 //    if (tempVector.x * tempVector.x + tempVector.y * tempVector.y > sqRadius)

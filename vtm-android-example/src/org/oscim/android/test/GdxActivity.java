@@ -33,12 +33,24 @@ import org.oscim.core.Tile;
 import org.oscim.gdx.AndroidGL;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
+import org.oscim.gdx.poi3d.Poi3DLayer;
+import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 public class GdxActivity extends AndroidApplication {
     MapPreferences mPrefs;
+
+    private boolean mPoi3d;
+
+    public GdxActivity() {
+        this(false);
+    }
+
+    public GdxActivity(boolean poi3d) {
+        mPoi3d = poi3d;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,8 +80,10 @@ public class GdxActivity extends AndroidApplication {
             TileSource ts = OSciMap4TileSource.builder()
                     .httpFactory(new OkHttpEngine.OkHttpFactory())
                     .build();
-            initDefaultLayers(ts, false, true, true);
-
+            VectorTileLayer vtLayer = initDefaultLayers(ts, false, true, true);
+            if (mPoi3d && vtLayer != null) {
+                mMap.layers().add(new Poi3DLayer(mMap, vtLayer, true));
+            }
             mPrefs.load(getMap());
         }
 
