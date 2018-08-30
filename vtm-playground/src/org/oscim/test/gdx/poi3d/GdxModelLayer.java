@@ -6,10 +6,8 @@ import com.badlogic.gdx.graphics.g3d.model.Node;
 
 import org.oscim.core.MapPosition;
 import org.oscim.event.Event;
-import org.oscim.gdx.GdxAssets;
 import org.oscim.layers.Layer;
 import org.oscim.map.Map;
-import org.oscim.theme.VtmModels;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,10 +52,8 @@ public class GdxModelLayer extends Layer implements Map.UpdateListener {
         // mModel = modelBuilder.createSphere(10f, 10f, 10f, 12, 12,
         // mat, attributes);
 
-        pathToTest = GdxAssets.getAssetPath(VtmModels.TREE.getPath());
-
         assets = new AssetManager();
-        assets.load(pathToTest, Model.class);
+        assets.load("data/g3d/test.g3db", Model.class);
         loading = true;
     }
 
@@ -67,14 +63,12 @@ public class GdxModelLayer extends Layer implements Map.UpdateListener {
     //    LinkedHashMap<Tile, Array<SharedModel>> mTileMap =
     //            new LinkedHashMap<Tile, Array<SharedModel>>();
 
-    private final String pathToTest;
-
     boolean loading;
     Model mModel;
     AssetManager assets;
 
     private void doneLoading() {
-        Model model = assets.get(pathToTest, Model.class);
+        Model model = assets.get("data/g3d/test.g3db", Model.class);
         for (int i = 0; i < model.nodes.size; i++) {
             Node node = model.nodes.get(i);
             log.debug("loader node " + node.id);
