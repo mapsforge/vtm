@@ -26,9 +26,11 @@ import org.oscim.core.MapPosition;
 import org.oscim.core.MercatorProjection;
 import org.oscim.core.Tile;
 import org.oscim.event.Event;
+import org.oscim.gdx.GdxAssets;
 import org.oscim.layers.Layer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.map.Map;
+import org.oscim.theme.VtmModels;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,6 +92,10 @@ public class GdxModelLayer extends Layer implements Map.UpdateListener {
         // mat, attributes);
 
         assets = new AssetManager();
+    }
+
+    public ModelPosition addModel(VtmModels model, double lat, double lon, float rotation) {
+        return addModel(GdxAssets.getAssetPath(model.getPath()), lat, lon, rotation);
     }
 
     /**

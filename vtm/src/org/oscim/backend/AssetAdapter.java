@@ -1,6 +1,5 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -31,15 +30,6 @@ public abstract class AssetAdapter {
      * The instance provided by backend
      */
     static AssetAdapter g;
-
-    protected abstract String getPlatformFilePath(String file);
-
-    /**
-     * Get relative path to file in assets folder.
-     */
-    public static String getFilePath(String file) {
-        return g.getPlatformFilePath(file);
-    }
 
     /**
      * Open file from asset path as stream.

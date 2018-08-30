@@ -37,12 +37,6 @@ public class GdxAssets extends AssetAdapter {
     }
 
     @Override
-    protected String getPlatformFilePath(String file) {
-        FileHandle fileHandle = Gdx.files.internal(pathPrefix + file);
-        return fileHandle.path();
-    }
-
-    @Override
     public InputStream openFileAsStream(String fileName) {
         FileHandle file = Gdx.files.internal(pathPrefix + fileName);
         if (file == null)
@@ -58,5 +52,12 @@ public class GdxAssets extends AssetAdapter {
 
     public static void init(String path) {
         AssetAdapter.init(new GdxAssets(path));
+    }
+
+    /**
+     * Get file path in GDX assets.
+     */
+    public static String getAssetPath(String fileName) {
+        return Gdx.files.internal(pathPrefix + fileName).path();
     }
 }

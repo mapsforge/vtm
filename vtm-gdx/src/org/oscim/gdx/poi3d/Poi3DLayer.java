@@ -28,6 +28,7 @@ import org.oscim.core.PointF;
 import org.oscim.core.Tag;
 import org.oscim.core.Tile;
 import org.oscim.event.Event;
+import org.oscim.gdx.GdxAssets;
 import org.oscim.layers.Layer;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.MapTile.TileData;
@@ -174,18 +175,22 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
     }
 
     public void useDefaults() {
-        addModel(VtmModels.MEMORIAL.getPath(), TAG_ARTWORK);
-        addModel(VtmModels.MEMORIAL.getPath(), TAG_MEMORIAL);
-        addModel(VtmModels.STREETLAMP.getPath(), TAG_STREETLAMP);
-        addModel(VtmModels.TREE_ASH.getPath(), TAG_FOREST);
-        addModel(VtmModels.TREE_ASH.getPath(), TAG_TREE);
-        addModel(VtmModels.TREE_ASH.getPath(), TAG_WOOD);
-        addModel(VtmModels.TREE_FIR.getPath(), TAG_FOREST);
-        addModel(VtmModels.TREE_FIR.getPath(), TAG_TREE_NEEDLELEAVED);
-        addModel(VtmModels.TREE_FIR.getPath(), TAG_WOOD);
-        addModel(VtmModels.TREE_OAK.getPath(), TAG_FOREST);
-        addModel(VtmModels.TREE_OAK.getPath(), TAG_TREE_BROADLEAVED);
-        addModel(VtmModels.TREE_OAK.getPath(), TAG_WOOD);
+        addModel(VtmModels.MEMORIAL, TAG_ARTWORK);
+        addModel(VtmModels.MEMORIAL, TAG_MEMORIAL);
+        addModel(VtmModels.STREETLAMP, TAG_STREETLAMP);
+        addModel(VtmModels.TREE_ASH, TAG_FOREST);
+        addModel(VtmModels.TREE_ASH, TAG_TREE);
+        addModel(VtmModels.TREE_ASH, TAG_WOOD);
+        addModel(VtmModels.TREE_FIR, TAG_FOREST);
+        addModel(VtmModels.TREE_FIR, TAG_TREE_NEEDLELEAVED);
+        addModel(VtmModels.TREE_FIR, TAG_WOOD);
+        addModel(VtmModels.TREE_OAK, TAG_FOREST);
+        addModel(VtmModels.TREE_OAK, TAG_TREE_BROADLEAVED);
+        addModel(VtmModels.TREE_OAK, TAG_WOOD);
+    }
+
+    public void addModel(VtmModels model, Tag tag) {
+        addModel(GdxAssets.getAssetPath(model.getPath()), tag);
     }
 
     /**

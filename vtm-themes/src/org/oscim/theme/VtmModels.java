@@ -16,6 +16,8 @@ package org.oscim.theme;
 
 import org.oscim.backend.AssetAdapter;
 
+import java.io.InputStream;
+
 /**
  * Enumeration of all internal VTM models.
  * <p>
@@ -45,7 +47,14 @@ public enum VtmModels {
         mPath = path;
     }
 
+    /**
+     * Get relative path to models. Assets path isn't included!
+     */
     public String getPath() {
-        return AssetAdapter.getFilePath(mPath);
+        return mPath;
+    }
+
+    public InputStream getModelAsStream() {
+        return AssetAdapter.readFileAsStream(mPath);
     }
 }

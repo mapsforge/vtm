@@ -60,7 +60,7 @@ public class Gdx3DTest extends GdxMapApp {
         mMap.layers().add(new Poi3DLayer(mMap, mMapLayer, true));
 
         GdxModelLayer gdxModelLayer = new GdxModelLayer(mMap);
-        gdxModelLayer.addModel(VtmModels.CAR.getPath(), 53.56181, 10.16737, 0);
+        gdxModelLayer.addModel(VtmModels.CAR, 53.56181, 10.16737, 0);
         mMap.layers().add(gdxModelLayer);
 
         mMap.layers().add(new LabelLayer(mMap, mMapLayer));
