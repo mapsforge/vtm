@@ -31,8 +31,7 @@ import java.io.InputStream;
  */
 public enum VtmModels {
 
-    TREE("models/natural/treeA.g3dj"),
-    TEST("models/test/test.g3db");
+    TREE("models/natural/treeA.g3dj");
 
     private final String mPath;
 
