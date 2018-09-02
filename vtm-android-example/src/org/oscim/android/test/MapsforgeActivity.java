@@ -80,6 +80,11 @@ public class MapsforgeActivity extends MapActivity {
         mS3db = s3db;
     }
 
+    public MapsforgeActivity(boolean s3db, int contentView) {
+        super(contentView);
+        mS3db = s3db;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

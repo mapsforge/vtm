@@ -7,10 +7,6 @@
     <string name="theme_tubes">Tubes</string>
     <string name="theme_newtron">NewTron</string>
     <string name="theme_external">External theme</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
-    <string name="error">Error</string>
-    <string name="file_invalid">The selected file is invalid.</string>
     <string name="styler_mode_line">Line</string>
     <string name="styler_mode_area">Area</string>
     <string name="styler_mode_outline">Outline</string>
@@ -19,5 +15,12 @@
     <string name="style_2">Hide nature</string>
     <string name="menu_gridlayer">Grid</string>
     <string name="dialog_reverse_geocoding_title">Reverse Geocoding</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
+    <string name="file_invalid">The selected file is invalid.</string>
+    <string name="ok">OK</string>
+    <string name="remove">Remove</string>
+    <string name="search">Search</string>
 
 </resources>
