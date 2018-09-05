@@ -23,6 +23,7 @@ import org.oscim.map.Map;
 import org.oscim.model.VtmModels;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.renderer.bucket.SymbolItem;
+import org.oscim.theme.VtmModels;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,6 +101,8 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
         assets.load(pathToTree, Model.class);
         loading = true;
     }
+
+    private final String pathToTree;
 
     TileSet mTileSet = new TileSet();
     TileSet mPrevTiles = new TileSet();
