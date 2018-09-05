@@ -16,8 +16,13 @@
 package org.oscim.utils.geom;
 
 import org.oscim.core.GeometryBuffer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TileSeparator {
+
+    static final Logger log = LoggerFactory.getLogger(TileSeparator.class);
+
     private float xmin;
     private float xmax;
     private float ymin;
@@ -38,42 +43,56 @@ public class TileSeparator {
     }
 
     /**
-     * Separates a poly geometry from tile (doesn't clip it).
+     * Separates geometry from tile without clipping it. Points and polys only.
      *
      * @param geom the geometry to be separated
      * @return true if geometry is inside the tile, false otherwise
      */
     public boolean separate(GeometryBuffer geom) {
-        if (!geom.isPoly())
-            return false;
 
-        int pointPos = 0;
+        if (geom.isPoint()) {
+            if (geom.index.length > 1 && geom.index[0] == 2) {
+                float cx = geom.points[0];
+                float cy = geom.points[1];
 
-        for (int indexPos = 0, n = geom.index.length; indexPos < n; indexPos++) {
-            int len = geom.index[indexPos];
-            if (len < 0)
-                break;
-
-            if (len < 6) {
-                pointPos += len;
-                continue;
-            }
-
-            int end = pointPos + len;
-
-            for (int i = pointPos; i < end; ) {
-                float cx = geom.points[i++];
-                float cy = geom.points[i++];
-
-                if (cx >= xmin && cx < xmax && cy >= ymin && cy < ymax) {
-                    /* current is inside */
+                if (isInside(cx, cy)) {
                     return true;
                 }
+            } else {
+                log.warn("Geometry (Point) has wrong format: " + geom.toString());
             }
+        } else if (geom.isPoly()) {
+            int pointPos = 0;
 
-            pointPos += len;
+            for (int indexPos = 0, n = geom.index.length; indexPos < n; indexPos++) {
+                int len = geom.index[indexPos];
+                if (len < 0)
+                    break;
+
+                if (len < 6) {
+                    pointPos += len;
+                    continue;
+                }
+
+                int end = pointPos + len;
+
+                for (int i = pointPos; i < end; ) {
+                    float cx = geom.points[i++];
+                    float cy = geom.points[i++];
+
+                    if (isInside(cx, cy)) {
+                        return true;
+                    }
+                }
+
+                pointPos += len;
+            }
         }
         geom.clear();
         return false;
+    }
+
+    private boolean isInside(float cx, float cy) {
+        return cx >= xmin && cx < xmax && cy >= ymin && cy < ymax;
     }
 }
