@@ -1,5 +1,6 @@
 /*
  * Copyright 2017-2018 devemux86
+ * Copyright 2018 Gustl22
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -14,12 +15,24 @@
  */
 package org.oscim.android.test;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
+import org.mapsforge.core.model.Tag;
 import org.mapsforge.poi.android.storage.AndroidPoiPersistenceManagerFactory;
 import org.mapsforge.poi.storage.ExactMatchPoiCategoryFilter;
 import org.mapsforge.poi.storage.PoiCategoryFilter;
@@ -70,9 +83,47 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
         }
     }
 
+    public PoiSearchActivity() {
+        super(false, R.layout.activity_map_poi);
+    }
+
+    private void initSearch() {
+        final List<Pattern> search_patterns = new ArrayList<>();
+
+        final PatternAdapter adapter = new PatternAdapter(this, search_patterns);
+        ListView searchList = (ListView) findViewById(R.id.search_list);
+        searchList.setAdapter(adapter);
+
+        Button addItem = (Button) findViewById(R.id.add_item);
+        addItem.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                search_patterns.add(new Pattern("", ""));
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        Button startSearch = (Button) findViewById(R.id.start_search);
+        startSearch.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Clear
+                mMarkerLayer.removeAllItems();
+                mMap.render();
+
+                // POI search
+                List<Tag> tags = new ArrayList<>();
+                for (Pattern pattern : search_patterns) {
+                    tags.add(new Tag(pattern.key, pattern.val));
+                }
+                new PoiSearchTask(PoiSearchActivity.this, null, tags).execute(mMap.getBoundingBox(0));
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initSearch();
 
         // Map events receiver
         mMap.layers().add(new PoiSearchActivity.MapEventsReceiver(mMap));
@@ -128,6 +179,11 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
         return false;
     }
 
+    public void onToggleControls(View view) {
+        findViewById(R.id.controls).setVisibility(((ToggleButton) view).isChecked() ?
+                View.VISIBLE : View.GONE);
+    }
+
     private class MapEventsReceiver extends Layer implements GestureListener {
 
         MapEventsReceiver(Map map) {
@@ -141,20 +197,102 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
                 mMarkerLayer.removeAllItems();
                 mMap.render();
                 // POI search
-                new PoiSearchTask(PoiSearchActivity.this, POI_CATEGORY).execute(mMap.getBoundingBox(0));
+                new PoiSearchTask(PoiSearchActivity.this, POI_CATEGORY, null).execute(mMap.getBoundingBox(0));
                 return true;
             }
             return false;
         }
     }
 
+    private class Pattern {
+        String key;
+        String val;
+
+        public Pattern(String key, String val) {
+            this.key = key;
+            this.val = val;
+        }
+    }
+
+    private class PatternAdapter extends ArrayAdapter<Pattern> {
+        public PatternAdapter(Context context, List<Pattern> patterns) {
+            super(context, 0, patterns);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Pattern pattern = getItem(position);
+            assert pattern != null;
+            // Check if an existing view is being reused, otherwise inflate the view
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_poi_search, parent, false);
+            }
+
+            EditText etKey = (EditText) convertView.findViewById(R.id.key);
+            EditText etValue = (EditText) convertView.findViewById(R.id.value);
+            Button remove = (Button) convertView.findViewById(R.id.remove);
+            // Populate the data
+            etKey.removeTextChangedListener((PatternTextWatcher) etKey.getTag()); // remove previous listeners
+            etKey.setText(pattern.key); // set text when no listener is attached
+            PatternTextWatcher keyPtw = new PatternTextWatcher(pattern, true);
+            etKey.setTag(keyPtw);
+            etKey.addTextChangedListener(keyPtw);
+
+            etValue.removeTextChangedListener((PatternTextWatcher) etValue.getTag());
+            etValue.setText(pattern.val);
+            keyPtw = new PatternTextWatcher(pattern, false);
+            etValue.setTag(keyPtw);
+            etValue.addTextChangedListener(keyPtw);
+
+            remove.setTag(pattern);
+            remove.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Pattern pat = (Pattern) v.getTag();
+                    remove(pat);
+                }
+            });
+
+            return convertView;
+        }
+    }
+
+    class PatternTextWatcher implements TextWatcher {
+        private Pattern pattern;
+        private boolean isKey;
+
+        PatternTextWatcher(Pattern pattern, boolean isKey) {
+            this.pattern = pattern;
+            this.isKey = isKey;
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (isKey)
+                pattern.key = s.toString();
+            else
+                pattern.val = s.toString();
+        }
+    }
+
+    ;
+
     private class PoiSearchTask extends AsyncTask<BoundingBox, Void, Collection<PointOfInterest>> {
         private final WeakReference<PoiSearchActivity> weakActivity;
         private final String category;
+        private final List<Tag> patterns;
 
-        private PoiSearchTask(PoiSearchActivity activity, String category) {
+        private PoiSearchTask(PoiSearchActivity activity, String category, List<Tag> patterns) {
             this.weakActivity = new WeakReference<>(activity);
             this.category = category;
+            this.patterns = patterns;
         }
 
         @Override
@@ -163,11 +301,12 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
             try {
                 PoiCategoryManager categoryManager = mPersistenceManager.getCategoryManager();
                 PoiCategoryFilter categoryFilter = new ExactMatchPoiCategoryFilter();
-                categoryFilter.addCategory(categoryManager.getPoiCategoryByTitle(category));
+                if (category != null)
+                    categoryFilter.addCategory(categoryManager.getPoiCategoryByTitle(category));
                 org.mapsforge.core.model.BoundingBox bb = new org.mapsforge.core.model.BoundingBox(
                         params[0].getMinLatitude(), params[0].getMinLongitude(),
                         params[0].getMaxLatitude(), params[0].getMaxLongitude());
-                return mPersistenceManager.findInRect(bb, categoryFilter, null, Integer.MAX_VALUE);
+                return mPersistenceManager.findInRect(bb, categoryFilter, patterns, Integer.MAX_VALUE);
             } catch (Throwable t) {
                 log.error(t.getMessage(), t);
             }
@@ -180,7 +319,8 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
             if (activity == null) {
                 return;
             }
-            Toast.makeText(activity, category + ": " + (pointOfInterests != null ? pointOfInterests.size() : 0), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, (category == null ? "Results" : category) + ": "
+                    + (pointOfInterests != null ? pointOfInterests.size() : 0), Toast.LENGTH_SHORT).show();
             if (pointOfInterests == null) {
                 return;
             }
