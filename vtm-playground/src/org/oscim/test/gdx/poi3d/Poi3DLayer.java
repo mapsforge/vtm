@@ -118,7 +118,7 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
         for (int i = 0; i < model.nodes.size; i++) {
             Node node = model.nodes.get(i);
 
-            if (node.id.equals("treeA_root")) {
+            if (node.id.equals("tree_root")) {
                 node.rotation.setFromAxis(1, 0, 0, 90);
                 mModel = model;
 
