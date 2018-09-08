@@ -25,9 +25,11 @@ import org.oscim.backend.CanvasAdapter;
 import org.oscim.core.Point;
 import org.oscim.core.Tile;
 import org.oscim.renderer.MapRenderer;
+import org.oscim.utils.FastMath;
 import org.oscim.utils.ThreadUtils;
 import org.oscim.utils.animation.DragForce;
 import org.oscim.utils.animation.Easing;
+import org.oscim.utils.animation.OverScroller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,19 +38,18 @@ import static org.oscim.utils.FastMath.clamp;
 public class Animator2 extends Animator {
     private static final Logger log = LoggerFactory.getLogger(Animator2.class);
 
-    private final static int ANIM_KINETIC = 1 << 5;
+    public final static int ANIM_KINETIC = 1 << 5;
 
     /**
      * The minimum changes that are pleasant for users.
      */
-    private static final float DEFAULT_MIN_VISIBLE_CHANGE_PIXELS = 0.6f;
     private static final float DEFAULT_MIN_VISIBLE_CHANGE_RADIAN = 0.001f;
     private static final float DEFAULT_MIN_VISIBLE_CHANGE_SCALE = 1f;
 
     /**
      * The friction scalar for fling movements (1 as base).
      */
-    public static float FLING_FRICTION_MOVE = 1.0f;
+    public static float FLING_FRICTION_MOVE = 1.2f;
 
     /**
      * The friction scalar for fling rotations (1 as base).
@@ -58,24 +59,21 @@ public class Animator2 extends Animator {
     /**
      * The friction scalar for fling scales (1 as base).
      */
-    public static float FLING_FRICTION_SCALE = 1.2f;
+    public static float FLING_FRICTION_SCALE = 1.3f;
 
+    private final OverScroller mScroller = new OverScroller();
     private final DragForce mFlingRotateForce = new DragForce();
     private final DragForce mFlingScaleForce = new DragForce();
-    private final DragForce mFlingScrollForce = new DragForce();
 
     private final Point mMovePoint = new Point();
-    private final Point mScrollRatio = new Point();
 
     private long mFrameStart = -1;
-    private float mScrollDet2D = 1f;
 
     public Animator2(Map map) {
         super(map);
 
         // Init fling force thresholds
         mFlingRotateForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_RADIAN);
-        mFlingScrollForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_PIXELS);
         mFlingScaleForce.setValueThreshold(DEFAULT_MIN_VISIBLE_CHANGE_SCALE);
     }
 
@@ -105,6 +103,12 @@ public class Animator2 extends Animator {
         }
     }
 
+    public void animateFlingScroll(float velocityX, float velocityY) {
+        animateFlingScroll(velocityX, velocityY,
+                Integer.MIN_VALUE, Integer.MAX_VALUE,
+                Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
     /**
      * Animates a physical fling for scrolls.
      *
@@ -115,24 +119,17 @@ public class Animator2 extends Animator {
                                    int xmin, int xmax, int ymin, int ymax) {
         ThreadUtils.assertMainThread();
 
-        if (velocityX * velocityX + velocityY * velocityY < 2048)
-            return;
+        double flingFactor = 2.0;
+        xmin = FastMath.clampToInt(xmin * flingFactor);
+        xmax = FastMath.clampToInt(xmax * flingFactor);
+        ymin = FastMath.clampToInt(ymin * flingFactor);
+        ymax = FastMath.clampToInt(ymax * flingFactor);
+        mScroller.setFriction(OverScroller.SCROLL_FRICTION * FLING_FRICTION_MOVE);
 
-        float flingFactor = 2.0f; // Can be changed but should be standardized for all callers
-        float screenFactor = CanvasAdapter.DEFAULT_DPI / CanvasAdapter.dpi;
+        mScroller.fling(0, 0, (int) (velocityX * flingFactor), (int) (velocityY * flingFactor),
+                xmin, xmax, ymin, ymax);
 
-        velocityX *= screenFactor * flingFactor;
-        velocityY *= screenFactor * flingFactor;
-        velocityX = clamp(velocityX, xmin, xmax);
-        velocityY = clamp(velocityY, ymin, ymax);
-
-        float sumVelocity = Math.abs(velocityX) + Math.abs(velocityY);
-        mScrollRatio.x = velocityX / sumVelocity;
-        mScrollRatio.y = velocityY / sumVelocity;
-        mScrollDet2D = (float) (mScrollRatio.x * mScrollRatio.x + mScrollRatio.y * mScrollRatio.y);
-
-        mFlingScrollForce.setFrictionScalar(FLING_FRICTION_MOVE);
-        mFlingScrollForce.setValueAndVelocity(0f, (float) Math.sqrt(velocityX * velocityX + velocityY * velocityY));
+        mScroller.matchDurations();
 
         if (!isActive()) {
             mMap.getMapPosition(mStartPos);
@@ -170,7 +167,7 @@ public class Animator2 extends Animator {
         }
     }
 
-    private void animFlingStart(int state) {
+    void animFlingStart(int state) {
         if (!isActive())
             mMap.events.fire(Map.ANIM_START, mMap.mMapPosition);
         mCurPos.copy(mStartPos);
@@ -292,18 +289,11 @@ public class Animator2 extends Animator {
             }
 
             if ((mState & ANIM_MOVE) != 0) {
-                float valueDelta = mFlingScrollForce.updateValueAndVelocity(deltaT);
-                float velocity = mFlingScrollForce.getVelocity();
-
-                float valFactor = (float) Math.sqrt((valueDelta * valueDelta) / mScrollDet2D);
-                float dx = (float) mScrollRatio.x * valFactor;
-                float dy = (float) mScrollRatio.y * valFactor;
-
-                if (dx != 0 || dy != 0) {
-                    v.moveMap(dx, dy);
-                }
-
-                if (velocity == 0) {
+                if (mScroller.computeScrollOffset()) {
+                    int currX = mScroller.getCurrX();
+                    int currY = mScroller.getCurrY();
+                    v.moveTo(mStartPos, currX, currY);
+                } else {
                     mState &= (~ANIM_MOVE); // End move mode
                 }
             }

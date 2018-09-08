@@ -85,11 +85,12 @@ public class GestureHandler implements GestureListener {
                          int button) {
         //log.debug("fling " + button + " " + velocityX + "/" + velocityY);
         if (mayFling && button == Buttons.LEFT) {
-            int m = Tile.SIZE * 4;
             if (Parameters.ANIMATOR2)
-                ((Animator2) mMap.animator()).animateFlingScroll(velocityX, velocityY, -m, m, -m, m);
-            else
+                ((Animator2) mMap.animator()).animateFlingScroll(velocityX, velocityY);
+            else {
+                int m = Tile.SIZE * 4;
                 mMap.animator().animateFling(velocityX, velocityY, -m, m, -m, m);
+            }
             return true;
         }
         return false;

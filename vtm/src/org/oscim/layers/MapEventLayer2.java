@@ -606,17 +606,20 @@ public class MapEventLayer2 extends AbstractMapEventLayer implements InputListen
 
     private boolean doFlingScroll(float velocityX, float velocityY) {
 
-        int w = Tile.SIZE * 5;
-        int h = Tile.SIZE * 5;
-
         if (Parameters.ANIMATOR2) {
             if (!CanvasAdapter.platform.isDesktop() && CanvasAdapter.platform != Platform.WEBGL) {
                 velocityX *= 2;
                 velocityY *= 2;
+            } else {
+                velocityX *= 1.5f;
+                velocityY *= 1.5f;
             }
-            ((Animator2) mMap.animator()).animateFlingScroll(velocityX, velocityY, -w, w, -h, h);
-        } else
+            ((Animator2) mMap.animator()).animateFlingScroll(velocityX, velocityY);
+        } else {
+            int w = Tile.SIZE * 5;
+            int h = Tile.SIZE * 5;
             mMap.animator().animateFling(velocityX * 2, velocityY * 2, -w, w, -h, h);
+        }
         return true;
     }
 

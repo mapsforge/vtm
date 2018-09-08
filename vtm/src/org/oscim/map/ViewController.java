@@ -103,6 +103,21 @@ public class ViewController extends Viewport {
         moveTo(mPos.x - mMovePoint.x / tileScale, mPos.y - mMovePoint.y / tileScale);
     }
 
+    /**
+     * Moves this Viewport by the given amount of pixels relative to a MapPosition.
+     *
+     * @param pos the map position from which should move
+     * @param mx  the amount of pixels to move the map horizontally.
+     * @param my  the amount of pixels to move the map vertically.
+     */
+    public synchronized void moveTo(MapPosition pos, float mx, float my) {
+        ThreadUtils.assertMainThread();
+
+        applyRotation(mx, my, pos.bearing, mMovePoint);
+        double tileScale = pos.scale * Tile.SIZE;
+        moveTo(pos.x - mMovePoint.x / tileScale, pos.y - mMovePoint.y / tileScale);
+    }
+
     /* used by MapAnimator */
     void moveTo(double x, double y) {
         mPos.x = x;

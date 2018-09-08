@@ -84,6 +84,10 @@ public class FastMath {
         return (byte) (value < 0 ? 0 : (value > 255 ? 255 : value));
     }
 
+    public static int clampToInt(double value) {
+        return (int) clamp(value, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
     /**
      * Integer version of log2(x)
      * <p/>
