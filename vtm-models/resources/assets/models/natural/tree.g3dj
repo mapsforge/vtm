@@ -163,14 +163,15 @@
 	], 
 	"nodes": [
 		{
-			"id": "treeA_root", 
-					"parts": [
-						{
-							"meshpartid": "mpart1", 
-							"materialid": "_tree.png", 
-							"uvMapping": [[ 0]]
-						} 
-					]
+			"id": "tree_root",
+			"scale": [ 4.000000,  4.000000,  4.000000],
+            "parts": [
+                {
+                    "meshpartid": "mpart1",
+                    "materialid": "_tree.png",
+                    "uvMapping": [[ 0]]
+                }
+            ]
 		}
 	], 
 	"animations": []

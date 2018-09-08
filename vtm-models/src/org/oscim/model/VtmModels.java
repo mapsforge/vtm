@@ -31,7 +31,13 @@ import java.io.InputStream;
  */
 public enum VtmModels {
 
-    TREE("models/natural/treeA.g3dj");
+    CAR("models/vehicles/car.g3db"),
+    MEMORIAL("models/historic/memorial.g3db"),
+    STREETLAMP("models/highway/streetlamp.g3db"),
+    TREE_ASH("models/natural/tree_ash.g3db"),
+    TREE_OAK("models/natural/tree_oak.g3db"),
+    TREE_FIR("models/natural/tree_fir.g3db"),
+    TREE("models/natural/tree.g3dj");
 
     private final String mPath;
 
