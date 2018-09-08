@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 Hannes Janetzek
+ * Copyright 2018 Gustl22
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.oscim.test.gdx.poi3d;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -29,33 +45,28 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+/**
+ * Experimental Layer to display POIs with 3D models.
+ */
 public class Poi3DLayer extends Layer implements Map.UpdateListener {
 
-    static final Logger log = LoggerFactory.getLogger(Poi3DLayer.class);
+    private static final Logger log = LoggerFactory.getLogger(Poi3DLayer.class);
 
-    static class Poi3DTileData extends TileData {
-        public final List<SymbolItem> symbols = new List<SymbolItem>();
+    static final String POI_DATA = Poi3DLayer.class.getSimpleName();
+    static final Tag TREE_TAG = new Tag("natural", "tree");
 
-        @Override
-        protected void dispose() {
-            SymbolItem.pool.releaseAll(symbols.clear());
-        }
-    }
+    private final String pathToTree;
 
-    final static String POI_DATA = Poi3DLayer.class.getSimpleName();
-    final static Tag TREE_TAG = new Tag("natural", "tree");
-
-    private Poi3DTileData get(MapTile tile) {
-        Poi3DTileData ld = (Poi3DTileData) tile.getData(POI_DATA);
-        if (ld == null) {
-            ld = new Poi3DTileData();
-            tile.addData(POI_DATA, ld);
-        }
-        return ld;
-    }
-
-    GdxRenderer3D g3d;
+    AssetManager assets;
+    GdxRenderer3D2 g3d;
+    boolean loading;
+    Model mModel;
     VectorTileLayer mTileLayer;
+
+    LinkedHashMap<Tile, Array<ModelInstance>> mTileMap = new LinkedHashMap<>();
+
+    TileSet mTileSet = new TileSet();
+    TileSet mPrevTiles = new TileSet();
 
     public Poi3DLayer(Map map, VectorTileLayer tileLayer) {
         super(map);
@@ -83,7 +94,7 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
         });
         mTileLayer = tileLayer;
 
-        mRenderer = g3d = new GdxRenderer3D(mMap);
+        mRenderer = g3d = new GdxRenderer3D2(mMap);
 
         // Material mat = new
         // Material(ColorAttribute.createDiffuse(Color.BLUE));
@@ -101,31 +112,38 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
         loading = true;
     }
 
-    TileSet mTileSet = new TileSet();
-    TileSet mPrevTiles = new TileSet();
-
-    LinkedHashMap<Tile, Array<ModelInstance>> mTileMap =
-            new LinkedHashMap<>();
-
-    boolean loading;
-    Model mModel;
-    AssetManager assets;
-
-    private final String pathToTree;
-
     private void doneLoading() {
         Model model = assets.get(pathToTree, Model.class);
         for (int i = 0; i < model.nodes.size; i++) {
-            Node node = model.nodes.get(i);
+            for (Node node : model.nodes) {
+                log.debug("loader node " + node.id);
 
-            if (node.id.equals("treeA_root")) {
+                /* Use with {@link GdxRenderer3D} */
+                if (node.hasChildren() && ((Object) g3d) instanceof GdxRenderer3D) {
+                    if (model.nodes.size != 1) {
+                        throw new RuntimeException("Model has more than one node with GdxRenderer: " + model.toString());
+                    }
+                    node = node.getChild(0);
+                    log.debug("loader node " + node.id);
+
+                    model.nodes.removeIndex(0);
+                    model.nodes.add(node);
+                }
                 node.rotation.setFromAxis(1, 0, 0, 90);
-                mModel = model;
-
             }
+            mModel = model;
         }
 
         loading = false;
+    }
+
+    private Poi3DTileData get(MapTile tile) {
+        Poi3DTileData ld = (Poi3DTileData) tile.getData(POI_DATA);
+        if (ld == null) {
+            ld = new Poi3DTileData();
+            tile.addData(POI_DATA, ld);
+        }
+        return ld;
     }
 
     @Override
@@ -264,6 +282,15 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
             g3d.instances.removeAll(removed, true);
             g3d.instances.addAll(added);
             g3d.cam.setMapPosition(pos.x, pos.y, 1 << zoom);
+        }
+    }
+
+    static class Poi3DTileData extends TileData {
+        public final List<SymbolItem> symbols = new List<>();
+
+        @Override
+        protected void dispose() {
+            SymbolItem.pool.releaseAll(symbols.clear());
         }
     }
 }
