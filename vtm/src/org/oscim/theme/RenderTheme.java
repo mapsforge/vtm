@@ -2,6 +2,7 @@
  * Copyright 2014 Hannes Janetzek
  * Copyright 2017 Longri
  * Copyright 2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,6 +20,7 @@
 package org.oscim.theme;
 
 import org.oscim.core.GeometryBuffer.GeometryType;
+import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 import org.oscim.theme.rule.Rule;
 import org.oscim.theme.rule.Rule.Element;
@@ -31,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class RenderTheme implements IRenderTheme {
     static final Logger log = LoggerFactory.getLogger(RenderTheme.class);
@@ -43,6 +46,10 @@ public class RenderTheme implements IRenderTheme {
     private final int mLevels;
     private final Rule[] mRules;
     private final boolean mMapsforgeTheme;
+    private final Map<Tag, Tag> mTagMap;
+    private final Map<Tag, Tag> mTagMapReplace;
+    private final Map<String, String> mTagKeyMap;
+    private final Map<String, String> mTagKeyMapReplace;
 
     class RenderStyleCache {
         final int matchType;
@@ -79,7 +86,19 @@ public class RenderTheme implements IRenderTheme {
         this(mapBackground, baseTextSize, rules, levels, false);
     }
 
+    public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels,
+                       Map<String, String> tagKeyMap, Map<Tag, Tag> tagMap, Map<String,
+            String> tagKeyMapReplace, Map<Tag, Tag> tagMapReplace) {
+        this(mapBackground, baseTextSize, rules, levels, false, tagKeyMap, tagMap, tagKeyMapReplace, tagMapReplace);
+    }
+
     public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels, boolean mapsforgeTheme) {
+        this(mapBackground, baseTextSize, rules, levels, mapsforgeTheme, null, null, null, null);
+    }
+
+    public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels, boolean mapsforgeTheme,
+                       Map<String, String> tagKeyMap, Map<Tag, Tag> tagMap, Map<String,
+            String> tagKeyMapReplace, Map<Tag, Tag> tagMapReplace) {
         if (rules == null)
             throw new IllegalArgumentException("rules missing");
 
@@ -88,6 +107,11 @@ public class RenderTheme implements IRenderTheme {
         mLevels = levels;
         mRules = rules;
         mMapsforgeTheme = mapsforgeTheme;
+
+        mTagMap = tagMap;
+        mTagKeyMap = tagKeyMap;
+        mTagMapReplace = tagMapReplace;
+        mTagKeyMapReplace = tagKeyMapReplace;
 
         mStyleCache = new RenderStyleCache[3];
         mStyleCache[0] = new RenderStyleCache(Element.NODE);
@@ -113,6 +137,38 @@ public class RenderTheme implements IRenderTheme {
     @Override
     public int getMapBackground() {
         return mMapBackground;
+    }
+
+    @Override
+    public String getKey(String key) {
+        return mTagKeyMap.get(key);
+    }
+
+    @Override
+    public String getReplaceKey(String key) {
+        return mTagKeyMapReplace.get(key);
+    }
+
+    @Override
+    public Tag getReplaceTag(Tag tag) {
+        if (mTagMapReplace != null) {
+            return mTagMapReplace.get(tag);
+        }
+        return null;
+    }
+
+    @Override
+    public Tag getTag(Tag tag) {
+        if (mTagMap != null) {
+            return mTagMap.get(tag);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean hasReplaceTags() {
+        return !((mTagKeyMapReplace == null || mTagKeyMapReplace.isEmpty())
+                && (mTagMapReplace == null || mTagMapReplace.isEmpty()));
     }
 
     Rule[] getRules() {

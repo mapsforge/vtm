@@ -31,6 +31,7 @@ import org.oscim.renderer.OffscreenRenderer;
 import org.oscim.renderer.OffscreenRenderer.Mode;
 import org.oscim.renderer.bucket.ExtrusionBuckets;
 import org.oscim.renderer.bucket.RenderBuckets;
+import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.styles.ExtrusionStyle;
 import org.oscim.theme.styles.RenderStyle;
 
@@ -65,6 +66,8 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
     protected java.util.Map<Integer, List<BuildingElement>> mBuildings = new HashMap<>();
 
     private final ZoomLimiter mZoomLimiter;
+
+    protected final IRenderTheme mRenderTheme;
 
     class BuildingElement {
         MapElement element;
@@ -103,6 +106,8 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
         mRenderer = new BuildingRenderer(tileLayer.tileRenderer(), mZoomLimiter, mesh, TRANSLUCENT);
         if (POST_AA)
             mRenderer = new OffscreenRenderer(Mode.SSAO_FXAA, mRenderer);
+
+        mRenderTheme = tileLayer.getTheme();
     }
 
     @Override
@@ -160,22 +165,22 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
         int height = 0; // cm
         int minHeight = 0; // cm
 
-        Float f = element.getHeight();
+        Float f = element.getHeight(mRenderTheme);
         if (f != null)
             height = (int) (f * 100);
         else {
             // #TagFromTheme: generalize level/height tags
-            String v = element.tags.getValue(Tag.KEY_BUILDING_LEVELS);
+            String v = getValue(element, Tag.KEY_BUILDING_LEVELS);
             if (v != null)
                 height = (int) (Float.parseFloat(v) * BUILDING_LEVEL_HEIGHT);
         }
 
-        f = element.getMinHeight();
+        f = element.getMinHeight(mRenderTheme);
         if (f != null)
             minHeight = (int) (f * 100);
         else {
             // #TagFromTheme: level/height tags
-            String v = element.tags.getValue(Tag.KEY_BUILDING_MIN_LEVEL);
+            String v = getValue(element, Tag.KEY_BUILDING_MIN_LEVEL);
             if (v != null)
                 minHeight = (int) (Float.parseFloat(v) * BUILDING_LEVEL_HEIGHT);
         }
@@ -202,15 +207,14 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
             if (!partBuilding.element.isBuildingPart())
                 continue;
 
-            String refId = partBuilding.element.tags.getValue(Tag.KEY_REF); // #TagFromTheme
-            refId = refId == null ? partBuilding.element.tags.getValue("root_id") : refId; // Mapzen
+            String refId = getValue(partBuilding.element, Tag.KEY_REF);
             if (refId == null)
                 continue;
 
             // Search buildings which inherit parts
             for (BuildingElement rootBuilding : tileBuildings) {
                 if (rootBuilding.element.isBuildingPart()
-                        || !(refId.equals(rootBuilding.element.tags.getValue(Tag.KEY_ID))))
+                        || !(refId.equals(getValue(rootBuilding.element, Tag.KEY_ID))))
                     continue;
 
                 rootBuildings.add(rootBuilding);
@@ -246,6 +250,15 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
             get(tile).prepare();
         } else
             get(tile).resetBuckets(null);
+    }
+
+    protected String getValue(MapElement element, String key) {
+        return element.tags.getValue(getKeyOrDefault(key));
+    }
+
+    protected String getKeyOrDefault(String key) {
+        String res = mRenderTheme.getKey(key);
+        return res == null ? key : res;
     }
 
     //    private int multi;

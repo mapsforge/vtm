@@ -208,6 +208,14 @@
 
     </xs:complexType>
 
+    <xs:complexType name="tag-adaption">
+        <xs:attribute name="k" type="xs:string" use="required" />
+        <xs:attribute name="v" type="xs:string" use="optional" />
+        <xs:attribute name="k-osm" type="xs:string" use="required" />
+        <xs:attribute name="v-osm" type="xs:string" use="optional" />
+        <xs:attribute name="replace" type="xs:boolean" default="false" use="optional" />
+    </xs:complexType>
+
     <xs:complexType name="text">
         <xs:attribute name="cat" type="xs:string" use="optional" />
 
@@ -305,6 +313,11 @@
     <xs:complexType name="rendertheme">
         <xs:sequence maxOccurs="1" minOccurs="0">
             <xs:element name="stylemenu" maxOccurs="1" minOccurs="0" type="tns:stylemenu" />
+
+            <!-- tag definitions -->
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="tag-adaption" type="tns:tag-adaption" />
+            </xs:choice>
 
             <!-- style definitions -->
             <xs:sequence maxOccurs="256" minOccurs="0">

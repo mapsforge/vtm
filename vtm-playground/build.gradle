@@ -22,7 +22,9 @@ sourceSets {
     }
 }
 
-mainClassName = "org.oscim.test.MapsforgeTest"
+mainClassName = "org.oscim.test.MapsforgeS3DBTest"
+//mainClassName = "org.oscim.test.NextzenMvtTest"
+//mainClassName = "org.oscim.test.OpenMapTilesMvtTest"
 run {
     if (project.hasProperty("args")) {
         args project.getProperty("args").split(",")

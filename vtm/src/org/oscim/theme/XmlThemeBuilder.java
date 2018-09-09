@@ -64,6 +64,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -156,6 +157,10 @@ public class XmlThemeBuilder extends DefaultHandler {
     int mMapBackground = 0xffffffff;
     private float mStrokeScale = 1;
     float mTextScale = 1;
+    private Map<Tag, Tag> mTagMap = new HashMap<>();
+    private Map<Tag, Tag> mTagMapReplace = new HashMap<>();
+    private Map<String, String> mTagKeyMap = new HashMap<>();
+    private Map<String, String> mTagKeyMapReplace = new HashMap<>();
 
     final ThemeFile mTheme;
     private final ThemeCallback mThemeCallback;
@@ -202,7 +207,7 @@ public class XmlThemeBuilder extends DefaultHandler {
     }
 
     RenderTheme createTheme(Rule[] rules) {
-        return new RenderTheme(mMapBackground, mTextScale, rules, mLevels, mMapsforgeTheme);
+        return new RenderTheme(mMapBackground, mTextScale, rules, mLevels, mMapsforgeTheme, mTagKeyMap, mTagMap, mTagKeyMapReplace, mTagMapReplace);
     }
 
     @Override
@@ -369,6 +374,9 @@ public class XmlThemeBuilder extends DefaultHandler {
                 mRenderThemeStyleMenu = new XmlRenderThemeStyleMenu(getStringAttribute(attributes, "id"),
                         getStringAttribute(attributes, "defaultlang"), getStringAttribute(attributes, "defaultvalue"));
 
+            } else if ("tag-adaption".equals(localName)) {
+                checkState(qName, Element.RENDERING_STYLE); // FIXME Rendering Style the right one?
+                createTagAdaption(localName, attributes);
             } else {
                 log.error("unknown element: {}", localName);
                 throw new SAXException("unknown element: " + localName);
@@ -377,6 +385,54 @@ public class XmlThemeBuilder extends DefaultHandler {
             throw new ThemeException(e.getMessage());
         } catch (IOException e) {
             throw new ThemeException(e.getMessage());
+        }
+    }
+
+    private void createTagAdaption(String localName, Attributes attributes) {
+        String k, v, osmKey, osmValue;
+        k = v = osmKey = osmValue = null;
+        boolean replace = false;
+
+        for (int i = 0; i < attributes.getLength(); i++) {
+            String name = attributes.getLocalName(i);
+            String value = attributes.getValue(i);
+
+            switch (name) {
+                case "k":
+                    k = value;
+                    break;
+                case "v":
+                    v = value;
+                    break;
+                case "k-osm":
+                    osmKey = value;
+                    break;
+                case "v-osm":
+                    osmValue = value;
+                    break;
+                case "replace":
+                    replace = Boolean.valueOf(value);
+                    break;
+                default:
+                    logUnknownAttribute(localName, name, value, i);
+            }
+        }
+
+        if (k == null || osmKey == null || k.isEmpty() || osmKey.isEmpty()) {
+            log.debug("empty key in element " + localName);
+            return;
+        }
+
+        if (v == null && osmValue == null) {
+            if (replace)
+                mTagKeyMapReplace.put(osmKey, k);
+            else
+                mTagKeyMap.put(osmKey, k);
+        } else {
+            if (replace)
+                mTagMapReplace.put(new Tag(osmKey, osmValue), new Tag(k, v));
+            else
+                mTagMap.put(new Tag(osmKey, osmValue), new Tag(k, v));
         }
     }
 

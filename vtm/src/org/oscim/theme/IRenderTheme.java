@@ -2,6 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,6 +20,7 @@
 package org.oscim.theme;
 
 import org.oscim.core.GeometryBuffer.GeometryType;
+import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 import org.oscim.theme.styles.RenderStyle;
 
@@ -48,6 +50,32 @@ public interface IRenderTheme {
      * @return the map background color of this RenderTheme.
      */
     int getMapBackground();
+
+    /**
+     * @return the adapted tag of this RenderTheme.
+     */
+    Tag getTag(Tag tag);
+
+    /**
+     * @return the replaceable tag of this RenderTheme.
+     */
+    Tag getReplaceTag(Tag tag);
+
+
+    /**
+     * @return the adapted tag key of this RenderTheme.
+     */
+    String getKey(String key);
+
+    /**
+     * @return the replaceable tag key of this RenderTheme.
+     */
+    String getReplaceKey(String key);
+
+    /**
+     * @return indicates if there are any replaceable tags in this RenderTheme.
+     */
+    boolean hasReplaceTags();
 
     /**
      * Is Mapsforge or VTM theme.
