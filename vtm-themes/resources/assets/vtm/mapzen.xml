@@ -3,11 +3,11 @@
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
-    <!--<tag-transform k="height" k-osm="height" replace="false"/>-->
-    <!--<tag-transform k="min_height" k-osm="min_height" replace="false"/>-->
-    <!--<tag-transform k="kind" v="building" k-osm="building" v-osm="yes" replace="true"/>-->
-    <!--<tag-transform k="kind" v="building_part" k-osm="building:part" v-osm="yes" replace="true"/>-->
-    <tag-transform k="root_id" k-osm="ref" replace="false" />
+    <!--<tag-transform k="height" k-osm="height" />-->
+    <!--<tag-transform k="min_height" k-osm="min_height" />-->
+    <!--<tag-transform k="kind" v="building" k-osm="building" v-osm="yes" />-->
+    <!--<tag-transform k="kind" v="building_part" k-osm="building:part" v-osm="yes" />-->
+    <tag-transform k="root_id" k-osm="ref" />
 
     <tag-transform k="roof_color" k-osm="roof:colour" />
     <tag-transform k="roof_height" k-osm="roof:height" />

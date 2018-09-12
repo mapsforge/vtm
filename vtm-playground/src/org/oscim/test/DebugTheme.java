@@ -39,37 +39,22 @@ public class DebugTheme implements IRenderTheme {
     }
 
     @Override
-    public Tag getTag(Tag tag) {
-        return null;
-    }
-
-    @Override
-    public Tag getReplaceTag(Tag tag) {
-        return null;
-    }
-
-    @Override
-    public String getKey(String key) {
-        return null;
-    }
-
-    @Override
-    public String getReplaceKey(String key) {
-        return null;
-    }
-
-    @Override
-    public boolean hasReplaceTags() {
-        return false;
-    }
-
-    @Override
     public boolean isMapsforgeTheme() {
         return false;
     }
 
     @Override
     public void scaleTextSize(float scaleFactor) {
+    }
+
+    @Override
+    public String transformKey(String key) {
+        return null;
+    }
+
+    @Override
+    public Tag transformTag(Tag tag) {
+        return null;
     }
 
     @Override

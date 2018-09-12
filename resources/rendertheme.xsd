@@ -213,7 +213,6 @@
         <xs:attribute name="v" type="xs:string" use="optional" />
         <xs:attribute name="k-osm" type="xs:string" use="required" />
         <xs:attribute name="v-osm" type="xs:string" use="optional" />
-        <xs:attribute name="replace" type="xs:boolean" default="false" use="optional" />
     </xs:complexType>
 
     <xs:complexType name="text">

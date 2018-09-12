@@ -1,7 +1,6 @@
 /*
  * Copyright 2012-2014 Hannes Janetzek
  * Copyright 2016-2017 devemux86
- * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -189,21 +188,6 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
      * E.g. to replace tags that should not be cached in Rendertheme
      */
     protected TagSet filterTags(TagSet tagSet) {
-        if (renderTheme.hasReplaceTags()) {
-            Tag[] tags = tagSet.getTags();
-
-            for (int i = tagSet.size() - 1; i >= 0; i--) {
-                Tag t = tags[i];
-                Tag replace = renderTheme.getReplaceTag(t);
-                if (replace != null) {
-                    tags[i] = replace;
-                } else {
-                    String replKey = renderTheme.getReplaceKey(t.key);
-                    if (replKey != null)
-                        tags[i] = new Tag(replKey, t.value);
-                }
-            }
-        }
         return tagSet;
     }
 

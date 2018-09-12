@@ -46,10 +46,8 @@ public class RenderTheme implements IRenderTheme {
     private final int mLevels;
     private final Rule[] mRules;
     private final boolean mMapsforgeTheme;
-    private final Map<Tag, Tag> mTagMap;
-    private final Map<Tag, Tag> mTagMapReplace;
-    private final Map<String, String> mTagKeyMap;
-    private final Map<String, String> mTagKeyMapReplace;
+    private final Map<String, String> mTransformKeyMap;
+    private final Map<Tag, Tag> mTransformTagMap;
 
     class RenderStyleCache {
         final int matchType;
@@ -87,18 +85,16 @@ public class RenderTheme implements IRenderTheme {
     }
 
     public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels,
-                       Map<String, String> tagKeyMap, Map<Tag, Tag> tagMap, Map<String,
-            String> tagKeyMapReplace, Map<Tag, Tag> tagMapReplace) {
-        this(mapBackground, baseTextSize, rules, levels, false, tagKeyMap, tagMap, tagKeyMapReplace, tagMapReplace);
+                       Map<String, String> transformKeyMap, Map<Tag, Tag> transformTagMap) {
+        this(mapBackground, baseTextSize, rules, levels, false, transformKeyMap, transformTagMap);
     }
 
     public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels, boolean mapsforgeTheme) {
-        this(mapBackground, baseTextSize, rules, levels, mapsforgeTheme, null, null, null, null);
+        this(mapBackground, baseTextSize, rules, levels, mapsforgeTheme, null, null);
     }
 
     public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels, boolean mapsforgeTheme,
-                       Map<String, String> tagKeyMap, Map<Tag, Tag> tagMap, Map<String,
-            String> tagKeyMapReplace, Map<Tag, Tag> tagMapReplace) {
+                       Map<String, String> transformKeyMap, Map<Tag, Tag> transformTagMap) {
         if (rules == null)
             throw new IllegalArgumentException("rules missing");
 
@@ -108,10 +104,8 @@ public class RenderTheme implements IRenderTheme {
         mRules = rules;
         mMapsforgeTheme = mapsforgeTheme;
 
-        mTagMap = tagMap;
-        mTagKeyMap = tagKeyMap;
-        mTagMapReplace = tagMapReplace;
-        mTagKeyMapReplace = tagKeyMapReplace;
+        mTransformKeyMap = transformKeyMap;
+        mTransformTagMap = transformTagMap;
 
         mStyleCache = new RenderStyleCache[3];
         mStyleCache[0] = new RenderStyleCache(Element.NODE);
@@ -137,38 +131,6 @@ public class RenderTheme implements IRenderTheme {
     @Override
     public int getMapBackground() {
         return mMapBackground;
-    }
-
-    @Override
-    public String getKey(String key) {
-        return mTagKeyMap.get(key);
-    }
-
-    @Override
-    public String getReplaceKey(String key) {
-        return mTagKeyMapReplace.get(key);
-    }
-
-    @Override
-    public Tag getReplaceTag(Tag tag) {
-        if (mTagMapReplace != null) {
-            return mTagMapReplace.get(tag);
-        }
-        return null;
-    }
-
-    @Override
-    public Tag getTag(Tag tag) {
-        if (mTagMap != null) {
-            return mTagMap.get(tag);
-        }
-        return null;
-    }
-
-    @Override
-    public boolean hasReplaceTags() {
-        return !((mTagKeyMapReplace == null || mTagKeyMapReplace.isEmpty())
-                && (mTagMapReplace == null || mTagMapReplace.isEmpty()));
     }
 
     Rule[] getRules() {
@@ -326,6 +288,21 @@ public class RenderTheme implements IRenderTheme {
     public void scaleTextSize(float scaleFactor) {
         for (Rule rule : mRules)
             rule.scaleTextSize(scaleFactor * mBaseTextSize);
+    }
+
+    @Override
+    public String transformKey(String key) {
+        if (mTransformKeyMap != null)
+            return mTransformKeyMap.get(key);
+        return null;
+    }
+
+    @Override
+    public Tag transformTag(Tag tag) {
+        if (mTransformTagMap != null) {
+            return mTransformTagMap.get(tag);
+        }
+        return null;
     }
 
     @Override

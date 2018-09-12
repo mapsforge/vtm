@@ -243,28 +243,13 @@ public class RenderTheme implements IRenderTheme {
     }
 
     @Override
-    public Tag getTag(Tag tag) {
+    public String transformKey(String key) {
         return null;
     }
 
     @Override
-    public Tag getReplaceTag(Tag tag) {
+    public Tag transformTag(Tag tag) {
         return null;
-    }
-
-    @Override
-    public String getKey(String key) {
-        return null;
-    }
-
-    @Override
-    public String getReplaceKey(String key) {
-        return null;
-    }
-
-    @Override
-    public boolean hasReplaceTags() {
-        return false;
     }
 
     @Override

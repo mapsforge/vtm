@@ -63,8 +63,6 @@ public class OsmTileLayer extends VectorTileLayer {
         };
 
         protected TagSet filterTags(TagSet tagSet) {
-            tagSet = super.filterTags(tagSet);
-
             Tag[] tags = tagSet.getTags();
 
             mFilteredTags.clear();

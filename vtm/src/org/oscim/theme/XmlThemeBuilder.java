@@ -157,10 +157,8 @@ public class XmlThemeBuilder extends DefaultHandler {
     int mMapBackground = 0xffffffff;
     private float mStrokeScale = 1;
     float mTextScale = 1;
-    private Map<Tag, Tag> mTagMap = new HashMap<>();
-    private Map<Tag, Tag> mTagMapReplace = new HashMap<>();
-    private Map<String, String> mTagKeyMap = new HashMap<>();
-    private Map<String, String> mTagKeyMapReplace = new HashMap<>();
+    private Map<String, String> mTransformKeyMap = new HashMap<>();
+    private Map<Tag, Tag> mTransformTagMap = new HashMap<>();
 
     final ThemeFile mTheme;
     private final ThemeCallback mThemeCallback;
@@ -207,7 +205,7 @@ public class XmlThemeBuilder extends DefaultHandler {
     }
 
     RenderTheme createTheme(Rule[] rules) {
-        return new RenderTheme(mMapBackground, mTextScale, rules, mLevels, mMapsforgeTheme, mTagKeyMap, mTagMap, mTagKeyMapReplace, mTagMapReplace);
+        return new RenderTheme(mMapBackground, mTextScale, rules, mLevels, mMapsforgeTheme, mTransformKeyMap, mTransformTagMap);
     }
 
     @Override
@@ -410,9 +408,6 @@ public class XmlThemeBuilder extends DefaultHandler {
                 case "v-osm":
                     osmValue = value;
                     break;
-                case "replace":
-                    replace = Boolean.valueOf(value);
-                    break;
                 default:
                     logUnknownAttribute(localName, name, value, i);
             }
@@ -424,15 +419,9 @@ public class XmlThemeBuilder extends DefaultHandler {
         }
 
         if (v == null && osmValue == null) {
-            if (replace)
-                mTagKeyMapReplace.put(osmKey, k);
-            else
-                mTagKeyMap.put(osmKey, k);
+            mTransformKeyMap.put(osmKey, k);
         } else {
-            if (replace)
-                mTagMapReplace.put(new Tag(osmKey, osmValue), new Tag(k, v));
-            else
-                mTagMap.put(new Tag(osmKey, osmValue), new Tag(k, v));
+            mTransformTagMap.put(new Tag(osmKey, osmValue), new Tag(k, v));
         }
     }
 
