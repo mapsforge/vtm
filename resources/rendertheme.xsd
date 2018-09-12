@@ -208,7 +208,7 @@
 
     </xs:complexType>
 
-    <xs:complexType name="tag-adaption">
+    <xs:complexType name="tag-transform">
         <xs:attribute name="k" type="xs:string" use="required" />
         <xs:attribute name="v" type="xs:string" use="optional" />
         <xs:attribute name="k-osm" type="xs:string" use="required" />
@@ -316,7 +316,7 @@
 
             <!-- tag definitions -->
             <xs:choice maxOccurs="unbounded" minOccurs="0">
-                <xs:element name="tag-adaption" type="tns:tag-adaption" />
+                <xs:element name="tag-transform" type="tns:tag-transform" />
             </xs:choice>
 
             <!-- style definitions -->

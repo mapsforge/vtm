@@ -374,9 +374,9 @@ public class XmlThemeBuilder extends DefaultHandler {
                 mRenderThemeStyleMenu = new XmlRenderThemeStyleMenu(getStringAttribute(attributes, "id"),
                         getStringAttribute(attributes, "defaultlang"), getStringAttribute(attributes, "defaultvalue"));
 
-            } else if ("tag-adaption".equals(localName)) {
+            } else if ("tag-transform".equals(localName)) {
                 checkState(qName, Element.RENDERING_STYLE); // FIXME Rendering Style the right one?
-                createTagAdaption(localName, attributes);
+                createTagTransform(localName, attributes);
             } else {
                 log.error("unknown element: {}", localName);
                 throw new SAXException("unknown element: " + localName);
@@ -388,7 +388,7 @@ public class XmlThemeBuilder extends DefaultHandler {
         }
     }
 
-    private void createTagAdaption(String localName, Attributes attributes) {
+    private void createTagTransform(String localName, Attributes attributes) {
         String k, v, osmKey, osmValue;
         k = v = osmKey = osmValue = null;
         boolean replace = false;
