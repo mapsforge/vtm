@@ -672,6 +672,9 @@ public class MapDatabase implements ITileDataSource {
             }
             mTileProjection.projectPoint(latitude, longitude, e);
 
+            if (!mTileSeparator.separate(e))
+                continue;
+
             e.setLayer(layer);
 
             if (pois != null) {
