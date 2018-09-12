@@ -22,6 +22,7 @@ import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.model.VtmModels;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.test.MapPreferences;
 import org.oscim.theme.VtmThemes;
@@ -56,6 +57,13 @@ public class Gdx3DTest extends GdxMapApp {
         // mMap.getLayers().add(new BuildingLayer(mMap, tl.getTileLayer()));
 
         mMap.layers().add(new Poi3DLayer(mMap, mMapLayer));
+
+        /*
+        // Add car model to "Neue Elbbrücke" in Hamburg.
+        GdxModelLayer gdxModelLayer = new GdxModelLayer(mMap);
+        mMap.layers().add(gdxModelLayer);
+        gdxModelLayer.addModel(VtmModels.CAR, 53.53202, 10.02599, 300f);
+        */
 
         mMap.layers().add(new LabelLayer(mMap, mMapLayer));
 

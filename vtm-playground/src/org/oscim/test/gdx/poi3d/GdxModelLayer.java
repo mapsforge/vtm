@@ -1,48 +1,88 @@
+/*
+ * Copyright 2014 Hannes Janetzek
+ * Copyright 2018 Gustl22
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.oscim.test.gdx.poi3d;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.model.Node;
+import com.badlogic.gdx.utils.Array;
 
 import org.oscim.core.MapPosition;
+import org.oscim.core.MercatorProjection;
+import org.oscim.core.Tile;
 import org.oscim.event.Event;
+import org.oscim.gdx.GdxAssets;
 import org.oscim.layers.Layer;
+import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.map.Map;
+import org.oscim.model.VtmModels;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+
+/**
+ * Experimental layer to display 3d models.
+ */
 public class GdxModelLayer extends Layer implements Map.UpdateListener {
 
     static final Logger log = LoggerFactory.getLogger(GdxModelLayer.class);
 
-    GdxRenderer3D g3d;
+    public class ModelPosition {
+        public double x;
+        public double y;
+        public float rotation;
 
-    //VectorTileLayer mTileLayer;
+        public ModelPosition(double lat, double lon, float rotation) {
+            setPosition(lat, lon, rotation);
+        }
+
+        public void setPosition(double lat, double lon, float rotation) {
+            this.y = MercatorProjection.latitudeToY(lat);
+            this.x = MercatorProjection.longitudeToX(lon);
+            this.rotation = rotation;
+        }
+
+        public double getLat() {
+            return MercatorProjection.toLatitude(y);
+        }
+
+        public double getLon() {
+            return MercatorProjection.toLongitude(x);
+        }
+
+        public float getRotation() {
+            return rotation;
+        }
+    }
+
+    public final static int MIN_ZOOM = BuildingLayer.MIN_ZOOM;
+
+    private Array<ModelInstance> mAdded = new Array<>();
+    private AssetManager mAssets;
+    private GdxRenderer3D2 mG3d;
+    private boolean mLoading;
+    private HashMap<ModelPosition, ModelHolder> mScenes = new HashMap<>();
 
     public GdxModelLayer(Map map) {
         super(map);
-        //        tileLayer.addHook(new TileLoaderProcessHook() {
-        //
-        //            @Override
-        //            public boolean process(MapTile tile, ElementLayers layers, MapElement element) {
-        //
-        //                if (!element.tags.contains(TREE_TAG))
-        //                    return false;
-        //
-        //                Poi3DTileData td = get(tile);
-        //                PointF p = element.getPoint(0);
-        //                SymbolItem s = SymbolItem.pool.get();
-        //                s.x = p.x;
-        //                s.y = p.y;
-        //                td.symbols.push(s);
-        //
-        //                return true;
-        //            }
-        //        });
-        //mTileLayer = tileLayer;
 
-        mRenderer = g3d = new GdxRenderer3D(mMap);
+        mRenderer = mG3d = new GdxRenderer3D2(mMap);
 
         // Material mat = new
         // Material(ColorAttribute.createDiffuse(Color.BLUE));
@@ -53,186 +93,118 @@ public class GdxModelLayer extends Layer implements Map.UpdateListener {
         // mModel = modelBuilder.createSphere(10f, 10f, 10f, 12, 12,
         // mat, attributes);
 
-        assets = new AssetManager();
-        assets.load("data/g3d/test.g3db", Model.class);
-        loading = true;
+        mAssets = new AssetManager();
     }
 
-    //    TileSet mTileSet = new TileSet();
-    //    TileSet mPrevTiles = new TileSet();
-    //
-    //    LinkedHashMap<Tile, Array<ModelInstance>> mTileMap =
-    //            new LinkedHashMap<Tile, Array<ModelInstance>>();
+    public ModelPosition addModel(VtmModels model, double lat, double lon, float rotation) {
+        return addModel(GdxAssets.getAssetPath(model.getPath()), lat, lon, rotation);
+    }
 
-    boolean loading;
-    Model mModel;
-    AssetManager assets;
+    /**
+     * Add model with specified path and position.
+     *
+     * @return the models position, can be modified during rendering e.g. to make animations.
+     * Don't forget to trigger map events (as it usually does if something changes).
+     */
+    public ModelPosition addModel(String path, double lat, double lon, float rotation) {
+        ModelPosition pos = new ModelPosition(lat, lon, rotation);
+
+        mScenes.put(pos, new ModelHolder(path));
+
+        mAssets.load(path, Model.class);
+        if (!mLoading)
+            mLoading = true;
+
+        return pos;
+    }
 
     private void doneLoading() {
-        Model model = assets.get("data/g3d/test.g3db", Model.class);
-        for (int i = 0; i < model.nodes.size; i++) {
-            Node node = model.nodes.get(i);
-            log.debug("loader node " + node.id);
-
-            if (node.id.equals("test_root")) {
-                node = node.getChild("Building", false, false);
+        for (ModelHolder poiModel : mScenes.values()) {
+            Model model = mAssets.get(poiModel.getPath());
+            for (Node node : model.nodes) {
                 log.debug("loader node " + node.id);
 
+                /* Use with {@link GdxRenderer3D} */
+                if (node.hasChildren() && ((Object) mG3d) instanceof GdxRenderer3D) {
+                    if (model.nodes.size != 1) {
+                        throw new RuntimeException("Model has more than one node with GdxRenderer: " + model.toString());
+                    }
+                    node = node.getChild(0);
+                    log.debug("loader node " + node.id);
+
+                    model.nodes.removeIndex(0);
+                    model.nodes.add(node);
+                }
                 node.rotation.setFromAxis(1, 0, 0, 90);
-                mModel = model;
-
-                break;
             }
-
-            //}
+            poiModel.setModel(model);
         }
 
-        loading = false;
+        mLoading = false;
     }
 
     @Override
     public void onMapEvent(Event ev, MapPosition pos) {
 
-        //        if (ev == Map.CLEAR_EVENT) {
-        //            mTileSet = new TileSet();
-        //            mPrevTiles = new TileSet();
-        //            mTileMap = new LinkedHashMap<Tile, Array<ModelInstance>>();
-        //            synchronized (g3d) {
-        //                g3d.instances.clear();
-        //            }
-        //        }
-        //
-        if (loading && assets.update()) {
+//        if (ev == Map.CLEAR_EVENT) {
+//             synchronized (g3d) {
+//                g3d.instances.clear();
+//            }
+//        }
+
+        if (mLoading && mAssets.update()) {
             doneLoading();
-            // Renderable renderable = new Renderable();
-            // new ModelInstance(mModel).getRenderable(renderable);
-            // Shader shader = new DefaultShader(renderable, true, false,
-            // false, false, 1, 0, 0, 0);
-
-            g3d.instances.add(new ModelInstance(mModel));
-
+            refreshModelInstances();
         }
-        if (loading)
+
+        if (mLoading)
             return;
 
-        int x = 17185 << 1;
-        int y = 10662 << 1;
-        int z = 16;
-        double scale = 1 / (1 << z);
+        double lat = MercatorProjection.toLatitude(pos.y);
+        float groundscale = (float) MercatorProjection
+                .groundResolutionWithScale(lat, 1 << pos.zoomLevel);
 
-        g3d.cam.setMapPosition(x * scale - pos.x, y * scale - pos.y, scale / pos.scale);
 
-        //
-        //        // log.debug("update");
-        //
-        //        mTileLayer.tileRenderer().getVisibleTiles(mTileSet);
-        //
-        //        if (mTileSet.cnt == 0) {
-        //            mTileSet.releaseTiles();
-        //            return;
-        //        }
-        //
-        //        boolean changed = false;
-        //
-        //        Array<ModelInstance> added = new Array<ModelInstance>();
-        //        Array<ModelInstance> removed = new Array<ModelInstance>();
+        float scale = 1f / groundscale;
 
-        //        for (int i = 0; i < mTileSet.cnt; i++) {
-        //            MapTile t = mTileSet.tiles[i];
-        //            if (mPrevTiles.contains(t))
-        //                continue;
-        //
-        //            Array<ModelInstance> instances = new Array<ModelInstance>();
-        //
-        //            Poi3DTileData ld = (Poi3DTileData) t.getData(POI_DATA);
-        //            if (ld == null)
-        //                continue;
-        //
-        //            for (SymbolItem it : ld.symbols) {
-        //
-        //                ModelInstance inst = new ModelInstance(mModel);
-        //                inst.userData = it;
-        //                // float r = 0.5f + 0.5f * (float) Math.random();
-        //                // float g = 0.5f + 0.5f * (float) Math.random();
-        //                // float b = 0.5f + 0.5f * (float) Math.random();
-        //
-        //                // inst.transform.setTranslation(new Vector3(it.x, it.y,
-        //                // 10));
-        //                // inst.materials.get(0).set(ColorAttribute.createDiffuse(r,
-        //                // g, b, 0.8f));
-        //                instances.add(inst);
-        //                added.add(inst);
-        //            }
-        //
-        //            if (instances.size == 0)
-        //                continue;
-        //
-        //            log.debug("add " + t + " " + instances.size);
-        //
-        //            changed = true;
-        //
-        //            mTileMap.put(t, instances);
-        //        }
-        //
-        //        for (int i = 0; i < mPrevTiles.cnt; i++) {
-        //            MapTile t = mPrevTiles.tiles[i];
-        //            if (mTileSet.contains(t))
-        //                continue;
-        //
-        //            Array<ModelInstance> instances = mTileMap.get(t);
-        //            if (instances == null)
-        //                continue;
-        //
-        //            changed = true;
-        //
-        //            removed.addAll(instances);
-        //            mTileMap.remove(t);
-        //            log.debug("remove " + t);
-        //        }
-        //
-        //        mPrevTiles.releaseTiles();
-        //
-        //        int zoom = mTileSet.tiles[0].zoomLevel;
-        //
-        //        TileSet tmp = mPrevTiles;
-        //        mPrevTiles = mTileSet;
-        //        mTileSet = tmp;
-        //
-        //        if (!changed)
-        //            return;
-        //
-        //        // scale aka tree height
-        //        float scale = (float) (1f / (1 << (17 - zoom))) * 8;
-        //
-        //        double tileX = (pos.x * (Tile.SIZE << zoom));
-        //        double tileY = (pos.y * (Tile.SIZE << zoom));
-        //
-        //        synchronized (g3d) {
-        //
-        //            for (Entry<Tile, Array<ModelInstance>> e : mTileMap.entrySet()) {
-        //                Tile t = e.getKey();
-        //
-        //                float dx = (float) (t.tileX * Tile.SIZE - tileX);
-        //                float dy = (float) (t.tileY * Tile.SIZE - tileY);
-        //
-        //                for (ModelInstance inst : e.getValue()) {
-        //                    SymbolItem it = (SymbolItem) inst.userData;
-        //
-        //                    // variable height
-        //                    float s = scale + (it.x * it.y) % 3;
-        //                    float r = (it.x * it.y) % 360;
-        //
-        //                    inst.transform.idt();
-        //                    inst.transform.scale(s, s, s);
-        //                    inst.transform.translate((dx + it.x) / s, (dy + it.y) / s, 0);
-        //                    inst.transform.rotate(0, 0, 1, r);
-        //
-        //                    // inst.transform.setToTranslationAndScaling((dx +
-        //                    // it.x), (dy + it.y),
-        //                    // 0, s, s, s);
-        //
-        //                }
-        //            }
+        synchronized (mG3d) {
+            // remove if out of visible zoom range
+            mG3d.instances.removeAll(mAdded, true);
+            if (pos.getZoomLevel() >= MIN_ZOOM) {
+                mG3d.instances.addAll(mAdded);
+            }
 
+            for (ModelInstance inst : mAdded) {
+                ModelPosition p = (ModelPosition) inst.userData;
+
+                float dx = (float) ((p.x - pos.x) * (Tile.SIZE << pos.zoomLevel));
+                float dy = (float) ((p.y - pos.y) * (Tile.SIZE << pos.zoomLevel));
+
+                inst.transform.idt();
+                inst.transform.scale(scale, scale, scale);
+                inst.transform.translate(dx / scale, dy / scale, 0);
+                inst.transform.rotate(0, 0, 1, p.getRotation());
+            }
+        }
+
+        mG3d.cam.setMapPosition(pos.x, pos.y, 1 << pos.getZoomLevel());
+    }
+
+    public void refreshModelInstances() {
+        for (java.util.Map.Entry<ModelPosition, ModelHolder> scene : mScenes.entrySet()) {
+            mAdded.clear();
+            mG3d.instances.clear();
+
+            ModelInstance inst = new ModelInstance(scene.getValue().getModel());
+            inst.userData = scene.getKey();
+            mAdded.add(inst); // Local stored
+            mG3d.instances.add(inst);  // g3d stored
+        }
+    }
+
+    public void removeModel(ModelPosition position) {
+        mScenes.remove(position);
+        if (!mLoading)
+            refreshModelInstances();
     }
 }
