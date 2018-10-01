@@ -2,6 +2,7 @@ package org.oscim.test;
 
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeometryBuffer.GeometryType;
+import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.styles.AreaStyle;
@@ -44,6 +45,16 @@ public class DebugTheme implements IRenderTheme {
 
     @Override
     public void scaleTextSize(float scaleFactor) {
+    }
+
+    @Override
+    public String transformKey(String key) {
+        return null;
+    }
+
+    @Override
+    public Tag transformTag(Tag tag) {
+        return null;
     }
 
     @Override

@@ -101,12 +101,12 @@ public class S3DBLayer extends BuildingLayer {
         int roofHeight = 0;
 
         // Get roof height
-        String v = element.tags.getValue(Tag.KEY_ROOF_HEIGHT);
+        String v = getValue(element, Tag.KEY_ROOF_HEIGHT);
         if (v != null) {
             roofHeight = (int) (Float.parseFloat(v) * 100);
-        } else if ((v = element.tags.getValue(Tag.KEY_ROOF_LEVELS)) != null) {
+        } else if ((v = getValue(element, Tag.KEY_ROOF_LEVELS)) != null) {
             roofHeight = (int) (Float.parseFloat(v) * BUILDING_LEVEL_HEIGHT);
-        } else if ((v = element.tags.getValue(Tag.KEY_ROOF_ANGLE)) != null) {
+        } else if ((v = getValue(element, Tag.KEY_ROOF_ANGLE)) != null) {
             Box bb = null;
             for (int k = 0; k < element.index[0]; k += 2) {
                 float p1 = element.points[k];
@@ -122,17 +122,17 @@ public class S3DBLayer extends BuildingLayer {
                 // Angle is simplified, 40 is an estimated constant
                 roofHeight = (int) ((Float.parseFloat(v) / 45.f) * (minSize * 40));
             }
-        } else if ((v = element.tags.getValue(Tag.KEY_ROOF_SHAPE)) != null && !v.equals(Tag.VALUE_FLAT)) {
+        } else if ((v = getValue(element, Tag.KEY_ROOF_SHAPE)) != null && !v.equals(Tag.VALUE_FLAT)) {
             roofHeight = (2 * BUILDING_LEVEL_HEIGHT);
         }
 
         // Get building height
-        v = element.tags.getValue(Tag.KEY_HEIGHT);
+        v = getValue(element, Tag.KEY_HEIGHT);
         if (v != null) {
             maxHeight = (int) (Float.parseFloat(v) * 100);
         } else {
             // #TagFromTheme: generalize level/height tags
-            if ((v = element.tags.getValue(Tag.KEY_BUILDING_LEVELS)) != null) {
+            if ((v = getValue(element, Tag.KEY_BUILDING_LEVELS)) != null) {
                 maxHeight = (int) (Float.parseFloat(v) * BUILDING_LEVEL_HEIGHT);
                 maxHeight += roofHeight;
             }
@@ -140,22 +140,22 @@ public class S3DBLayer extends BuildingLayer {
         if (maxHeight == 0)
             maxHeight = extrusion.defaultHeight * 100;
 
-        v = element.tags.getValue(Tag.KEY_MIN_HEIGHT);
+        v = getValue(element, Tag.KEY_MIN_HEIGHT);
         if (v != null)
             minHeight = (int) (Float.parseFloat(v) * 100);
         else {
             // #TagFromTheme: level/height tags
-            if ((v = element.tags.getValue(Tag.KEY_BUILDING_MIN_LEVEL)) != null)
+            if ((v = getValue(element, Tag.KEY_BUILDING_MIN_LEVEL)) != null)
                 minHeight = (int) (Float.parseFloat(v) * BUILDING_LEVEL_HEIGHT);
         }
 
         // Get building color
         Integer bColor = null;
         if (mColored) {
-            if (element.tags.containsKey(Tag.KEY_BUILDING_COLOR)) {
-                bColor = S3DBUtils.getColor(element.tags.getValue(Tag.KEY_BUILDING_COLOR), false, false);
-            } else if (element.tags.containsKey(Tag.KEY_BUILDING_MATERIAL)) {
-                bColor = S3DBUtils.getMaterialColor(element.tags.getValue(Tag.KEY_BUILDING_MATERIAL), false);
+            if ((v = getValue(element, Tag.KEY_BUILDING_COLOR)) != null) {
+                bColor = S3DBUtils.getColor(v, false, false);
+            } else if ((v = getValue(element, Tag.KEY_BUILDING_MATERIAL)) != null) {
+                bColor = S3DBUtils.getMaterialColor(v, false);
             }
         }
 
@@ -190,11 +190,11 @@ public class S3DBLayer extends BuildingLayer {
             if (!partBuilding.element.isBuildingPart())
                 continue;
 
-            TagSet partTags = partBuilding.element.tags;
-            String refId = partTags.getValue(Tag.KEY_REF); // #TagFromTheme
-            refId = refId == null ? partTags.getValue("root_id") : refId; // Mapzen
+            String refId = getValue(partBuilding.element, Tag.KEY_REF);
             if (refId == null)
                 continue;
+
+            TagSet partTags = partBuilding.element.tags;
 
             // Search buildings which inherit parts
             for (BuildingElement rootBuilding : tileBuildings) {
@@ -202,13 +202,20 @@ public class S3DBLayer extends BuildingLayer {
                         || !(refId.equals(rootBuilding.element.tags.getValue(Tag.KEY_ID))))
                     continue;
 
+                if ((getValue(rootBuilding.element, Tag.KEY_ROOF_SHAPE) != null)
+                        && (getValue(partBuilding.element, Tag.KEY_ROOF_SHAPE) == null)) {
+                    partBuilding.element.tags.add(rootBuilding.element.tags.get(getKeyOrDefault(Tag.KEY_ROOF_SHAPE)));
+                }
+
                 if (mColored) {
                     TagSet rootTags = rootBuilding.element.tags;
+
                     for (int i = 0; i < rootTags.size(); i++) {
                         Tag rTag = rootTags.get(i);
-                        if ((rTag.key.equals(Tag.KEY_COLOR) && !partTags.containsKey(Tag.KEY_MATERIAL)
-                                || rTag.key.equals(Tag.KEY_ROOF_COLOR) && !partTags.containsKey(Tag.KEY_ROOF_MATERIAL)
-                                || rTag.key.equals(Tag.KEY_ROOF_SHAPE))
+                        if ((rTag.key.equals(getKeyOrDefault(Tag.KEY_BUILDING_COLOR))
+                                && !partTags.containsKey(getKeyOrDefault(Tag.KEY_BUILDING_MATERIAL))
+                                || rTag.key.equals(getKeyOrDefault(Tag.KEY_ROOF_COLOR))
+                                && !partTags.containsKey(getKeyOrDefault(Tag.KEY_ROOF_MATERIAL)))
                                 && !partTags.containsKey(rTag.key)) {
                             partTags.add(rTag);
                         }
@@ -243,22 +250,22 @@ public class S3DBLayer extends BuildingLayer {
         String v;
 
         if (mColored) {
-            v = element.tags.getValue(Tag.KEY_ROOF_COLOR);
+            v = getValue(element, Tag.KEY_ROOF_COLOR);
             if (v != null)
                 roofColor = S3DBUtils.getColor(v, true, false);
-            else if ((v = element.tags.getValue(Tag.KEY_ROOF_MATERIAL)) != null)
+            else if ((v = getValue(element, Tag.KEY_ROOF_MATERIAL)) != null)
                 roofColor = S3DBUtils.getMaterialColor(v, true);
         }
 
         boolean roofOrientationAcross = false;
-        if ((v = element.tags.getValue(Tag.KEY_ROOF_ORIENTATION)) != null) {
+        if ((v = getValue(element, Tag.KEY_ROOF_ORIENTATION)) != null) {
             if (v.equals(Tag.VALUE_ACROSS)) {
                 roofOrientationAcross = true;
             }
         }
 
         // Calc roof shape
-        v = element.tags.getValue(Tag.KEY_ROOF_SHAPE);
+        v = getValue(element, Tag.KEY_ROOF_SHAPE);
         if (v == null) {
             v = Tag.VALUE_FLAT;
         }

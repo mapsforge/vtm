@@ -2,6 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,6 +20,7 @@
 package org.oscim.theme;
 
 import org.oscim.core.GeometryBuffer.GeometryType;
+import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 import org.oscim.theme.styles.RenderStyle;
 
@@ -62,6 +64,16 @@ public interface IRenderTheme {
      * @param scaleFactor the factor by which the text size should be scaled.
      */
     void scaleTextSize(float scaleFactor);
+
+    /**
+     * @return the transformed tag key of this RenderTheme.
+     */
+    String transformKey(String key);
+
+    /**
+     * @return the transformed tag of this RenderTheme.
+     */
+    Tag transformTag(Tag tag);
 
     class ThemeException extends IllegalArgumentException {
         public ThemeException(String string) {

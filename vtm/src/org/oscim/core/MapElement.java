@@ -19,6 +19,8 @@
  */
 package org.oscim.core;
 
+import org.oscim.theme.IRenderTheme;
+
 /**
  * The MapElement class is a reusable container for a geometry
  * with tags.
@@ -63,10 +65,9 @@ public class MapElement extends GeometryBuffer {
     /**
      * @return height in meters, if present
      */
-    public Float getHeight() {
-        String v = tags.getValue(Tag.KEY_HEIGHT);
-        if (v == null)
-            v = tags.getValue("render_height"); // OpenMapTiles
+    public Float getHeight(IRenderTheme theme) {
+        String res = theme.transformKey(Tag.KEY_HEIGHT);
+        String v = tags.getValue(res == null ? Tag.KEY_HEIGHT : res);
         if (v != null)
             return Float.parseFloat(v);
         return null;
@@ -75,22 +76,21 @@ public class MapElement extends GeometryBuffer {
     /**
      * @return minimum height in meters, if present
      */
-    public Float getMinHeight() {
-        String v = tags.getValue(Tag.KEY_MIN_HEIGHT);
-        if (v == null)
-            v = tags.getValue("render_min_height"); // OpenMapTiles
+    public Float getMinHeight(IRenderTheme theme) {
+        String res = theme.transformKey(Tag.KEY_MIN_HEIGHT);
+        String v = tags.getValue(res == null ? Tag.KEY_MIN_HEIGHT : res);
         if (v != null)
             return Float.parseFloat(v);
         return null;
     }
 
-    public boolean isBuilding() {
+    public boolean isBuilding() { // TODO from themes (with overzoom ref)
         return tags.containsKey(Tag.KEY_BUILDING)
                 || "building".equals(tags.getValue("kind")) // Mapzen
                 || "building".equals(tags.getValue("layer")); // OpenMapTiles
     }
 
-    public boolean isBuildingPart() {
+    public boolean isBuildingPart() { // TODO from themes (with overzoom ref)
         return tags.containsKey(Tag.KEY_BUILDING_PART)
                 || "building_part".equals(tags.getValue("kind")) // Mapzen
                 || "building:part".equals(tags.getValue("layer")); // OpenMapTiles

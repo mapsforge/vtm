@@ -2,6 +2,7 @@
  * Copyright 2014 Hannes Janetzek
  * Copyright 2017 Longri
  * Copyright 2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,6 +20,7 @@
 package org.oscim.theme;
 
 import org.oscim.core.GeometryBuffer.GeometryType;
+import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 import org.oscim.theme.rule.Rule;
 import org.oscim.theme.rule.Rule.Element;
@@ -31,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class RenderTheme implements IRenderTheme {
     static final Logger log = LoggerFactory.getLogger(RenderTheme.class);
@@ -43,6 +46,8 @@ public class RenderTheme implements IRenderTheme {
     private final int mLevels;
     private final Rule[] mRules;
     private final boolean mMapsforgeTheme;
+    private final Map<String, String> mTransformKeyMap;
+    private final Map<Tag, Tag> mTransformTagMap;
 
     class RenderStyleCache {
         final int matchType;
@@ -79,7 +84,17 @@ public class RenderTheme implements IRenderTheme {
         this(mapBackground, baseTextSize, rules, levels, false);
     }
 
+    public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels,
+                       Map<String, String> transformKeyMap, Map<Tag, Tag> transformTagMap) {
+        this(mapBackground, baseTextSize, rules, levels, false, transformKeyMap, transformTagMap);
+    }
+
     public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels, boolean mapsforgeTheme) {
+        this(mapBackground, baseTextSize, rules, levels, mapsforgeTheme, null, null);
+    }
+
+    public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels, boolean mapsforgeTheme,
+                       Map<String, String> transformKeyMap, Map<Tag, Tag> transformTagMap) {
         if (rules == null)
             throw new IllegalArgumentException("rules missing");
 
@@ -88,6 +103,9 @@ public class RenderTheme implements IRenderTheme {
         mLevels = levels;
         mRules = rules;
         mMapsforgeTheme = mapsforgeTheme;
+
+        mTransformKeyMap = transformKeyMap;
+        mTransformTagMap = transformTagMap;
 
         mStyleCache = new RenderStyleCache[3];
         mStyleCache[0] = new RenderStyleCache(Element.NODE);
@@ -270,6 +288,21 @@ public class RenderTheme implements IRenderTheme {
     public void scaleTextSize(float scaleFactor) {
         for (Rule rule : mRules)
             rule.scaleTextSize(scaleFactor * mBaseTextSize);
+    }
+
+    @Override
+    public String transformKey(String key) {
+        if (mTransformKeyMap != null)
+            return mTransformKeyMap.get(key);
+        return null;
+    }
+
+    @Override
+    public Tag transformTag(Tag tag) {
+        if (mTransformTagMap != null) {
+            return mTransformTagMap.get(tag);
+        }
+        return null;
     }
 
     @Override

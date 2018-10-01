@@ -243,6 +243,16 @@ public class RenderTheme implements IRenderTheme {
     }
 
     @Override
+    public String transformKey(String key) {
+        return null;
+    }
+
+    @Override
+    public Tag transformTag(Tag tag) {
+        return null;
+    }
+
+    @Override
     public boolean isMapsforgeTheme() {
         return false;
     }

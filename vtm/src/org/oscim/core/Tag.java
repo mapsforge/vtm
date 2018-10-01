@@ -65,9 +65,9 @@ public class Tag {
     public static final String KEY_BUILDING_MATERIAL = "building:material";
     public static final String KEY_BUILDING_MIN_LEVEL = "building:min_level";
     public static final String KEY_BUILDING_PART = "building:part";
-    public static final String KEY_COLOR = "colour";
+    // public static final String KEY_COLOR = "colour";
     public static final String KEY_HEIGHT = "height";
-    public static final String KEY_MATERIAL = "material";
+    // public static final String KEY_MATERIAL = "material";
     public static final String KEY_MIN_HEIGHT = "min_height";
     public static final String KEY_ROOF = "roof";
     public static final String KEY_ROOF_ANGLE = "roof:angle";
