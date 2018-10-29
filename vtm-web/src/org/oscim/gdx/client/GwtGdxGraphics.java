@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2018 devemux86
  * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -51,6 +51,12 @@ public class GwtGdxGraphics extends CanvasAdapter {
 
     @Override
     public Bitmap decodeBitmapImpl(InputStream inputStream) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public Bitmap decodeBitmapImpl(InputStream inputStream, int width, int height, int percent) {
         // TODO
         return null;
     }

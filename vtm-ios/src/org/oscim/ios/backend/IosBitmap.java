@@ -1,5 +1,6 @@
 /*
  * Copyright 2016-2017 Longri
+ * Copyright 2018 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -82,11 +83,23 @@ public class IosBitmap implements Bitmap {
         CGImage image = new UIImage(data).getCGImage();
         this.width = (int) image.getWidth();
         this.height = (int) image.getHeight();
-        this.cgBitmapContext = CGBitmapContext.create(width, height, 8, 4 * width,
+        this.cgBitmapContext = CGBitmapContext.create(this.width, this.height, 8, 4 * this.width,
                 CGColorSpace.createDeviceRGB(), CGImageAlphaInfo.PremultipliedLast);
 
-        this.cgBitmapContext.drawImage(new CGRect(0, 0, width, height), image);
+        this.cgBitmapContext.drawImage(new CGRect(0, 0, this.width, this.height), image);
         image.dispose();
+    }
+
+    /**
+     * Constructor<br>
+     * Create a IosBitmap from given InputStream
+     *
+     * @param inputStream
+     * @throws IOException
+     */
+    public IosBitmap(InputStream inputStream, int width, int height, int percent) throws IOException {
+        // TODO Scaling
+        this(inputStream);
     }
 
     /**
@@ -255,5 +268,10 @@ public class IosBitmap implements Bitmap {
         UIImage uiImage = new UIImage(cgBitmapContext.toImage());
         NSData data = uiImage.toPNGData();
         return data.getBytes();
+    }
+
+    @Override
+    public void scaleTo(int width, int height) {
+        // TODO
     }
 }

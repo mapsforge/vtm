@@ -244,6 +244,8 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
     }
 
     protected String getKeyOrDefault(String key) {
+        if (mRenderTheme == null)
+            return key;
         String res = mRenderTheme.transformKey(key);
         return res != null ? res : key;
     }

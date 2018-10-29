@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Longri
- * Copyright 2016 devemux86
+ * Copyright 2016-2018 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -23,6 +23,8 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
+import org.oscim.backend.CanvasAdapter;
+import org.oscim.utils.GraphicUtils;
 import org.oscim.utils.IOUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -31,7 +33,7 @@ import java.io.InputStream;
 import static android.graphics.Bitmap.Config.ARGB_8888;
 
 public class AndroidBitmap implements org.oscim.backend.canvas.Bitmap {
-    final Bitmap mBitmap;
+    Bitmap mBitmap;
 
     public AndroidBitmap(InputStream inputStream) {
         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
@@ -41,6 +43,12 @@ public class AndroidBitmap implements org.oscim.backend.canvas.Bitmap {
             bitmap = bitmap.copy(ARGB_8888, false);
         }
         mBitmap = bitmap;
+    }
+
+    public AndroidBitmap(InputStream inputStream, int width, int height, int percent) {
+        this(inputStream);
+        float[] newSize = GraphicUtils.imageSize(getWidth(), getHeight(), CanvasAdapter.getScale(), width, height, percent);
+        scaleTo((int) newSize[0], (int) newSize[1]);
     }
 
     @Override
@@ -115,6 +123,19 @@ public class AndroidBitmap implements org.oscim.backend.canvas.Bitmap {
             return outputStream.toByteArray();
         } finally {
             IOUtils.closeQuietly(outputStream);
+        }
+    }
+
+    @Override
+    public void scaleTo(int width, int height) {
+        if (getWidth() != width || getHeight() != height) {
+            // The effect of the filter argument to createScaledBitmap is not well documented in the
+            // official android docs, but according to
+            // http://stackoverflow.com/questions/2895065/what-does-the-filter-parameter-to-createscaledbitmap-do
+            // passing true results in smoother edges, less pixelation.
+            // If smoother corners improve the readability of map labels is perhaps debatable.
+            android.graphics.Bitmap scaledBitmap = android.graphics.Bitmap.createScaledBitmap(mBitmap, width, height, true);
+            mBitmap = scaledBitmap;
         }
     }
 }

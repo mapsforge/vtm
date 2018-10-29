@@ -1,6 +1,6 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2018 devemux86
  * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -56,6 +56,11 @@ public final class AndroidGraphics extends CanvasAdapter {
     @Override
     public Bitmap decodeBitmapImpl(InputStream inputStream) {
         return new AndroidBitmap(inputStream);
+    }
+
+    @Override
+    public Bitmap decodeBitmapImpl(InputStream inputStream, int width, int height, int percent) {
+        return new AndroidBitmap(inputStream, width, height, percent);
     }
 
     @Override

@@ -1,6 +1,6 @@
 /*
  * Copyright 2016 Longri
- * Copyright 2016 devemux86
+ * Copyright 2016-2018 devemux86
  * Copyright 2017 Longri
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -57,6 +57,11 @@ public class IosGraphics extends CanvasAdapter {
     @Override
     protected Bitmap decodeBitmapImpl(InputStream inputStream) throws IOException {
         return new IosBitmap(inputStream);
+    }
+
+    @Override
+    protected Bitmap decodeBitmapImpl(InputStream inputStream, int width, int height, int percent) throws IOException {
+        return new IosBitmap(inputStream, width, height, percent);
     }
 
     @Override

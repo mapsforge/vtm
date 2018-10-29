@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2018 devemux86
  * Copyright 2016-2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -21,13 +21,18 @@ package org.oscim.awt;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.BufferUtils;
 
+import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GL;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.renderer.bucket.TextureBucket;
+import org.oscim.utils.GraphicUtils;
 import org.oscim.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -41,17 +46,10 @@ public class AwtBitmap implements Bitmap {
     private static final Logger log = LoggerFactory.getLogger(AwtBitmap.class);
 
     BufferedImage bitmap;
-    int width;
-    int height;
-
-    boolean internal;
 
     public AwtBitmap(int width, int height, int format) {
         bitmap = new BufferedImage(width, height, format != 0 ? format : BufferedImage.TYPE_INT_ARGB);
-        this.width = width;
-        this.height = height;
 
-        internal = true;
         // if (!this.bitmap.isAlphaPremultiplied())
         // this.bitmap.coerceData(true);
     }
@@ -59,17 +57,19 @@ public class AwtBitmap implements Bitmap {
     AwtBitmap(InputStream inputStream) throws IOException {
 
         this.bitmap = ImageIO.read(inputStream);
-        this.width = this.bitmap.getWidth();
-        this.height = this.bitmap.getHeight();
         if (!this.bitmap.isAlphaPremultiplied()
                 && this.bitmap.getType() == BufferedImage.TYPE_INT_ARGB)
             this.bitmap.coerceData(true);
     }
 
+    AwtBitmap(InputStream inputStream, int width, int height, int percent) throws IOException {
+        this(inputStream);
+        float[] newSize = GraphicUtils.imageSize(getWidth(), getHeight(), CanvasAdapter.getScale(), width, height, percent);
+        scaleTo((int) newSize[0], (int) newSize[1]);
+    }
+
     public AwtBitmap(BufferedImage bitmap) {
         this.bitmap = bitmap;
-        this.width = this.bitmap.getWidth();
-        this.height = this.bitmap.getHeight();
         if (!this.bitmap.isAlphaPremultiplied()
                 && this.bitmap.getType() == BufferedImage.TYPE_INT_ARGB)
             this.bitmap.coerceData(true);
@@ -77,12 +77,12 @@ public class AwtBitmap implements Bitmap {
 
     @Override
     public int getWidth() {
-        return width;
+        return bitmap.getWidth();
     }
 
     @Override
     public int getHeight() {
-        return height;
+        return bitmap.getHeight();
     }
 
     @Override
@@ -108,17 +108,17 @@ public class AwtBitmap implements Bitmap {
         int[] pixels;
         IntBuffer buffer;
 
-        if (width * height < TextureBucket.TEXTURE_HEIGHT * TextureBucket.TEXTURE_WIDTH) {
+        if (bitmap.getWidth() * bitmap.getHeight() < TextureBucket.TEXTURE_HEIGHT * TextureBucket.TEXTURE_WIDTH) {
             pixels = tmpPixel;
             buffer = tmpBuffer;
             buffer.clear();
         } else {
-            pixels = new int[width * height];
-            buffer = BufferUtils.newIntBuffer(width * height);
+            pixels = new int[bitmap.getWidth() * bitmap.getHeight()];
+            buffer = BufferUtils.newIntBuffer(bitmap.getWidth() * bitmap.getHeight());
         }
 
         // FIXME dont convert to argb when there data is greyscale
-        bitmap.getRGB(0, 0, width, height, pixels, 0, width);
+        bitmap.getRGB(0, 0, bitmap.getWidth(), bitmap.getHeight(), pixels, 0, bitmap.getWidth());
 
         if (WRITE_TEX) {
             try {
@@ -131,7 +131,7 @@ public class AwtBitmap implements Bitmap {
             }
         }
 
-        for (int i = 0, n = width * height; i < n; i++) {
+        for (int i = 0, n = bitmap.getWidth() * bitmap.getHeight(); i < n; i++) {
             int c = pixels[i];
             if (c == 0)
                 continue;
@@ -143,11 +143,11 @@ public class AwtBitmap implements Bitmap {
             pixels[i] = (c & 0xff000000) | r << 16 | g << 8 | b;
         }
 
-        buffer.put(pixels, 0, width * height);
+        buffer.put(pixels, 0, bitmap.getWidth() * bitmap.getHeight());
         buffer.flip();
 
-        Gdx.gl20.glTexImage2D(GL.TEXTURE_2D, 0, GL.RGBA, width,
-                height, 0, GL.RGBA, GL.UNSIGNED_BYTE, buffer);
+        Gdx.gl20.glTexImage2D(GL.TEXTURE_2D, 0, GL.RGBA, bitmap.getWidth(),
+                bitmap.getHeight(), 0, GL.RGBA, GL.UNSIGNED_BYTE, buffer);
     }
 
     @Override
@@ -172,5 +172,20 @@ public class AwtBitmap implements Bitmap {
             IOUtils.closeQuietly(outputStream);
         }
         return null;
+    }
+
+    @Override
+    public void scaleTo(int width, int height) {
+        if (getWidth() != width || getHeight() != height) {
+            BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graphics = resizedImage.createGraphics();
+            graphics.setComposite(AlphaComposite.Src);
+            graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics.drawImage(bitmap, 0, 0, width, height, null);
+            graphics.dispose();
+            bitmap = resizedImage;
+        }
     }
 }
