@@ -81,14 +81,21 @@ public class XmlThemeBuilder extends DefaultHandler {
     private static final int RENDER_THEME_VERSION_VTM = 1;
 
     private enum Element {
-        RENDER_THEME, RENDERING_INSTRUCTION, RULE, STYLE, ATLAS, RENDERING_STYLE, TAG_TRANSFORM
+        RENDER_THEME, RENDERING_INSTRUCTION, RULE, STYLE, ATLAS, RECT, RENDERING_STYLE, TAG_TRANSFORM
     }
 
     private static final String ELEMENT_NAME_RENDER_THEME = "rendertheme";
     private static final String ELEMENT_NAME_STYLE_MENU = "stylemenu";
     private static final String ELEMENT_NAME_MATCH_MAPSFORGE = "rule";
     private static final String ELEMENT_NAME_MATCH_VTM = "m";
-    private static final String UNEXPECTED_ELEMENT = "unexpected element: ";
+    private static final String UNEXPECTED_ELEMENT_STACK_NOT_EMPTY = "Stack not empty, unexpected element: ";
+    private static final String UNEXPECTED_ELEMENT_RULE_PARENT_ELEMENT_MISMATCH = "Rule:: Parent element mismatch: unexpected element: ";
+    private static final String UNEXPECTED_ELEMENT_STYLE_PARENT_ELEMENT_MISMATCH = "Style:: Parent element mismatch: unexpected element: ";
+    private static final String UNEXPECTED_ELEMENT_RENDERING_INSTRUCTION_PARENT_ELEMENT_MISMATCH = "Rendering instruction:: Parent element mismatch: unexpected element: ";
+    private static final String UNEXPECTED_ELEMENT_ATLAS_PARENT_ELEMENT_MISMATCH = "Atlas:: Parent element mismatch: unexpected element: ";
+    private static final String UNEXPECTED_ELEMENT_RECT_PARENT_ELEMENT_MISMATCH = "Rect:: Parent element mismatch: unexpected element: ";
+    private static final String UNEXPECTED_ELEMENT_RENDERING_STYLE_PARENT_ELEMENT_MISMATCH = "Rendering style:: Parent element mismatch: unexpected element: ";
+    private static final String UNEXPECTED_ELEMENT_TAG_TRANSFORM_PARENT_ELEMENT_MISMATCH = "Tag transform:: Parent element mismatch: unexpected element: ";
 
     private static final String LINE_STYLE = "L";
     private static final String OUTLINE_STYLE = "O";
@@ -327,7 +334,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 createAtlas(localName, attributes);
 
             } else if ("rect".equals(localName)) {
-                checkState(localName, Element.ATLAS);
+                checkState(localName, Element.RECT);
                 createTextureRegion(localName, attributes);
 
             } else if ("cat".equals(localName)) {
@@ -843,7 +850,7 @@ public class XmlThemeBuilder extends DefaultHandler {
         switch (element) {
             case RENDER_THEME:
                 if (!mElementStack.empty()) {
-                    throw new SAXException(UNEXPECTED_ELEMENT + elementName);
+                    throw new SAXException(UNEXPECTED_ELEMENT_STACK_NOT_EMPTY + elementName);
                 }
                 return;
 
@@ -851,41 +858,48 @@ public class XmlThemeBuilder extends DefaultHandler {
                 parentElement = mElementStack.peek();
                 if (parentElement != Element.RENDER_THEME
                         && parentElement != Element.RULE) {
-                    throw new SAXException(UNEXPECTED_ELEMENT + elementName);
+                    throw new SAXException(UNEXPECTED_ELEMENT_RULE_PARENT_ELEMENT_MISMATCH + elementName);
                 }
                 return;
 
             case STYLE:
                 parentElement = mElementStack.peek();
                 if (parentElement != Element.RENDER_THEME) {
-                    throw new SAXException(UNEXPECTED_ELEMENT + elementName);
+                    throw new SAXException(UNEXPECTED_ELEMENT_STYLE_PARENT_ELEMENT_MISMATCH + elementName);
                 }
                 return;
 
             case RENDERING_INSTRUCTION:
                 if (mElementStack.peek() != Element.RULE) {
-                    throw new SAXException(UNEXPECTED_ELEMENT + elementName);
+                    throw new SAXException(UNEXPECTED_ELEMENT_RENDERING_INSTRUCTION_PARENT_ELEMENT_MISMATCH + elementName);
                 }
                 return;
 
             case ATLAS:
                 parentElement = mElementStack.peek();
                 if (parentElement != Element.RENDER_THEME) {
-                    throw new SAXException(UNEXPECTED_ELEMENT + elementName);
+                    throw new SAXException(UNEXPECTED_ELEMENT_ATLAS_PARENT_ELEMENT_MISMATCH + elementName);
+                }
+                return;
+
+            case RECT:
+                parentElement = mElementStack.peek();
+                if (parentElement != Element.ATLAS) {
+                    throw new SAXException(UNEXPECTED_ELEMENT_ATLAS_PARENT_ELEMENT_MISMATCH + elementName);
                 }
                 return;
 
             case RENDERING_STYLE:
                 parentElement = mElementStack.peek();
                 if (parentElement != Element.RENDER_THEME) {
-                    throw new SAXException(UNEXPECTED_ELEMENT + elementName);
+                    throw new SAXException(UNEXPECTED_ELEMENT_RENDERING_STYLE_PARENT_ELEMENT_MISMATCH + elementName);
                 }
                 return;
 
             case TAG_TRANSFORM:
                 parentElement = mElementStack.peek();
                 if (parentElement != Element.RENDER_THEME) {
-                    throw new SAXException(UNEXPECTED_ELEMENT + elementName);
+                    throw new SAXException(UNEXPECTED_ELEMENT_TAG_TRANSFORM_PARENT_ELEMENT_MISMATCH + elementName);
                 }
                 return;
         }
