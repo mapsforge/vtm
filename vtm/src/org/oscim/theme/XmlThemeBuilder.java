@@ -885,7 +885,7 @@ public class XmlThemeBuilder extends DefaultHandler {
             case RECT:
                 parentElement = mElementStack.peek();
                 if (parentElement != Element.ATLAS) {
-                    throw new SAXException(UNEXPECTED_ELEMENT_ATLAS_PARENT_ELEMENT_MISMATCH + elementName);
+                    throw new SAXException(UNEXPECTED_ELEMENT_RECT_PARENT_ELEMENT_MISMATCH + elementName);
                 }
                 return;
 
