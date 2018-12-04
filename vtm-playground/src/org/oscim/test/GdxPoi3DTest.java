@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.test.gdx.poi3d;
+package org.oscim.test;
 
 import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
@@ -24,13 +24,12 @@ import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.renderer.MapRenderer;
-import org.oscim.test.MapPreferences;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
-public class Gdx3DTest extends GdxMapApp {
+public class GdxPoi3DTest extends GdxMapApp {
 
     @Override
     public void createLayers() {
@@ -82,6 +81,6 @@ public class Gdx3DTest extends GdxMapApp {
 
     public static void main(String[] args) {
         GdxMapApp.init();
-        GdxMapApp.run(new Gdx3DTest());
+        GdxMapApp.run(new GdxPoi3DTest());
     }
 }

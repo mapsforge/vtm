@@ -1,5 +1,6 @@
 /*
  * Copyright 2018 devemux86
+ * Copyright 2018 Gustl22
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -18,14 +19,14 @@ import org.oscim.gdx.GdxMapApp;
 
 import java.io.File;
 
-public class MapsforgeS3DBTest extends MapsforgeTest {
+public class MapsforgePoi3DTest extends MapsforgeTest {
 
-    private MapsforgeS3DBTest(File mapFile) {
-        super(mapFile, true, false);
+    private MapsforgePoi3DTest(File mapFile) {
+        super(mapFile, false, true);
     }
 
     public static void main(String[] args) {
         GdxMapApp.init();
-        GdxMapApp.run(new MapsforgeS3DBTest(getMapFile(args)));
+        GdxMapApp.run(new MapsforgePoi3DTest(getMapFile(args)));
     }
 }

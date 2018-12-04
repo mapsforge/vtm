@@ -1,5 +1,6 @@
 /*
  * Copyright 2016-2018 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,6 +20,7 @@ package org.oscim.test;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
 import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.poi3d.Poi3DLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.buildings.S3DBLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
@@ -40,14 +42,16 @@ public class MapsforgeTest extends GdxMapApp {
 
     private File mapFile;
     private boolean s3db;
+    private boolean poi3d;
 
     MapsforgeTest(File mapFile) {
-        this(mapFile, false);
+        this(mapFile, false, false);
     }
 
-    MapsforgeTest(File mapFile, boolean s3db) {
+    MapsforgeTest(File mapFile, boolean s3db, boolean poi3d) {
         this.mapFile = mapFile;
         this.s3db = s3db;
+        this.poi3d = poi3d;
     }
 
     @Override
@@ -63,6 +67,10 @@ public class MapsforgeTest extends GdxMapApp {
             mMap.layers().add(new S3DBLayer(mMap, l));
         else
             mMap.layers().add(new BuildingLayer(mMap, l));
+
+        if (poi3d)
+            mMap.layers().add(new Poi3DLayer(mMap, l));
+
         mMap.layers().add(new LabelLayer(mMap, l));
 
         DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap);
