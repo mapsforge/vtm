@@ -22,9 +22,10 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.utils.Array;
 
+import org.oscim.core.Box;
 import org.oscim.core.MapElement;
 import org.oscim.core.MapPosition;
-import org.oscim.core.PointF;
+import org.oscim.core.MercatorProjection;
 import org.oscim.core.Tag;
 import org.oscim.core.Tile;
 import org.oscim.event.Event;
@@ -33,6 +34,7 @@ import org.oscim.layers.Layer;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.MapTile.TileData;
 import org.oscim.layers.tile.TileSet;
+import org.oscim.layers.tile.ZoomLimiter;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer.TileLoaderProcessHook;
@@ -40,20 +42,23 @@ import org.oscim.map.Map;
 import org.oscim.model.VtmModels;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.renderer.bucket.SymbolItem;
+import org.oscim.utils.geom.GeometryUtils;
 import org.oscim.utils.pool.Inlist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Experimental Layer to display POIs with 3D models.
  */
-public class Poi3DLayer extends Layer implements Map.UpdateListener {
+public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter.IZoomLimiter {
 
     private static final Logger log = LoggerFactory.getLogger(Poi3DLayer.class);
 
@@ -68,6 +73,13 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
             symbols.clear();
         }
     }
+
+
+    /**
+     * Distance in meter between two 3d-models in an area (e.g. trees in forest).
+     * Indicator for density. Actual distance depends on RANDOM_TRANSFORM.
+     */
+    public static float AREA_DISTANCE = 8f;
 
     public final static int MIN_ZOOM = BuildingLayer.MIN_ZOOM;
     static final String POI_DATA = Poi3DLayer.class.getSimpleName();
@@ -92,6 +104,11 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
     TileSet mTileSet = new TileSet();
     TileSet mPrevTiles = new TileSet();
 
+    /**
+     * Use ZoomLimiter to avoid different results on different zoom levels (e.g. for areas)
+     */
+    final ZoomLimiter mZoomLimiter;
+
     public Poi3DLayer(Map map, VectorTileLayer tileLayer) {
         this(map, tileLayer, true);
     }
@@ -103,7 +120,7 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
             @Override
             public boolean process(MapTile tile, RenderBuckets buckets, MapElement element) {
 
-                if (tile.zoomLevel < MIN_ZOOM) return false;
+                if (tile.zoomLevel < mZoomLimiter.getMinZoom()) return false;
 
                 Poi3DTileData td = get(tile);
 
@@ -112,14 +129,61 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
                         continue;
                     List<ModelHolder> holders = scene.getValue();
 
-                    PointF p;
                     SymbolItem s;
-                    // TODO fill poly area with items
-                    for (int i = 0; i < element.getNumPoints(); i++) {
-                        p = element.getPoint(i);
+                    int pointCount = element.getNumPoints() * 2;
+                    float[] points = element.points;
+
+                    // Fill poly area with items
+                    if (element.isPoly()) {
+                        // TODO lazy init?
+                        double scale = MercatorProjection.zoomLevelToScale(tile.zoomLevel);
+                        double pixelsX = Tile.SIZE * tile.tileX;
+                        double pixelsY = Tile.SIZE * tile.tileY;
+                        double lat = MercatorProjection.tileYToLatitudeWithScale(tile.tileY, scale);
+                        double areaDistPix = MercatorProjection.metersToPixelsWithScale(AREA_DISTANCE, lat, scale);
+
+                        Box box = new Box(0, 0, Tile.SIZE, Tile.SIZE);
+                        box.setExtents(points, pointCount);
+                        box.limit(0, 0, Tile.SIZE, Tile.SIZE);
+
+                        box.xmin += (pixelsX + box.xmin) % areaDistPix;
+                        box.ymin += (pixelsY + box.ymin) % areaDistPix;
+                        float variation = (float) areaDistPix / 16f; // can customize
+
+                        ArrayList<Float> areaPoints = new ArrayList<>(); // static array reasonable?
+                        while (box.xmin < box.xmax) {
+                            double tmpY = box.ymin;
+                            while (tmpY < box.ymax) {
+                                float x = (float) box.xmin;
+                                float y = (float) tmpY;
+                                if (RANDOM_TRANSFORM) {
+                                    int hashX = getPosXHash(tile, x);
+                                    int hashY = getPosYHash(tile, y);
+                                    int hash = hashY * hashX;
+                                    x += (((hash + hashX) % 14) - 7) * variation;
+                                    y += (((hash + hashY) % 14) - 7) * variation;
+                                }
+                                if (GeometryUtils.pointInPoly(x, y, points, pointCount, 0)) {
+                                    areaPoints.add(x);
+                                    areaPoints.add(y);
+                                }
+                                tmpY += areaDistPix;
+                            }
+                            box.xmin += areaDistPix;
+                        }
+
+                        points = new float[areaPoints.size()];
+                        for (int i = 0; i < areaPoints.size(); i++) {
+                            points[i] = areaPoints.get(i);
+                        }
+                        pointCount = points.length;
+                    }
+
+
+                    for (int i = 0; i < pointCount; i += 2) {
                         s = SymbolItem.pool.get();
-                        s.x = p.x;
-                        s.y = p.y;
+                        s.x = points[i];
+                        s.y = points[i + 1];
 
                         ModelHolder holder;
                         if (holders.size() > 1) {
@@ -138,7 +202,8 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
                         symbolItems.push(s);
                     }
 
-                    return true;
+                    // In areas, do not prevent from further rendering (show theme renders)
+                    return !element.isPoly();
                 }
 
                 return false;
@@ -149,6 +214,8 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
             }
         });
         mTileLayer = tileLayer;
+
+        mZoomLimiter = new ZoomLimiter(tileLayer.getManager(), MIN_ZOOM, map.viewport().getMaxZoomLevel(), MIN_ZOOM);
 
         mRenderer = mG3d = new GdxRenderer3D2(mMap);
 
@@ -226,9 +293,17 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
      * @return an int which is equal in all zoom levels
      */
     private int getPosHash(Tile tile, SymbolItem item) {
-        int a = (int) (((tile.tileX + ((double) item.x / Tile.SIZE)) * 1000000000) / (1 << tile.zoomLevel));
-        int b = (int) (((tile.tileY + ((double) item.y / Tile.SIZE)) * 1000000000) / (1 << tile.zoomLevel));
+        int a = getPosXHash(tile, item.x);
+        int b = getPosYHash(tile, item.y);
         return Math.abs(a * b);
+    }
+
+    private int getPosXHash(Tile tile, float x) {
+        return (int) (((tile.tileX + ((double) x / Tile.SIZE)) * 1000000000) / (1 << tile.zoomLevel)) * 37;
+    }
+
+    private int getPosYHash(Tile tile, float y) {
+        return (int) (((tile.tileY + ((double) y / Tile.SIZE)) * 1000000000) / (1 << tile.zoomLevel)) * 73;
     }
 
     @Override
@@ -255,11 +330,29 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
 
         // log.debug("update");
 
-        mTileLayer.tileRenderer().getVisibleTiles(mTileSet);
+        Integer tZoom = mTileLayer.tileRenderer().getVisibleTiles(mTileSet, true);
 
-        if (mTileSet.cnt == 0) {
+        if (mTileSet.cnt == 0 || tZoom == null) {
             mTileSet.releaseTiles();
             return;
+        }
+
+        int zoom;
+        if (tZoom > mZoomLimiter.getZoomLimit()) {
+            // render from zoom limit tiles (avoid duplicates and null)
+            Set<MapTile> hashTiles = new HashSet<>();
+            for (int i = 0; i < mTileSet.cnt; i++) {
+                MapTile t = mZoomLimiter.getTile(mTileSet.tiles[i]);
+                if (t == null)
+                    continue;
+                hashTiles.add(t);
+            }
+
+            mTileSet.cnt = hashTiles.size();
+            mTileSet.tiles = hashTiles.toArray(new MapTile[mTileSet.cnt]);
+            zoom = mZoomLimiter.getZoomLimit();
+        } else {
+            zoom = tZoom;
         }
 
         boolean changed = false;
@@ -324,7 +417,6 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
 
         mPrevTiles.releaseTiles();
 
-        int zoom = mTileSet.tiles[0].zoomLevel;
         float groundScale = mTileSet.tiles[0].getGroundScale();
 
         TileSet tmp = mPrevTiles;
@@ -396,5 +488,15 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener {
         addModel(VtmModels.TREE_OAK, TAG_FOREST);
         addModel(VtmModels.TREE_ASH, TAG_FOREST);
         addModel(VtmModels.TREE_FIR, TAG_FOREST);
+    }
+
+    @Override
+    public void addZoomLimit() {
+        mZoomLimiter.addZoomLimit();
+    }
+
+    @Override
+    public void removeZoomLimit() {
+        mZoomLimiter.removeZoomLimit();
     }
 }
