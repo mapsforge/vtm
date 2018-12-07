@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.utils.Array;
 
 import org.oscim.core.Box;
+import org.oscim.core.GeometryBuffer;
 import org.oscim.core.MapElement;
 import org.oscim.core.MapPosition;
 import org.oscim.core.MercatorProjection;
@@ -43,6 +44,7 @@ import org.oscim.model.VtmModels;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.renderer.bucket.SymbolItem;
 import org.oscim.utils.geom.GeometryUtils;
+import org.oscim.utils.geom.TileClipper;
 import org.oscim.utils.pool.Inlist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,13 +76,6 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
         }
     }
 
-
-    /**
-     * Distance in meter between two 3d-models in an area (e.g. trees in forest).
-     * Indicator for density. Actual distance depends on RANDOM_TRANSFORM.
-     */
-    public static float AREA_DISTANCE = 8f;
-
     public final static int MIN_ZOOM = BuildingLayer.MIN_ZOOM;
     static final String POI_DATA = Poi3DLayer.class.getSimpleName();
     public final static boolean RANDOM_TRANSFORM = true; // TODO customizable for each tag
@@ -93,12 +88,21 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
     public final static Tag TAG_ARTWORK = new Tag("tourism", "artwork");
     public final static Tag TAG_TREE_BROADLEAVED = new Tag("leaf_type", "broadleaved");
     public final static Tag TAG_TREE_NEEDLELEAVED = new Tag("leaf_type", "needleleaved");
+    public final static Tag TAG_TREE_ROW = new Tag("natural", "tree_row");
     public final static Tag TAG_STREETLAMP = new Tag("highway", "street_lamp");
+
+    /**
+     * Distance in meter between two 3d-models in an area or on a line (e.g. trees in forest).
+     * Indicator for density. Actual distance depends on RANDOM_TRANSFORM.
+     */
+    public static float MODEL_DISTANCE = 8f;
 
     AssetManager mAssets;
     GdxRenderer3D2 mG3d;
+    Set<Tag> mHideThemeRenders = new HashSet<>();
     boolean mLoading;
     LinkedHashMap<Tag, List<ModelHolder>> mScenes = new LinkedHashMap<>();
+    TileClipper mTileClipper = new TileClipper(0, 0, Tile.SIZE, Tile.SIZE);
     VectorTileLayer mTileLayer;
     LinkedHashMap<Tile, Array<ModelInstance>> mTileMap = new LinkedHashMap<>();
     TileSet mTileSet = new TileSet();
@@ -130,53 +134,87 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
                     List<ModelHolder> holders = scene.getValue();
 
                     SymbolItem s;
-                    int pointCount = element.getNumPoints() * 2;
-                    float[] points = element.points;
+                    int pointCount;
+                    float[] points;
 
-                    // Fill poly area with items
-                    if (element.isPoly()) {
+                    // Fill poly with items
+                    if (element.isPoly() || element.isLine()) {
+                        GeometryBuffer geom = new GeometryBuffer(element);
+                        mTileClipper.clip(geom); // single points should already have been clipped
+
+                        points = geom.points;
+                        pointCount = element.getNumPoints() * 2;
+                        if (pointCount < 4)
+                            return false; // Elements may have no points after clipping
                         // TODO lazy init?
                         double scale = MercatorProjection.zoomLevelToScale(tile.zoomLevel);
-                        double pixelsX = Tile.SIZE * tile.tileX;
-                        double pixelsY = Tile.SIZE * tile.tileY;
                         double lat = MercatorProjection.tileYToLatitudeWithScale(tile.tileY, scale);
-                        double areaDistPix = MercatorProjection.metersToPixelsWithScale(AREA_DISTANCE, lat, scale);
+                        double modelDistPix = MercatorProjection.metersToPixelsWithScale(MODEL_DISTANCE, lat, scale);
 
-                        Box box = new Box(0, 0, Tile.SIZE, Tile.SIZE);
-                        box.setExtents(points, pointCount);
-                        box.limit(0, 0, Tile.SIZE, Tile.SIZE);
+                        ArrayList<Float> polyPoints = new ArrayList<>(); // fixed array reasonable?
+                        float variation = (float) modelDistPix / 16f; // customizable
 
-                        box.xmin += (pixelsX + box.xmin) % areaDistPix;
-                        box.ymin += (pixelsY + box.ymin) % areaDistPix;
-                        float variation = (float) areaDistPix / 16f; // can customize
+                        if (geom.isPoly()) {
+                            Box box = new Box();
+                            box.setExtents(points, pointCount);
 
-                        ArrayList<Float> areaPoints = new ArrayList<>(); // static array reasonable?
-                        while (box.xmin < box.xmax) {
-                            double tmpY = box.ymin;
-                            while (tmpY < box.ymax) {
-                                float x = (float) box.xmin;
-                                float y = (float) tmpY;
-                                if (RANDOM_TRANSFORM) {
-                                    int hashX = getPosXHash(tile, x);
-                                    int hashY = getPosYHash(tile, y);
-                                    int hash = hashY * hashX;
-                                    x += (((hash + hashX) % 14) - 7) * variation;
-                                    y += (((hash + hashY) % 14) - 7) * variation;
+                            double pixelsX = Tile.SIZE * tile.tileX;
+                            double pixelsY = Tile.SIZE * tile.tileY;
+                            box.xmin += (pixelsX + box.xmin) % modelDistPix;
+                            box.ymin += (pixelsY + box.ymin) % modelDistPix;
+
+                            while (box.xmin < box.xmax) {
+                                double tmpY = box.ymin;
+                                while (tmpY < box.ymax) {
+                                    float x = (float) box.xmin;
+                                    float y = (float) tmpY;
+                                    if (RANDOM_TRANSFORM) {
+                                        int hashX = getPosXHash(tile, x);
+                                        int hashY = getPosYHash(tile, y);
+                                        int hash = hashY * hashX;
+                                        x += (((hash + hashX) % 14) - 7) * variation;
+                                        y += (((hash + hashY) % 14) - 7) * variation;
+                                    }
+                                    if (GeometryUtils.pointInPoly(x, y, points, pointCount, 0)) {
+                                        polyPoints.add(x);
+                                        polyPoints.add(y);
+                                    }
+                                    tmpY += modelDistPix;
                                 }
-                                if (GeometryUtils.pointInPoly(x, y, points, pointCount, 0)) {
-                                    areaPoints.add(x);
-                                    areaPoints.add(y);
-                                }
-                                tmpY += areaDistPix;
+                                box.xmin += modelDistPix;
                             }
-                            box.xmin += areaDistPix;
+                        } else {
+                            // Place models on a line with a gap of MODEL_DISTANCE
+                            float[] p1 = new float[2]; // TODO avoid initialization
+                            float[] p2 = new float[2];
+                            p1[0] = points[0];
+                            p1[1] = points[1];
+                            float sumDist = 0;
+                            for (int i = 2; i < pointCount; i += 2) {
+                                p2[0] = points[i];
+                                p2[1] = points[i + 1];
+                                float dist = (float) GeometryUtils.distance2D(p1, p2);
+                                float[] vec = GeometryUtils.scale(GeometryUtils.diffVec(p2, p1), 1 / dist);
+                                while (sumDist < dist) {
+                                    float[] tmp = GeometryUtils.scale(vec, sumDist);
+                                    polyPoints.add(p1[0] + tmp[0]);
+                                    polyPoints.add(p1[1] + tmp[1]);
+                                    sumDist += modelDistPix;
+                                }
+                                sumDist -= dist;
+                                p1[0] = p2[0];
+                                p1[1] = p2[1];
+                            }
                         }
 
-                        points = new float[areaPoints.size()];
-                        for (int i = 0; i < areaPoints.size(); i++) {
-                            points[i] = areaPoints.get(i);
+                        points = new float[polyPoints.size()];
+                        for (int i = 0; i < polyPoints.size(); i++) {
+                            points[i] = polyPoints.get(i);
                         }
                         pointCount = points.length;
+                    } else {
+                        pointCount = element.getNumPoints() * 2;
+                        points = element.points;
                     }
 
 
@@ -202,8 +240,8 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
                         symbolItems.push(s);
                     }
 
-                    // In areas, do not prevent from further rendering (show theme renders)
-                    return !element.isPoly();
+                    // If set, prevent element from further rendering
+                    return mHideThemeRenders.contains(scene.getKey());
                 }
 
                 return false;
@@ -349,6 +387,8 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
             }
 
             mTileSet.cnt = hashTiles.size();
+            if (mTileSet.cnt == 0) // If no ancestor tiles were found
+                return;
             mTileSet.tiles = hashTiles.toArray(new MapTile[mTileSet.cnt]);
             zoom = mZoomLimiter.getZoomLimit();
         } else {
@@ -472,6 +512,21 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
         }
     }
 
+    /**
+     * Provide elements with specified tag from being rendered with theme rules.
+     * This gives more flexibility without changing render theme.
+     */
+    public void hideThemeRenders(Tag tag) {
+        mHideThemeRenders.add(tag);
+    }
+
+    /**
+     * Enable theme rendering of previously hidden elements.
+     */
+    public void showThemeRenders(Tag tag) {
+        mHideThemeRenders.remove(tag);
+    }
+
     public void useDefaults() {
         /* Keep order (the upper tags have higher priority)
          * Example: needle leaved woods only get fir model although it has the wood tag.
@@ -482,12 +537,15 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
         addModel(VtmModels.TREE_FIR, TAG_TREE_NEEDLELEAVED);
         addModel(VtmModels.TREE_OAK, TAG_TREE_BROADLEAVED);
         addModel(VtmModels.TREE_ASH, TAG_TREE);
+        addModel(VtmModels.TREE_ASH, TAG_TREE_ROW);
         addModel(VtmModels.TREE_FIR, TAG_WOOD);
         addModel(VtmModels.TREE_OAK, TAG_WOOD);
         addModel(VtmModels.TREE_ASH, TAG_WOOD);
         addModel(VtmModels.TREE_OAK, TAG_FOREST);
         addModel(VtmModels.TREE_ASH, TAG_FOREST);
         addModel(VtmModels.TREE_FIR, TAG_FOREST);
+
+        hideThemeRenders(TAG_STREETLAMP);
     }
 
     @Override
