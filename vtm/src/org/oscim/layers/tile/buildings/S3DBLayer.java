@@ -112,7 +112,7 @@ public class S3DBLayer extends BuildingLayer {
                 float p1 = element.points[k];
                 float p2 = element.points[k + 1];
                 if (bb == null)
-                    bb = new Box(p1, p2, p1, p2);
+                    bb = new Box(p1, p2);
                 else {
                     bb.add(p1, p2);
                 }
