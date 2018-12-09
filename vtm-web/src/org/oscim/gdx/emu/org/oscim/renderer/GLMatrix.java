@@ -46,7 +46,7 @@ public class GLMatrix {
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer();
 
-    private final static String INVALID_INPUT = "Bad Array!";
+    private static final String INVALID_INPUT = "Bad Array!";
 
     public final float tmp[] = new float[16];
     public final float val[] = new float[16];

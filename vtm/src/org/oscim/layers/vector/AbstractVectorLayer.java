@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractVectorLayer<T> extends Layer implements UpdateListener {
     public static final Logger log = LoggerFactory.getLogger(AbstractVectorLayer.class);
 
-    protected final static double UNSCALE_COORD = 4;
+    protected static final double UNSCALE_COORD = 4;
 
     // limit coords to maximum resolution of GL.Short
     private static final int MAX_CLIP = (int) (Short.MAX_VALUE / MapRenderer.COORD_SCALE);

@@ -42,8 +42,8 @@ import java.util.ArrayList;
 
 public class TileCache implements ITileCache {
 
-    final static org.slf4j.Logger log = LoggerFactory.getLogger(TileCache.class);
-    final static boolean dbg = false;
+    static final org.slf4j.Logger log = LoggerFactory.getLogger(TileCache.class);
+    static final boolean dbg = false;
 
     class CacheTileReader implements TileReader {
         final InputStream mInputStream;

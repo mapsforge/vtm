@@ -27,7 +27,7 @@ import java.net.Socket;
  * A utility class with IO-specific helper methods.
  */
 public final class IOUtils {
-    final static Logger log = LoggerFactory.getLogger(IOUtils.class);
+    static final Logger log = LoggerFactory.getLogger(IOUtils.class);
 
     /**
      * Invokes the {@link Closeable#close()} method on the given object. If an

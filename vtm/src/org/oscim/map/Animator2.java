@@ -36,7 +36,7 @@ import static org.oscim.utils.FastMath.clamp;
 public class Animator2 extends Animator {
     private static final Logger log = LoggerFactory.getLogger(Animator2.class);
 
-    private final static int ANIM_KINETIC = 1 << 5;
+    private static final int ANIM_KINETIC = 1 << 5;
 
     /**
      * The minimum changes that are pleasant for users.

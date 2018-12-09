@@ -30,7 +30,7 @@ import static org.oscim.utils.geom.GeometryUtils.squareSegmentDistance;
  * https://github.com/ekeneijeoma/simplify-java
  */
 public class SimplifyDP {
-    final static Logger log = LoggerFactory.getLogger(SimplifyDP.class);
+    static final Logger log = LoggerFactory.getLogger(SimplifyDP.class);
 
     boolean[] markers = new boolean[128];
     int[] stack = new int[32];

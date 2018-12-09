@@ -340,8 +340,8 @@ public class TextureItem extends Inlist<TextureItem> {
 
     /* Pool for not-pooled textures. Disposed items will only be released
      * on the GL-Thread and will not be put back in any pool. */
-    final static TexturePool NOPOOL = new TexturePool(0);
-    final static ArrayList<Integer> disposedTextures = new ArrayList<Integer>();
+    static final TexturePool NOPOOL = new TexturePool(0);
+    static final ArrayList<Integer> disposedTextures = new ArrayList<Integer>();
 
     /**
      * Disposed textures are released by MapRenderer after each frame

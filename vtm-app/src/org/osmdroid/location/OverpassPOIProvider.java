@@ -17,7 +17,7 @@ import java.util.List;
 
 public class OverpassPOIProvider implements POIProvider {
 
-    final static Logger log = LoggerFactory
+    static final Logger log = LoggerFactory
             .getLogger(OverpassPOIProvider.class);
 
     public static final String TAG_KEY_WEBSITE = "website".intern();

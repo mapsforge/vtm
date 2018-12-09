@@ -94,7 +94,7 @@ public class VertexData extends Inlist.List<Chunk> {
         return super.clear();
     }
 
-    private final static Pool pool = new Pool();
+    private static final Pool pool = new Pool();
 
     public void dispose() {
         pool.releaseAll(super.clear());

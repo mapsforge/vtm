@@ -75,7 +75,7 @@ public class OSciMap2TileSource extends UrlTileSource {
         private ITileDataSink mMapDataSink;
 
         // scale coordinates to tile size
-        private final static float REF_TILE_SIZE = 4096.0f;
+        private static final float REF_TILE_SIZE = 4096.0f;
         private float mScale;
 
         TileDecoder() {

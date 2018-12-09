@@ -61,4 +61,11 @@ public class DefaultSources {
             .url("https://tiles.wmflabs.org/hillshading")
             .tilePath("/{Z}/{X}/{Y}.png")
             .zoomMax(14);
+
+    // Needs an API key
+    public static Builder<?> MAPILION_HILLSHADE = BitmapTileSource.builder()
+            .url("https://tiles.mapilion.com/hillshades")
+            .tilePath("/{Z}/{X}/{Y}.png")
+            .zoomMin(1)
+            .zoomMax(12);
 }

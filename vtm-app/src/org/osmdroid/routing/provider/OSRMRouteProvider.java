@@ -30,10 +30,10 @@ import java.util.Locale;
  */
 public class OSRMRouteProvider extends RouteProvider {
 
-    final static Logger log = LoggerFactory.getLogger(OSRMRouteProvider.class);
+    static final Logger log = LoggerFactory.getLogger(OSRMRouteProvider.class);
 
     // 1 for 6 digit precision, 10 for 5
-    private final static int ENCODING_PRECISION = 1;
+    private static final int ENCODING_PRECISION = 1;
 
     //static final String OSRM_SERVICE = "http://city.informatik.uni-bremen.de:5000/viaroute?";
     //static final String OSRM_SERVICE = "http://city.informatik.uni-bremen.de:5001/viaroute?";

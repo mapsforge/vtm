@@ -37,7 +37,7 @@ import java.util.ArrayList;
 
 public class FourSquareProvider implements POIProvider {
 
-    final static Logger log = LoggerFactory.getLogger(FourSquareProvider.class);
+    static final Logger log = LoggerFactory.getLogger(FourSquareProvider.class);
 
     //    https://developer.foursquare.com/docs/venues/search
     //    https://developer.foursquare.com/docs/responses/venue

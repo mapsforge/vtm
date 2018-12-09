@@ -45,8 +45,8 @@ public class Rule {
         public static final int WHEN_MATCHED = 1 << 1;
     }
 
-    public final static RenderStyle[] EMPTY_STYLE = new RenderStyle[0];
-    public final static Rule[] EMPTY_RULES = new Rule[0];
+    public static final RenderStyle[] EMPTY_STYLE = new RenderStyle[0];
+    public static final Rule[] EMPTY_RULES = new Rule[0];
 
     public final Rule[] subRules;
     public final RenderStyle[] styles;

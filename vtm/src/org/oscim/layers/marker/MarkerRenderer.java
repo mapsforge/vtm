@@ -196,7 +196,7 @@ public class MarkerRenderer extends BucketRenderer {
         ZSORT.doSort(a, zComparator, lo, hi);
     }
 
-    final static Comparator<InternalItem> zComparator = new Comparator<InternalItem>() {
+    static final Comparator<InternalItem> zComparator = new Comparator<InternalItem>() {
         @Override
         public int compare(InternalItem a, InternalItem b) {
             if (a.visible && b.visible) {

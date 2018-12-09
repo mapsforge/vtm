@@ -43,7 +43,7 @@ public class LocationTextureRenderer extends BucketRenderer {
     private static final int SHOW_ACCURACY_ZOOM = 13;
     private static final boolean IS_MAC = System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("mac");
 
-    private final static String V_SHADER = (""
+    private static final String V_SHADER = (""
             + "precision highp float;"
             + "uniform mat4 u_mvp;"
             + "uniform float u_phase;"

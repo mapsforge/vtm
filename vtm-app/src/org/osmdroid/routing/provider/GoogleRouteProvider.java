@@ -35,7 +35,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class GoogleRouteProvider extends RouteProvider {
 
-    final static Logger log = LoggerFactory.getLogger(GoogleRouteProvider.class);
+    static final Logger log = LoggerFactory.getLogger(GoogleRouteProvider.class);
 
     static final String GOOGLE_DIRECTIONS_SERVICE = "http://maps.googleapis.com/maps/api/directions/xml?";
 

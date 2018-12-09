@@ -38,7 +38,7 @@ public class DistanceTouchOverlay extends Layer implements Map.InputListener,
     private float mPrevX1, mPrevX2, mPrevY1, mPrevY2;
     private float mCurX1, mCurX2, mCurY1, mCurY2;
 
-    // private final static int POINTER_UP = -1;
+    // private static final int POINTER_UP = -1;
     // private int mPointer1 = POINTER_UP;
     // private int mPointer2 = POINTER_UP;
 

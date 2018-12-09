@@ -94,13 +94,13 @@ public class AwtBitmap implements Bitmap {
     public void eraseColor(int transparent) {
     }
 
-    private final static IntBuffer tmpBuffer = BufferUtils
+    private static final IntBuffer tmpBuffer = BufferUtils
             .newIntBuffer(TextureBucket.TEXTURE_HEIGHT
                     * TextureBucket.TEXTURE_WIDTH);
-    private final static int[] tmpPixel = new int[TextureBucket.TEXTURE_HEIGHT
+    private static final int[] tmpPixel = new int[TextureBucket.TEXTURE_HEIGHT
             * TextureBucket.TEXTURE_WIDTH];
 
-    private final static boolean WRITE_TEX = false;
+    private static final boolean WRITE_TEX = false;
     private int dbgCnt;
 
     @Override

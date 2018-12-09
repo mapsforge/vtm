@@ -23,9 +23,9 @@ import org.oscim.utils.pool.SyncPool;
 
 public class TextItem extends Inlist<TextItem> {
     //static final Logger log = LoggerFactory.getLogger(TextItem.class);
-    private final static int MAX_POOL = 250;
+    private static final int MAX_POOL = 250;
 
-    public final static SyncPool<TextItem> pool = new SyncPool<TextItem>(MAX_POOL) {
+    public static final SyncPool<TextItem> pool = new SyncPool<TextItem>(MAX_POOL) {
 
         @Override
         protected TextItem createItem() {

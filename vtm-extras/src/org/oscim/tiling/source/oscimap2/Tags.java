@@ -19,8 +19,8 @@ package org.oscim.tiling.source.oscimap2;
 import org.oscim.core.Tag;
 
 public class Tags {
-    public final static int MAX = 628;
-    public final static int LIMIT = 1024;
+    public static final int MAX = 628;
+    public static final int LIMIT = 1024;
 
     private static final String s_limited = "limited";
     private static final String s_chain = "chain";
@@ -584,7 +584,7 @@ public class Tags {
 
     // only the keys that were imported via osm2pgsql
     // FIXME add whats missing, e.g. wheelchair
-    public final static String[] keys = {
+    public static final String[] keys = {
             "access",
             "addr:housename",
             "addr:housenumber",
@@ -651,7 +651,7 @@ public class Tags {
     };
 
     // most common tags, ordered by tag count
-    public final static Tag[] tags = {
+    public static final Tag[] tags = {
             new Tag(s_building, s_yes, false),
             new Tag(s_highway, s_residential, false),
             new Tag(s_highway, s_service, false),

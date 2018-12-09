@@ -1,9 +1,5 @@
 /*
- * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2018 devemux86
- * Copyright 2018 boldtrn
- *
- * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ * Copyright 2018 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -23,10 +19,10 @@ import org.oscim.tiling.OverzoomTileDataSource;
 import org.oscim.tiling.source.UrlTileDataSource;
 import org.oscim.tiling.source.UrlTileSource;
 
-public class OpenMapTilesMvtTileSource extends UrlTileSource {
+public class MapilionMvtTileSource extends UrlTileSource {
 
-    private static final String DEFAULT_URL = "https://free.tilehosting.com/data/v3";
-    private static final String DEFAULT_PATH = "/{Z}/{X}/{Y}.pbf.pict";
+    private static final String DEFAULT_URL = "https://tiles.mapilion.com/data/v3";
+    private static final String DEFAULT_PATH = "/{Z}/{X}/{Y}.pbf";
 
     public static class Builder<T extends Builder<T>> extends UrlTileSource.Builder<T> {
         private String locale = "";
@@ -41,8 +37,8 @@ public class OpenMapTilesMvtTileSource extends UrlTileSource {
             return self();
         }
 
-        public OpenMapTilesMvtTileSource build() {
-            return new OpenMapTilesMvtTileSource(this);
+        public MapilionMvtTileSource build() {
+            return new MapilionMvtTileSource(this);
         }
     }
 
@@ -53,16 +49,16 @@ public class OpenMapTilesMvtTileSource extends UrlTileSource {
 
     private final String locale;
 
-    public OpenMapTilesMvtTileSource(Builder<?> builder) {
+    public MapilionMvtTileSource(Builder<?> builder) {
         super(builder);
         this.locale = builder.locale;
     }
 
-    public OpenMapTilesMvtTileSource() {
+    public MapilionMvtTileSource() {
         this(builder());
     }
 
-    public OpenMapTilesMvtTileSource(String urlString) {
+    public MapilionMvtTileSource(String urlString) {
         this(builder().url(urlString));
     }
 

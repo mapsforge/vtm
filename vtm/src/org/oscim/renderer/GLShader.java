@@ -28,7 +28,7 @@ import java.nio.IntBuffer;
 import static org.oscim.backend.GLAdapter.gl;
 
 public abstract class GLShader {
-    final static Logger log = LoggerFactory.getLogger(GLShader.class);
+    static final Logger log = LoggerFactory.getLogger(GLShader.class);
 
     public int program;
 

@@ -10,7 +10,7 @@ import static org.oscim.utils.FastMath.clamp;
 
 public class ColorUtil {
 
-    private final static Vec3 TMP_VEC = new Vec3();
+    private static final Vec3 TMP_VEC = new Vec3();
 
     public static synchronized int desaturate(int color) {
         Vec3 hsl = TMP_VEC;

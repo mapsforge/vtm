@@ -13,7 +13,7 @@ import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
 
 public class QuadTreeTest {
-    final static Random rand = new Random((long) (Math.PI * 10000000));
+    static final Random rand = new Random((long) (Math.PI * 10000000));
 
     public class Item {
         final int val;

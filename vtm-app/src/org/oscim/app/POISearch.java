@@ -48,11 +48,11 @@ public class POISearch {
     ItemizedOverlayWithBubble<ExtendedMarkerItem> poiMarkers;
     MarkerSymbol[] mMarkers;
 
-    private final static int MDEFAULT = 0;
-    private final static int MFLICKR = 1;
-    private final static int MPICASA = 2;
-    private final static int MWIKI16 = 3;
-    private final static int MWIKI32 = 4;
+    private static final int MDEFAULT = 0;
+    private static final int MFLICKR = 1;
+    private static final int MPICASA = 2;
+    private static final int MWIKI16 = 3;
+    private static final int MWIKI32 = 4;
 
     POISearch() {
         mPOIs = new ArrayList<POI>();
@@ -89,12 +89,12 @@ public class POISearch {
         return mPOIs;
     }
 
-    final static String TAG_WIKIPEDIA = "wikipedia";
-    final static String TAG_FLICKR = "flickr";
-    final static String TAG_PICASA = "picasa";
-    final static String TAG_FOURSQUARE = "foursquare";
+    static final String TAG_WIKIPEDIA = "wikipedia";
+    static final String TAG_FLICKR = "flickr";
+    static final String TAG_PICASA = "picasa";
+    static final String TAG_FOURSQUARE = "foursquare";
 
-    //private final static String TAG_NOMINATIM = "nominatim";
+    //private static final String TAG_NOMINATIM = "nominatim";
 
     class POITask extends AsyncTask<Object, Void, List<POI>> {
         String mTag;

@@ -39,12 +39,12 @@ import org.oscim.utils.FastMath;
  */
 public class Viewport {
 
-    public final static int MAX_ZOOM_LEVEL = 20;
-    public final static int MIN_ZOOM_LEVEL = 2;
-    public final static float MIN_TILT = 0;
+    public static final int MAX_ZOOM_LEVEL = 20;
+    public static final int MIN_ZOOM_LEVEL = 2;
+    public static final float MIN_TILT = 0;
 
     /* Note: limited by numTiles in TileManager to ~80° */
-    public final static float MAX_TILT = 65;
+    public static final float MAX_TILT = 65;
 
     protected double mMaxScale = (1 << MAX_ZOOM_LEVEL);
     protected double mMinScale = (1 << MIN_ZOOM_LEVEL);
@@ -82,13 +82,13 @@ public class Viewport {
 
     protected float mHeight, mWidth;
 
-    public final static float VIEW_DISTANCE = 3.0f;
-    public final static float VIEW_NEAR = 1;
-    public final static float VIEW_FAR = 8;
+    public static final float VIEW_DISTANCE = 3.0f;
+    public static final float VIEW_NEAR = 1;
+    public static final float VIEW_FAR = 8;
     /**
      * scale map plane at VIEW_DISTANCE to near plane
      */
-    public final static float VIEW_SCALE = (VIEW_NEAR / VIEW_DISTANCE) * 0.5f;
+    public static final float VIEW_SCALE = (VIEW_NEAR / VIEW_DISTANCE) * 0.5f;
 
     public Viewport() {
         mPos.scale = mMinScale;

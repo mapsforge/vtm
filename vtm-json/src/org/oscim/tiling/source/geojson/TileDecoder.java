@@ -52,18 +52,18 @@ public class TileDecoder implements ITileDecoder {
     private final LinkedHashMap<String, Object> mTagMap;
     private final JsonFactory mJsonFactory;
 
-    private final static char[] FIELD_FEATURES = "features".toCharArray();
-    private final static char[] FIELD_GEOMETRY = "geometry".toCharArray();
-    private final static char[] FIELD_PROPERTIES = "properties".toCharArray();
-    private final static char[] FIELD_COORDINATES = "coordinates".toCharArray();
-    private final static char[] FIELD_TYPE = "type".toCharArray();
+    private static final char[] FIELD_FEATURES = "features".toCharArray();
+    private static final char[] FIELD_GEOMETRY = "geometry".toCharArray();
+    private static final char[] FIELD_PROPERTIES = "properties".toCharArray();
+    private static final char[] FIELD_COORDINATES = "coordinates".toCharArray();
+    private static final char[] FIELD_TYPE = "type".toCharArray();
 
-    private final static char[] LINESTRING = "LineString".toCharArray();
-    private final static char[] POLYGON = "Polygon".toCharArray();
-    private final static char[] POINT = "Point".toCharArray();
-    private final static char[] MULTI_LINESTRING = "MultiLineString".toCharArray();
-    private final static char[] MULTI_POLYGON = "MultiPolygon".toCharArray();
-    private final static char[] MULTI_POINT = "MultiPoint".toCharArray();
+    private static final char[] LINESTRING = "LineString".toCharArray();
+    private static final char[] POLYGON = "Polygon".toCharArray();
+    private static final char[] POINT = "Point".toCharArray();
+    private static final char[] MULTI_LINESTRING = "MultiLineString".toCharArray();
+    private static final char[] MULTI_POLYGON = "MultiPolygon".toCharArray();
+    private static final char[] MULTI_POINT = "MultiPoint".toCharArray();
 
     private ITileDataSink mTileDataSink;
 

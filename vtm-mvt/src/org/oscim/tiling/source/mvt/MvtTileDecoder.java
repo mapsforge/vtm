@@ -45,7 +45,7 @@ import java.util.Map;
 public class MvtTileDecoder implements ITileDecoder {
     private final String mLocale;
 
-    private final static float REF_TILE_SIZE = 4096.0f;
+    private static final float REF_TILE_SIZE = 4096.0f;
     private float mScale;
 
     private final GeometryFactory mGeomFactory;

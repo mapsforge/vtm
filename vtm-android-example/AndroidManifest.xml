@@ -68,6 +68,9 @@
             android:name=".MapEventLayer2Activity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".MapilionMvtActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".MapsforgeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity

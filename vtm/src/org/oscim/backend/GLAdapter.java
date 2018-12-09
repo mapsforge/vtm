@@ -21,8 +21,8 @@ import org.oscim.layers.tile.buildings.BuildingLayer;
 
 public class GLAdapter {
 
-    public final static boolean debug = false;
-    public final static boolean debugView = false;
+    public static final boolean debug = false;
+    public static final boolean debugView = false;
 
     /**
      * The instance provided by backend

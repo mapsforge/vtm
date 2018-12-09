@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 
 public class MapLayers {
 
-    final static Logger log = LoggerFactory.getLogger(MapLayers.class);
+    static final Logger log = LoggerFactory.getLogger(MapLayers.class);
 
     abstract static class Config {
         final String name;

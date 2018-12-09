@@ -45,10 +45,10 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
 
     static final Logger log = LoggerFactory.getLogger(RTree.class);
 
-    final static int MAXNODES = 8;
-    final static int MINNODES = 4;
+    static final int MAXNODES = 8;
+    static final int MINNODES = 4;
 
-    final static int NUMDIMS = 2;
+    static final int NUMDIMS = 2;
 
     static final boolean DEBUG = true;
 
@@ -57,7 +57,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
      * The parents level determines this.
      * If the parents level is 0, then this is data
      */
-    final static class Branch<E> extends Rect {
+    static final class Branch<E> extends Rect {
         /**
          * Child node or data item
          */
@@ -72,7 +72,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
     /**
      * Node for each branch level
      */
-    final static class Node {
+    static final class Node {
 
         /**
          * Leaf is zero, others positive
@@ -492,7 +492,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
         return null;
     }
 
-    final static double mergedArea(Rect a, Rect b) {
+    static final double mergedArea(Rect a, Rect b) {
         return ((a.xmax > b.xmax ? a.xmax : b.xmax) - (a.xmin < b.xmin ? a.xmin : b.xmin)
                 * ((a.ymax > b.ymax ? a.ymax : b.ymax) - (a.ymin < b.ymin ? a.ymin : b.ymin)));
     }
@@ -898,7 +898,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
 
     /* Max stack size. Allows almost n^32 where n is number of branches in
      * node */
-    final static int MAX_STACK = 32;
+    static final int MAX_STACK = 32;
 
     static class StackElement {
         Node node;

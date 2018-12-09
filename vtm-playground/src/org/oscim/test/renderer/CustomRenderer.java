@@ -144,7 +144,7 @@ public class CustomRenderer extends LayerRenderer {
         return true;
     }
 
-    private final static String vShaderStr = "" +
+    private static final String vShaderStr = "" +
             "precision mediump float;"
             + "uniform mat4 u_mvp;"
             + "attribute vec4 a_pos;"
@@ -155,7 +155,7 @@ public class CustomRenderer extends LayerRenderer {
             + "   alpha = a_pos.z;"
             + "}";
 
-    private final static String fShaderStr = "" +
+    private static final String fShaderStr = "" +
             "precision mediump float;"
             + "varying float alpha;"
             + "void main()"

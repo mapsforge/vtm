@@ -9,7 +9,7 @@ import java.nio.IntBuffer;
 import static org.oscim.backend.GLAdapter.gl;
 
 public class OffscreenRenderer extends LayerRenderer {
-    final static Logger log = LoggerFactory.getLogger(OffscreenRenderer.class);
+    static final Logger log = LoggerFactory.getLogger(OffscreenRenderer.class);
 
     public enum Mode {
         FXAA, // Fast Approximate Anti-Aliasing

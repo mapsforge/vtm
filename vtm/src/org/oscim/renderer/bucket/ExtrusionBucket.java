@@ -56,13 +56,13 @@ public class ExtrusionBucket extends RenderBucket {
      */
     public int off[] = {0, 0, 0, 0, 0};
 
-    //private final static int IND_EVEN_SIDE = 0;
-    //private final static int IND_ODD_SIDE = 1;
-    private final static int IND_ROOF = 2;
+    //private static final int IND_EVEN_SIDE = 0;
+    //private static final int IND_ODD_SIDE = 1;
+    private static final int IND_ROOF = 2;
 
     // FIXME flip OUTLINE / MESH!
-    private final static int IND_OUTLINE = 3;
-    private final static int IND_MESH = 4;
+    private static final int IND_OUTLINE = 3;
+    private static final int IND_MESH = 4;
 
     private final float mGroundResolution;
 

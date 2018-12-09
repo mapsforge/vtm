@@ -52,11 +52,11 @@ public class MapRenderer {
     /**
      * Number of Quads that can be rendered with bindQuadIndicesVBO()
      */
-    public final static int MAX_QUADS = 512;
+    public static final int MAX_QUADS = 512;
     /**
      * Number of Indices that can be rendered with bindQuadIndicesVBO()
      */
-    public final static int MAX_INDICES = MAX_QUADS * 6;
+    public static final int MAX_INDICES = MAX_QUADS * 6;
 
     public static long frametime;
     private static boolean rerender;

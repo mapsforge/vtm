@@ -34,7 +34,7 @@ import java.util.List;
 
 public class RuleBuilder {
 
-    private final static String[] EMPTY_KV = {};
+    private static final String[] EMPTY_KV = {};
 
     public enum RuleType {
         POSITIVE,

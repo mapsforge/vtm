@@ -36,18 +36,18 @@ public class TextureBucket extends RenderBucket {
 
     static final Logger log = LoggerFactory.getLogger(TextureBucket.class);
 
-    public final static int INDICES_PER_SPRITE = 6;
-    final static int VERTICES_PER_SPRITE = 4;
-    final static int SHORTS_PER_VERTICE = 6;
+    public static final int INDICES_PER_SPRITE = 6;
+    static final int VERTICES_PER_SPRITE = 4;
+    static final int SHORTS_PER_VERTICE = 6;
 
-    public final static int TEXTURE_HEIGHT = 256;
-    public final static int TEXTURE_WIDTH = 1024;
-    final static int POOL_FILL = 4;
+    public static final int TEXTURE_HEIGHT = 256;
+    public static final int TEXTURE_WIDTH = 1024;
+    static final int POOL_FILL = 4;
 
     /**
      * pool shared by TextLayers
      */
-    public final static TexturePool pool = new TexturePool(POOL_FILL,
+    public static final TexturePool pool = new TexturePool(POOL_FILL,
             TEXTURE_WIDTH,
             TEXTURE_HEIGHT,
             false);

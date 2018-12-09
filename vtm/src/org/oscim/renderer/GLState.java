@@ -28,10 +28,10 @@ import static org.oscim.backend.GLAdapter.gl;
 public class GLState {
     static final Logger log = LoggerFactory.getLogger(GLState.class);
 
-    public final static int DISABLED = -1;
-    public final static int UNBIND = 0;
+    public static final int DISABLED = -1;
+    public static final int UNBIND = 0;
 
-    private final static boolean[] vertexArray = {false, false};
+    private static final boolean[] vertexArray = {false, false};
     private static boolean blend = false;
     private static boolean depth = false;
     private static boolean stencil = false;

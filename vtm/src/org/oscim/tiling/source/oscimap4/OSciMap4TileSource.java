@@ -24,8 +24,8 @@ import org.oscim.tiling.source.UrlTileSource;
 
 public class OSciMap4TileSource extends UrlTileSource {
 
-    private final static String DEFAULT_URL = "http://opensciencemap.org/tiles/vtm";
-    private final static String DEFAULT_PATH = "/{Z}/{X}/{Y}.vtm";
+    private static final String DEFAULT_URL = "http://opensciencemap.org/tiles/vtm";
+    private static final String DEFAULT_PATH = "/{Z}/{X}/{Y}.vtm";
 
     public static class Builder<T extends Builder<T>> extends UrlTileSource.Builder<T> {
 

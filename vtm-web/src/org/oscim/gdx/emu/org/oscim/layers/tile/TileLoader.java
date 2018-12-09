@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import static org.oscim.tiling.QueryResult.FAILED;
 
 public abstract class TileLoader implements ITileDataSink {
-    final static Logger log = LoggerFactory.getLogger(TileLoader.class);
+    static final Logger log = LoggerFactory.getLogger(TileLoader.class);
 
     private final TileManager mTileManager;
     private Timer mTimer;

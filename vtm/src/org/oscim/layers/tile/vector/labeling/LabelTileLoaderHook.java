@@ -39,7 +39,7 @@ import static org.oscim.layers.tile.vector.labeling.LabelLayer.LABEL_DATA;
 
 public class LabelTileLoaderHook implements TileLoaderThemeHook {
 
-    //public final static LabelTileData EMPTY = new LabelTileData();
+    //public static final LabelTileData EMPTY = new LabelTileData();
 
     private LabelTileData get(MapTile tile) {
         // FIXME could be 'this'..

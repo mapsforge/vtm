@@ -94,7 +94,7 @@ public class OsmLanduseJsonTileSource extends GeoJsonTileSource {
         mappings.put("park or protected land", new Tag("leisure", "park"));
     }
 
-    private final static Tag mTagArea = new Tag("area", "yes");
+    private static final Tag mTagArea = new Tag("area", "yes");
 
     @Override
     public void decodeTags(MapElement mapElement, Map<String, Object> properties) {

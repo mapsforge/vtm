@@ -41,12 +41,12 @@ import static org.oscim.utils.FastMath.clamp;
 public class Animator {
     static final Logger log = LoggerFactory.getLogger(Animator.class);
 
-    public final static int ANIM_NONE = 0;
-    public final static int ANIM_MOVE = 1 << 0;
-    public final static int ANIM_SCALE = 1 << 1;
-    public final static int ANIM_ROTATE = 1 << 2;
-    public final static int ANIM_TILT = 1 << 3;
-    public final static int ANIM_FLING = 1 << 4;
+    public static final int ANIM_NONE = 0;
+    public static final int ANIM_MOVE = 1 << 0;
+    public static final int ANIM_SCALE = 1 << 1;
+    public static final int ANIM_ROTATE = 1 << 2;
+    public static final int ANIM_TILT = 1 << 3;
+    public static final int ANIM_FLING = 1 << 4;
 
     final Map mMap;
 

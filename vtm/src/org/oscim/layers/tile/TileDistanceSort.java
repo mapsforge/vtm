@@ -39,7 +39,7 @@ public class TileDistanceSort extends TimSort<MapTile> {
         }
     }
 
-    final static Comparator<MapTile> DistanceComparator = new Comparator<MapTile>() {
+    static final Comparator<MapTile> DistanceComparator = new Comparator<MapTile>() {
         @Override
         public int compare(MapTile a, MapTile b) {
             if (a == null) {

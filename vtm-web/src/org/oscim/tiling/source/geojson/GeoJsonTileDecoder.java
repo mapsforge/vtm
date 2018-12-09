@@ -47,7 +47,7 @@ public class GeoJsonTileDecoder implements ITileDecoder {
         mapElement.layer = 5;
     }
 
-    final static LinkedHashMap<String, Object> mProperties = new LinkedHashMap<String, Object>(10);
+    static final LinkedHashMap<String, Object> mProperties = new LinkedHashMap<String, Object>(10);
 
     double mTileY, mTileX, mTileScale;
 

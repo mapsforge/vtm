@@ -31,7 +31,7 @@ public class BitmapTileActivity extends MapActivity {
 
     static final Logger log = LoggerFactory.getLogger(BitmapTileActivity.class);
 
-    private final static boolean USE_CACHE = false;
+    private static final boolean USE_CACHE = false;
 
     private final BitmapTileSource mTileSource;
     protected BitmapTileLayer mBitmapLayer;

@@ -24,8 +24,8 @@ import org.oscim.tiling.source.UrlTileSource;
 
 public class MapzenMvtTileSource extends UrlTileSource {
 
-    private final static String DEFAULT_URL = "https://tile.mapzen.com/mapzen/vector/v1/all";
-    private final static String DEFAULT_PATH = "/{Z}/{X}/{Y}.mvt";
+    private static final String DEFAULT_URL = "https://tile.mapzen.com/mapzen/vector/v1/all";
+    private static final String DEFAULT_PATH = "/{Z}/{X}/{Y}.mvt";
 
     public static class Builder<T extends Builder<T>> extends UrlTileSource.Builder<T> {
         private String locale = "";

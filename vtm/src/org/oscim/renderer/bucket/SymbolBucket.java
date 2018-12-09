@@ -33,8 +33,8 @@ import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 public final class SymbolBucket extends TextureBucket {
     static final Logger log = LoggerFactory.getLogger(SymbolBucket.class);
 
-    private final static int VERTICES_PER_SPRITE = 4;
-    private final static int LBIT_MASK = 0xfffffffe;
+    private static final int VERTICES_PER_SPRITE = 4;
+    private static final int LBIT_MASK = 0xfffffffe;
 
     private TextureItem prevTextures;
     private List<SymbolItem> mSymbols = new List<SymbolItem>();

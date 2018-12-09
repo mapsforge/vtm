@@ -200,7 +200,7 @@ public class HexagonRenderTest extends GdxMapApp {
             return true;
         }
 
-        private final static String vShaderStr = ""
+        private static final String vShaderStr = ""
                 + "#ifdef GLES\n"
                 + "precision mediump float;\n"
                 + "#endif\n"
@@ -212,7 +212,7 @@ public class HexagonRenderTest extends GdxMapApp {
                 + "   gl_Position = u_mvp * vec4(u_center + a_pos, 0.0, 1.0);"
                 + "}";
 
-        private final static String fShaderStr = ""
+        private static final String fShaderStr = ""
                 + "#ifdef GLES\n"
                 + "precision mediump float;\n"
                 + "#endif\n"

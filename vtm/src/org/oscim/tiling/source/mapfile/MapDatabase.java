@@ -460,7 +460,7 @@ public class MapDatabase implements ITileDataSource {
         mTileSeparator.setRect(xSmin, ySmin, xSmax, ySmax);
     }
 
-    //private final static Tag mWaterTag = new Tag("natural", "water");
+    //private static final Tag mWaterTag = new Tag("natural", "water");
 
     /**
      * Map rendering.

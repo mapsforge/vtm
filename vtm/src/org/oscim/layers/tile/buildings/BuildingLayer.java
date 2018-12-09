@@ -43,9 +43,9 @@ import java.util.Set;
 
 public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLimiter.IZoomLimiter {
 
-    protected final static int BUILDING_LEVEL_HEIGHT = 280; // cm
+    protected static final int BUILDING_LEVEL_HEIGHT = 280; // cm
 
-    public final static int MIN_ZOOM = 17;
+    public static final int MIN_ZOOM = 17;
 
     /**
      * Use Fast Approximate Anti-Aliasing (FXAA) and Screen Space Ambient Occlusion (SSAO).

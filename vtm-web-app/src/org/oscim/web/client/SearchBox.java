@@ -82,18 +82,18 @@ public class SearchBox {
         BoundingBox getBoundingBox();
     }
 
-    final static class NominatimData extends JavaScriptObject implements
+    static final class NominatimData extends JavaScriptObject implements
             PoiData {
 
         protected NominatimData() {
         }
 
-        final static class BBox extends JsArrayNumber {
+        static final class BBox extends JsArrayNumber {
             protected BBox() {
             }
         }
 
-        final static class Polygon extends JsArray<JsArrayNumber> {
+        static final class Polygon extends JsArray<JsArrayNumber> {
             protected Polygon() {
             }
 

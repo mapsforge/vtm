@@ -5,6 +5,7 @@
 - Render themes: tag transform [#420](https://github.com/mapsforge/vtm/issues/420)
 - Render themes: PNG scaling [#595](https://github.com/mapsforge/vtm/issues/595)
 - PathLayer(s) scaled width [#594](https://github.com/mapsforge/vtm/issues/594)
+- Mapilion MVT vector tiles & Hillshading [#614](https://github.com/mapsforge/vtm/issues/614)
 - vtm-gdx-poi3d module [#600](https://github.com/mapsforge/vtm/pull/600)
 - vtm-models module [#580](https://github.com/mapsforge/vtm/issues/580)
 - Many other minor improvements and bug fixes

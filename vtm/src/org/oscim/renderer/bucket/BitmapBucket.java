@@ -187,9 +187,9 @@ public class BitmapBucket extends TextureBucket {
 
     public static final class Renderer {
 
-        public final static int INDICES_PER_SPRITE = 6;
-        final static int VERTICES_PER_SPRITE = 4;
-        final static int SHORTS_PER_VERTICE = 6;
+        public static final int INDICES_PER_SPRITE = 6;
+        static final int VERTICES_PER_SPRITE = 4;
+        static final int SHORTS_PER_VERTICE = 6;
         static Shader shader;
 
         static void init() {

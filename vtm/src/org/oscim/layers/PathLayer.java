@@ -256,7 +256,7 @@ public class PathLayer extends Layer implements GestureListener {
         }
     }
 
-    final static class Task {
+    static final class Task {
         final RenderBuckets buckets = new RenderBuckets();
         final MapPosition position = new MapPosition();
     }

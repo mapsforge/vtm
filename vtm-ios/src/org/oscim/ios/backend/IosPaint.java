@@ -77,7 +77,7 @@ public class IosPaint implements Paint {
     private String lastText = "";
     private float descent;
     private float fontHeight;
-    private final static HashMap<String, UIFont> fontHashMap = new HashMap<>();
+    private static final HashMap<String, UIFont> fontHashMap = new HashMap<>();
 
     float strokeWidth;
 

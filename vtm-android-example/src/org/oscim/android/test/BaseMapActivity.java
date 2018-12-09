@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 public class BaseMapActivity extends MapActivity {
     static final Logger log = LoggerFactory.getLogger(BaseMapActivity.class);
 
-    final static boolean USE_CACHE = false;
+    static final boolean USE_CACHE = false;
 
     VectorTileLayer mBaseLayer;
     TileSource mTileSource;

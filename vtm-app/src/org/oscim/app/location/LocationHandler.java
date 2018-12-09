@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LocationHandler implements LocationListener {
-    private final static Logger log = LoggerFactory.getLogger(LocationHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(LocationHandler.class);
 
     public enum Mode {
         OFF,
@@ -40,8 +40,8 @@ public class LocationHandler implements LocationListener {
         SNAP,
     }
 
-    private final static int DIALOG_LOCATION_PROVIDER_DISABLED = 2;
-    private final static int SHOW_LOCATION_ZOOM = 14;
+    private static final int DIALOG_LOCATION_PROVIDER_DISABLED = 2;
+    private static final int SHOW_LOCATION_ZOOM = 14;
 
     private final LocationManager mLocationManager;
     private final LocationLayerImpl mLocationLayer;

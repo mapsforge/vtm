@@ -6,3 +6,12 @@ e.g. for `vtm-playground` can change the [mainClassName](../vtm-playground/build
 ```groovy
 ./gradlew :vtm-playground:run -Pargs=/path/to/map
 ```
+
+To create a standalone executable jar, adapt the main class in [build gradle](../vtm-playground/build.gradle), then run:
+```groovy
+./gradlew :vtm-playground:fatJar
+```
+The jar file can be found in `build/libs` folder. Depending on the main class, pass args on execution via command line:
+```
+java -jar vtm-playground-master-SNAPSHOT-jar-with-dependencies.jar /path/to/map
+```

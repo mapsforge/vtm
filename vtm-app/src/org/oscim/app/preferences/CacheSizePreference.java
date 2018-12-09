@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CacheSizePreference extends Preference implements OnSeekBarChangeListener {
-    final static Logger log = LoggerFactory.getLogger(CacheSizePreference.class);
+    static final Logger log = LoggerFactory.getLogger(CacheSizePreference.class);
 
     private static final String NS_OCIM_APP = "http://app.oscim.org";
     private static final int DEFAULT_VALUE = 50;

@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 public class MapAdapter extends Map implements Map.UpdateListener {
 
-    private final static Logger log = LoggerFactory.getLogger(MapAdapter.class);
+    private static final Logger log = LoggerFactory.getLogger(MapAdapter.class);
 
     MapAdapter() {
         super();

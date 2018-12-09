@@ -34,7 +34,7 @@ import java.util.Map;
 public class TileDecoder extends PbfDecoder {
     static final Logger log = LoggerFactory.getLogger(TileDecoder.class);
 
-    private final static float REF_TILE_SIZE = 4096.0f;
+    private static final float REF_TILE_SIZE = 4096.0f;
 
     private static final int TAG_TILE_TAGS = 1;
     private static final int TAG_TILE_WAYS = 2;

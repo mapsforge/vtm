@@ -27,7 +27,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class PicasaPOIProvider implements POIProvider {
 
-    final static Logger log = LoggerFactory.getLogger(PicasaPOIProvider.class);
+    static final Logger log = LoggerFactory.getLogger(PicasaPOIProvider.class);
 
     String mAccessToken;
 

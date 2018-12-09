@@ -24,8 +24,8 @@ import org.slf4j.LoggerFactory;
  * An abstract base class for threads which support pausing and resuming.
  */
 public abstract class PausableThread extends Thread {
-    private final static Logger log = LoggerFactory.getLogger(PausableThread.class);
-    private final static boolean dbg = false;
+    private static final Logger log = LoggerFactory.getLogger(PausableThread.class);
+    private static final boolean dbg = false;
 
     private boolean mPausing = true;
     private boolean mRunning = true;

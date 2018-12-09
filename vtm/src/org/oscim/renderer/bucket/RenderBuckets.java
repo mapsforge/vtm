@@ -47,7 +47,7 @@ public class RenderBuckets extends TileData {
     static final Logger log = LoggerFactory.getLogger(RenderBuckets.class);
 
     /* Count of units needed for one vertex */
-    public final static int[] VERTEX_CNT = {
+    public static final int[] VERTEX_CNT = {
             4, // LINE_VERTEX
             6, // TEXLINE_VERTEX
             2, // POLY_VERTEX
@@ -59,8 +59,8 @@ public class RenderBuckets extends TileData {
             2, // CIRCLE
     };
 
-    public final static int SHORT_BYTES = 2;
-    // public final static int INT_BYTES = 4;
+    public static final int SHORT_BYTES = 2;
+    // public static final int INT_BYTES = 4;
 
     private RenderBucket buckets;
 

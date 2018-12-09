@@ -19,15 +19,15 @@ package org.oscim.web.client;
 import org.oscim.core.GeometryBuffer;
 
 public class WKTReader {
-    private final static String POINT = "POINT";
-    private final static String LINE = "LINESTRING";
-    private final static String POLY = "POLYGON";
-    private final static String MULTI = "MULTI";
+    private static final String POINT = "POINT";
+    private static final String LINE = "LINESTRING";
+    private static final String POLY = "POLYGON";
+    private static final String MULTI = "MULTI";
 
-    private final static int SKIP_POINT = POINT.length();
-    private final static int SKIP_LINE = LINE.length();
-    private final static int SKIP_POLY = POLY.length();
-    private final static int SKIP_MULTI = MULTI.length();
+    private static final int SKIP_POINT = POINT.length();
+    private static final int SKIP_LINE = LINE.length();
+    private static final int SKIP_POLY = POLY.length();
+    private static final int SKIP_MULTI = MULTI.length();
 
     public void parse(String wkt, GeometryBuffer geom) throws Exception {
         // return position.

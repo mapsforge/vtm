@@ -53,7 +53,7 @@ public abstract class RenderBucket extends Inlist<RenderBucket> {
     protected final VertexData vertexItems;
     protected final VertexData indiceItems;
 
-    final static VertexData EMPTY = new VertexData();
+    static final VertexData EMPTY = new VertexData();
     final boolean quads;
 
     protected RenderBucket(byte type, boolean indexed, boolean quads) {

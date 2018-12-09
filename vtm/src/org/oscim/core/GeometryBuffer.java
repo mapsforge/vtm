@@ -37,8 +37,8 @@ import java.util.Arrays;
  */
 public class GeometryBuffer {
 
-    private final static int GROW_INDICES = 64;
-    private final static int GROW_POINTS = 512;
+    private static final int GROW_INDICES = 64;
+    private static final int GROW_POINTS = 512;
 
     /**
      * The Enum GeometryType.

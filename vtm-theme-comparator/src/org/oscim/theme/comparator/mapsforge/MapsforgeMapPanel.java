@@ -52,7 +52,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class MapsforgeMapPanel extends JPanel {
-    private final static Logger log = LoggerFactory.getLogger(MapsforgeMapPanel.class);
+    private static final Logger log = LoggerFactory.getLogger(MapsforgeMapPanel.class);
     private final GraphicFactory GRAPHIC_FACTORY = AwtGraphicFactory.INSTANCE;
     private AwtMapView mapView;
 

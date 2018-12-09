@@ -29,10 +29,10 @@ import org.oscim.tiling.TileSource;
 
 public class S3DBTileLayer extends TileLayer {
 
-    private final static int MAX_CACHE = 32;
+    private static final int MAX_CACHE = 32;
 
-    private final static int MIN_ZOOM = 16;
-    private final static int MAX_ZOOM = 16;
+    private static final int MIN_ZOOM = 16;
+    private static final int MAX_ZOOM = 16;
 
     private final TileSource mTileSource;
 

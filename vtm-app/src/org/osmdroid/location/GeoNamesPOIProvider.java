@@ -31,7 +31,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class GeoNamesPOIProvider {
 
-    final static Logger log = LoggerFactory.getLogger(GeoNamesPOIProvider.class);
+    static final Logger log = LoggerFactory.getLogger(GeoNamesPOIProvider.class);
 
     protected String mUserName;
 

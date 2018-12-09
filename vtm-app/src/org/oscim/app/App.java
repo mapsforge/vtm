@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 public class App extends Application {
 
-    public final static Logger log = LoggerFactory.getLogger(App.class);
+    public static final Logger log = LoggerFactory.getLogger(App.class);
 
     public static Map map;
     public static MapView view;

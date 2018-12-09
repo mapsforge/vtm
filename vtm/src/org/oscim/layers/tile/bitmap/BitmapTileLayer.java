@@ -35,7 +35,7 @@ public class BitmapTileLayer extends TileLayer {
 
     protected static final Logger log = LoggerFactory.getLogger(BitmapTileLayer.class);
 
-    private final static int CACHE_LIMIT = 40;
+    private static final int CACHE_LIMIT = 40;
 
     protected final TileSource mTileSource;
     private float mBitmapAlpha = 1.0f;
@@ -144,7 +144,7 @@ public class BitmapTileLayer extends TileLayer {
         pool.clear();
     }
 
-    final static int POOL_FILL = 20;
+    static final int POOL_FILL = 20;
 
     /**
      * pool shared by TextLayers

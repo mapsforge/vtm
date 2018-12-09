@@ -26,8 +26,8 @@ import okhttp3.Response;
  * connection.close();</pre>
  */
 public class HttpConnection {
-    private final static int TIMEOUT_CONNECTION = 3000; //ms
-    private final static int TIMEOUT_SOCKET = 10000; //ms
+    private static final int TIMEOUT_CONNECTION = 3000; //ms
+    private static final int TIMEOUT_SOCKET = 10000; //ms
 
     private static OkHttpClient client;
     private InputStream stream;

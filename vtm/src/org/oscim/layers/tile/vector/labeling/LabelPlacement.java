@@ -45,12 +45,12 @@ public class LabelPlacement {
     static final boolean dbg = false;
     static final Logger log = LoggerFactory.getLogger(LabelPlacement.class);
 
-    public final static LabelTileData getLabels(MapTile tile) {
+    public static final LabelTileData getLabels(MapTile tile) {
         return (LabelTileData) tile.getData(LabelLayer.LABEL_DATA);
     }
 
-    private final static float MIN_CAPTION_DIST = 5;
-    private final static float MIN_WAY_DIST = 3;
+    private static final float MIN_CAPTION_DIST = 5;
+    private static final float MIN_WAY_DIST = 3;
 
     /**
      * thread local pool of for unused label items

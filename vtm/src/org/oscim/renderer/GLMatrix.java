@@ -28,12 +28,12 @@ import static org.oscim.backend.GLAdapter.gl;
 public class GLMatrix {
 
     static final Logger log = LoggerFactory.getLogger(GLMatrix.class);
-    private final static boolean dbg = false;
+    private static final boolean dbg = false;
 
     private final long pointer;
     private final FloatBuffer buffer;
 
-    private final static String INVALID_INPUT = "Bad Array!";
+    private static final String INVALID_INPUT = "Bad Array!";
 
     public GLMatrix() {
         pointer = alloc();

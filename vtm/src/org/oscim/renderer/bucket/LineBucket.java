@@ -535,15 +535,15 @@ public class LineBucket extends RenderBucket {
          * http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter22.html */
 
         /* factor to normalize extrusion vector and scale to coord scale */
-        private final static float COORD_SCALE_BY_DIR_SCALE =
+        private static final float COORD_SCALE_BY_DIR_SCALE =
                 COORD_SCALE / LineBucket.DIR_SCALE;
 
-        private final static int CAP_THIN = 0;
-        private final static int CAP_BUTT = 1;
-        private final static int CAP_ROUND = 2;
+        private static final int CAP_THIN = 0;
+        private static final int CAP_BUTT = 1;
+        private static final int CAP_ROUND = 2;
 
-        private final static int SHADER_FLAT = 1;
-        private final static int SHADER_PROJ = 0;
+        private static final int SHADER_FLAT = 1;
+        private static final int SHADER_PROJ = 0;
 
         public static int mTexID;
         private static Shader[] shaders = {null, null};

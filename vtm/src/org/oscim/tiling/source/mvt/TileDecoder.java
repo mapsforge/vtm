@@ -70,7 +70,7 @@ public class TileDecoder extends PbfDecoder {
     private final String mLocale;
     private ITileDataSink mMapDataCallback;
 
-    private final static float REF_TILE_SIZE = 4096.0f;
+    private static final float REF_TILE_SIZE = 4096.0f;
     private float mScale;
 
     public TileDecoder() {
@@ -399,9 +399,9 @@ public class TileDecoder extends PbfDecoder {
         }
     }
 
-    private final static int CLOSE_PATH = 0x07;
-    private final static int MOVE_TO = 0x01;
-    private final static int LINE_TO = 0x02;
+    private static final int CLOSE_PATH = 0x07;
+    private static final int MOVE_TO = 0x01;
+    private static final int LINE_TO = 0x02;
 
     private int lastX, lastY;
 

@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class NominatimPOIProvider implements POIProvider {
 
-    final static Logger log = LoggerFactory.getLogger(NominatimPOIProvider.class);
+    static final Logger log = LoggerFactory.getLogger(NominatimPOIProvider.class);
 
     /* As the doc lacks a lot of features, source code may help:
      * https://trac.openstreetmap

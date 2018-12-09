@@ -51,7 +51,7 @@ public class TileClipper {
 
     private final GeometryBuffer mGeomOut = new GeometryBuffer(10, 1);
 
-    public boolean clip(GeometryBuffer geom) {
+    public synchronized boolean clip(GeometryBuffer geom) {
         if (geom.isPoly()) {
 
             GeometryBuffer out = mGeomOut;

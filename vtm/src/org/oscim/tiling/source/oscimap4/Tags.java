@@ -19,10 +19,10 @@ package org.oscim.tiling.source.oscimap4;
 public class Tags {
     // TODO this should be retrieved from tile 0/0/0
 
-    public final static int ATTRIB_OFFSET = 256;
+    public static final int ATTRIB_OFFSET = 256;
 
     // the keys that were imported via osm2pgsql + some more
-    public final static String[] keys = {
+    public static final String[] keys = {
             "access",
             "addr:housename",
             "addr:housenumber",
@@ -93,10 +93,10 @@ public class Tags {
             "roof:height",
             "rank"
     };
-    public final static int MAX_KEY = keys.length - 1;
+    public static final int MAX_KEY = keys.length - 1;
 
     // most popular values for the selected key (created from taginfo db)
-    public final static String[] values = {
+    public static final String[] values = {
             "yes",
             "residential",
             "service",
@@ -354,6 +354,6 @@ public class Tags {
             "florist",
             "butcher"
     };
-    public final static int MAX_VALUE = values.length - 1;
+    public static final int MAX_VALUE = values.length - 1;
 
 }

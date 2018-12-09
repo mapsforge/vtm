@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 public class TileMap extends MapActivity implements MapEventsReceiver {
-    final static Logger log = LoggerFactory.getLogger(TileMap.class);
+    static final Logger log = LoggerFactory.getLogger(TileMap.class);
 
     private static final int DIALOG_ENTER_COORDINATES = 0;
     private static final int DIALOG_LOCATION_PROVIDER_DISABLED = 2;

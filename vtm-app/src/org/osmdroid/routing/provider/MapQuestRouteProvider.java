@@ -32,7 +32,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class MapQuestRouteProvider extends RouteProvider {
 
-    final static Logger log = LoggerFactory.getLogger(MapQuestRouteProvider.class);
+    static final Logger log = LoggerFactory.getLogger(MapQuestRouteProvider.class);
 
     static final String MAPQUEST_GUIDANCE_SERVICE = "http://open.mapquestapi.com/guidance/v0/route?";
 

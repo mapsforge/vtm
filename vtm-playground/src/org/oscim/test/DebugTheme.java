@@ -11,8 +11,8 @@ import org.oscim.theme.styles.RenderStyle;
 
 public class DebugTheme implements IRenderTheme {
 
-    private final static LineStyle[] line = {new LineStyle(1, Color.MAGENTA, 2)};
-    private final static AreaStyle[] area = {new AreaStyle(0, Color.CYAN)};
+    private static final LineStyle[] line = {new LineStyle(1, Color.MAGENTA, 2)};
+    private static final AreaStyle[] area = {new AreaStyle(0, Color.CYAN)};
 
     @Override
     public RenderStyle[] matchElement(GeometryType type, TagSet tags, int zoomLevel) {

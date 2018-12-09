@@ -43,8 +43,8 @@ public final class S3DBUtils {
     private static final Logger log = LoggerFactory.getLogger(S3DBUtils.class);
 
     /* TODO get from theme */
-    private final static double HSV_S = 0.7;
-    private final static double HSV_V = 1.2;
+    private static final double HSV_S = 0.7;
+    private static final double HSV_V = 1.2;
 
     // Toggle this to debug and improve ridge calculation, you can see the faults in map then.
     private static final boolean IMPROVE_RIDGE_CALCULATION = false;

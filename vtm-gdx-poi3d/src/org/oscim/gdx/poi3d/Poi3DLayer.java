@@ -76,20 +76,20 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
         }
     }
 
-    public final static int MIN_ZOOM = BuildingLayer.MIN_ZOOM;
+    public static final int MIN_ZOOM = BuildingLayer.MIN_ZOOM;
     static final String POI_DATA = Poi3DLayer.class.getSimpleName();
-    public final static boolean RANDOM_TRANSFORM = true; // TODO customizable for each tag
+    public static final boolean RANDOM_TRANSFORM = true; // TODO customizable for each tag
 
-    public final static Tag TAG_TREE = new Tag("natural", "tree");
-    public final static Tag TAG_MEMORIAL = new Tag("historic", "memorial");
-    public final static Tag TAG_FOREST = new Tag("landuse", "forest");
-    public final static Tag TAG_WOOD = new Tag("natural", "wood");
+    public static final Tag TAG_TREE = new Tag("natural", "tree");
+    public static final Tag TAG_MEMORIAL = new Tag("historic", "memorial");
+    public static final Tag TAG_FOREST = new Tag("landuse", "forest");
+    public static final Tag TAG_WOOD = new Tag("natural", "wood");
     // Not supported by Oscim Tiles
-    public final static Tag TAG_ARTWORK = new Tag("tourism", "artwork");
-    public final static Tag TAG_TREE_BROADLEAVED = new Tag("leaf_type", "broadleaved");
-    public final static Tag TAG_TREE_NEEDLELEAVED = new Tag("leaf_type", "needleleaved");
-    public final static Tag TAG_TREE_ROW = new Tag("natural", "tree_row");
-    public final static Tag TAG_STREETLAMP = new Tag("highway", "street_lamp");
+    public static final Tag TAG_ARTWORK = new Tag("tourism", "artwork");
+    public static final Tag TAG_TREE_BROADLEAVED = new Tag("leaf_type", "broadleaved");
+    public static final Tag TAG_TREE_NEEDLELEAVED = new Tag("leaf_type", "needleleaved");
+    public static final  Tag TAG_TREE_ROW = new Tag("natural", "tree_row");
+    public static final Tag TAG_STREETLAMP = new Tag("highway", "street_lamp");
 
     /**
      * Distance in meter between two 3d-models in an area or on a line (e.g. trees in forest).

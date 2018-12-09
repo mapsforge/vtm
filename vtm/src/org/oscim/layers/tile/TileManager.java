@@ -50,8 +50,8 @@ public class TileManager {
     static final Logger log = LoggerFactory.getLogger(TileManager.class);
     static final boolean dbg = false;
 
-    public final static Event TILE_LOADED = new Event();
-    public final static Event TILE_REMOVED = new Event();
+    public static final Event TILE_LOADED = new Event();
+    public static final Event TILE_REMOVED = new Event();
 
     private final int mCacheLimit;
     private int mCacheReduce;

@@ -18,12 +18,12 @@ import java.util.Arrays;
  */
 public class BoxTree<T extends BoxItem<E>, E> extends TileIndex<BoxNode<T>, T> {
 
-    final static Logger log = LoggerFactory.getLogger(BoxTree.class);
+    static final Logger log = LoggerFactory.getLogger(BoxTree.class);
     static boolean dbg = false;
 
     protected final int extents;
     protected final int maxDepth;
-    private final static int MAX_STACK = 32;
+    private static final int MAX_STACK = 32;
 
     static class Stack<E> extends Inlist<Stack<E>> {
         /**

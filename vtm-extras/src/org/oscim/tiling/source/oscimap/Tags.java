@@ -19,8 +19,8 @@ package org.oscim.tiling.source.oscimap;
 import org.oscim.core.Tag;
 
 public class Tags {
-    public final static int MAX = 654;
-    public final static int LIMIT = 1024;
+    public static final int MAX = 654;
+    public static final int LIMIT = 1024;
 
     private static final String s_limited = "limited".intern();
     private static final String s_chain = "chain".intern();

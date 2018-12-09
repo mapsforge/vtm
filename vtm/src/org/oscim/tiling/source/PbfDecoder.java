@@ -27,15 +27,15 @@ import java.io.InputStream;
 public abstract class PbfDecoder implements ITileDecoder {
     static final Logger log = LoggerFactory.getLogger(PbfDecoder.class);
 
-    private final static int S1 = 7;
-    private final static int S2 = 14;
-    private final static int S3 = 21;
-    private final static int S4 = 28;
+    private static final int S1 = 7;
+    private static final int S2 = 14;
+    private static final int S3 = 21;
+    private static final int S4 = 28;
 
-    private final static int M1 = (1 << S1) - 1;
-    private final static int M2 = (1 << S2) - 1;
-    private final static int M3 = (1 << S3) - 1;
-    private final static int M4 = (1 << S4) - 1;
+    private static final int M1 = (1 << S1) - 1;
+    private static final int M2 = (1 << S2) - 1;
+    private static final int M3 = (1 << S3) - 1;
+    private static final int M4 = (1 << S4) - 1;
 
     protected static final boolean debug = false;
 
@@ -47,20 +47,20 @@ public abstract class PbfDecoder implements ITileDecoder {
         }
     }
 
-    final static ProtobufException TRUNCATED_MSG =
+    static final ProtobufException TRUNCATED_MSG =
             new ProtobufException("truncated msg");
 
-    protected final static ProtobufException INVALID_VARINT =
+    protected static final ProtobufException INVALID_VARINT =
             new ProtobufException("invalid varint");
 
-    protected final static ProtobufException INVALID_PACKED_SIZE =
+    protected static final ProtobufException INVALID_PACKED_SIZE =
             new ProtobufException("invalid message size");
 
     protected void error(String msg) throws IOException {
         throw new ProtobufException(msg);
     }
 
-    private final static int BUFFER_SIZE = 1 << 15; // 32kb
+    private static final int BUFFER_SIZE = 1 << 15; // 32kb
     protected byte[] buffer = new byte[BUFFER_SIZE];
 
     // position in buffer

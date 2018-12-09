@@ -36,14 +36,14 @@ public class OBB2D {
             return v[a] * v[b] + v[a + 1] * v[b + 1];
         }
 
-        public final static float lengthSquared(float[] v, int pos) {
+        public static final float lengthSquared(float[] v, int pos) {
             float x = v[pos + 0];
             float y = v[pos + 1];
 
             return x * x + y * y;
         }
 
-        public final static void normalizeSquared(float[] v, int pos) {
+        public static final void normalizeSquared(float[] v, int pos) {
             float x = v[pos + 0];
             float y = v[pos + 1];
 
@@ -53,7 +53,7 @@ public class OBB2D {
             v[pos + 1] = y / length;
         }
 
-        public final static void normalize(float[] v, int pos) {
+        public static final void normalize(float[] v, int pos) {
             float x = v[pos + 0];
             float y = v[pos + 1];
 
@@ -63,24 +63,24 @@ public class OBB2D {
             v[pos + 1] = (float) (y / length);
         }
 
-        public final static float length(float[] v, int pos) {
+        public static final float length(float[] v, int pos) {
             float x = v[pos + 0];
             float y = v[pos + 1];
 
             return (float) Math.sqrt(x * x + y * y);
         }
 
-        public final static void add(float[] v, int r, int a, int b) {
+        public static final void add(float[] v, int r, int a, int b) {
             v[r + 0] = v[a + 0] + v[b + 0];
             v[r + 1] = v[a + 1] + v[b + 1];
         }
 
-        public final static void sub(float[] v, int r, int a, int b) {
+        public static final void sub(float[] v, int r, int a, int b) {
             v[r + 0] = v[a + 0] - v[b + 0];
             v[r + 1] = v[a + 1] - v[b + 1];
         }
 
-        public final static void mul(float[] v, int pos, float a) {
+        public static final void mul(float[] v, int pos, float a) {
             v[pos + 0] *= a;
             v[pos + 1] *= a;
         }
@@ -93,20 +93,20 @@ public class OBB2D {
 
     // Corners of the box, where 0 is the lower left.
     //public final float[] corner = new float[ 4 * 2];
-    private final static int CORNER_X = 0;
-    private final static int CORNER_Y = CORNER_X + 1;
-    private final static int CORNER_0 = CORNER_X;
-    private final static int CORNER_1 = CORNER_X + 2;
-    //private final static int CORNER_2 = CORNER_X + 4;
-    private final static int CORNER_3 = CORNER_X + 6;
+    private static final int CORNER_X = 0;
+    private static final int CORNER_Y = CORNER_X + 1;
+    private static final int CORNER_0 = CORNER_X;
+    private static final int CORNER_1 = CORNER_X + 2;
+    //private static final int CORNER_2 = CORNER_X + 4;
+    private static final int CORNER_3 = CORNER_X + 6;
 
     // Two edges of the box extended away from origin[CORNER_X + 0].
     //public final float[] axis = new float[2 * 2];
-    private final static int AXIS_X = 2 * 4;
-    private final static int AXIS_Y = AXIS_X + 1;
+    private static final int AXIS_X = 2 * 4;
+    private static final int AXIS_Y = AXIS_X + 1;
 
-    private final static int AXIS_1 = AXIS_X;
-    private final static int AXIS_2 = AXIS_X + 2;
+    private static final int AXIS_1 = AXIS_X;
+    private static final int AXIS_2 = AXIS_X + 2;
 
     // Returns true if other overlaps one dimension of this.
     private boolean overlaps1Way(OBB2D other) {

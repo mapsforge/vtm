@@ -26,7 +26,7 @@ import org.oscim.theme.styles.LineStyle;
 
 class Debug {
 
-    private final static float[] mDebugPoints = new float[8];
+    private static final float[] mDebugPoints = new float[8];
     // TODO Auto-generated method stub
     static RenderBuckets dbg;
 

@@ -48,9 +48,9 @@ public final class PolygonBucket extends RenderBucket {
 
     static final Logger log = LoggerFactory.getLogger(PolygonBucket.class);
 
-    public final static int CLIP_STENCIL = 1;
-    public final static int CLIP_DEPTH = 2;
-    public final static int CLIP_TEST_DEPTH = 3;
+    public static final int CLIP_STENCIL = 1;
+    public static final int CLIP_DEPTH = 2;
+    public static final int CLIP_TEST_DEPTH = 3;
 
     public static boolean enableTexture = true;
 
@@ -157,7 +157,7 @@ public final class PolygonBucket extends RenderBucket {
     public static final class Renderer {
 
         private static final int STENCIL_BITS = 8;
-        public final static int CLIP_BIT = 0x80;
+        public static final int CLIP_BIT = 0x80;
 
         private static PolygonBucket[] mAreaLayer;
 

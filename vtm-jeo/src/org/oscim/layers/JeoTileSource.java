@@ -35,7 +35,7 @@ import static org.oscim.tiling.QueryResult.SUCCESS;
 import static org.oscim.tiling.QueryResult.TILE_NOT_FOUND;
 
 public class JeoTileSource extends TileSource {
-    final static Logger log = LoggerFactory.getLogger(JeoTileSource.class);
+    static final Logger log = LoggerFactory.getLogger(JeoTileSource.class);
 
     final TileDataset mTileDataset;
 
