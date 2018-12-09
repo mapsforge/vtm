@@ -35,6 +35,17 @@ public class Box {
     }
 
     /**
+     * Simple box Instantiation (for adding extents)
+     *
+     * @param x the initial x value
+     * @param y the initial y value
+     */
+    public Box(double x, double y) {
+        this.xmax = this.xmin = x;
+        this.ymax = this.ymin = y;
+    }
+
+    /**
      * Instantiates a new Box.
      *
      * @param xmin the min x
@@ -51,6 +62,9 @@ public class Box {
         this.ymax = ymax;
     }
 
+    /**
+     * Copy constructor
+     */
     public Box(Box bbox) {
         this.xmin = bbox.xmin;
         this.ymin = bbox.ymin;
@@ -130,7 +144,7 @@ public class Box {
     }
 
     /**
-     * convrt map coordinates to lat/lon.
+     * Convert map coordinates to lat/lon.
      */
     public void map2mercator() {
         double minLon = MercatorProjection.toLongitude(xmin);
@@ -157,12 +171,27 @@ public class Box {
         ymax *= d;
     }
 
+    /**
+     * Init or overwrite extents of box
+     *
+     * @param points the points to extend to
+     */
     public void setExtents(float[] points) {
+        setExtents(points, points.length);
+    }
+
+    /**
+     * Init or overwrite extents of box
+     *
+     * @param points the points to extend to
+     * @param length the number of considered points
+     */
+    public void setExtents(float[] points, int length) {
         float x1, y1, x2, y2;
         x1 = x2 = points[0];
         y1 = y2 = points[1];
 
-        for (int i = 2, n = points.length; i < n; i += 2) {
+        for (int i = 2; i < length; i += 2) {
             float x = points[i];
             if (x < x1)
                 x1 = x;
