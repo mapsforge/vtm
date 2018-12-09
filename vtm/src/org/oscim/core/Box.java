@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -57,6 +58,35 @@ public class Box {
         this.ymax = bbox.ymax;
     }
 
+    public static Box createSafe(double x1, double y1, double x2, double y2) {
+        return new Box(x1 < x2 ? x1 : x2,
+                y1 < y2 ? y1 : y2,
+                x1 > x2 ? x1 : x2,
+                y1 > y2 ? y1 : y2);
+    }
+
+    public void add(double x, double y) {
+        if (x < xmin)
+            xmin = x;
+        if (y < ymin)
+            ymin = y;
+        if (x > xmax)
+            xmax = x;
+        if (y > ymax)
+            ymax = y;
+    }
+
+    public void add(Box bbox) {
+        if (bbox.xmin < xmin)
+            xmin = bbox.xmin;
+        if (bbox.ymin < ymin)
+            ymin = bbox.ymin;
+        if (bbox.xmax > xmax)
+            xmax = bbox.xmax;
+        if (bbox.ymax > ymax)
+            ymax = bbox.ymax;
+    }
+
     /**
      * Check if Box contains point defined by coordinates x and y.
      *
@@ -81,6 +111,14 @@ public class Box {
                 && p.y <= ymax);
     }
 
+    public double getHeight() {
+        return ymax - ymin;
+    }
+
+    public double getWidth() {
+        return xmax - xmin;
+    }
+
     /**
      * Check if this Box is inside box.
      */
@@ -91,12 +129,18 @@ public class Box {
                 && ymax <= box.ymax;
     }
 
-    public double getWidth() {
-        return xmax - xmin;
-    }
-
-    public double getHeight() {
-        return ymax - ymin;
+    /**
+     * convrt map coordinates to lat/lon.
+     */
+    public void map2mercator() {
+        double minLon = MercatorProjection.toLongitude(xmin);
+        double maxLon = MercatorProjection.toLongitude(xmax);
+        double minLat = MercatorProjection.toLatitude(ymax);
+        double maxLat = MercatorProjection.toLatitude(ymin);
+        xmin = minLon;
+        xmax = maxLon;
+        ymin = minLat;
+        ymax = maxLat;
     }
 
     public boolean overlap(Box other) {
@@ -106,16 +150,11 @@ public class Box {
                 || ymax < other.ymin);
     }
 
-    @Override
-    public String toString() {
-        return "[" + xmin + ',' + ymin + ',' + xmax + ',' + ymax + ']';
-    }
-
-    public static Box createSafe(double x1, double y1, double x2, double y2) {
-        return new Box(x1 < x2 ? x1 : x2,
-                y1 < y2 ? y1 : y2,
-                x1 > x2 ? x1 : x2,
-                y1 > y2 ? y1 : y2);
+    public void scale(double d) {
+        xmin *= d;
+        xmax *= d;
+        ymin *= d;
+        ymax *= d;
     }
 
     public void setExtents(float[] points) {
@@ -142,26 +181,9 @@ public class Box {
         this.ymax = y2;
     }
 
-    public void add(Box bbox) {
-        if (bbox.xmin < xmin)
-            xmin = bbox.xmin;
-        if (bbox.ymin < ymin)
-            ymin = bbox.ymin;
-        if (bbox.xmax > xmax)
-            xmax = bbox.xmax;
-        if (bbox.ymax > ymax)
-            ymax = bbox.ymax;
-    }
-
-    public void add(double x, double y) {
-        if (x < xmin)
-            xmin = x;
-        if (y < ymin)
-            ymin = y;
-        if (x > xmax)
-            xmax = x;
-        if (y > ymax)
-            ymax = y;
+    @Override
+    public String toString() {
+        return "[" + xmin + ',' + ymin + ',' + xmax + ',' + ymax + ']';
     }
 
     public void translate(double dx, double dy) {
@@ -169,26 +191,5 @@ public class Box {
         xmax += dx;
         ymin += dy;
         ymax += dy;
-    }
-
-    public void scale(double d) {
-        xmin *= d;
-        xmax *= d;
-        ymin *= d;
-        ymax *= d;
-    }
-
-    /**
-     * convrt map coordinates to lat/lon.
-     */
-    public void map2mercator() {
-        double minLon = MercatorProjection.toLongitude(xmin);
-        double maxLon = MercatorProjection.toLongitude(xmax);
-        double minLat = MercatorProjection.toLatitude(ymax);
-        double maxLat = MercatorProjection.toLatitude(ymin);
-        xmin = minLon;
-        xmax = maxLon;
-        ymin = minLat;
-        ymax = maxLat;
     }
 }
