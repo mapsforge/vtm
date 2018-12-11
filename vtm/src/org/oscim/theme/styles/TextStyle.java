@@ -74,6 +74,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             reset();
         }
 
+        @Override
         public TextStyle build() {
             TextStyle t = new TextStyle(this);
             t.fontHeight = t.paint.getFontHeight();

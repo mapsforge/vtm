@@ -41,6 +41,7 @@ public class OpenMapTilesMvtTileSource extends UrlTileSource {
             return self();
         }
 
+        @Override
         public OpenMapTilesMvtTileSource build() {
             return new OpenMapTilesMvtTileSource(this);
         }

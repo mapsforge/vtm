@@ -58,6 +58,7 @@ public class LwHttp implements HttpEngine {
         }
     }
 
+    @Override
     public void close() {
         if (mHttpRequest == null)
             return;

@@ -91,6 +91,7 @@ public class MeshBucket extends RenderBucket {
         //tess.addContour2D(geom.index, geom.points);
     }
 
+    @Override
     protected void prepare() {
         if (tess == null)
             return;

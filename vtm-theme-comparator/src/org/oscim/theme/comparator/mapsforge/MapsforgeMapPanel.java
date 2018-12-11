@@ -80,6 +80,7 @@ public class MapsforgeMapPanel extends JPanel {
                 mapView.setBounds(10, 20, getWidth() - 20, getHeight() - 30);
             }
 
+            @Override
             public void componentMoved(ComponentEvent e) {
                 super.componentMoved(e);
                 mapView.setBounds(10, 20, getWidth() - 20, getHeight() - 30);

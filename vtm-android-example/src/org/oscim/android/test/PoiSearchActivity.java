@@ -96,6 +96,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
 
         Button addItem = (Button) findViewById(R.id.add_item);
         addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 searchPatterns.add(new Pattern("", ""));
                 adapter.notifyDataSetChanged();
@@ -104,6 +105,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
 
         Button startSearch = (Button) findViewById(R.id.start_search);
         startSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 // Clear overlays
                 mMarkerLayer.removeAllItems();
@@ -244,6 +246,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
             Button remove = (Button) convertView.findViewById(R.id.remove);
             remove.setTag(pattern);
             remove.setOnClickListener(new View.OnClickListener() {
+                @Override
                 public void onClick(View v) {
                     Pattern pat = (Pattern) v.getTag();
                     remove(pat);

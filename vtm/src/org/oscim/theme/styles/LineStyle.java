@@ -334,6 +334,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             return self();
         }
 
+        @Override
         public LineStyle build() {
             return new LineStyle(this);
         }

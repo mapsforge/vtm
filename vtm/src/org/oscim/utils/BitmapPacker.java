@@ -129,9 +129,11 @@ public class BitmapPacker {
     public static class GuillotineStrategy implements PackStrategy {
         Comparator<Bitmap> comparator;
 
+        @Override
         public void sort(ArrayList<Bitmap> Bitmaps) {
             if (comparator == null) {
                 comparator = new Comparator<Bitmap>() {
+                    @Override
                     public int compare(Bitmap o1, Bitmap o2) {
                         return Math.max(o1.getWidth(), o1.getHeight()) - Math.max(o2.getWidth(), o2.getHeight());
                     }
@@ -140,6 +142,7 @@ public class BitmapPacker {
             Collections.sort(Bitmaps, comparator);
         }
 
+        @Override
         public PackerAtlasItem pack(BitmapPacker packer, Object key, Rect rect) {
             GuillotineAtlasItem atlasItem;
             if (packer.packerAtlasItems.size() == 0) {
@@ -236,9 +239,11 @@ public class BitmapPacker {
     public static class SkylineStrategy implements PackStrategy {
         Comparator<Bitmap> comparator;
 
+        @Override
         public void sort(ArrayList<Bitmap> images) {
             if (comparator == null) {
                 comparator = new Comparator<Bitmap>() {
+                    @Override
                     public int compare(Bitmap o1, Bitmap o2) {
                         return o1.getHeight() - o2.getHeight();
                     }
@@ -247,6 +252,7 @@ public class BitmapPacker {
             Collections.sort(images, comparator);
         }
 
+        @Override
         public PackerAtlasItem pack(BitmapPacker packer, Object key, Rect rect) {
             int padding = packer.padding;
             int atlasWidth = packer.atlasWidth - padding * 2, atlasHeight = packer.atlasHeight - padding * 2;

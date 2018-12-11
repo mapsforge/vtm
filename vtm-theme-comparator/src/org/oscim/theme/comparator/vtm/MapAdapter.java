@@ -124,6 +124,7 @@ public class MapAdapter extends Map implements Map.UpdateListener {
     }
 
 
+    @Override
     public boolean handleGesture(Gesture g, MotionEvent e) {
         this.updateMap(true);
         return super.handleGesture(g, e);

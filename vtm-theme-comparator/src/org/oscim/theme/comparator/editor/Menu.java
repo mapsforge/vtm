@@ -39,6 +39,7 @@ class Menu extends JToolBar {
 
         JButton openButton = new JButton(ICON_OPEN);
         openButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     themeLoader.selectThemeFile();

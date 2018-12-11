@@ -106,6 +106,7 @@ public final class CircleStyle extends RenderStyle<CircleStyle> {
             return self();
         }
 
+        @Override
         public CircleStyle build() {
             return new CircleStyle(this);
         }

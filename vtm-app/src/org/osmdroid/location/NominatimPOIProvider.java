@@ -150,6 +150,7 @@ public class NominatimPOIProvider implements POIProvider {
      * @param maxResults  ...
      * @return list of POIs, null if technical issue.
      */
+    @Override
     public ArrayList<POI> getPOIInside(BoundingBox boundingBox, String type, int maxResults) {
         String url = getUrlInside(boundingBox, type, maxResults);
         return getThem(url);

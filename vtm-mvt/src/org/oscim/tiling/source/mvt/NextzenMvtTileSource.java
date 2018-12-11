@@ -38,6 +38,7 @@ public class NextzenMvtTileSource extends UrlTileSource {
             return self();
         }
 
+        @Override
         public NextzenMvtTileSource build() {
             return new NextzenMvtTileSource(this);
         }

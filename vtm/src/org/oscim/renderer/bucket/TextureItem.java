@@ -194,6 +194,7 @@ public class TextureItem extends Inlist<TextureItem> {
         /**
          * Retrieve a TextureItem from pool.
          */
+        @Override
         public synchronized TextureItem get() {
             TextureItem t = super.get();
 

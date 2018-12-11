@@ -34,6 +34,7 @@ public class OSciMap4TileSource extends UrlTileSource {
             overZoom(17);
         }
 
+        @Override
         public OSciMap4TileSource build() {
             return new OSciMap4TileSource(this);
         }

@@ -139,10 +139,12 @@ public class MapView extends GLSurfaceView {
         mMap.destroy();
     }
 
+    @Override
     public void onPause() {
         mMap.pause(true);
     }
 
+    @Override
     public void onResume() {
         mMap.pause(false);
     }

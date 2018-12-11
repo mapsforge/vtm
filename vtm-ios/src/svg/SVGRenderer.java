@@ -44,6 +44,7 @@ public class SVGRenderer extends SVGParser implements SVGContext, GHRenderable {
         initObject(init(utf8String));
     }
 
+    @Override
     @Method(selector = "initWithString:")
     protected native
     @Pointer
@@ -54,15 +55,19 @@ public class SVGRenderer extends SVGParser implements SVGContext, GHRenderable {
     @ByVal
     CGRect getViewRect();
 
+    @Override
     @Method(selector = "colorForSVGColorString:")
     public native UIColor colorForSVGColorString(String svgColorString);
 
+    @Override
     @Method(selector = "objectAtURL:")
     public native NSObject objectAtURL(String aLocation);
 
+    @Override
     @Property(selector = "transform")
     public native CGAffineTransform getTransform();
 
+    @Override
     @Property(selector = "hidden")
     public native boolean isHidden();
 

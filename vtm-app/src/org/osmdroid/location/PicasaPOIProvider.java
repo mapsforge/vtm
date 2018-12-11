@@ -95,6 +95,7 @@ public class PicasaPOIProvider implements POIProvider {
      * @return list of POI, Picasa photos inside the bounding box. Null if
      * technical issue.
      */
+    @Override
     public List<POI> getPOIInside(BoundingBox boundingBox, String query, int maxResults) {
         String url = getUrlInside(boundingBox, maxResults, query);
         return getThem(url);

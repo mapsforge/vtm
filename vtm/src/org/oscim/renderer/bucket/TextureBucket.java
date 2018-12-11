@@ -76,6 +76,7 @@ public class TextureBucket extends RenderBucket {
         compileVertexItems(vboData);
     }
 
+    @Override
     protected void clear() {
         while (textures != null)
             textures = textures.dispose();

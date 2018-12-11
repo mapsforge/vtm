@@ -56,15 +56,18 @@ public class MapLayers {
     }
 
     static Config[] configs = new Config[]{new Config("OPENSCIENCEMAP4") {
+        @Override
         TileSource init() {
             return new OSciMap4TileSource();
         }
     }, new Config("MAPSFORGE") {
+        @Override
         TileSource init() {
             return new MapFileTileSource().setOption("file",
                     "/storage/sdcard0/germany.map");
         }
     }, new Config("MAPNIK_VECTOR") {
+        @Override
         TileSource init() {
             return new MapnikVectorTileSource();
         }

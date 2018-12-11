@@ -41,6 +41,7 @@ public class NextzenGeojsonTileSource extends GeojsonTileSource {
             return self();
         }
 
+        @Override
         public NextzenGeojsonTileSource build() {
             return new NextzenGeojsonTileSource(this);
         }

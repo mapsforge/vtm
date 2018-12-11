@@ -97,6 +97,7 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
             mLabelPlacer.cleanup();
         }
 
+        @Override
         public synchronized boolean isRunning() {
             return mRunning;
         }

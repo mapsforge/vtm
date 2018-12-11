@@ -38,6 +38,7 @@ public class MapActivity extends Activity {
         this(R.layout.activity_map);
     }
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(mContentView);

@@ -43,6 +43,7 @@ public class OsmWay extends OsmElement {
         return "w" + id;
     }
 
+    @Override
     public Geometry toJts() {
         double[] coords = new double[nodes.size() * 2];
         int i = 0;

@@ -41,6 +41,7 @@ public class MapzenMvtTileSource extends UrlTileSource {
             return self();
         }
 
+        @Override
         public MapzenMvtTileSource build() {
             return new MapzenMvtTileSource(this);
         }

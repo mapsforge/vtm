@@ -659,6 +659,7 @@ public class ExtrusionBucket extends RenderBucket {
         }
     }
 
+    @Override
     public ExtrusionBucket next() {
         return (ExtrusionBucket) next;
     }

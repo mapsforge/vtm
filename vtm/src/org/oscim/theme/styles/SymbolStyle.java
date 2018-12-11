@@ -206,6 +206,7 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
             return self();
         }
 
+        @Override
         public SymbolStyle build() {
             return new SymbolStyle(this);
         }

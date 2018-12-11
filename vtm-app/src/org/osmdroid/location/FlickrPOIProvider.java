@@ -149,6 +149,7 @@ public class FlickrPOIProvider implements POIProvider {
      * Null if
      * technical issue.
      */
+    @Override
     public ArrayList<POI> getPOIInside(BoundingBox boundingBox, String query, int maxResults) {
         String url = getUrlInside(boundingBox, maxResults);
         return getThem(url);

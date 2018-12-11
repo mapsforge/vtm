@@ -41,6 +41,7 @@ public class BitmapTileSource extends UrlTileSource {
             super(null, "/{Z}/{X}/{Y}.png");
         }
 
+        @Override
         public BitmapTileSource build() {
             return new BitmapTileSource(this);
         }

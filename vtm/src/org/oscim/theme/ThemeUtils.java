@@ -39,6 +39,7 @@ public final class ThemeUtils {
             final AtomicBoolean isMapsforgeTheme = new AtomicBoolean(false);
             try {
                 new XMLReaderAdapter().parse(new DefaultHandler() {
+                    @Override
                     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
                         if (localName.equals("rendertheme")) {
                             isMapsforgeTheme.set(uri.equals("http://mapsforge.org/renderTheme"));

@@ -137,6 +137,7 @@ public class FourSquareProvider implements POIProvider {
      * Null if
      * technical issue.
      */
+    @Override
     public ArrayList<POI> getPOIInside(BoundingBox boundingBox, String query, int maxResults) {
         String url = getUrlInside(boundingBox, query, maxResults);
         return getThem(url);

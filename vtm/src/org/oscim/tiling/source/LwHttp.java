@@ -255,6 +255,7 @@ public class LwHttp implements HttpEngine {
             throw new IOException("No Socket");
     }
 
+    @Override
     public synchronized InputStream read() throws IOException {
         checkSocket();
 

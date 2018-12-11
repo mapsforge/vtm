@@ -12,18 +12,22 @@ public class MyAttributes implements Attributes {
         map = n.getAttributes();
     }
 
+    @Override
     public String getValue(int i) {
         return map.item(i).getNodeValue();
     }
 
+    @Override
     public int getLength() {
         return map.getLength();
     }
 
+    @Override
     public String getLocalName(int i) {
         return map.item(i).getNodeName();
     }
 
+    @Override
     public String getValue(String string) {
         Node n = map.getNamedItem(string);
         if (n == null)

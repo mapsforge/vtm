@@ -65,6 +65,7 @@ public class OSMIndoorLayer extends JeoVectorLayer {
         mTextLayer.prepare();
     }
 
+    @Override
     protected void addLine(Task t, Feature f, Rule rule, Geometry g) {
 
         if (((LineString) g).isClosed()) {
@@ -86,6 +87,7 @@ public class OSMIndoorLayer extends JeoVectorLayer {
         addLine(t, g, ll);
     }
 
+    @Override
     protected void addPolygon(Task t, Feature f, Rule rule, Geometry g) {
         int level = getLevel(f);
 

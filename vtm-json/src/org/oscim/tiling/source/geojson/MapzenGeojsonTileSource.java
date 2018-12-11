@@ -42,6 +42,7 @@ public class MapzenGeojsonTileSource extends GeojsonTileSource {
             return self();
         }
 
+        @Override
         public MapzenGeojsonTileSource build() {
             return new MapzenGeojsonTileSource(this);
         }

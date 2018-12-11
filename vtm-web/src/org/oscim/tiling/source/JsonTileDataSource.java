@@ -88,6 +88,7 @@ public class JsonTileDataSource implements ITileDataSource {
         //builder.setCallbackParam("json_callback");
 
         mRequestHandle = builder.requestObject(url, new AsyncCallback<JavaScriptObject>() {
+            @Override
             public void onFailure(Throwable caught) {
 
                 mSink.completed(FAILED);
@@ -95,6 +96,7 @@ public class JsonTileDataSource implements ITileDataSource {
                 //mRequestHandle.cancel();
             }
 
+            @Override
             public void onSuccess(JavaScriptObject jso) {
                 if (mTile.state(State.NONE)) {
                     log.debug("tile cleared {}", url);

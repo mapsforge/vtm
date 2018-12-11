@@ -37,6 +37,7 @@ public class MapilionMvtTileSource extends UrlTileSource {
             return self();
         }
 
+        @Override
         public MapilionMvtTileSource build() {
             return new MapilionMvtTileSource(this);
         }

@@ -186,6 +186,7 @@ public class BoxTree<T extends BoxItem<E>, E> extends TileIndex<BoxNode<T>, T> {
             return new Stack<BoxNode<T>>();
         }
 
+        @Override
         protected boolean clearItem(Stack<BoxNode<T>> item) {
             if (item.tos != 0) {
                 item.tos = 0;
@@ -678,6 +679,7 @@ public class BoxTree<T extends BoxItem<E>, E> extends TileIndex<BoxNode<T>, T> {
         root.refs = 0;
     }
 
+    @Override
     public int size() {
         return root.refs;
     }

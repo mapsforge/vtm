@@ -35,6 +35,7 @@ public class MultiMapViewActivity extends Activity {
     private MapView mMapView1, mMapView2;
     private MapPreferences mPrefs1, mPrefs2;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_multi);

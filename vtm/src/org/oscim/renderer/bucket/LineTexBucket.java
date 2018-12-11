@@ -101,6 +101,7 @@ public final class LineTexBucket extends LineBucket {
         this.evenSegment = true;
     }
 
+    @Override
     public void addLine(GeometryBuffer geom) {
         addLine(geom.points, geom.index, -1, false);
     }

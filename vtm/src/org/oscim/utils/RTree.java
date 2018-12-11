@@ -290,6 +290,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
         releaseRect(r);
     }
 
+    @Override
     public void insert(Box box, T item) {
         Rect r = getRect();
         r.set(box);
@@ -312,6 +313,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
         return removed;
     }
 
+    @Override
     public boolean remove(Box box, T item) {
         Rect r = getRect();
         r.set(box);
@@ -342,6 +344,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
         return true;
     }
 
+    @Override
     public boolean search(Box bbox, SearchCb<T> cb, Object context) {
         Rect r = getRect();
         r.set(bbox);
@@ -352,6 +355,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
         return true;
     }
 
+    @Override
     public List<T> search(Box bbox, List<T> results) {
         if (results == null)
             results = new ArrayList<T>(16);
@@ -370,6 +374,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
      * Count the data elements in this container. This is slow as no internal
      * counter is maintained.
      */
+    @Override
     public int size() {
         int[] count = {0};
         countRec(mRoot, count);
@@ -393,6 +398,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
     /**
      * Remove all entries from tree.
      */
+    @Override
     public void clear() {
         /* Delete all existing nodes */
         reset();
@@ -913,6 +919,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
             return new Stack();
         }
 
+        @Override
         protected boolean clearItem(Stack item) {
             if (item.tos != 0) {
                 item.tos = 0;
@@ -1006,6 +1013,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
         }
 
         /* Find the next data element */
+        @Override
         @SuppressWarnings("unchecked")
         public T next() {
             assert (isNotNull());

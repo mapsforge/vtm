@@ -62,6 +62,7 @@ public class OsmTileLayer extends VectorTileLayer {
                 new TagReplacement(Tag.KEY_MIN_HEIGHT)
         };
 
+        @Override
         protected TagSet filterTags(TagSet tagSet) {
             Tag[] tags = tagSet.getTags();
 

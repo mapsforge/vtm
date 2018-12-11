@@ -176,6 +176,7 @@ public class ExtrusionStyle extends RenderStyle<ExtrusionStyle> {
             return self();
         }
 
+        @Override
         public ExtrusionStyle build() {
             return new ExtrusionStyle(this);
         }

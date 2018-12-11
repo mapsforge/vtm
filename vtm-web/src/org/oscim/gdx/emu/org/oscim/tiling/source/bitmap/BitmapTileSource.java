@@ -47,6 +47,7 @@ public class BitmapTileSource extends UrlTileSource {
             super(null, "/{Z}/{X}/{Y}.png");
         }
 
+        @Override
         public BitmapTileSource build() {
             return new BitmapTileSource(this);
         }
@@ -115,6 +116,7 @@ public class BitmapTileSource extends UrlTileSource {
             RootPanel.get().add(img);
 
             img.addLoadHandler(new LoadHandler() {
+                @Override
                 public void onLoad(LoadEvent event) {
                     TileLoader.postLoadDelay(new LoadDelayTask<Image>(tile, sink, img) {
 

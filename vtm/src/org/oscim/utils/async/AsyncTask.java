@@ -48,6 +48,7 @@ public abstract class AsyncTask extends Task {
      *
      * @return Task.DONE on success, Task.ERROR otherwise
      */
+    @Override
     public abstract int go(boolean canceled);
 
     /**

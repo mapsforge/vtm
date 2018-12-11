@@ -155,6 +155,7 @@ public class MapTile extends Tile {
 
         protected abstract void dispose();
 
+        @Override
         public TileData next() {
             return (TileData) next;
         }
