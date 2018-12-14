@@ -35,13 +35,13 @@ import java.util.prefs.BackingStoreException;
 
 public class ThemeLoader {
 
-    final private Logger vtmLog = LoggerFactory.getLogger("org.oscim.ThemeLoader");
-    final private Logger mapsforgeLog = LoggerFactory.getLogger("org.mapsforge.ThemeLoader");
+    private final Logger vtmLog = LoggerFactory.getLogger("org.oscim.ThemeLoader");
+    private final Logger mapsforgeLog = LoggerFactory.getLogger("org.mapsforge.ThemeLoader");
 
 
-    final private VtmPanel vtmPanel;
-    final private MapsforgeMapPanel mapsforgeMapPanel;
-    final private RSyntaxTextArea syntaxTextArea;
+    private final VtmPanel vtmPanel;
+    private final MapsforgeMapPanel mapsforgeMapPanel;
+    private final RSyntaxTextArea syntaxTextArea;
 
     private String themePath;
     private String editorText;
