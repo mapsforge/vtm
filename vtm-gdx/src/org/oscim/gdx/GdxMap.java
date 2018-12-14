@@ -99,8 +99,10 @@ public abstract class GdxMap implements ApplicationListener {
         createLayers();
     }
 
-    protected void createLayers() {
-    }
+    /**
+     * Add layers to GdxMap
+     */
+    protected abstract void createLayers();
 
     @Override
     public void dispose() {
