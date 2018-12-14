@@ -26,7 +26,7 @@ public abstract class Interpolation {
     /**
      * @param a Alpha value between 0 and 1.
      */
-    abstract public float apply(float a);
+    public abstract float apply(float a);
 
     /**
      * @param a Alpha value between 0 and 1.
@@ -35,66 +35,66 @@ public abstract class Interpolation {
         return start + (end - start) * apply(a);
     }
 
-    static public final Interpolation linear = new Interpolation() {
+    public static final Interpolation linear = new Interpolation() {
         @Override
         public float apply(float a) {
             return a;
         }
     };
 
-    static public final Interpolation fade = new Interpolation() {
+    public static final Interpolation fade = new Interpolation() {
         @Override
         public float apply(float a) {
             return MathUtils.clamp(a * a * a * (a * (a * 6 - 15) + 10), 0, 1);
         }
     };
 
-    static public final Pow pow2 = new Pow(2);
-    static public final PowIn pow2In = new PowIn(2);
-    static public final PowOut pow2Out = new PowOut(2);
+    public static final Pow pow2 = new Pow(2);
+    public static final PowIn pow2In = new PowIn(2);
+    public static final PowOut pow2Out = new PowOut(2);
 
-    static public final Pow pow3 = new Pow(3);
-    static public final PowIn pow3In = new PowIn(3);
-    static public final PowOut pow3Out = new PowOut(3);
+    public static final Pow pow3 = new Pow(3);
+    public static final PowIn pow3In = new PowIn(3);
+    public static final PowOut pow3Out = new PowOut(3);
 
-    static public final Pow pow4 = new Pow(4);
-    static public final PowIn pow4In = new PowIn(4);
-    static public final PowOut pow4Out = new PowOut(4);
+    public static final Pow pow4 = new Pow(4);
+    public static final PowIn pow4In = new PowIn(4);
+    public static final PowOut pow4Out = new PowOut(4);
 
-    static public final Pow pow5 = new Pow(5);
-    static public final PowIn pow5In = new PowIn(5);
-    static public final PowOut pow5Out = new PowOut(5);
+    public static final Pow pow5 = new Pow(5);
+    public static final PowIn pow5In = new PowIn(5);
+    public static final PowOut pow5Out = new PowOut(5);
 
-    static public final Interpolation sine = new Interpolation() {
+    public static final Interpolation sine = new Interpolation() {
         @Override
         public float apply(float a) {
             return (1 - MathUtils.cos(a * MathUtils.PI)) / 2;
         }
     };
 
-    static public final Interpolation sineIn = new Interpolation() {
+    public static final Interpolation sineIn = new Interpolation() {
         @Override
         public float apply(float a) {
             return 1 - MathUtils.cos(a * MathUtils.PI / 2);
         }
     };
 
-    static public final Interpolation sineOut = new Interpolation() {
+    public static final Interpolation sineOut = new Interpolation() {
         @Override
         public float apply(float a) {
             return MathUtils.sin(a * MathUtils.PI / 2);
         }
     };
 
-    static public final Interpolation exp10 = new Exp(2, 10);
-    static public final Interpolation exp10In = new ExpIn(2, 10);
-    static public final Interpolation exp10Out = new ExpOut(2, 10);
+    public static final Interpolation exp10 = new Exp(2, 10);
+    public static final Interpolation exp10In = new ExpIn(2, 10);
+    public static final Interpolation exp10Out = new ExpOut(2, 10);
 
-    static public final Interpolation exp5 = new Exp(2, 5);
-    static public final Interpolation exp5In = new ExpIn(2, 5);
-    static public final Interpolation exp5Out = new ExpOut(2, 5);
+    public static final Interpolation exp5 = new Exp(2, 5);
+    public static final Interpolation exp5In = new ExpIn(2, 5);
+    public static final Interpolation exp5Out = new ExpOut(2, 5);
 
-    static public final Interpolation circle = new Interpolation() {
+    public static final Interpolation circle = new Interpolation() {
         @Override
         public float apply(float a) {
             if (a <= 0.5f) {
@@ -107,14 +107,14 @@ public abstract class Interpolation {
         }
     };
 
-    static public final Interpolation circleIn = new Interpolation() {
+    public static final Interpolation circleIn = new Interpolation() {
         @Override
         public float apply(float a) {
             return 1 - (float) Math.sqrt(1 - a * a);
         }
     };
 
-    static public final Interpolation circleOut = new Interpolation() {
+    public static final Interpolation circleOut = new Interpolation() {
         @Override
         public float apply(float a) {
             a--;
@@ -122,21 +122,21 @@ public abstract class Interpolation {
         }
     };
 
-    static public final Elastic elastic = new Elastic(2, 10);
-    static public final Elastic elasticIn = new ElasticIn(2, 10);
-    static public final Elastic elasticOut = new ElasticOut(2, 10);
+    public static final Elastic elastic = new Elastic(2, 10);
+    public static final Elastic elasticIn = new ElasticIn(2, 10);
+    public static final Elastic elasticOut = new ElasticOut(2, 10);
 
-    static public final Interpolation swing = new Swing(1.5f);
-    static public final Interpolation swingIn = new SwingIn(2f);
-    static public final Interpolation swingOut = new SwingOut(2f);
+    public static final Interpolation swing = new Swing(1.5f);
+    public static final Interpolation swingIn = new SwingIn(2f);
+    public static final Interpolation swingOut = new SwingOut(2f);
 
-    static public final Interpolation bounce = new Bounce(4);
-    static public final Interpolation bounceIn = new BounceIn(4);
-    static public final Interpolation bounceOut = new BounceOut(4);
+    public static final Interpolation bounce = new Bounce(4);
+    public static final Interpolation bounceIn = new BounceIn(4);
+    public static final Interpolation bounceOut = new BounceOut(4);
 
     //
 
-    static public class Pow extends Interpolation {
+    public static class Pow extends Interpolation {
         final int power;
 
         public Pow(int power) {
@@ -151,7 +151,7 @@ public abstract class Interpolation {
         }
     }
 
-    static public class PowIn extends Pow {
+    public static class PowIn extends Pow {
         public PowIn(int power) {
             super(power);
         }
@@ -162,7 +162,7 @@ public abstract class Interpolation {
         }
     }
 
-    static public class PowOut extends Pow {
+    public static class PowOut extends Pow {
         public PowOut(int power) {
             super(power);
         }
@@ -175,7 +175,7 @@ public abstract class Interpolation {
 
     //
 
-    static public class Exp extends Interpolation {
+    public static class Exp extends Interpolation {
         final float value, power, min, scale;
 
         public Exp(float value, float power) {
@@ -193,7 +193,7 @@ public abstract class Interpolation {
         }
     }
 
-    static public class ExpIn extends Exp {
+    public static class ExpIn extends Exp {
         public ExpIn(float value, float power) {
             super(value, power);
         }
@@ -204,7 +204,7 @@ public abstract class Interpolation {
         }
     }
 
-    static public class ExpOut extends Exp {
+    public static class ExpOut extends Exp {
         public ExpOut(float value, float power) {
             super(value, power);
         }
@@ -217,7 +217,7 @@ public abstract class Interpolation {
 
     //
 
-    static public class Elastic extends Interpolation {
+    public static class Elastic extends Interpolation {
         final float value, power;
 
         public Elastic(float value, float power) {
@@ -239,7 +239,7 @@ public abstract class Interpolation {
         }
     }
 
-    static public class ElasticIn extends Elastic {
+    public static class ElasticIn extends Elastic {
         public ElasticIn(float value, float power) {
             super(value, power);
         }
@@ -250,7 +250,7 @@ public abstract class Interpolation {
         }
     }
 
-    static public class ElasticOut extends Elastic {
+    public static class ElasticOut extends Elastic {
         public ElasticOut(float value, float power) {
             super(value, power);
         }
@@ -264,7 +264,7 @@ public abstract class Interpolation {
 
     //
 
-    static public class Bounce extends BounceOut {
+    public static class Bounce extends BounceOut {
         public Bounce(float[] widths, float[] heights) {
             super(widths, heights);
         }
@@ -288,7 +288,7 @@ public abstract class Interpolation {
         }
     }
 
-    static public class BounceOut extends Interpolation {
+    public static class BounceOut extends Interpolation {
         final float[] widths, heights;
 
         public BounceOut(float[] widths, float[] heights) {
@@ -359,7 +359,7 @@ public abstract class Interpolation {
         }
     }
 
-    static public class BounceIn extends BounceOut {
+    public static class BounceIn extends BounceOut {
         public BounceIn(float[] widths, float[] heights) {
             super(widths, heights);
         }
@@ -376,7 +376,7 @@ public abstract class Interpolation {
 
     //
 
-    static public class Swing extends Interpolation {
+    public static class Swing extends Interpolation {
         private final float scale;
 
         public Swing(float scale) {
@@ -395,7 +395,7 @@ public abstract class Interpolation {
         }
     }
 
-    static public class SwingOut extends Interpolation {
+    public static class SwingOut extends Interpolation {
         private final float scale;
 
         public SwingOut(float scale) {
@@ -409,7 +409,7 @@ public abstract class Interpolation {
         }
     }
 
-    static public class SwingIn extends Interpolation {
+    public static class SwingIn extends Interpolation {
         private final float scale;
 
         public SwingIn(float scale) {

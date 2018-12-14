@@ -61,7 +61,7 @@ public abstract class TileLayer extends Layer implements UpdateListener {
         mRenderer = renderer;
     }
 
-    abstract protected TileLoader createLoader();
+    protected abstract TileLoader createLoader();
 
     public TileRenderer tileRenderer() {
         return (TileRenderer) mRenderer;

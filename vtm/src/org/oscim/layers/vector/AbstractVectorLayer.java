@@ -78,7 +78,7 @@ public abstract class AbstractVectorLayer<T> extends Layer implements UpdateList
         mWorker.submit(0);
     }
 
-    abstract protected void processFeatures(Task t, Box b);
+    protected abstract void processFeatures(Task t, Box b);
 
     protected static class Task {
         public final RenderBuckets buckets = new RenderBuckets();

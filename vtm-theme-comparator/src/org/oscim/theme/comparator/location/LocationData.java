@@ -81,22 +81,22 @@ public final class LocationData {
     }
 
 
-    public synchronized static double getLatitude() {
+    public static synchronized double getLatitude() {
         return latitude;
     }
 
-    synchronized static void setLatitude(double latitude) {
+    static synchronized void setLatitude(double latitude) {
         if (LocationData.latitude != latitude) {
             LocationData.latitude = latitude;
             notifyChange();
         }
     }
 
-    public synchronized static double getLongitude() {
+    public static synchronized double getLongitude() {
         return longitude;
     }
 
-    public synchronized static void setLongitude(double longitude) {
+    public static synchronized void setLongitude(double longitude) {
         if (LocationData.longitude != longitude) {
             LocationData.longitude = longitude;
             notifyChange();

@@ -81,7 +81,7 @@ public class JsArrayCollection<T> extends AbstractCollection<T> {
         protected JsArr() {
         }
 
-        public native final JsArr<T> slice(int start, int end)/*-{
+        public final native JsArr<T> slice(int start, int end)/*-{
             return this.slice(start, end);
         }-*/;
 

@@ -253,52 +253,52 @@ public class GLMatrix {
             delete(pointer);
     }
 
-    private native static long alloc();
+    private static native long alloc();
 
-    private native static void delete(long self);
+    private static native void delete(long self);
 
-    private native static void set(long self, float[] m);
+    private static native void set(long self, float[] m);
 
-    private native static void copy(long self, long other);
+    private static native void copy(long self, long other);
 
-    private native static void identity(long self);
+    private static native void identity(long self);
 
-    private native static void get(long self, float[] m);
+    private static native void get(long self, float[] m);
 
-    private native static void mul(long self, long lhs_ptr);
+    private static native void mul(long self, long lhs_ptr);
 
-    private native static void smul(long self, long rhs_ptr, long lhs_ptr);
+    private static native void smul(long self, long rhs_ptr, long lhs_ptr);
 
-    private native static void smulrhs(long self, long rhs_ptr);
+    private static native void smulrhs(long self, long rhs_ptr);
 
-    private native static void smullhs(long self, long lhs_ptr);
+    private static native void smullhs(long self, long lhs_ptr);
 
-    private native static void strans(long self, long rhs_ptr);
+    private static native void strans(long self, long rhs_ptr);
 
-    private native static void prj(long self, float[] vec3);
+    private static native void prj(long self, float[] vec3);
 
-    private native static void prj3D(long self, float[] vec3, int start, int cnt);
+    private static native void prj3D(long self, float[] vec3, int start, int cnt);
 
-    private native static void prj2D(long self, float[] vec2, int start, int cnt);
+    private static native void prj2D(long self, float[] vec2, int start, int cnt);
 
-    private native static void prj2D2(long self, float[] vec2, int src_offset,
+    private static native void prj2D2(long self, float[] vec2, int src_offset,
                                       float[] dst_vec, int dst_offset, int length);
 
-    private native static void setRotation(long self, float a, float x, float y, float z);
+    private static native void setRotation(long self, float a, float x, float y, float z);
 
-    private native static void setScale(long self, float x, float y, float z);
+    private static native void setScale(long self, float x, float y, float z);
 
-    private native static void setTranslation(long self, float x, float y, float z);
+    private static native void setTranslation(long self, float x, float y, float z);
 
-    private native static void setTransScale(long self, float tx, float ty, float scale);
+    private static native void setTransScale(long self, float tx, float ty, float scale);
 
-    //private native static void setAsUniform(long self, int handle);
+    //private static native void setAsUniform(long self, int handle);
 
-    private native static void setValueAt(long self, int pos, float value);
+    private static native void setValueAt(long self, int pos, float value);
 
-    private native static void addDepthOffset(long self, int delta);
+    private static native void addDepthOffset(long self, int delta);
 
-    private native static ByteBuffer getBuffer(long self);
+    private static native ByteBuffer getBuffer(long self);
 
     /* Copyright (C) 2007 The Android Open Source Project
      *

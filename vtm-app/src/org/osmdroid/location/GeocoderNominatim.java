@@ -51,7 +51,7 @@ public class GeocoderNominatim {
         init(context, Locale.getDefault());
     }
 
-    static public boolean isPresent() {
+    public static boolean isPresent() {
         return true;
     }
 

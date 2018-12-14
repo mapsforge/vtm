@@ -32,7 +32,7 @@ public class Easing {
         QUINT_INOUT
     }
 
-    static public float ease(long start, long current, float duration, Type easingType) {
+    public static float ease(long start, long current, float duration, Type easingType) {
         long millisElapsed = current - start;
         if (millisElapsed > duration) {
             return 1;
@@ -79,42 +79,42 @@ public class Easing {
 
     // Following easing functions are copied from https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
     // Under BSD license
-    static private float linear(float x, float t, float b, float c, float d) {
+    private static float linear(float x, float t, float b, float c, float d) {
         return c * x + b;
     }
 
-    static private float sineInout(float x, float t, float b, float c, float d) {
+    private static float sineInout(float x, float t, float b, float c, float d) {
         return -c / 2 * (float) (Math.cos(Math.PI * t / d) - 1) + b;
     }
 
-    static private float sineIn(float x, float t, float b, float c, float d) {
+    private static float sineIn(float x, float t, float b, float c, float d) {
         return -c * (float) Math.cos(t / d * (Math.PI / 2)) + c + b;
     }
 
-    static private float sineOut(float x, float t, float b, float c, float d) {
+    private static float sineOut(float x, float t, float b, float c, float d) {
         return c * (float) Math.sin(t / d * (Math.PI / 2)) + b;
     }
 
-    static private float expoOut(float x, float t, float b, float c, float d) {
+    private static float expoOut(float x, float t, float b, float c, float d) {
         return (t == d) ? b + c : c * (float) (-Math.pow(2, -10 * x) + 1) + b;
     }
 
-    static private float quadInout(float x, float t, float b, float c, float d) {
+    private static float quadInout(float x, float t, float b, float c, float d) {
         if ((t /= d / 2) < 1) return c / 2 * t * t + b;
         return -c / 2 * ((--t) * (t - 2) - 1) + b;
     }
 
-    static private float cubicInout(float x, float t, float b, float c, float d) {
+    private static float cubicInout(float x, float t, float b, float c, float d) {
         if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
         return c / 2 * ((t -= 2) * t * t + 2) + b;
     }
 
-    static private float quartInout(float x, float t, float b, float c, float d) {
+    private static float quartInout(float x, float t, float b, float c, float d) {
         if ((t /= d / 2) < 1) return c / 2 * t * t * t * t + b;
         return -c / 2 * ((t -= 2) * t * t * t - 2) + b;
     }
 
-    static private float quintInout(float x, float t, float b, float c, float d) {
+    private static float quintInout(float x, float t, float b, float c, float d) {
         if ((t /= d / 2) < 1) return c / 2 * t * t * t * t * t + b;
         return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
     }

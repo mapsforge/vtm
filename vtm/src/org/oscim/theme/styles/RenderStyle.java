@@ -27,7 +27,7 @@ import static org.oscim.backend.canvas.Color.parseColor;
  */
 public abstract class RenderStyle<T extends RenderStyle<T>> {
 
-    public static abstract class StyleBuilder<T extends StyleBuilder<T>> {
+    public abstract static class StyleBuilder<T extends StyleBuilder<T>> {
         public String cat;
         public String style;
 
