@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2017 devemux86
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -29,6 +30,7 @@ public class GLAdapter {
      */
     public static GL gl;
 
+    public static boolean ANDROID_QUIRKS = false;
     public static boolean GDX_DESKTOP_QUIRKS = false;
     public static boolean GDX_WEBGL_QUIRKS = false;
 
@@ -46,6 +48,7 @@ public class GLAdapter {
     public static void init(GL gl20) {
         gl = gl20;
 
+        ANDROID_QUIRKS = (CanvasAdapter.platform == Platform.ANDROID);
         GDX_DESKTOP_QUIRKS = CanvasAdapter.platform.isDesktop();
         GDX_WEBGL_QUIRKS = (CanvasAdapter.platform == Platform.WEBGL);
 
