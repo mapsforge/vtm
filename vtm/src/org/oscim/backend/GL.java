@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -38,6 +39,8 @@ import java.nio.IntBuffer;
 
 /**
  * Interface wrapping all the methods of OpenGL ES 2.0
+ *
+ * See https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/graphics/GL20.java
  *
  * @author mzechner
  */
@@ -163,6 +166,7 @@ public interface GL {
     public static final int DONT_CARE = 0x1100;
     public static final int FASTEST = 0x1101;
     public static final int NICEST = 0x1102;
+    public static final int GENERATE_MIPMAP = 0x8191;
     public static final int GENERATE_MIPMAP_HINT = 0x8192;
     public static final int BYTE = 0x1400;
     public static final int UNSIGNED_BYTE = 0x1401;
@@ -350,6 +354,94 @@ public interface GL {
 
     // Extensions
     public static final int COVERAGE_BUFFER_BIT_NV = 0x8000;
+    public static final int TEXTURE_MAX_ANISOTROPY_EXT = 0x84FE;
+    public static final int MAX_TEXTURE_MAX_ANISOTROPY_EXT = 0x84FF;
+
+    public void activeTexture(int texture);
+
+    public void bindTexture(int target, int texture);
+
+    public void blendFunc(int sfactor, int dfactor);
+
+    public void clear(int mask);
+
+    public void clearColor(float red, float green, float blue, float alpha);
+
+    public void clearDepthf(float depth);
+
+    public void clearStencil(int s);
+
+    public void colorMask(boolean red, boolean green, boolean blue, boolean alpha);
+
+    public void compressedTexImage2D(int target, int level, int internalformat, int width, int height, int border,
+                                     int imageSize, Buffer data);
+
+    public void compressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format,
+                                        int imageSize, Buffer data);
+
+    public void copyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border);
+
+    public void copyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height);
+
+    public void cullFace(int mode);
+
+    public void deleteTextures(int n, IntBuffer textures);
+
+    public void depthFunc(int func);
+
+    public void depthMask(boolean flag);
+
+    public void depthRangef(float zNear, float zFar);
+
+    public void disable(int cap);
+
+    public void drawArrays(int mode, int first, int count);
+
+    public void drawElements(int mode, int count, int type, Buffer indices);
+
+    public void enable(int cap);
+
+    public void finish();
+
+    public void flush();
+
+    public void frontFace(int mode);
+
+    public void genTextures(int n, IntBuffer textures);
+
+    public int getError();
+
+    public void getIntegerv(int pname, IntBuffer params);
+
+    public String getString(int name);
+
+    public void hint(int target, int mode);
+
+    public void lineWidth(float width);
+
+    public void pixelStorei(int pname, int param);
+
+    public void polygonOffset(float factor, float units);
+
+    public void readPixels(int x, int y, int width, int height, int format, int type, Buffer pixels);
+
+    public void scissor(int x, int y, int width, int height);
+
+    public void stencilFunc(int func, int ref, int mask);
+
+    public void stencilMask(int mask);
+
+    public void stencilOp(int fail, int zfail, int zpass);
+
+    public void texImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type,
+                           Buffer pixels);
+
+    public void texParameterf(int target, int pname, float param);
+
+    public void texSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type,
+                              Buffer pixels);
+
+    public void viewport(int x, int y, int width, int height);
 
     public void attachShader(int program, int shader);
 
@@ -395,15 +487,13 @@ public interface GL {
 
     public void disableVertexAttribArray(int index);
 
-    public void drawElements(int mode, int count, int type, int offset);
+    public void drawElements(int mode, int count, int type, int indices);
 
     public void enableVertexAttribArray(int index);
 
-    public void framebufferRenderbuffer(int target, int attachment, int renderbuffertarget,
-                                        int renderbuffer);
+    public void framebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer);
 
-    public void framebufferTexture2D(int target, int attachment, int textarget, int texture,
-                                     int level);
+    public void framebufferTexture2D(int target, int attachment, int textarget, int texture, int level);
 
     public void genBuffers(int n, IntBuffer buffers);
 
@@ -429,8 +519,7 @@ public interface GL {
 
     public void getFloatv(int pname, FloatBuffer params);
 
-    public void getFramebufferAttachmentParameteriv(int target, int attachment, int pname,
-                                                    IntBuffer params);
+    public void getFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params);
 
     public void getProgramiv(int program, int pname, IntBuffer params);
 
@@ -444,8 +533,7 @@ public interface GL {
     // deviates
     public String getShaderInfoLog(int shader);
 
-    public void getShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range,
-                                         IntBuffer precision);
+    public void getShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision);
 
     public void getShaderSource(int shader, int bufsize, Buffer length, String source);
 
@@ -562,111 +650,13 @@ public interface GL {
 
     public void vertexAttrib4fv(int indx, FloatBuffer values);
 
-    public void vertexAttribPointer(int indx, int size, int type, boolean normalized, int stride,
-                                    Buffer ptr);
-
     /**
-     *
+     * In Open core profiles  (3.1+), passing a pointer to client memory is not valid.
+     * In 3.0 and later, use the other version of this function instead, pass a zero-based
+     * offset which references the buffer currently bound to ARRAY_BUFFER.
      */
-    public void vertexAttribPointer(int indx, int size, int type, boolean normalized, int stride,
-                                    int offset);
+    public void vertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, Buffer ptr);
 
-    //------------------------
-
-    public static final int GENERATE_MIPMAP = 0x8191;
-    public static final int TEXTURE_MAX_ANISOTROPY_EXT = 0x84FE;
-    public static final int MAX_TEXTURE_MAX_ANISOTROPY_EXT = 0x84FF;
-
-    public void activeTexture(int texture);
-
-    public void bindTexture(int target, int texture);
-
-    public void blendFunc(int sfactor, int dfactor);
-
-    public void clear(int mask);
-
-    public void clearColor(float red, float green, float blue, float alpha);
-
-    public void clearDepthf(float depth);
-
-    public void clearStencil(int s);
-
-    public void colorMask(boolean red, boolean green, boolean blue, boolean alpha);
-
-    public void compressedTexImage2D(int target, int level, int internalformat, int width,
-                                     int height, int border,
-                                     int imageSize, Buffer data);
-
-    public void compressedTexSubImage2D(int target, int level, int xoffset, int yoffset,
-                                        int width, int height, int format,
-                                        int imageSize, Buffer data);
-
-    public void copyTexImage2D(int target, int level, int internalformat, int x, int y,
-                               int width, int height, int border);
-
-    public void copyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y,
-                                  int width, int height);
-
-    public void cullFace(int mode);
-
-    public void deleteTextures(int n, IntBuffer textures);
-
-    public void depthFunc(int func);
-
-    public void depthMask(boolean flag);
-
-    public void depthRangef(float zNear, float zFar);
-
-    public void disable(int cap);
-
-    public void drawArrays(int mode, int first, int count);
-
-    public void drawElements(int mode, int count, int type, Buffer indices);
-
-    public void enable(int cap);
-
-    public void finish();
-
-    public void flush();
-
-    public void frontFace(int mode);
-
-    public void genTextures(int n, IntBuffer textures);
-
-    public int getError();
-
-    public void getIntegerv(int pname, IntBuffer params);
-
-    public String getString(int name);
-
-    public void hint(int target, int mode);
-
-    public void lineWidth(float width);
-
-    public void pixelStorei(int pname, int param);
-
-    public void polygonOffset(float factor, float units);
-
-    public void readPixels(int x, int y, int width, int height, int format, int type,
-                           Buffer pixels);
-
-    public void scissor(int x, int y, int width, int height);
-
-    public void stencilFunc(int func, int ref, int mask);
-
-    public void stencilMask(int mask);
-
-    public void stencilOp(int fail, int zfail, int zpass);
-
-    public void texImage2D(int target, int level, int internalformat, int width, int height,
-                           int border, int format, int type,
-                           Buffer pixels);
-
-    public void texParameterf(int target, int pname, float param);
-
-    public void texSubImage2D(int target, int level, int xoffset, int yoffset, int width,
-                              int height, int format, int type,
-                              Buffer pixels);
-
-    public void viewport(int x, int y, int width, int height);
+    public void vertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, int ptr);
 }
+
