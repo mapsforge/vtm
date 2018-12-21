@@ -29,6 +29,7 @@ import static org.oscim.utils.FastMath.clamp;
 
 public class ViewController extends Viewport {
 
+    private float mPivotX = 0.0f;
     private float mPivotY = 0.0f;
 
     private final float[] mat = new float[16];
@@ -72,20 +73,21 @@ public class ViewController extends Viewport {
     }
 
     /**
-     * Get pivot height relative to view center. E.g. 0.5 is usually preferred
+     * Get pivot vertical / horizontal relative to view center. E.g. 0.5 is usually preferred
      * for navigation, moving the center to 25% of the view height.
      * Range is [-1, 1].
      */
-    public float getMapViewCenter() {
-        return mPivotY;
+    public float[] getMapViewCenter() {
+        return new float[]{mPivotX, mPivotY};
     }
 
     /**
-     * Set pivot height relative to view center. E.g. 0.5 is usually preferred
+     * Set pivot vertical / horizontal relative to view center. E.g. 0.5 is usually preferred
      * for navigation, moving the center to 25% of the view height.
      * Range is [-1, 1].
      */
-    public void setMapViewCenter(float pivotY) {
+    public void setMapViewCenter(float pivotX, float pivotY) {
+        mPivotX = FastMath.clamp(pivotX, -1, 1) * 0.5f;
         mPivotY = FastMath.clamp(pivotY, -1, 1) * 0.5f;
     }
 
@@ -177,6 +179,7 @@ public class ViewController extends Viewport {
         mPos.scale = newScale;
 
         if (pivotX != 0 || pivotY != 0) {
+            pivotX -= mWidth * mPivotX;
             pivotY -= mHeight * mPivotY;
 
             moveMap(pivotX * (1.0f - scale),
@@ -196,6 +199,7 @@ public class ViewController extends Viewport {
         double rcos = Math.cos(radians);
 
         pivotY -= mHeight * mPivotY;
+        pivotX -= mWidth * mPivotX;
 
         float x = (float) (pivotX - pivotX * rcos + pivotY * rsin);
         float y = (float) (pivotY - pivotX * rsin - pivotY * rcos);
@@ -276,7 +280,7 @@ public class ViewController extends Viewport {
 
         mViewMatrix.copy(mRotationMatrix);
 
-        mTmpMatrix.setTranslation(0, mPivotY * mHeight, 0);
+        mTmpMatrix.setTranslation(mPivotX * mWidth, mPivotY * mHeight, 0);
         mViewMatrix.multiplyLhs(mTmpMatrix);
 
         mViewProjMatrix.multiplyMM(mProjMatrix, mViewMatrix);
