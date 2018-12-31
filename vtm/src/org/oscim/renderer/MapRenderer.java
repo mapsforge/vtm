@@ -160,7 +160,7 @@ public class MapRenderer {
                 GLUtils.checkGlError(renderer.getClass().getName());
         }
 
-        if (GLUtils.checkGlOutOfMemory("finish")) {
+        if (GLUtils.checkGlError(getClass().getName() + ": finish").contains(GL.OUT_OF_MEMORY)) {
             BufferObject.checkBufferUsage(true);
             // FIXME also throw out some textures etc
         }

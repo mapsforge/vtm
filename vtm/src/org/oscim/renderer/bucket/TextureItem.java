@@ -305,7 +305,7 @@ public class TextureItem extends Inlist<TextureItem> {
                 gl.generateMipmap(GL.TEXTURE_2D);
 
             if (dbg)
-                GLUtils.checkGlError(TextureItem.class.getName());
+                GLUtils.checkGlError(getClass().getName());
 
             if (mUseBitmapPool)
                 releaseBitmap(t);

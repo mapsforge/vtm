@@ -175,7 +175,7 @@ public class HexagonRenderTest extends GdxMapApp {
                 }
             }
 
-            GLUtils.checkGlError("...");
+            GLUtils.checkGlError(getClass().getName() + ": render() end");
         }
 
         private boolean init() {

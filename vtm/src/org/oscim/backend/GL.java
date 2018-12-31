@@ -106,7 +106,7 @@ public interface GL {
     public static final int POLYGON_OFFSET_FILL = 0x8037;
     public static final int SAMPLE_ALPHA_TO_COVERAGE = 0x809E;
     public static final int SAMPLE_COVERAGE = 0x80A0;
-    //public static final int NO_ERROR = 0;
+    public static final int NO_ERROR = 0;
     public static final int INVALID_ENUM = 0x0500;
     public static final int INVALID_VALUE = 0x0501;
     public static final int INVALID_OPERATION = 0x0502;

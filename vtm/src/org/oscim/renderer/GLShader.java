@@ -139,11 +139,11 @@ public abstract class GLShader {
 
         int program = gl.createProgram();
         if (program != 0) {
-            GLUtils.checkGlError("glCreateProgram");
+            GLUtils.checkGlError(GLShader.class.getName() + ": glCreateProgram");
             gl.attachShader(program, vertexShader);
-            GLUtils.checkGlError("glAttachShader");
+            GLUtils.checkGlError(GLShader.class.getName() + ": glAttachShader");
             gl.attachShader(program, pixelShader);
-            GLUtils.checkGlError("glAttachShader");
+            GLUtils.checkGlError(GLShader.class.getName() + ": glAttachShader");
             gl.linkProgram(program);
             IntBuffer linkStatus = MapRenderer.getIntBuffer(1);
             gl.getProgramiv(program, GL.LINK_STATUS, linkStatus);

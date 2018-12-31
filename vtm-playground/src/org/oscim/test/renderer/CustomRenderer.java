@@ -120,7 +120,7 @@ public class CustomRenderer extends LayerRenderer {
         // Draw the triangle
         gl.drawArrays(GL.TRIANGLE_STRIP, 0, 4);
 
-        GLUtils.checkGlError("...");
+        GLUtils.checkGlError(getClass().getName() + ": ...");
     }
 
     private boolean init() {

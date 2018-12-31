@@ -66,7 +66,7 @@ public class OffscreenRenderer extends LayerRenderer {
         gl.genTextures(1, buf);
         renderTex = buf.get(0);
 
-        GLUtils.checkGlError("0");
+        GLUtils.checkGlError(getClass().getName() + ": 0");
 
         gl.bindFramebuffer(GL.FRAMEBUFFER, fb);
 
@@ -89,7 +89,7 @@ public class OffscreenRenderer extends LayerRenderer {
                 GL.COLOR_ATTACHMENT0,
                 GL.TEXTURE_2D,
                 renderTex, 0);
-        GLUtils.checkGlError("1");
+        GLUtils.checkGlError(getClass().getName() + ": 1");
 
         if (useDepthTexture) {
             buf.clear();
@@ -128,17 +128,13 @@ public class OffscreenRenderer extends LayerRenderer {
                     depthRenderbuffer);
         }
 
-        GLUtils.checkGlError("2");
+        GLUtils.checkGlError(getClass().getName() + ": 2");
 
-        int status = gl.checkFramebufferStatus(GL.FRAMEBUFFER);
+        int status = GLUtils.checkFrameBuffer(getClass().getName());
         gl.bindFramebuffer(GL.FRAMEBUFFER, 0);
         gl.bindTexture(GL.TEXTURE_2D, 0);
 
-        if (status != GL.FRAMEBUFFER_COMPLETE) {
-            log.debug("invalid framebuffer! " + status);
-            return false;
-        }
-        return true;
+        return status == GL.FRAMEBUFFER_COMPLETE;
     }
 
     public void enable(boolean on) {
@@ -223,6 +219,6 @@ public class OffscreenRenderer extends LayerRenderer {
         GLState.test(false, false);
         GLState.blend(true);
         gl.drawArrays(GL.TRIANGLE_STRIP, 0, 4);
-        GLUtils.checkGlError("....");
+        GLUtils.checkGlError(getClass().getName() + ": render() end");
     }
 }
