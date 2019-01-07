@@ -24,6 +24,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 
 import org.oscim.awt.AwtGraphics;
+import org.oscim.backend.DateTime;
+import org.oscim.backend.DateTimeAdapter;
 import org.oscim.backend.GLAdapter;
 import org.oscim.core.Tile;
 import org.oscim.tiling.TileSource;
@@ -43,6 +45,7 @@ public class GdxMapApp extends GdxMap {
         AwtGraphics.init();
         GdxAssets.init("assets/");
         GLAdapter.init(new LwjglGL20());
+        DateTimeAdapter.init(new DateTime());
     }
 
     public static void main(String[] args) {
