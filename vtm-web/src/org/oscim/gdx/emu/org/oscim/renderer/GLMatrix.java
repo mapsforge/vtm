@@ -1,6 +1,7 @@
 /*******************************************************************************
  * Copyright 2011 See libgdx AUTHORS file.
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2019 schedul-xor
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -581,6 +582,86 @@ public class GLMatrix {
         mInv[15 + mInvOffset] = dst15 * invdet;
 
         return true;
+    }
+
+    public static void lookAt(float[] m, int offset,
+                              float eyex, float eyey, float eyez,
+                              float centerx, float centery, float centerz,
+                              float upx, float upy, float upz) {
+        float z0 = eyex - centerx;
+        float z1 = eyey - centery;
+        float z2 = eyez - centerz;
+        double len = 1.0 / Math.sqrt(z0 * z0 + z1 * z1 + z2 * z2);
+        z0 *= len;
+        z1 *= len;
+        z2 *= len;
+
+        float x0 = upy * z2 - upz * z1;
+        float x1 = upz * z0 - upx * z2;
+        float x2 = upx * z1 - upy * z0;
+        len = Math.sqrt(x0 * x0 + x1 * x1 + x2 * x2);
+        if (len == 0) {
+            x0 = x1 = x2 = 0;
+        } else {
+            len = 1.0 / len;
+            x0 *= len;
+            x1 *= len;
+            x2 *= len;
+        }
+
+        float y0 = z1 * x2 - z2 * x1;
+        float y1 = z2 * x0 - z0 * x2;
+        float y2 = z0 * x1 - z1 * x0;
+        len = Math.sqrt(y0 * y0 + y1 * y1 + y2 * y2);
+        if (len == 0) {
+            y0 = y1 = y2 = 0;
+        } else {
+            len = 1.0 / len;
+            y0 *= len;
+            y1 *= len;
+            y2 *= len;
+        }
+
+        m[offset + 0] = x0;
+        m[offset + 1] = y0;
+        m[offset + 2] = z0;
+        m[offset + 3] = 0.0f;
+        m[offset + 4] = x1;
+        m[offset + 5] = y1;
+        m[offset + 6] = z1;
+        m[offset + 7] = 0.0f;
+        m[offset + 8] = x2;
+        m[offset + 9] = y2;
+        m[offset + 10] = z2;
+        m[offset + 11] = 0.0f;
+        m[offset + 12] = -(x0 * eyex + x1 * eyey + x2 * eyez);
+        m[offset + 13] = -(y0 * eyex + y1 * eyey + y2 * eyez);
+        m[offset + 14] = -(z0 * eyex + z1 * eyey + z2 * eyez);
+        m[offset + 15] = 1.0f;
+    }
+
+    public static void orthoM(float[] m, int offset,
+                              float left, float right, float bottom, float top,
+                              float near, float far) {
+        final float r_width = 1.0f / (right - left);
+        final float r_height = 1.0f / (top - bottom);
+        final float r_depth = 1.0f / (near - far);
+        m[offset + 0] = -2 * r_width;
+        m[offset + 5] = -2 * r_height;
+        m[offset + 10] = 2 * r_depth;
+        m[offset + 12] = (left + right) * r_width;
+        m[offset + 13] = (top + bottom) * r_height;
+        m[offset + 14] = (far + near) * r_depth;
+        m[offset + 1] = 0.0f;
+        m[offset + 2] = 0.0f;
+        m[offset + 3] = 0.0f;
+        m[offset + 4] = 0.0f;
+        m[offset + 6] = 0.0f;
+        m[offset + 7] = 0.0f;
+        m[offset + 8] = 0.0f;
+        m[offset + 9] = 0.0f;
+        m[offset + 11] = 0.0f;
+        m[offset + 15] = 1.0f;
     }
 
     void setRotateM(float[] rm, int rmOffset, float a, float x, float y, float z) {
