@@ -17,6 +17,8 @@
  */
 package org.oscim.ios.test;
 
+import org.oscim.backend.DateTime;
+import org.oscim.backend.DateTimeAdapter;
 import org.oscim.backend.GLAdapter;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
@@ -44,6 +46,7 @@ public class IOSMapApp extends GdxMap {
         IosGraphics.init();
         GdxAssets.init("assets/");
         GLAdapter.init(new IosGL());
+        DateTimeAdapter.init(new DateTime());
     }
 
     @Override

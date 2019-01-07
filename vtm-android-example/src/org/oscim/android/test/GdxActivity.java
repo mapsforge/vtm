@@ -28,6 +28,8 @@ import com.badlogic.gdx.utils.SharedLibraryLoader;
 import org.oscim.android.MapPreferences;
 import org.oscim.android.canvas.AndroidGraphics;
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.backend.DateTime;
+import org.oscim.backend.DateTimeAdapter;
 import org.oscim.backend.GLAdapter;
 import org.oscim.core.Tile;
 import org.oscim.gdx.AndroidGL;
@@ -65,6 +67,7 @@ public class GdxActivity extends AndroidApplication {
         AndroidGraphics.init();
         GdxAssets.init("");
         GLAdapter.init(new AndroidGL());
+        DateTimeAdapter.init(new DateTime());
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         CanvasAdapter.dpi = (int) (metrics.scaledDensity * CanvasAdapter.DEFAULT_DPI);
