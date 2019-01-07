@@ -35,6 +35,8 @@ import org.oscim.android.gl.GlConfigChooser;
 import org.oscim.android.input.AndroidMotionEvent;
 import org.oscim.android.input.GestureHandler;
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.backend.DateTime;
+import org.oscim.backend.DateTimeAdapter;
 import org.oscim.backend.GLAdapter;
 import org.oscim.core.Tile;
 import org.oscim.map.Map;
@@ -89,6 +91,7 @@ public class MapView extends GLSurfaceView {
         AndroidGraphics.init();
         AndroidAssets.init(context);
         GLAdapter.init(new AndroidGL());
+        DateTimeAdapter.init(new DateTime());
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         CanvasAdapter.dpi = (int) (metrics.scaledDensity * CanvasAdapter.DEFAULT_DPI);

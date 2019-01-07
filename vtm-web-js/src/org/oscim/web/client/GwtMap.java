@@ -21,11 +21,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 
 import org.oscim.backend.CanvasAdapter;
+import org.oscim.backend.DateTimeAdapter;
 import org.oscim.backend.GL;
 import org.oscim.backend.GLAdapter;
 import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
+import org.oscim.gdx.client.GwtDateTime;
 import org.oscim.gdx.client.GwtGdxGraphics;
 import org.oscim.gdx.client.MapConfig;
 import org.oscim.gdx.client.MapUrl;
@@ -42,6 +44,7 @@ public class GwtMap extends GdxMap {
 
         GwtGdxGraphics.init();
         GdxAssets.init("");
+        DateTimeAdapter.init(new GwtDateTime());
         CanvasAdapter.textScale = 0.7f;
         GLAdapter.init((GL) Gdx.graphics.getGL20());
         MapRenderer.setBackgroundColor(0xffffff);
