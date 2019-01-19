@@ -19,7 +19,6 @@ sourceSets {
 dependencies {
     providedCompile project(':vtm-web')
     providedCompile 'org.timepedia.exporter:gwtexporter:2.5.1'
-    providedCompile 'ru.finam:slf4j-gwt:1.7.7.1'
 }
 
 // explicit dependencies for org.gradle.configureondemand=true
