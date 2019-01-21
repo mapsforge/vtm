@@ -4,8 +4,9 @@
     <entry-point class="org.oscim.web.client.GwtLauncher" />
 
     <inherits name="org.oscim.gdx.VtmWeb" />
-
     <inherits name='org.timepedia.exporter.Exporter' />
+    <inherits name="ru.finam.slf4jgwt.logging.gwt.Logging" />
+
     <set-property name="export" value="yes" />
 
     <set-property name='gwt.logging.enabled' value='TRUE' />

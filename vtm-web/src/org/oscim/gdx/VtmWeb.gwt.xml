@@ -3,7 +3,6 @@
     <!-- <entry-point class="org.oscim.gdx.client.GwtLauncher" /> -->
 
     <inherits name="com.google.gwt.xml.XML" />
-    <inherits name="ru.finam.slf4jgwt.logging.gwt.Logging" />
 
     <!--   <set-property name='gwt.logging.enabled' value='TRUE' />
       <set-property name='gwt.logging.consoleHandler' value='ENABLED' />
