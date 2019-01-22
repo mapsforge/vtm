@@ -27,6 +27,7 @@ import org.oscim.layers.tile.ZoomLimiter;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer.TileLoaderThemeHook;
 import org.oscim.map.Map;
+import org.oscim.renderer.ExtrusionRenderer;
 import org.oscim.renderer.OffscreenRenderer;
 import org.oscim.renderer.OffscreenRenderer.Mode;
 import org.oscim.renderer.bucket.ExtrusionBuckets;
@@ -69,6 +70,8 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
 
     protected final IRenderTheme mRenderTheme;
 
+    protected ExtrusionRenderer mExtrusionRenderer;
+
     class BuildingElement {
         MapElement element;
         ExtrusionStyle style;
@@ -103,11 +106,18 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
         // Use zoomMin as zoomLimit to render buildings only once
         mZoomLimiter = new ZoomLimiter(tileLayer.getManager(), zoomMin, zoomMax, zoomMin);
 
-        mRenderer = new BuildingRenderer(tileLayer.tileRenderer(), mZoomLimiter, mesh, TRANSLUCENT);
+        mRenderer = mExtrusionRenderer = new BuildingRenderer(tileLayer.tileRenderer(), mZoomLimiter, mesh, TRANSLUCENT);
         if (POST_AA)
             mRenderer = new OffscreenRenderer(Mode.SSAO_FXAA, mRenderer);
 
         mRenderTheme = tileLayer.getTheme();
+    }
+
+    /**
+     * Get the ExtusionRenderer for customization.
+     */
+    public ExtrusionRenderer getExtrusionRenderer() {
+        return mExtrusionRenderer;
     }
 
     @Override
