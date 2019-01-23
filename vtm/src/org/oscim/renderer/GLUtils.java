@@ -160,6 +160,26 @@ public class GLUtils {
     }
 
     /**
+     * Check GL error.
+     * See: https://www.khronos.org/opengl/wiki/OpenGL_Error
+     *
+     * @param op the operation which should be debugged
+     * @param findError the error to be found
+     * @return true if error occurs
+     */
+    public static boolean checkGlError(String op, int findError) {
+        int error; // GL.NO_ERROR
+        boolean occur = false;
+        while ((error = gl.getError()) != GL.NO_ERROR) {
+            log.error(op + ": \tglError " + getGlErrorString(error) + " (" + error + ")");
+            // throw new RuntimeException(op + ": glError " + error);
+            if (error == findError)
+                occur = true;
+        }
+        return occur;
+    }
+
+    /**
      * Check GL errors.
      * See: https://www.khronos.org/opengl/wiki/OpenGL_Error
      *
@@ -175,25 +195,6 @@ public class GLUtils {
             // throw new RuntimeException(op + ": glError " + error);
         }
         return errors;
-    }
-
-    /**
-     * Check GL out of memory.
-     * See: https://www.khronos.org/opengl/wiki/OpenGL_Error
-     *
-     * @param op the operation which should be debugged
-     * @return true if out of memory
-     */
-    public static boolean checkGlOutOfMemory(String op) {
-        int error; // GL.NO_ERROR
-        boolean oom = false;
-        while ((error = gl.getError()) != GL.NO_ERROR) {
-            log.error(op + ": \tglError " + getGlErrorString(error) + " (" + error + ")");
-            // throw new RuntimeException(op + ": glError " + error);
-            if (error == GL.OUT_OF_MEMORY)
-                oom = true;
-        }
-        return oom;
     }
 
     /**
