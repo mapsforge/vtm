@@ -9,8 +9,8 @@ uniform float u_scale;
 uniform float u_coord_scale;
 uniform vec2 u_div;
 varying vec2 tex_c;
-void
-main(){
+
+void main() {
   vec4 pos;
   vec2 dir = vertex.zw;
   float coord_scale = 1.0 / u_coord_scale;
@@ -32,7 +32,7 @@ precision highp float;
 #endif
 uniform sampler2D tex;
 varying vec2 tex_c;
-void
-main(){
+
+void main() {
   gl_FragColor = texture2D(tex, tex_c.xy);
 }

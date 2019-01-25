@@ -11,8 +11,8 @@ attribute vec4 a_pos;
 uniform float u_mode;
 uniform float u_height;
 varying vec2 v_st;
-void
-main(){
+
+void main() {
 
   // scale extrusion to u_width pixel
   // just ignore the two most insignificant bits.
@@ -33,8 +33,8 @@ uniform float u_fade;
 uniform float u_mode;
 uniform vec4 u_color;
 varying vec2 v_st;
-void
-main(){
+
+void main() {
   float len;
   if (u_mode == 2.0) {
     // round cap line

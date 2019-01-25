@@ -11,8 +11,8 @@ attribute vec2 a_len0; // x:lineLength, y:unused
 attribute vec2 a_len1;
 attribute float a_flip; // flip state
 varying vec2 v_st;
-void
-main(){
+
+void main() {
   vec4 pos;
   if (a_flip == 0.0) {
     //    vec2 dir = u_width * a_pos0.zw;
@@ -41,8 +41,8 @@ uniform float u_pwidth;
 varying vec2 v_st;
 uniform sampler2D tex;
 uniform float u_mode;
-void
-main(){
+
+void main() {
   if (u_mode >= 1.0) {
     /* Dash array or texture */
     float step = 2.0;

@@ -8,9 +8,8 @@ varying vec2 tex_nw;
 varying vec2 tex_ne;
 varying vec2 tex_sw;
 varying vec2 tex_se;
-void
-main()
-{
+
+void main() {
   gl_Position = a_pos;
   tex_pos = (a_pos.xy + 1.0) * 0.5;
   vec2 pixel = u_pixel * 2.5;
@@ -49,6 +48,7 @@ const int iterations = 2;
 float getDepth(float posZ) {
   return (2.0 * nearZ) / (nearZ + farZ - posZ * (farZ - nearZ));
 }
+
 float compareDepths(in float depth1, in float depth2, inout float far) {
   //   depth difference (0-100)
   float diff = (depth1 - depth2) * 100.0;
@@ -62,8 +62,7 @@ float compareDepths(in float depth1, in float depth2, inout float far) {
   return  pow(2.7182, -2.0 * pow(diff - gdisplace,2.0) / pow(garea, 2.0));
 }
 
-void
-addAO(int run, inout float depth, in float x1, in float y1, in float x2, in float y2, inout float ao){
+void addAO(int run, inout float depth, in float x1, in float y1, in float x2, in float y2, inout float ao){
   float z_11 = getDepth(texture2D(u_tex, vec2(x1, y1)).x);
   float z_12 = getDepth(texture2D(u_tex, vec2(x1, y2)).x);
   float z_21 = getDepth(texture2D(u_tex, vec2(x2, y1)).x);
@@ -97,9 +96,7 @@ addAO(int run, inout float depth, in float x1, in float y1, in float x2, in floa
       * (d_22 + f_22 * (1.0 - d_22) * d_11);
 }
 
-
-void
-main(){
+void main() {
   vec2 pixel = u_pixel * 3.15;
 
   vec4 rgbNW = texture2D(u_texColor, tex_nw);

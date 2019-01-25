@@ -9,10 +9,10 @@ uniform float u_zlimit;
 attribute vec4 a_pos;
 attribute vec2 a_light;
 varying vec4 color;
-varying float depth;
+// varying float depth;
 const float ff = 255.0;
-void
-main(){
+
+void main() {
   //   change height by u_alpha
   float height = a_pos.z * u_alpha;
   if (height > u_zlimit) {
@@ -61,7 +61,7 @@ $$
 precision highp float;
 #endif
 varying vec4 color;
-void
-main(){
+
+void main() {
   gl_FragColor = color;
 }

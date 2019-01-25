@@ -4,8 +4,8 @@ precision highp float;
 uniform vec2 u_pixel;
 attribute vec4 a_pos;
 varying vec2 tex_pos;
-void
-main(){
+
+void main() {
   gl_Position = a_pos;
   tex_pos = (a_pos.xy + 1.0) * 0.5;
 }
@@ -29,6 +29,7 @@ const int iterations = 4;
 float getDepth(float posZ) {
   return (2.0 * nearZ) / (nearZ + farZ - posZ * (farZ - nearZ));
 }
+
 float compareDepths(in float depth1, in float depth2, inout float far) {
   //   depth difference (0-100)
   float diff = (depth1 - depth2) * 100.0;
@@ -42,8 +43,7 @@ float compareDepths(in float depth1, in float depth2, inout float far) {
   return  pow(2.7182, -2.0 * pow(diff - gdisplace,2.0) / pow(garea, 2.0));
 }
 
-void
-addAO(in float depth, in float x1, in float y1, in float x2, in float y2, inout float ao){
+void addAO(in float depth, in float x1, in float y1, in float x2, in float y2, inout float ao){
   float z_11 = getDepth(texture2D(u_tex, vec2(x1, y1)).x);
   float z_12 = getDepth(texture2D(u_tex, vec2(x1, y2)).x);
   float z_21 = getDepth(texture2D(u_tex, vec2(x2, y1)).x);
@@ -76,8 +76,7 @@ addAO(in float depth, in float x1, in float y1, in float x2, in float y2, inout 
       * (d_22 + f_22 * (1.0 - d_22) * d_11);
 }
 
-void
-main(void){
+void main() {
   //   randomization texture:
   //	 vec2 fres = vec2(20.0, 20.0);
   //	vec3 random = texture2D(rand, gl_TexCoord[0].st * fres.xy);

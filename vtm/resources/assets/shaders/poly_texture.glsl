@@ -6,6 +6,7 @@ uniform vec2 u_scale;
 attribute vec4 a_pos;
 varying vec2 v_st;
 varying vec2 v_st2;
+
 void main() {
 	v_st = clamp(a_pos.xy, 0.0, 1.0) * (2.0 / u_scale.y);
 	v_st2 = clamp(a_pos.xy, 0.0, 1.0) * (4.0 / u_scale.y);
@@ -22,6 +23,7 @@ uniform sampler2D tex;
 uniform vec2 u_scale;
 varying vec2 v_st;
 varying vec2 v_st2;
+
 void main() {
 	gl_FragColor = mix(texture2D(tex, v_st), texture2D(tex, v_st2), u_scale.x);
 }

@@ -11,8 +11,8 @@ attribute vec2 a_len0;
 attribute vec2 a_len1;
 attribute float a_flip;
 varying vec2 v_st;
-void
-main(){
+
+void main() {
   vec4 pos;
   if (a_flip == 0.0) {
     //    vec2 dir = u_width * a_pos0.zw;
@@ -39,8 +39,8 @@ uniform vec4 u_color;
 uniform vec4 u_bgcolor;
 uniform float u_pwidth;
 varying vec2 v_st;
-void
-main(){
+
+void main() {
   /* distance on perpendicular to the line */
   float dist = abs(v_st.t);
   float fuzz = fwidth(v_st.t);

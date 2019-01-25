@@ -8,9 +8,8 @@ varying vec2 tex_nw;
 varying vec2 tex_ne;
 varying vec2 tex_sw;
 varying vec2 tex_se;
-void
-main()
-{
+
+void main() {
   gl_Position = a_pos;
   tex_pos = (a_pos.xy + 1.0) * 0.5;
   vec2 pixel = u_pixel * 2.5;
@@ -43,8 +42,7 @@ const vec3 luma = vec3(0.299, 0.587, 0.114);
 //  return rgb.g * (0.587/0.299) + rgb.b;
 //}
 
-void
-main(){
+void main() {
   vec2 pixel = u_pixel * 3.15;
 
   vec4 rgbNW = texture2D(u_texColor, tex_nw);
