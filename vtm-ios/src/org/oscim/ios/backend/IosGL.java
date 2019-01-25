@@ -513,8 +513,7 @@ public class IosGL implements GL {
 
     @Override
     public void genRenderbuffers(int n, IntBuffer renderbuffers) {
-        iOSGL
-                .glGenRenderbuffers(n, renderbuffers);
+        iOSGL.glGenRenderbuffers(n, renderbuffers);
     }
 
     @Override
@@ -600,11 +599,6 @@ public class IosGL implements GL {
                 precisiontype,
                 range,
                 precision);
-    }
-
-    @Override
-    public void getShaderSource(int shader, int bufsize, Buffer length, String source) {
-        throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override

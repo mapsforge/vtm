@@ -37,15 +37,10 @@ public class GdxGL extends GwtGL20 implements GL {
         this.gl = gl;
     }
 
-    //    @Override
-    //    public void glGetShaderSource(int shader, int bufsize, Buffer length, String source) {
-    //
-    //    }
-
     @Override
     public void glTexImage2D(int target, int level, int internalformat, int width, int height,
                              int border, int format, int type, Buffer pixels) {
-
+        /*glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);*/
         if (pixels == null) {
             gl.texImage2D(target, level, internalformat,
                     width, height, border, format,
@@ -598,11 +593,6 @@ public class GdxGL extends GwtGL20 implements GL {
                 precisiontype,
                 range,
                 precision);
-    }
-
-    @Override
-    public void getShaderSource(int shader, int bufsize, Buffer length, String source) {
-        throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override

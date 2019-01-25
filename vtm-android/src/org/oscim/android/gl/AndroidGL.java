@@ -261,11 +261,6 @@ public class AndroidGL implements GL {
     }
 
     @Override
-    public void getShaderSource(int shader, int bufsize, Buffer length, String source) {
-        throw new UnsupportedOperationException("missing implementation");
-    }
-
-    @Override
     public void getTexParameterfv(int target, int pname, FloatBuffer params) {
         GLES20.glGetTexParameterfv(target, pname, params);
 
@@ -837,8 +832,7 @@ public class AndroidGL implements GL {
     @Override
     public void texSubImage2D(int target, int level, int xoffset, int yoffset, int width,
                               int height, int format, int type, Buffer pixels) {
-        GLES20
-                .glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
+        GLES20.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
 
     }
 

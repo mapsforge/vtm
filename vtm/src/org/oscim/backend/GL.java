@@ -534,8 +534,6 @@ public interface GL {
 
     public void getShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision);
 
-    public void getShaderSource(int shader, int bufsize, Buffer length, String source);
-
     public void getTexParameterfv(int target, int pname, FloatBuffer params);
 
     public void getTexParameteriv(int target, int pname, IntBuffer params);
