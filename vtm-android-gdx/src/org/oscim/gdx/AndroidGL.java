@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -19,6 +20,8 @@ package org.oscim.gdx;
 import android.annotation.SuppressLint;
 import android.opengl.GLES20;
 
+import com.badlogic.gdx.backends.android.AndroidGL20;
+
 import org.oscim.backend.GL;
 
 import java.nio.Buffer;
@@ -27,6 +30,8 @@ import java.nio.IntBuffer;
 
 @SuppressLint("NewApi")
 public class AndroidGL implements GL {
+
+    private static final AndroidGL20 androidGL = new AndroidGL20();
 
     @Override
     public void attachShader(int program, int shader) {
@@ -104,8 +109,18 @@ public class AndroidGL implements GL {
     }
 
     @Override
+    public void deleteBuffer(int buffer) {
+        androidGL.glDeleteBuffer(buffer);
+    }
+
+    @Override
     public void deleteBuffers(int n, IntBuffer buffers) {
         GLES20.glDeleteBuffers(n, buffers);
+    }
+
+    @Override
+    public void deleteFramebuffer(int framebuffer) {
+        androidGL.glDeleteFramebuffer(framebuffer);
     }
 
     @Override
@@ -116,6 +131,11 @@ public class AndroidGL implements GL {
     @Override
     public void deleteProgram(int program) {
         GLES20.glDeleteProgram(program);
+    }
+
+    @Override
+    public void deleteRenderbuffer(int renderbuffer) {
+        androidGL.glDeleteRenderbuffer(renderbuffer);
     }
 
     @Override
@@ -161,6 +181,11 @@ public class AndroidGL implements GL {
     }
 
     @Override
+    public int genBuffer() {
+        return androidGL.glGenBuffer();
+    }
+
+    @Override
     public void genBuffers(int n, IntBuffer buffers) {
         GLES20.glGenBuffers(n, buffers);
     }
@@ -171,8 +196,18 @@ public class AndroidGL implements GL {
     }
 
     @Override
+    public int genFramebuffer() {
+        return androidGL.glGenFramebuffer();
+    }
+
+    @Override
     public void genFramebuffers(int n, IntBuffer framebuffers) {
         GLES20.glGenFramebuffers(n, framebuffers);
+    }
+
+    @Override
+    public int genRenderbuffer() {
+        return androidGL.glGenRenderbuffer();
     }
 
     @Override
@@ -187,14 +222,12 @@ public class AndroidGL implements GL {
 
     @Override
     public String getActiveUniform(int program, int index, IntBuffer size, Buffer type) {
-        //return GLES20.glGetActiveUniform(program, index, bufsize, length, size, type, name);
-        throw new UnsupportedOperationException("missing implementation");
+        return androidGL.glGetActiveUniform(program, index, size, type);
     }
 
     @Override
     public void getAttachedShaders(int program, int maxcount, Buffer count, IntBuffer shaders) {
-        throw new UnsupportedOperationException("missing implementation");
-        //GLES20.glGetAttachedShaders(program, maxcount, count, shaders);
+        androidGL.glGetAttachedShaders(program, maxcount, count, shaders);
     }
 
     @Override
@@ -204,8 +237,7 @@ public class AndroidGL implements GL {
 
     @Override
     public void getBooleanv(int pname, Buffer params) {
-        throw new UnsupportedOperationException("missing implementation");
-        //GLES20.glGetBooleanv(pname, params);
+        androidGL.glGetBooleanv(pname, params);
     }
 
     @Override
@@ -261,11 +293,6 @@ public class AndroidGL implements GL {
     }
 
     @Override
-    public void getShaderSource(int shader, int bufsize, Buffer length, String source) {
-        throw new UnsupportedOperationException("missing implementation");
-    }
-
-    @Override
     public void getTexParameterfv(int target, int pname, FloatBuffer params) {
         GLES20.glGetTexParameterfv(target, pname, params);
 
@@ -308,8 +335,7 @@ public class AndroidGL implements GL {
 
     @Override
     public void getVertexAttribPointerv(int index, int pname, Buffer pointer) {
-        //GLES20.glGetVertexAttribPointerv(index, pname, pointer);
-        throw new UnsupportedOperationException("missing implementation");
+        androidGL.glGetVertexAttribPointerv(index, pname, pointer);
     }
 
     @Override
@@ -432,6 +458,11 @@ public class AndroidGL implements GL {
     }
 
     @Override
+    public void uniform1fv(int location, int count, float[] v, int offset) {
+        GLES20.glUniform1fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform1i(int location, int x) {
         GLES20.glUniform1i(location, x);
 
@@ -441,6 +472,11 @@ public class AndroidGL implements GL {
     public void uniform1iv(int location, int count, IntBuffer v) {
         GLES20.glUniform1iv(location, count, v);
 
+    }
+
+    @Override
+    public void uniform1iv(int location, int count, int[] v, int offset) {
+        GLES20.glUniform1iv(location, count, v, offset);
     }
 
     @Override
@@ -456,6 +492,11 @@ public class AndroidGL implements GL {
     }
 
     @Override
+    public void uniform2fv(int location, int count, float[] v, int offset) {
+        GLES20.glUniform2fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform2i(int location, int x, int y) {
         GLES20.glUniform2i(location, x, y);
 
@@ -465,6 +506,11 @@ public class AndroidGL implements GL {
     public void uniform2iv(int location, int count, IntBuffer v) {
         GLES20.glUniform2iv(location, count, v);
 
+    }
+
+    @Override
+    public void uniform2iv(int location, int count, int[] v, int offset) {
+        GLES20.glUniform2iv(location, count, v, offset);
     }
 
     @Override
@@ -480,6 +526,11 @@ public class AndroidGL implements GL {
     }
 
     @Override
+    public void uniform3fv(int location, int count, float[] v, int offset) {
+        GLES20.glUniform3fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform3i(int location, int x, int y, int z) {
         GLES20.glUniform3i(location, x, y, z);
 
@@ -492,6 +543,11 @@ public class AndroidGL implements GL {
     }
 
     @Override
+    public void uniform3iv(int location, int count, int[] v, int offset) {
+        GLES20.glUniform3iv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform4f(int location, float x, float y, float z, float w) {
         GLES20.glUniform4f(location, x, y, z, w);
     }
@@ -499,6 +555,11 @@ public class AndroidGL implements GL {
     @Override
     public void uniform4fv(int location, int count, FloatBuffer v) {
         GLES20.glUniform4fv(location, count, v);
+    }
+
+    @Override
+    public void uniform4fv(int location, int count, float[] v, int offset) {
+        GLES20.glUniform4fv(location, count, v, offset);
     }
 
     @Override
@@ -514,9 +575,19 @@ public class AndroidGL implements GL {
     }
 
     @Override
+    public void uniform4iv(int location, int count, int[] v, int offset) {
+        GLES20.glUniform4iv(location, count, v, offset);
+    }
+
+    @Override
     public void uniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value) {
         GLES20.glUniformMatrix2fv(location, count, transpose, value);
 
+    }
+
+    @Override
+    public void uniformMatrix2fv(int location, int count, boolean transpose, float[] value, int offset) {
+        GLES20.glUniformMatrix2fv(location, count, transpose, value, offset);
     }
 
     @Override
@@ -526,9 +597,19 @@ public class AndroidGL implements GL {
     }
 
     @Override
+    public void uniformMatrix3fv(int location, int count, boolean transpose, float[] value, int offset) {
+        GLES20.glUniformMatrix3fv(location, count, transpose, value, offset);
+    }
+
+    @Override
     public void uniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value) {
         GLES20.glUniformMatrix4fv(location, count, transpose, value);
 
+    }
+
+    @Override
+    public void uniformMatrix4fv(int location, int count, boolean transpose, float[] value, int offset) {
+        GLES20.glUniformMatrix4fv(location, count, transpose, value, offset);
     }
 
     @Override
@@ -656,15 +737,13 @@ public class AndroidGL implements GL {
     @Override
     public void compressedTexImage2D(int target, int level, int internalformat, int width,
                                      int height, int border, int imageSize, Buffer data) {
-        throw new UnsupportedOperationException("missing implementation");
-
+        androidGL.glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data);
     }
 
     @Override
     public void compressedTexSubImage2D(int target, int level, int xoffset, int yoffset,
                                         int width, int height, int format, int imageSize, Buffer data) {
-        throw new UnsupportedOperationException("missing implementation");
-
+        androidGL.glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
     }
 
     @Override
@@ -689,6 +768,11 @@ public class AndroidGL implements GL {
     public void deleteTextures(int n, IntBuffer textures) {
         GLES20.glDeleteTextures(n, textures);
 
+    }
+
+    @Override
+    public void deleteTexture(int texture) {
+        androidGL.glDeleteTexture(texture);
     }
 
     @Override
@@ -755,6 +839,11 @@ public class AndroidGL implements GL {
     public void genTextures(int n, IntBuffer textures) {
         GLES20.glGenTextures(n, textures);
 
+    }
+
+    @Override
+    public int genTexture() {
+        return androidGL.glGenTexture();
     }
 
     @Override
@@ -837,8 +926,7 @@ public class AndroidGL implements GL {
     @Override
     public void texSubImage2D(int target, int level, int xoffset, int yoffset, int width,
                               int height, int format, int type, Buffer pixels) {
-        GLES20
-                .glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
+        GLES20.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
 
     }
 

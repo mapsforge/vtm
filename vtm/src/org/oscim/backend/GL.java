@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -386,6 +387,8 @@ public interface GL {
 
     public void deleteTextures(int n, IntBuffer textures);
 
+    public void deleteTexture(int texture);
+
     public void depthFunc(int func);
 
     public void depthMask(boolean flag);
@@ -407,6 +410,8 @@ public interface GL {
     public void frontFace(int mode);
 
     public void genTextures(int n, IntBuffer textures);
+
+    public int genTexture();
 
     public int getError();
 
@@ -472,11 +477,17 @@ public interface GL {
 
     public int createShader(int type);
 
+    public void deleteBuffer(int buffer);
+
     public void deleteBuffers(int n, IntBuffer buffers);
+
+    public void deleteFramebuffer(int framebuffer);
 
     public void deleteFramebuffers(int n, IntBuffer framebuffers);
 
     public void deleteProgram(int program);
+
+    public void deleteRenderbuffer(int renderbuffer);
 
     public void deleteRenderbuffers(int n, IntBuffer renderbuffers);
 
@@ -494,11 +505,17 @@ public interface GL {
 
     public void framebufferTexture2D(int target, int attachment, int textarget, int texture, int level);
 
+    public int genBuffer();
+
     public void genBuffers(int n, IntBuffer buffers);
 
     public void generateMipmap(int target);
 
+    public int genFramebuffer();
+
     public void genFramebuffers(int n, IntBuffer framebuffers);
+
+    public int genRenderbuffer();
 
     public void genRenderbuffers(int n, IntBuffer renderbuffers);
 
@@ -533,8 +550,6 @@ public interface GL {
     public String getShaderInfoLog(int shader);
 
     public void getShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision);
-
-    public void getShaderSource(int shader, int bufsize, Buffer length, String source);
 
     public void getTexParameterfv(int target, int pname, FloatBuffer params);
 
@@ -595,39 +610,61 @@ public interface GL {
 
     public void uniform1fv(int location, int count, FloatBuffer v);
 
+    public void uniform1fv(int location, int count, float v[], int offset);
+
     public void uniform1i(int location, int x);
 
     public void uniform1iv(int location, int count, IntBuffer v);
+
+    public void uniform1iv(int location, int count, int v[], int offset);
 
     public void uniform2f(int location, float x, float y);
 
     public void uniform2fv(int location, int count, FloatBuffer v);
 
+    public void uniform2fv(int location, int count, float v[], int offset);
+
     public void uniform2i(int location, int x, int y);
 
     public void uniform2iv(int location, int count, IntBuffer v);
+
+    public void uniform2iv(int location, int count, int[] v, int offset);
 
     public void uniform3f(int location, float x, float y, float z);
 
     public void uniform3fv(int location, int count, FloatBuffer v);
 
+    public void uniform3fv(int location, int count, float[] v, int offset);
+
     public void uniform3i(int location, int x, int y, int z);
 
     public void uniform3iv(int location, int count, IntBuffer v);
+
+    public void uniform3iv(int location, int count, int v[], int offset);
 
     public void uniform4f(int location, float x, float y, float z, float w);
 
     public void uniform4fv(int location, int count, FloatBuffer v);
 
+    public void uniform4fv(int location, int count, float v[], int offset);
+
     public void uniform4i(int location, int x, int y, int z, int w);
 
     public void uniform4iv(int location, int count, IntBuffer v);
 
+    public void uniform4iv(int location, int count, int v[], int offset);
+
     public void uniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value);
+
+    public void uniformMatrix2fv(int location, int count, boolean transpose, float value[], int offset);
 
     public void uniformMatrix3fv(int location, int count, boolean transpose, FloatBuffer value);
 
+    public void uniformMatrix3fv(int location, int count, boolean transpose, float value[], int offset);
+
     public void uniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value);
+
+    public void uniformMatrix4fv(int location, int count, boolean transpose, float value[], int offset);
 
     public void useProgram(int program);
 

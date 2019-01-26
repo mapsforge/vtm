@@ -1,5 +1,20 @@
-package org.oscim.gdx.client;
-
+/*
+ * Copyright 2014 Hannes Janetzek
+ * Copyright 2019 Gustl22
+ *
+ * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
  * <p/>
@@ -15,6 +30,8 @@ package org.oscim.gdx.client;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
+
+package org.oscim.gdx.client;
 
 import com.badlogic.gdx.backends.gwt.GwtGL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -37,15 +54,10 @@ public class GdxGL extends GwtGL20 implements GL {
         this.gl = gl;
     }
 
-    //    @Override
-    //    public void glGetShaderSource(int shader, int bufsize, Buffer length, String source) {
-    //
-    //    }
-
     @Override
     public void glTexImage2D(int target, int level, int internalformat, int width, int height,
                              int border, int format, int type, Buffer pixels) {
-
+        /*glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);*/
         if (pixels == null) {
             gl.texImage2D(target, level, internalformat,
                     width, height, border, format,
@@ -166,6 +178,11 @@ public class GdxGL extends GwtGL20 implements GL {
     }
 
     @Override
+    public void deleteTexture(int texture) {
+        glDeleteTexture(texture);
+    }
+
+    @Override
     public void depthFunc(int func) {
         glDepthFunc(func);
     }
@@ -218,6 +235,11 @@ public class GdxGL extends GwtGL20 implements GL {
     @Override
     public void genTextures(int n, IntBuffer textures) {
         glGenTextures(n, textures);
+    }
+
+    @Override
+    public int genTexture() {
+        return glGenTexture();
     }
 
     @Override
@@ -357,6 +379,11 @@ public class GdxGL extends GwtGL20 implements GL {
     }
 
     @Override
+    public void deleteFramebuffer(int framebuffer) {
+        glDeleteFramebuffer(framebuffer);
+    }
+
+    @Override
     public void getBufferParameteriv(int target, int pname, IntBuffer params) {
         glGetBufferParameteriv(target, pname, params);
     }
@@ -462,6 +489,11 @@ public class GdxGL extends GwtGL20 implements GL {
     }
 
     @Override
+    public void deleteBuffer(int buffer) {
+        glDeleteBuffer(buffer);
+    }
+
+    @Override
     public void deleteFramebuffers(int n, IntBuffer framebuffers) {
         glDeleteFramebuffers(n, framebuffers);
     }
@@ -469,6 +501,11 @@ public class GdxGL extends GwtGL20 implements GL {
     @Override
     public void deleteProgram(int program) {
         glDeleteProgram(program);
+    }
+
+    @Override
+    public void deleteRenderbuffer(int renderbuffer) {
+        glDeleteRenderbuffer(renderbuffer);
     }
 
     @Override
@@ -509,13 +546,28 @@ public class GdxGL extends GwtGL20 implements GL {
     }
 
     @Override
+    public int genBuffer() {
+        return glGenBuffer();
+    }
+
+    @Override
     public void generateMipmap(int target) {
         glGenerateMipmap(target);
     }
 
     @Override
+    public int genFramebuffer() {
+        return glGenFramebuffer();
+    }
+
+    @Override
     public void genFramebuffers(int n, IntBuffer framebuffers) {
         glGenFramebuffers(n, framebuffers);
+    }
+
+    @Override
+    public int genRenderbuffer() {
+        return glGenRenderbuffer();
     }
 
     @Override
@@ -598,11 +650,6 @@ public class GdxGL extends GwtGL20 implements GL {
                 precisiontype,
                 range,
                 precision);
-    }
-
-    @Override
-    public void getShaderSource(int shader, int bufsize, Buffer length, String source) {
-        throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override
@@ -715,6 +762,11 @@ public class GdxGL extends GwtGL20 implements GL {
     }
 
     @Override
+    public void uniform1fv(int location, int count, float[] v, int offset) {
+        glUniform1fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform1i(int location, int x) {
         glUniform1i(location, x);
     }
@@ -722,6 +774,11 @@ public class GdxGL extends GwtGL20 implements GL {
     @Override
     public void uniform1iv(int location, int count, IntBuffer v) {
         glUniform1iv(location, count, v);
+    }
+
+    @Override
+    public void uniform1iv(int location, int count, int[] v, int offset) {
+        glUniform1iv(location, count, v, offset);
     }
 
     @Override
@@ -735,6 +792,11 @@ public class GdxGL extends GwtGL20 implements GL {
     }
 
     @Override
+    public void uniform2fv(int location, int count, float[] v, int offset) {
+        glUniform2fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform2i(int location, int x, int y) {
         glUniform2i(location, x, y);
     }
@@ -742,6 +804,11 @@ public class GdxGL extends GwtGL20 implements GL {
     @Override
     public void uniform2iv(int location, int count, IntBuffer v) {
         glUniform2iv(location, count, v);
+    }
+
+    @Override
+    public void uniform2iv(int location, int count, int[] v, int offset) {
+        glUniform2iv(location, count, v, offset);
     }
 
     @Override
@@ -755,6 +822,11 @@ public class GdxGL extends GwtGL20 implements GL {
     }
 
     @Override
+    public void uniform3fv(int location, int count, float[] v, int offset) {
+        glUniform3fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform3i(int location, int x, int y, int z) {
         glUniform3i(location, x, y, z);
     }
@@ -762,6 +834,11 @@ public class GdxGL extends GwtGL20 implements GL {
     @Override
     public void uniform3iv(int location, int count, IntBuffer v) {
         glUniform3iv(location, count, v);
+    }
+
+    @Override
+    public void uniform3iv(int location, int count, int[] v, int offset) {
+        glUniform3iv(location, count, v, offset);
     }
 
     @Override
@@ -775,6 +852,11 @@ public class GdxGL extends GwtGL20 implements GL {
     }
 
     @Override
+    public void uniform4fv(int location, int count, float[] v, int offset) {
+        glUniform4fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform4i(int location, int x, int y, int z, int w) {
         glUniform4i(location, x, y, z, w);
     }
@@ -785,8 +867,18 @@ public class GdxGL extends GwtGL20 implements GL {
     }
 
     @Override
+    public void uniform4iv(int location, int count, int[] v, int offset) {
+        glUniform4iv(location, count, v, offset);
+    }
+
+    @Override
     public void uniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value) {
         glUniformMatrix2fv(location, count, transpose, value);
+    }
+
+    @Override
+    public void uniformMatrix2fv(int location, int count, boolean transpose, float[] value, int offset) {
+        glUniformMatrix2fv(location, count, transpose, value, offset);
     }
 
     @Override
@@ -795,8 +887,18 @@ public class GdxGL extends GwtGL20 implements GL {
     }
 
     @Override
+    public void uniformMatrix3fv(int location, int count, boolean transpose, float[] value, int offset) {
+        glUniformMatrix3fv(location, count, transpose, value, offset);
+    }
+
+    @Override
     public void uniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value) {
         glUniformMatrix4fv(location, count, transpose, value);
+    }
+
+    @Override
+    public void uniformMatrix4fv(int location, int count, boolean transpose, float[] value, int offset) {
+        glUniformMatrix4fv(location, count, transpose, value, offset);
     }
 
     @Override

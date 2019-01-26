@@ -3,6 +3,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 dependencies {
     api project(':vtm')
+    api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
 }
 
 android {

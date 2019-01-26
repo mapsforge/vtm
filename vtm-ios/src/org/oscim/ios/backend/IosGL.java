@@ -1,5 +1,6 @@
 /*
  * Copyright 2016 Longri
+ * Copyright 2019 Gustl22
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -139,6 +140,11 @@ public class IosGL implements GL {
     }
 
     @Override
+    public void deleteTexture(int texture) {
+        iOSGL.glDeleteTexture(texture);
+    }
+
+    @Override
     public void depthFunc(int func) {
         iOSGL.glDepthFunc(func);
     }
@@ -191,6 +197,11 @@ public class IosGL implements GL {
     @Override
     public void genTextures(int n, IntBuffer textures) {
         iOSGL.glGenTextures(n, textures);
+    }
+
+    @Override
+    public int genTexture() {
+        return iOSGL.glGenTexture();
     }
 
     @Override
@@ -339,6 +350,11 @@ public class IosGL implements GL {
     }
 
     @Override
+    public void deleteFramebuffer(int framebuffer) {
+        iOSGL.glDeleteFramebuffer(framebuffer);
+    }
+
+    @Override
     public void getBufferParameteriv(int target, int pname, IntBuffer params) {
         iOSGL.glGetBufferParameteriv(target, pname, params);
     }
@@ -444,6 +460,11 @@ public class IosGL implements GL {
     }
 
     @Override
+    public void deleteBuffer(int buffer) {
+        iOSGL.glDeleteBuffer(buffer);
+    }
+
+    @Override
     public void deleteFramebuffers(int n, IntBuffer framebuffers) {
         iOSGL.glDeleteFramebuffers(n, framebuffers);
     }
@@ -451,6 +472,11 @@ public class IosGL implements GL {
     @Override
     public void deleteProgram(int program) {
         iOSGL.glDeleteProgram(program);
+    }
+
+    @Override
+    public void deleteRenderbuffer(int renderbuffer) {
+        iOSGL.glDeleteRenderbuffer(renderbuffer);
     }
 
     @Override
@@ -502,8 +528,18 @@ public class IosGL implements GL {
     }
 
     @Override
+    public int genBuffer() {
+        return iOSGL.glGenBuffer();
+    }
+
+    @Override
     public void generateMipmap(int target) {
         iOSGL.glGenerateMipmap(target);
+    }
+
+    @Override
+    public int genFramebuffer() {
+        return iOSGL.glGenFramebuffer();
     }
 
     @Override
@@ -512,9 +548,13 @@ public class IosGL implements GL {
     }
 
     @Override
+    public int genRenderbuffer() {
+        return iOSGL.glGenRenderbuffer();
+    }
+
+    @Override
     public void genRenderbuffers(int n, IntBuffer renderbuffers) {
-        iOSGL
-                .glGenRenderbuffers(n, renderbuffers);
+        iOSGL.glGenRenderbuffers(n, renderbuffers);
     }
 
     @Override
@@ -600,11 +640,6 @@ public class IosGL implements GL {
                 precisiontype,
                 range,
                 precision);
-    }
-
-    @Override
-    public void getShaderSource(int shader, int bufsize, Buffer length, String source) {
-        throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override
@@ -721,6 +756,11 @@ public class IosGL implements GL {
     }
 
     @Override
+    public void uniform1fv(int location, int count, float[] v, int offset) {
+        iOSGL.glUniform1fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform1i(int location, int x) {
         iOSGL.glUniform1i(location, x);
     }
@@ -728,6 +768,11 @@ public class IosGL implements GL {
     @Override
     public void uniform1iv(int location, int count, IntBuffer v) {
         iOSGL.glUniform1iv(location, count, v);
+    }
+
+    @Override
+    public void uniform1iv(int location, int count, int[] v, int offset) {
+        iOSGL.glUniform1iv(location, count, v, offset);
     }
 
     @Override
@@ -741,6 +786,11 @@ public class IosGL implements GL {
     }
 
     @Override
+    public void uniform2fv(int location, int count, float[] v, int offset) {
+        iOSGL.glUniform2fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform2i(int location, int x, int y) {
         iOSGL.glUniform2i(location, x, y);
     }
@@ -748,6 +798,11 @@ public class IosGL implements GL {
     @Override
     public void uniform2iv(int location, int count, IntBuffer v) {
         iOSGL.glUniform2iv(location, count, v);
+    }
+
+    @Override
+    public void uniform2iv(int location, int count, int[] v, int offset) {
+        iOSGL.glUniform2iv(location, count, v, offset);
     }
 
     @Override
@@ -761,6 +816,11 @@ public class IosGL implements GL {
     }
 
     @Override
+    public void uniform3fv(int location, int count, float[] v, int offset) {
+        iOSGL.glUniform3fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform3i(int location, int x, int y, int z) {
         iOSGL.glUniform3i(location, x, y, z);
     }
@@ -768,6 +828,11 @@ public class IosGL implements GL {
     @Override
     public void uniform3iv(int location, int count, IntBuffer v) {
         iOSGL.glUniform3iv(location, count, v);
+    }
+
+    @Override
+    public void uniform3iv(int location, int count, int[] v, int offset) {
+        uniform3iv(location, count, v, offset);
     }
 
     @Override
@@ -781,6 +846,11 @@ public class IosGL implements GL {
     }
 
     @Override
+    public void uniform4fv(int location, int count, float[] v, int offset) {
+        iOSGL.glUniform4fv(location, count, v, offset);
+    }
+
+    @Override
     public void uniform4i(int location, int x, int y, int z, int w) {
         iOSGL.glUniform4i(location, x, y, z, w);
     }
@@ -788,6 +858,11 @@ public class IosGL implements GL {
     @Override
     public void uniform4iv(int location, int count, IntBuffer v) {
         iOSGL.glUniform4iv(location, count, v);
+    }
+
+    @Override
+    public void uniform4iv(int location, int count, int[] v, int offset) {
+        iOSGL.glUniform4iv(location, count, v, offset);
     }
 
     @Override
@@ -800,6 +875,11 @@ public class IosGL implements GL {
     }
 
     @Override
+    public void uniformMatrix2fv(int location, int count, boolean transpose, float[] value, int offset) {
+        iOSGL.glUniformMatrix2fv(location, count, transpose, value, offset);
+    }
+
+    @Override
     public void uniformMatrix3fv(int location, int count, boolean transpose, FloatBuffer value) {
         iOSGL.glUniformMatrix3fv(
                 location,
@@ -809,12 +889,22 @@ public class IosGL implements GL {
     }
 
     @Override
+    public void uniformMatrix3fv(int location, int count, boolean transpose, float[] value, int offset) {
+        iOSGL.glUniformMatrix3fv(location, count, transpose, value, offset);
+    }
+
+    @Override
     public void uniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value) {
         iOSGL.glUniformMatrix4fv(
                 location,
                 count,
                 transpose,
                 value);
+    }
+
+    @Override
+    public void uniformMatrix4fv(int location, int count, boolean transpose, float[] value, int offset) {
+        iOSGL.glUniformMatrix4fv(location, count, transpose, value, offset);
     }
 
     @Override
