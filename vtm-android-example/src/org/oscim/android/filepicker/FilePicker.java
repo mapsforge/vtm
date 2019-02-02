@@ -1,6 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2016 devemux86
+ * Copyright 2019 Gustl22
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -15,12 +16,15 @@
  */
 package org.oscim.android.filepicker;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -187,10 +191,25 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         gridView.setOnItemClickListener(this);
         gridView.setAdapter(mFilePickerIconAdapter);
 
+        isStoragePermissionGranted();
+
         // if (savedInstanceState == null) {
         // // first start of this instance
         // showDialog(DIALOG_FILE_SELECT);
         // }
+    }
+
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk < 23 upon installation
+            return true;
+        }
     }
 
     @Override
