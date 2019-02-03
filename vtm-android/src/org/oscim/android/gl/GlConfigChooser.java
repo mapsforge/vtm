@@ -20,7 +20,7 @@ public class GlConfigChooser implements GLSurfaceView.EGLConfigChooser {
                 EGL10.EGL_ALPHA_SIZE, 8,
                 EGL10.EGL_DEPTH_SIZE, 16,
                 // Requires that setEGLContextClientVersion(2) is called on the view.
-                EGL10.EGL_RENDERABLE_TYPE, 4 /* EGL_OPENGL_ES2_BIT */,
+                EGL10.EGL_RENDERABLE_TYPE, 4 /*EGL14.EGL_OPENGL_ES2_BIT*/ /*0x40 /*EGLExt.EGL_OPENGL_ES3_BIT_KHR*/,
                 EGL10.EGL_STENCIL_SIZE, 8,
                 EGL10.EGL_NONE};
 
@@ -38,7 +38,7 @@ public class GlConfigChooser implements GLSurfaceView.EGLConfigChooser {
                     EGL10.EGL_BLUE_SIZE, 8,
                     EGL10.EGL_ALPHA_SIZE, 8,
                     EGL10.EGL_DEPTH_SIZE, 16,
-                    EGL10.EGL_RENDERABLE_TYPE, 4 /* EGL_OPENGL_ES2_BIT */,
+                    EGL10.EGL_RENDERABLE_TYPE, 4 /*EGL14.EGL_OPENGL_ES2_BIT*/ /*0x40 /*EGLExt.EGL_OPENGL_ES3_BIT_KHR*/,
                     EGL10.EGL_STENCIL_SIZE, 8,
                     EGL10.EGL_NONE};
 

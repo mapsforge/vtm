@@ -1,5 +1,6 @@
 /*
  * Copyright 2017 Longri
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -16,6 +17,8 @@
  */
 package org.oscim.ios.test;
 
+import com.badlogic.gdx.graphics.glutils.GLVersion;
+
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GLAdapter;
 import org.oscim.core.GeometryBuffer;
@@ -24,6 +27,7 @@ import org.oscim.core.TagSet;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
 import org.oscim.ios.backend.IosGL;
+import org.oscim.ios.backend.IosGL30;
 import org.oscim.ios.backend.IosGraphics;
 import org.oscim.layers.GenericLayer;
 import org.oscim.renderer.BucketRenderer;
@@ -45,12 +49,19 @@ public class IOSLineTexBucketTest extends GdxMap {
         // init globals
         IosGraphics.init();
         GdxAssets.init("assets/");
-        GLAdapter.init(new IosGL());
     }
 
     GeometryBuffer mLine = new GeometryBuffer(2, 1);
 
     LineTest l = new LineTest();
+
+    @Override
+    protected void initGLAdapter(GLVersion version) {
+        if (version.getMajorVersion() < 3)
+            GLAdapter.init(new IosGL());
+        else
+            GLAdapter.init(new IosGL30());
+    }
 
     @Override
     public void createLayers() {

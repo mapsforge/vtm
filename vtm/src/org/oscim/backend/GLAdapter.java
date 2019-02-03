@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2017 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -29,6 +29,7 @@ public class GLAdapter {
      * The instance provided by backend
      */
     public static GL gl;
+    public static GL30 gl3 = null;
 
     public static boolean ANDROID_QUIRKS = false;
     public static boolean GDX_DESKTOP_QUIRKS = false;
@@ -45,8 +46,11 @@ public class GLAdapter {
      */
     public static boolean CIRCLE_QUADS = false;
 
-    public static void init(GL gl20) {
-        gl = gl20;
+    public static void init(GL gl) {
+        GLAdapter.gl = gl;
+
+        if (gl instanceof GL30)
+            GLAdapter.gl3 = (GL30) gl;
 
         ANDROID_QUIRKS = (CanvasAdapter.platform == Platform.ANDROID);
         GDX_DESKTOP_QUIRKS = CanvasAdapter.platform.isDesktop();
@@ -55,5 +59,9 @@ public class GLAdapter {
         // Buildings translucency does not work on macOS, see #61
         if (CanvasAdapter.platform == Platform.MACOS)
             BuildingLayer.TRANSLUCENT = false;
+    }
+
+    public static boolean isGL30() {
+        return gl3 != null;
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -22,6 +22,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.glutils.GLVersion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -68,6 +69,9 @@ public abstract class GdxMap implements ApplicationListener {
 
     @Override
     public void create() {
+        GLVersion version = Gdx.graphics.getGLVersion();
+        initGLAdapter(version);
+
         if (!Parameters.CUSTOM_COORD_SCALE) {
             if (Math.min(Gdx.graphics.getDisplayMode().width, Gdx.graphics.getDisplayMode().height) > 1080)
                 MapRenderer.COORD_SCALE = 4.0f;
@@ -98,6 +102,8 @@ public abstract class GdxMap implements ApplicationListener {
 
         createLayers();
     }
+
+    protected abstract void initGLAdapter(GLVersion version);
 
     protected void createLayers() {
     }
