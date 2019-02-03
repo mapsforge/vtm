@@ -283,6 +283,13 @@ public class GLUtils {
         color[2] = FastMath.clampN((float) (p + (b - p) * change));
     }
 
+    public static void glUniform3fv(int location, int count, float[] val) {
+        FloatBuffer buf = MapRenderer.getFloatBuffer(count * 3);
+        buf.put(val);
+        buf.flip();
+        gl.uniform3fv(location, count, buf);
+    }
+
     public static void glUniform4fv(int location, int count, float[] val) {
         FloatBuffer buf = MapRenderer.getFloatBuffer(count * 4);
         buf.put(val);

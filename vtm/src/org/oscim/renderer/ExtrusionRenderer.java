@@ -2,7 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2017 Izumi Kawashima
  * Copyright 2017 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -45,6 +45,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
     protected float mAlpha = 1;
 
     private float mZLimit = Float.MAX_VALUE;
+    private float[] mLightPos = new float[]{0.3f, 0.3f, 1f};
 
     public ExtrusionRenderer(boolean mesh, boolean translucent) {
         mMesh = mesh;
@@ -52,7 +53,17 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
     }
 
     public static class Shader extends GLShader {
-        int uMVP, uColor, uAlpha, uMode, aPos, aLight, uZLimit;
+        int uMVP, uColor, uAlpha, uMode, aPos, uZLimit;
+
+        /**
+         * The normal of vertex's face as attribute
+         */
+        int aNormal;
+
+        /**
+         * The the lights position vector as uniform
+         */
+        int uLight;
 
         public Shader(String shader) {
             if (!create(shader))
@@ -64,7 +75,8 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
             uMode = getUniform("u_mode");
             uZLimit = getUniform("u_zlimit");
             aPos = getAttrib("a_pos");
-            aLight = getAttrib("a_light");
+            aNormal = getAttrib("a_normal");
+            uLight = getUniform("u_light");
         }
     }
 
@@ -124,6 +136,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
         gl.depthFunc(GL.LESS);
         gl.uniform1f(s.uAlpha, mAlpha);
         gl.uniform1f(s.uZLimit, mZLimit);
+        GLUtils.glUniform3fv(s.uLight, 1, mLightPos);
 
         ExtrusionBuckets[] ebs = mExtrusionBucketSet;
 
@@ -159,7 +172,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
         GLState.blend(true);
 
-        GLState.enableVertexArrays(s.aPos, s.aLight);
+        GLState.enableVertexArrays(s.aPos, s.aNormal);
 
         for (int i = 0; i < mBucketsCnt; i++) {
             if (ebs[i].ibo == null)
@@ -191,7 +204,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
                 gl.vertexAttribPointer(s.aPos, 3, GL.SHORT,
                         false, RenderBuckets.SHORT_BYTES * 4, eb.getVertexOffset());
 
-                gl.vertexAttribPointer(s.aLight, 2, GL.UNSIGNED_BYTE,
+                gl.vertexAttribPointer(s.aNormal, 2, GL.UNSIGNED_BYTE,
                         false, RenderBuckets.SHORT_BYTES * 4, eb.getVertexOffset() + RenderBuckets.SHORT_BYTES * 3);
 
                 /* draw extruded outlines (mMesh == false) */
