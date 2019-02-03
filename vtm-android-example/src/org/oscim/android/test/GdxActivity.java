@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -23,6 +23,7 @@ import android.util.DisplayMetrics;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.graphics.glutils.GLVersion;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 
 import org.oscim.android.MapPreferences;
@@ -31,6 +32,7 @@ import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GLAdapter;
 import org.oscim.core.Tile;
 import org.oscim.gdx.AndroidGL;
+import org.oscim.gdx.AndroidGL30;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
 import org.oscim.gdx.poi3d.Poi3DLayer;
@@ -64,7 +66,6 @@ public class GdxActivity extends AndroidApplication {
 
         AndroidGraphics.init();
         GdxAssets.init("");
-        GLAdapter.init(new AndroidGL());
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         CanvasAdapter.dpi = (int) (metrics.scaledDensity * CanvasAdapter.DEFAULT_DPI);
@@ -81,6 +82,14 @@ public class GdxActivity extends AndroidApplication {
     }
 
     class GdxMapAndroid extends GdxMap {
+        @Override
+        protected void initGLAdapter(GLVersion version) {
+            if (version.getMajorVersion() >= 3)
+                GLAdapter.init(new AndroidGL30());
+            else
+                GLAdapter.init(new AndroidGL());
+        }
+
         @Override
         public void createLayers() {
             TileSource tileSource = OSciMap4TileSource.builder()

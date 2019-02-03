@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2017 Longri
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -17,6 +18,8 @@
  */
 package org.oscim.ios.test;
 
+import com.badlogic.gdx.graphics.glutils.GLVersion;
+
 import org.oscim.backend.GLAdapter;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeoPoint;
@@ -25,6 +28,7 @@ import org.oscim.event.Event;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
 import org.oscim.ios.backend.IosGL;
+import org.oscim.ios.backend.IosGL30;
 import org.oscim.ios.backend.IosGraphics;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
@@ -46,13 +50,20 @@ public class IOSPathLayerTest extends GdxMap {
         // init globals
         IosGraphics.init();
         GdxAssets.init("assets/");
-        GLAdapter.init(new IosGL());
     }
 
     private static final boolean ANIMATION = false;
 
     private List<PathLayer> mPathLayers = new ArrayList<>();
     private TextureItem tex;
+
+    @Override
+    protected void initGLAdapter(GLVersion version) {
+        if (version.getMajorVersion() >= 3)
+            GLAdapter.init(new IosGL30());
+        else
+            GLAdapter.init(new IosGL());
+    }
 
     @Override
     public void createLayers() {

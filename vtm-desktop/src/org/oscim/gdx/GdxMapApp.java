@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -21,6 +21,7 @@ package org.oscim.gdx;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.glutils.GLVersion;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 
 import org.oscim.awt.AwtGraphics;
@@ -42,7 +43,6 @@ public class GdxMapApp extends GdxMap {
         // init globals
         AwtGraphics.init();
         GdxAssets.init("assets/");
-        GLAdapter.init(new LwjglGL20());
     }
 
     public static void main(String[] args) {
@@ -79,6 +79,14 @@ public class GdxMapApp extends GdxMap {
         cfg.backgroundFPS = 10;
         cfg.forceExit = false;
         return cfg;
+    }
+
+    @Override
+    protected void initGLAdapter(GLVersion version) {
+        if (version.getMajorVersion() >= 3)
+            GLAdapter.init(new LwjglGL30());
+        else
+            GLAdapter.init(new LwjglGL20());
     }
 
     @Override

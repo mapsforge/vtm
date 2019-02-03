@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 Izumi Kawashima
  * Copyright 2017-2018 devemux86
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -21,10 +22,12 @@ package org.oscim.web.client;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtGraphics;
+import com.badlogic.gdx.graphics.glutils.GLVersion;
 
 import org.oscim.backend.AssetAdapter;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GL;
+import org.oscim.backend.GL30;
 import org.oscim.backend.GLAdapter;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
@@ -76,7 +79,6 @@ class GwtMap extends GdxMap {
         Tile.SIZE = Tile.calculateTileSize();
 
         log.debug("GLAdapter.init");
-        GLAdapter.init((GL) Gdx.graphics.getGL20());
         MapRenderer.setBackgroundColor(0xffffff);
         //Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
@@ -161,6 +163,14 @@ class GwtMap extends GdxMap {
         }
 
         mSearchBox = new SearchBox(mMap);
+    }
+
+    @Override
+    protected void initGLAdapter(GLVersion version) {
+        if (version.getMajorVersion() >= 3)
+            GLAdapter.init((GL30) Gdx.graphics.getGL30());
+        else
+            GLAdapter.init((GL) Gdx.graphics.getGL20());
     }
 
     @Override
