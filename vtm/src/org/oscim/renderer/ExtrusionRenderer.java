@@ -52,7 +52,47 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
     }
 
     public static class Shader extends GLShader {
-        int uMVP, uColor, uAlpha, uMode, aPos, aLight, uZLimit;
+        /**
+         * The vertex position as attribute
+         */
+        int aPos;
+
+        /**
+         * The light indicator of vertex's face as attribute
+         */
+        int aLight;
+
+        /**
+         * The alpha value (e.g. for fading animation) as uniform
+         */
+        int uAlpha;
+
+        /**
+         * The extrusion color(s) as uniform
+         */
+        int uColor;
+
+        /**
+         * The shader render mode as uniform
+         * <p>
+         * Extrusion shader:
+         * -1: translucent (depth buffer only)
+         *  0: draw roof
+         *  1: draw side one
+         *  2: draw side two
+         *  3: draw outline
+         */
+        int uMode;
+
+        /**
+         * The model-view-projection matrix as uniform
+         */
+        int uMVP;
+
+        /**
+         * The height limit of extrusions as uniform
+         */
+        int uZLimit;
 
         public Shader(String shader) {
             if (!create(shader))
