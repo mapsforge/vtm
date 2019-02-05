@@ -42,4 +42,10 @@ public class GwtDateTime extends DateTimeAdapter {
         double diff = year.getTime() - start.getTime();
         return (int) (diff / (DateTimeAdapter.MILLIS_PER_DAY)) + 1;
     }
+
+    @Override
+    public int getTimeZoneOffset() {
+        JsDate date = JsDate.create();
+        return -date.getTimezoneOffset();
+    }
 }

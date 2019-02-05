@@ -37,4 +37,10 @@ public class DateTime extends DateTimeAdapter {
     public int getDayOfYear() {
         return Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
     }
+
+    @Override
+    public int getTimeZoneOffset() {
+        Calendar inst = Calendar.getInstance();
+        return inst.getTimeZone().getOffset(inst.getTimeInMillis()) / 60000;
+    }
 }

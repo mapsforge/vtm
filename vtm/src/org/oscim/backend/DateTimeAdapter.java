@@ -37,4 +37,9 @@ public abstract class DateTimeAdapter {
      * Indicates the day number within the current year. The first day of the year has value 1.
      */
     public abstract int getDayOfYear();
+
+    /**
+     * @return the time zone offset in minutes
+     */
+    public abstract int getTimeZoneOffset();
 }
