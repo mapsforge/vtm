@@ -1,3 +1,20 @@
+/*
+ * Copyright 2014 Hannes Janetzek
+ * Copyright 2019 Gustl22
+ *
+ * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.oscim.utils;
 
 import org.oscim.backend.canvas.Color;
@@ -260,5 +277,23 @@ public class ColorUtil {
 
     public static int hslToRgb(double h, double s, double l) {
         return hslToRgb(h, s, l, null);
+    }
+
+    /**
+     * Blend two colors.
+     *
+     * @param color1 the first color
+     * @param color2 the second color
+     * @param mix    the mixing proportion in range 0 to 1
+     * @return the blended color
+     */
+    public static int blend(int color1, int color2, float mix) {
+        float mix2 = 1f - mix;
+        return Color.get(
+                (int) ((((color2 >>> 24) & 0xff) * mix) + (((color1 >>> 24) & 0xff) * mix2)),
+                (int) ((((color2 >>> 16) & 0xff) * mix) + (((color1 >>> 16) & 0xff) * mix2)),
+                (int) ((((color2 >>> 8) & 0xff) * mix) + (((color1 >>> 8) & 0xff) * mix2)),
+                (int) ((((color2 >>> 0) & 0xff) * mix) + (((color1 >>> 0) & 0xff) * mix2))
+        );
     }
 }

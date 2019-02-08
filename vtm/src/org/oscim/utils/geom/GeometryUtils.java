@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -278,6 +278,24 @@ public final class GeometryUtils {
      */
     public static float isTrisClockwise(float[] pA, float[] pB, float[] pC) {
         return (pB[0] - pA[0]) * (pC[1] - pA[1]) - (pB[1] - pA[1]) * (pC[0] - pA[0]);
+    }
+
+    /**
+     * @return the length of the vector
+     */
+    public static double length(float[] vec) {
+        float length = 0f;
+        for (float coord : vec) {
+            length += coord * coord;
+        }
+        return Math.sqrt(length);
+    }
+
+    /**
+     * @return the normalized vector (with length 1)
+     */
+    public static float[] normalize(float[] vec) {
+        return scale(vec, 1f / (float) length(vec));
     }
 
     /**
