@@ -13,9 +13,9 @@ varying vec4 v_pos;
 varying vec2 s_pos;
 
 void main() {
-  v_pos = u_mvp * vec4(a_pos, 0.0, 1.0);
-  s_pos = v_pos.xy / v_pos.w;
-  gl_Position = v_pos;
+    v_pos = u_mvp * vec4(a_pos, 0.0, 1.0);
+    s_pos = v_pos.xy / v_pos.w;
+    gl_Position = v_pos;
 }
 
 $$
@@ -30,10 +30,10 @@ varying vec4 v_pos;
 varying vec2 s_pos;
 
 void main() {
-  vec2 pos = (v_pos.xy) / v_pos.w * u_screen;
-  
-  float l = length(gl_FragCoord.xy - u_screen - pos.xy);
-  float z = clamp(0.6, 1.0, 1.2 - (v_pos.z/ v_pos.w));
+    vec2 pos = (v_pos.xy) / v_pos.w * u_screen;
 
-  gl_FragColor = u_color * (smoothstep(1.0, 0.0, l / u_width) * z);
+    float l = length(gl_FragCoord.xy - u_screen - pos.xy);
+    float z = clamp(0.6, 1.0, 1.2 - (v_pos.z / v_pos.w));
+
+    gl_FragColor = u_color * (smoothstep(1.0, 0.0, l / u_width) * z);
 }

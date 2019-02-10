@@ -6,8 +6,8 @@ attribute vec4 a_pos;
 varying vec2 tex_pos;
 
 void main() {
-  gl_Position = a_pos;
-  tex_pos = (a_pos.xy + 1.0) * 0.5;
+    gl_Position = a_pos;
+    tex_pos = (a_pos.xy + 1.0) * 0.5;
 }
 
 $$
@@ -20,7 +20,5 @@ uniform vec2 u_pixel;
 varying vec2 tex_pos;
 
 void main() {
-  gl_FragColor = texture2D(u_texColor, tex_pos) * 0.8;
+    gl_FragColor = texture2D(u_texColor, tex_pos) * 0.8;
 }
-
-

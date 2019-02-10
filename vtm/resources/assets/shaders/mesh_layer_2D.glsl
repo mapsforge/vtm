@@ -6,7 +6,7 @@ uniform float u_height;
 attribute vec2 a_pos;
 
 void main() {
-  gl_Position = u_mvp * vec4(a_pos, u_height, 1.0);
+    gl_Position = u_mvp * vec4(a_pos, u_height, 1.0);
 }
 
 $$
@@ -17,5 +17,5 @@ precision highp float;
 uniform vec4 u_color;
 
 void main() {
-  gl_FragColor = u_color;
+    gl_FragColor = u_color;
 }
