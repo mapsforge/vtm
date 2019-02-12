@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -36,17 +37,27 @@ public abstract class GLShader {
         return createVersioned(vertexSource, fragmentSource, null);
     }
 
+    protected boolean createDirective(String vertexSource, String fragmentSource, String directives) {
+        program = createProgramDirective(vertexSource, fragmentSource, directives);
+        return program != 0;
+    }
+
     protected boolean createVersioned(String vertexSource, String fragmentSource, String version) {
-        program = createProgramVersioned(vertexSource, fragmentSource, version);
+        program = createProgramDirective(vertexSource, fragmentSource, version == null ? null : ("#version " + version + "\n"));
         return program != 0;
     }
 
     protected boolean create(String fileName) {
-        return createVersioned(fileName, null);
+        return createDirective(fileName, null);
+    }
+
+    protected boolean createDirective(String fileName, String directives) {
+        program = loadShaderDirective(fileName, directives);
+        return program != 0;
     }
 
     protected boolean createVersioned(String fileName, String version) {
-        program = loadShaderVersioned(fileName, version);
+        program = loadShaderDirective(fileName, version == null ? null : ("#version " + version + "\n"));
         return program != 0;
     }
 
@@ -69,10 +80,10 @@ public abstract class GLShader {
     }
 
     public static int loadShader(String file) {
-        return loadShaderVersioned(file, null);
+        return loadShaderDirective(file, null);
     }
 
-    public static int loadShaderVersioned(String file, String version) {
+    public static int loadShaderDirective(String file, String directives) {
         String path = "shaders/" + file + ".glsl";
         String vs = AssetAdapter.readTextFile(path);
 
@@ -87,7 +98,7 @@ public abstract class GLShader {
         String fs = vs.substring(fsStart + 2);
         vs = vs.substring(0, fsStart);
 
-        int shader = createProgramVersioned(vs, fs, version);
+        int shader = createProgramDirective(vs, fs, directives);
         if (shader == 0) {
             System.out.println(vs + " \n\n" + fs);
         }
@@ -115,13 +126,13 @@ public abstract class GLShader {
     }
 
     public static int createProgram(String vertexSource, String fragmentSource) {
-        return createProgramVersioned(vertexSource, fragmentSource, null);
+        return createProgramDirective(vertexSource, fragmentSource, null);
     }
 
-    public static int createProgramVersioned(String vertexSource, String fragmentSource, String version) {
+    public static int createProgramDirective(String vertexSource, String fragmentSource, String directives) {
         String defs = "";
-        if (version != null)
-            defs += "#version " + version + "\n";
+        if (directives != null)
+            defs += directives + "\n";
         if (GLAdapter.GDX_DESKTOP_QUIRKS)
             defs += "#define DESKTOP_QUIRKS 1\n";
         else
