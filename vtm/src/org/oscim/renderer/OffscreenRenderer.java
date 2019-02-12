@@ -1,10 +1,25 @@
+/*
+ * Copyright 2014 Hannes Janetzek
+ * Copyright 2019 Gustl22
+ *
+ * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ *
+ * This program is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.oscim.renderer;
 
 import org.oscim.backend.GL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.nio.IntBuffer;
 
 import static org.oscim.backend.GLAdapter.gl;
 
@@ -54,19 +69,11 @@ public class OffscreenRenderer extends LayerRenderer {
     }
 
     protected boolean setupFBO(GLViewport viewport) {
-        IntBuffer buf = MapRenderer.getIntBuffer(1);
-
         texW = (int) viewport.getWidth();
         texH = (int) viewport.getHeight();
 
-        gl.genFramebuffers(1, buf);
-        fb = buf.get(0);
-
-        buf.clear();
-        gl.genTextures(1, buf);
-        renderTex = buf.get(0);
-
-        GLUtils.checkGlError(getClass().getName() + ": 0");
+        fb = GLUtils.glGenFrameBuffers(1)[0];
+        renderTex = GLUtils.glGenTextures(1)[0];
 
         gl.bindFramebuffer(GL.FRAMEBUFFER, fb);
 
@@ -92,9 +99,7 @@ public class OffscreenRenderer extends LayerRenderer {
         GLUtils.checkGlError(getClass().getName() + ": 1");
 
         if (useDepthTexture) {
-            buf.clear();
-            gl.genTextures(1, buf);
-            renderDepth = buf.get(0);
+            renderDepth = GLUtils.glGenTextures(1)[0];
             gl.bindTexture(GL.TEXTURE_2D, renderDepth);
             GLUtils.setTextureParameter(GL.NEAREST,
                     GL.NEAREST,
@@ -112,9 +117,7 @@ public class OffscreenRenderer extends LayerRenderer {
                     GL.TEXTURE_2D,
                     renderDepth, 0);
         } else {
-            buf.clear();
-            gl.genRenderbuffers(1, buf);
-            int depthRenderbuffer = buf.get(0);
+            int depthRenderbuffer = GLUtils.glGenRenderBuffers(1)[0];
 
             gl.bindRenderbuffer(GL.RENDERBUFFER, depthRenderbuffer);
 
