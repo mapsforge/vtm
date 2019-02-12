@@ -127,6 +127,8 @@ public abstract class GLShader {
         else
             defs += "#define GLES 1\n";
 
+        defs += "#define GLVERSION " + (GLAdapter.isGL30() ? "30" : "20") + "\n";
+
         int vertexShader = loadShader(GL.VERTEX_SHADER, defs + vertexSource);
         if (vertexShader == 0) {
             return 0;
