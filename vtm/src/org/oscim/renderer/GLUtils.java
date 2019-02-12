@@ -32,12 +32,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.oscim.backend.GLAdapter.gl;
+import static org.oscim.backend.GLAdapter.gl30;
 
 /**
  * Utility functions
  */
 public class GLUtils {
     static final Logger log = LoggerFactory.getLogger(GLUtils.class);
+
+    /**
+     * Set int color argb to uniform wxyz
+     */
+    public static void setColor(int location, int color) {
+        gl.uniform4f(location,
+                ((color >>> 16) & 0xff) / 255f,
+                ((color >>> 8) & 0xff) / 255f,
+                ((color >>> 0) & 0xff) / 255f,
+                ((color >>> 24) & 0xff) / 255f);
+    }
 
     public static void setColor(int location, int color, float alpha) {
         if (alpha >= 1)
@@ -316,6 +328,44 @@ public class GLUtils {
         gl.deleteBuffers(num, buf);
     }
 
+    public static int[] glGenFrameBuffers(int num) {
+        IntBuffer buf = MapRenderer.getIntBuffer(num);
+        buf.position(0);
+        buf.limit(num);
+        gl.genFramebuffers(num, buf);
+        int[] ret = new int[num];
+        buf.position(0);
+        buf.limit(num);
+        buf.get(ret);
+        return ret;
+    }
+
+    public static void glDeleteFrameBuffers(int num, int[] ids) {
+        IntBuffer buf = MapRenderer.getIntBuffer(num);
+        buf.put(ids, 0, num);
+        buf.flip();
+        gl.deleteFramebuffers(num, buf);
+    }
+
+    public static int[] glGenRenderBuffers(int num) {
+        IntBuffer buf = MapRenderer.getIntBuffer(num);
+        buf.position(0);
+        buf.limit(num);
+        gl.genRenderbuffers(num, buf);
+        int[] ret = new int[num];
+        buf.position(0);
+        buf.limit(num);
+        buf.get(ret);
+        return ret;
+    }
+
+    public static void glDeleteRenderBuffers(int num, int[] ids) {
+        IntBuffer buf = MapRenderer.getIntBuffer(num);
+        buf.put(ids, 0, num);
+        buf.flip();
+        gl.deleteRenderbuffers(num, buf);
+    }
+
     public static int[] glGenTextures(int num) {
         if (num <= 0)
             return null;
@@ -349,5 +399,20 @@ public class GLUtils {
         buf.put(ids, 0, num);
         buf.flip();
         gl.deleteTextures(num, buf);
+    }
+
+    /*=============    GL30    ================*/
+
+    /**
+     * Specifies a list of color buffers to be drawn into
+     *
+     * @param num    Specifies the number of buffers in bufs.
+     * @param glEnum Points to an array of symbolic constants specifying the buffers into which fragment colors or data values will be written.
+     */
+    public static void glDrawBuffers(int num, int[] glEnum) {
+        IntBuffer buf = MapRenderer.getIntBuffer(num);
+        buf.put(glEnum, 0, num);
+        buf.flip();
+        gl30.drawBuffers(num, buf);
     }
 }
