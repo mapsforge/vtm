@@ -1,7 +1,7 @@
 /*
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016-2018 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -31,7 +31,9 @@ import android.view.WindowManager;
 
 import org.oscim.android.canvas.AndroidGraphics;
 import org.oscim.android.gl.AndroidGL;
+import org.oscim.android.gl.AndroidGL30;
 import org.oscim.android.gl.GlConfigChooser;
+import org.oscim.android.gl.GlContextFactory;
 import org.oscim.android.input.AndroidMotionEvent;
 import org.oscim.android.input.GestureHandler;
 import org.oscim.backend.CanvasAdapter;
@@ -58,6 +60,11 @@ import javax.microedition.khronos.opengles.GL10;
 public class MapView extends GLSurfaceView {
 
     static final Logger log = LoggerFactory.getLogger(MapView.class);
+
+    /**
+     * Target OpenGL ES version, if not available fall back to OpenGL ES 2.0
+     */
+    public static int targetGLESVersion = 3;
 
     private static void init() {
         System.loadLibrary("vtm-jni");
@@ -90,7 +97,6 @@ public class MapView extends GLSurfaceView {
         /* Setup android backend */
         AndroidGraphics.init();
         AndroidAssets.init(context);
-        GLAdapter.init(new AndroidGL());
         DateTimeAdapter.init(new DateTime());
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -116,8 +122,9 @@ public class MapView extends GLSurfaceView {
         mMap = new AndroidMap(this);
 
         /* Initialize Renderer */
+        //setEGLContextClientVersion(targetGLESVersion);
+        setEGLContextFactory(new GlContextFactory());
         setEGLConfigChooser(new GlConfigChooser());
-        setEGLContextClientVersion(2);
 
         if (GLAdapter.debug)
             setDebugFlags(GLSurfaceView.DEBUG_CHECK_GL_ERROR
@@ -291,6 +298,15 @@ public class MapView extends GLSurfaceView {
 
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+            // Check OpenGL ES version
+            String versionStr = gl.glGetString(GL10.GL_VERSION);
+            int versionIndex = "OpenGL ES ".length();
+            float version = Float.parseFloat(versionStr.substring(versionIndex, versionIndex + 3));
+            if (version >= 3)
+                GLAdapter.init(new AndroidGL30());
+            else
+                GLAdapter.init(new AndroidGL());
+
             super.onSurfaceCreated();
         }
 
