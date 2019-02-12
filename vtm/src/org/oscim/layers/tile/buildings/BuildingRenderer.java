@@ -71,6 +71,7 @@ public class BuildingRenderer extends ExtrusionRenderer {
 
     @Override
     public void update(GLViewport v) {
+        super.update(v);
 
         int diff = (v.pos.zoomLevel - mZoomLimiter.getMinZoom());
 

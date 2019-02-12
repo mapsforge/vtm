@@ -24,6 +24,7 @@ import org.oscim.core.Tile;
 import org.oscim.renderer.bucket.ExtrusionBucket;
 import org.oscim.renderer.bucket.ExtrusionBuckets;
 import org.oscim.renderer.bucket.RenderBuckets;
+import org.oscim.renderer.lighting.Sun;
 import org.oscim.utils.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,11 +46,15 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
     protected float mAlpha = 1;
 
     private float mZLimit = Float.MAX_VALUE;
-    private float[] mLightPos = new float[]{0.3f, 0.3f, 1f};
+
+    private Sun mSun;
+    private boolean mEnableCurrentSunPos = false;
 
     public ExtrusionRenderer(boolean mesh, boolean translucent) {
         mMesh = mesh;
         mTranslucent = translucent;
+
+        mSun = new Sun();
     }
 
     public static class Shader extends GLShader {
@@ -115,6 +120,14 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
         }
     }
 
+    public Sun getSun() {
+        return mSun;
+    }
+
+    public void enableCurrentSunPos(boolean enableSunPos) {
+        mEnableCurrentSunPos = enableSunPos;
+    }
+
     @Override
     public boolean setup() {
         if (!mMesh)
@@ -123,6 +136,20 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
             mShader = new Shader("extrusion_layer_mesh");
 
         return true;
+    }
+
+    @Override
+    public void update(GLViewport viewport) {
+        if (mEnableCurrentSunPos) {
+            float lat = (float) viewport.pos.getLatitude();
+            float lon = (float) viewport.pos.getLongitude();
+            if (FastMath.abs(mSun.getLatitude() - lat) > 0.2f
+                    || Math.abs(mSun.getLongitude() - lon) > 0.2f) {
+                // location only is updated if necessary (not every frame)
+                mSun.setLatLon(lat, lon);
+            }
+            mSun.update();
+        }
     }
 
     private void renderCombined(int vertexPointer, ExtrusionBuckets ebs) {
@@ -171,7 +198,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
         gl.depthFunc(GL.LESS);
         gl.uniform1f(s.uAlpha, mAlpha);
         gl.uniform1f(s.uZLimit, mZLimit);
-        GLUtils.glUniform3fv(s.uLight, 1, mLightPos);
+        GLUtils.glUniform3fv(s.uLight, 1, mSun.getPosition());
 
         ExtrusionBuckets[] ebs = mExtrusionBucketSet;
 
