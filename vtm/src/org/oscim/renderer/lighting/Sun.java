@@ -39,24 +39,22 @@ public class Sun {
 
     private float[] mSunPos = new float[3];
     private int mLightColor;
-    private HashMap<Float, Integer> mColorMap = new HashMap<>();
+    private HashMap<Float, Integer> mColorMap = null;
 
     /**
      * Track sun position (accuracy of ~1 minute)
      */
     public Sun() {
-        initColorMap();
-
         // Init defaults
         mDayOfYear = date.getDayOfYear();
         setLatLon(0, 0);
         mLightColor = Color.get(SHADOW_ALPHA, 255, 255, 255);
         setProgress(0.4f);
         updatePosition();
-        updateColor();
     }
 
-    private void initColorMap() {
+    private void initDefaultColorMap() {
+        mColorMap = new HashMap<>();
         mColorMap.put(0.0f, Color.get((int) (255 * SHADOW_ALPHA), 150, 120, 140)); // Sunrise
         mColorMap.put(0.04f, Color.get((int) (255 * SHADOW_ALPHA), 205, 170, 160));
         mColorMap.put(0.1f, Color.get((int) (255 * SHADOW_ALPHA), 245, 240, 215));
@@ -92,6 +90,10 @@ public class Sun {
     }
 
     public int updateColor() {
+        if (mColorMap == null) {
+            initDefaultColorMap();
+        }
+
         float progressStart, progressEnd;
         Iterator<Float> prIter = mColorMap.keySet().iterator();
         progressStart = progressEnd = prIter.next();
@@ -114,12 +116,19 @@ public class Sun {
     }
 
     /**
-     * Get and set the colors of day cycle.
+     * Get the colors of day cycle.
      *
      * @return the color map
      */
     public HashMap<Float, Integer> getColorMap() {
         return mColorMap;
+    }
+
+    /**
+     * Set the colors of day cycle.
+     */
+    public void setColorMap(HashMap<Float, Integer> colorMap) {
+        mColorMap = colorMap;
     }
 
     /**
