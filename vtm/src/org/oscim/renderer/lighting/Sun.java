@@ -197,7 +197,6 @@ public class Sun {
      * @return the progress in range 0 to 2
      */
     public float updateProgress() {
-        // TODO use time of longitude (if you are on another point of map)
         // TODO Java8 replace with LocalDateTime
         // LocalDateTime date = new LocalDateTime();
         // float time = date.getHour();
