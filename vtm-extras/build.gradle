@@ -10,7 +10,6 @@ dependencies {
 
 sourceSets {
     main.java.srcDirs = ['src']
-    main.resources.srcDirs = ['src']
 }
 
 if (project.hasProperty("SONATYPE_USERNAME")) {
