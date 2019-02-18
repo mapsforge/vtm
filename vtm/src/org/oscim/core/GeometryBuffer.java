@@ -18,6 +18,7 @@
  */
 package org.oscim.core;
 
+import org.oscim.utils.ArrayUtils;
 import org.oscim.utils.geom.GeometryUtils;
 
 import java.util.Arrays;
@@ -465,6 +466,21 @@ public class GeometryBuffer {
 
         // use only outer ring
         return GeometryUtils.isClockwise(points, index[0]);
+    }
+
+    /**
+     * Reverse the order of points for polygons and lines
+     */
+    public void reverse() {
+        if (isLine() || isPoly()) {
+            int count = 0;
+            for (int num : index) {
+                if (num < 0)
+                    break;
+                ArrayUtils.reverse(points, count, count + num, 2);
+                count += num;
+            }
+        }
     }
 
     public String toString() {

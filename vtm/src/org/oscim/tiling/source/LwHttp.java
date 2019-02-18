@@ -457,7 +457,7 @@ public class LwHttp implements HttpEngine {
         for (int n = val; n > 0; n = n / 10, i++)
             buf[pos + i] = (byte) ('0' + n % 10);
 
-        ArrayUtils.reverse(buf, pos, pos + i);
+        ArrayUtils.reverse(buf, pos, pos + i, 1);
 
         return pos + i;
     }

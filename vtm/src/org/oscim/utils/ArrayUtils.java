@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -35,6 +36,33 @@ public class ArrayUtils {
         }
     }
 
+    /**
+     * Reverse an array
+     *
+     * @param data   the base array to be reversed
+     * @param left   the left index to be reversed
+     * @param right  the right index (excluded)
+     * @param stride the stride
+     * @param <T>    the generic type
+     */
+    public static <T> void reverse(T[] data, int left, int right, int stride) {
+        right -= stride;
+
+        while (left < right) {
+            for (int i = 0; i < stride; i++) {
+                T tmp = data[left + i];
+                data[left + i] = data[right + i];
+                data[right + i] = tmp;
+            }
+            left += stride;
+            right -= stride;
+        }
+    }
+
+    /**
+     * Reverse the array for primitive short
+     * See: {@link #reverse(Object[], int, int, int)}
+     */
     public static void reverse(short[] data, int left, int right, int stride) {
         right -= stride;
 
@@ -49,16 +77,39 @@ public class ArrayUtils {
         }
     }
 
-    public static void reverse(byte[] data, int left, int right) {
-        right -= 1;
+    /**
+     * Reverse the array for primitive float
+     * See: {@link #reverse(Object[], int, int, int)}
+     */
+    public static void reverse(float[] data, int left, int right, int stride) {
+        right -= stride;
 
         while (left < right) {
-            byte tmp = data[left];
-            data[left] = data[right];
-            data[right] = tmp;
+            for (int i = 0; i < stride; i++) {
+                float tmp = data[left + i];
+                data[left + i] = data[right + i];
+                data[right + i] = tmp;
+            }
+            left += stride;
+            right -= stride;
+        }
+    }
 
-            left++;
-            right--;
+    /**
+     * Reverse the array for primitive byte
+     * See: {@link #reverse(Object[], int, int, int)}
+     */
+    public static void reverse(byte[] data, int left, int right, int stride) {
+        right -= stride;
+
+        while (left < right) {
+            for (int i = 0; i < stride; i++) {
+                byte tmp = data[left + i];
+                data[left + i] = data[right + i];
+                data[right + i] = tmp;
+            }
+            left += stride;
+            right -= stride;
         }
     }
 
