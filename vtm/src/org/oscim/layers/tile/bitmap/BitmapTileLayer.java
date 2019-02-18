@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2017 Andrey Novikov
  * Copyright 2017-2018 devemux86
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -38,14 +39,26 @@ public class BitmapTileLayer extends TileLayer {
     private static final int CACHE_LIMIT = 40;
 
     protected final TileSource mTileSource;
+
+    /**
+     * Bitmap alpha in range 0 to 1
+     */
     private float mBitmapAlpha = 1.0f;
 
-    public static class FadeStep {
+    public static class FadeStep implements Comparable<FadeStep> {
         public final double scaleStart, scaleEnd;
         public final double zoomStart, zoomEnd;
         public final float alphaStart, alphaEnd;
 
+        /**
+         * @param zoomStart  the zoom start in range {@value org.oscim.map.Viewport#MIN_ZOOM_LEVEL} to {@value org.oscim.map.Viewport#MAX_ZOOM_LEVEL}
+         * @param zoomEnd    the zoom end, must be greater than zoomStart
+         * @param alphaStart the alpha start value in range 0 to 1
+         * @param alphaEnd   the alpha end value in range 0 to 1
+         */
         public FadeStep(int zoomStart, int zoomEnd, float alphaStart, float alphaEnd) {
+            if (zoomStart > zoomEnd)
+                throw new IllegalArgumentException("zoomStart must be smaller than zoomEnd");
             this.scaleStart = 1 << zoomStart;
             this.scaleEnd = 1 << zoomEnd;
             this.zoomStart = zoomStart;
@@ -55,12 +68,20 @@ public class BitmapTileLayer extends TileLayer {
         }
 
         public FadeStep(double scaleStart, double scaleEnd, float alphaStart, float alphaEnd) {
+            if (scaleStart > scaleEnd)
+                throw new IllegalArgumentException("scaleStart must be smaller than scaleEnd");
             this.scaleStart = scaleStart;
             this.scaleEnd = scaleEnd;
             this.zoomStart = Math.log(scaleStart) / Math.log(2);
             this.zoomEnd = Math.log(scaleEnd) / Math.log(2);
             this.alphaStart = alphaStart;
             this.alphaEnd = alphaEnd;
+        }
+
+        @Override
+        public int compareTo(FadeStep o) {
+            if (o == null) return 1;
+            return (int) (this.zoomStart - o.zoomStart);
         }
     }
 
@@ -85,16 +106,16 @@ public class BitmapTileLayer extends TileLayer {
                 tileSource.getZoomLevelMax());
 
         mTileSource = tileSource;
-        mBitmapAlpha = bitmapAlpha;
-        tileRenderer().setBitmapAlpha(mBitmapAlpha);
+        setBitmapAlpha(mBitmapAlpha, false);
         initLoader(getNumLoaders());
         setFade(map.getMapPosition());
     }
 
-    public void setBitmapAlpha(float bitmapAlpha) {
-        mBitmapAlpha = bitmapAlpha;
+    public void setBitmapAlpha(float bitmapAlpha, boolean redraw) {
+        mBitmapAlpha = FastMath.clamp(bitmapAlpha, 0f, 1f);
         tileRenderer().setBitmapAlpha(mBitmapAlpha);
-        map().updateMap(true);
+        if (redraw)
+            map().updateMap(true);
     }
 
     @Override
@@ -117,8 +138,13 @@ public class BitmapTileLayer extends TileLayer {
 
         float alpha = mBitmapAlpha;
         for (FadeStep f : fade) {
-            if (pos.scale < f.scaleStart || pos.scale > f.scaleEnd)
+            if (pos.scale < f.scaleStart) {
+                alpha = f.alphaStart;
                 continue;
+            } else if (pos.scale > f.scaleEnd) {
+                alpha = f.alphaEnd;
+                continue;
+            }
 
             if (f.alphaStart == f.alphaEnd) {
                 alpha = f.alphaStart;
@@ -129,7 +155,7 @@ public class BitmapTileLayer extends TileLayer {
             break;
         }
 
-        alpha = FastMath.clamp(alpha, 0f, mBitmapAlpha);
+        alpha = FastMath.clamp(alpha, 0f, 1f) * mBitmapAlpha;
         tileRenderer().setBitmapAlpha(alpha);
     }
 
