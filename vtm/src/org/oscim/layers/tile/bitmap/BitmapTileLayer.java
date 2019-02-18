@@ -45,7 +45,7 @@ public class BitmapTileLayer extends TileLayer {
      */
     private float mBitmapAlpha = 1.0f;
 
-    public static class FadeStep implements Comparable<FadeStep> {
+    public static class FadeStep {
         public final double scaleStart, scaleEnd;
         public final double zoomStart, zoomEnd;
         public final float alphaStart, alphaEnd;
@@ -76,11 +76,6 @@ public class BitmapTileLayer extends TileLayer {
             this.zoomEnd = Math.log(scaleEnd) / Math.log(2);
             this.alphaStart = alphaStart;
             this.alphaEnd = alphaEnd;
-        }
-
-        @Override
-        public int compareTo(FadeStep o) {
-            return Double.compare(this.zoomStart, o.zoomStart);
         }
     }
 

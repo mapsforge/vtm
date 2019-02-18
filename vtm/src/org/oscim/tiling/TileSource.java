@@ -2,7 +2,6 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
  * Copyright 2017 Andrey Novikov
- * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -23,11 +22,7 @@ import org.oscim.layers.tile.bitmap.BitmapTileLayer.FadeStep;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.map.Viewport;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public abstract class TileSource {
 
@@ -116,7 +111,7 @@ public abstract class TileSource {
         mZoomMin = builder.zoomMin;
         mZoomMax = builder.zoomMax;
         mOverZoom = builder.overZoom;
-        setFadeSteps(builder.fadeSteps);
+        mFadeSteps = builder.fadeSteps;
         mName = builder.name;
         mTileSize = builder.tileSize;
     }
@@ -151,21 +146,7 @@ public abstract class TileSource {
     }
 
     public void setFadeSteps(FadeStep[] fadeSteps) {
-        if (fadeSteps == null) {
-            mFadeSteps = null;
-            return;
-        }
-        // Arrays.asList not support add, as it's read only.
-        List<FadeStep> fadeStepsList = new ArrayList<>(Arrays.asList(fadeSteps));
-        Collections.sort(fadeStepsList);
-        for (int i = 1; i < fadeSteps.length; i++) {
-            FadeStep step = fadeStepsList.get(i - 1);
-            FadeStep next = fadeStepsList.get(i);
-            if (step.zoomEnd > next.zoomStart) {
-                throw new IllegalArgumentException("FadeSteps interfere with each other" + getClass().getName());
-            }
-        }
-        mFadeSteps = fadeStepsList.toArray(new FadeStep[0]);
+        mFadeSteps = fadeSteps;
     }
 
     public FadeStep[] getFadeSteps() {
