@@ -80,8 +80,7 @@ public class BitmapTileLayer extends TileLayer {
 
         @Override
         public int compareTo(FadeStep o) {
-            if (o == null) return 1;
-            return (int) (this.zoomStart - o.zoomStart);
+            return Double.compare(this.zoomStart, o.zoomStart);
         }
     }
 
@@ -106,7 +105,7 @@ public class BitmapTileLayer extends TileLayer {
                 tileSource.getZoomLevelMax());
 
         mTileSource = tileSource;
-        setBitmapAlpha(mBitmapAlpha, false);
+        setBitmapAlpha(bitmapAlpha, false);
         initLoader(getNumLoaders());
         setFade(map.getMapPosition());
     }
