@@ -137,13 +137,8 @@ public class BitmapTileLayer extends TileLayer {
 
         float alpha = mBitmapAlpha;
         for (FadeStep f : fade) {
-            if (pos.scale < f.scaleStart) {
-                alpha = f.alphaStart;
+            if (pos.scale < f.scaleStart || pos.scale > f.scaleEnd)
                 continue;
-            } else if (pos.scale > f.scaleEnd) {
-                alpha = f.alphaEnd;
-                continue;
-            }
 
             if (f.alphaStart == f.alphaEnd) {
                 alpha = f.alphaStart;

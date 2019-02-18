@@ -163,12 +163,8 @@ public abstract class TileSource {
             FadeStep next = fadeStepsList.get(i);
             if (step.zoomEnd > next.zoomStart) {
                 throw new IllegalArgumentException("FadeSteps interfere with each other" + getClass().getName());
-            } else if (step.zoomEnd < next.zoomStart) {
-                // Add new FadeStep transition if there's a gap
-                fadeStepsList.add(new FadeStep(step.scaleEnd, next.scaleStart, step.alphaEnd, next.alphaStart));
             }
         }
-        Collections.sort(fadeStepsList);
         mFadeSteps = fadeStepsList.toArray(new FadeStep[0]);
     }
 
