@@ -317,6 +317,8 @@ public final class S3DBUtils {
     public static boolean calcPyramidalMesh(GeometryBuffer element, float minHeight, float maxHeight) {
         float[] points = element.points;
         int[] index = element.index;
+        float[] topPoint = new float[3];
+        topPoint[2] = maxHeight;
 
         for (int i = 0, pointPos = 0; i < index.length; i++) {
             if (index[i] < 0) {
@@ -327,27 +329,14 @@ public final class S3DBUtils {
             int numPoints = index[i] / 2;
             if (numPoints < 0) continue;
 
-            float centerX = 0;
-            float centerY = 0;
+            // Init top of roof (attention with pointPos)
+            GeometryUtils.center(points, pointPos, numPoints << 1, topPoint);
 
             List<float[]> point3Fs = new ArrayList<>();
-
-            // Calculate center and load points
+            // Load points
             for (int j = 0; j < (numPoints * 2); j += 2, pointPos += 2) {
-                float x = points[pointPos];
-                float y = points[pointPos + 1];
-
-                point3Fs.add(new float[]{x, y, minHeight});
-
-                centerX += x;
-                centerY += y;
+                point3Fs.add(new float[]{points[pointPos], points[pointPos + 1], minHeight});
             }
-
-            centerX = centerX / numPoints;
-            centerY = centerY / numPoints;
-
-            // Init top of roof
-            float[] topPoint = new float[]{centerX, centerY, maxHeight};
 
             // Write index: index gives the first point of triangle mesh (divided 3)
             int[] meshIndex = new int[numPoints * 3];
@@ -717,7 +706,7 @@ public final class S3DBUtils {
                                 if (Arrays.equals(ridgePoints.get(k), ridgePoints.get(secIndex)))
                                     ridgeSkipFaceIndex.add(k);
                             }
-                            if (isClockwise > 0 && IMPROVE_RIDGE_CALCULATION) {
+                            if (isClockwise < 0 && IMPROVE_RIDGE_CALCULATION) {
                                 // TODO Improve handling of counter clockwise faces and support multiple faces
                                 isTessellateAble = false;
                                 break;
@@ -862,7 +851,7 @@ public final class S3DBUtils {
                 }
             }
             // Scale of normal vec
-            maxDist = Math.signum(GeometryUtils.isTrisClockwise(
+            maxDist = -Math.signum(GeometryUtils.isTrisClockwise(
                     pL,
                     GeometryUtils.sumVec(pL, vL),
                     splitLinePoint)) * (maxDist / 2);
@@ -878,7 +867,7 @@ public final class S3DBUtils {
             List<float[]> elementPoints2 = new ArrayList<>();
             float[] secSplitPoint = GeometryUtils.sumVec(splitLinePoint, vL);
             float sideLastPoint = Math.signum(GeometryUtils.isTrisClockwise(splitLinePoint, secSplitPoint, point3Fs.get(groundSize - 1)));
-            degreeNormL = sideLastPoint > 0 ? degreeNormL : (degreeNormL + 180f) % 360; // Correct angle
+            degreeNormL = sideLastPoint < 0 ? degreeNormL : (degreeNormL + 180f) % 360; // Correct angle
             List<Integer> intersection1 = new ArrayList<>(), intersection2 = new ArrayList<>();
             for (int k = 0; k < groundSize; k++) {
                 // If point is not on the same side as the previous point, the split line intersect and can calc split point

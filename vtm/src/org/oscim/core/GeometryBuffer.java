@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Andrey Novikov
- * Copyright 2017 Gustl22
+ * Copyright 2017-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -17,6 +17,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.oscim.core;
+
+import org.oscim.utils.geom.GeometryUtils;
 
 import java.util.Arrays;
 
@@ -450,22 +452,19 @@ public class GeometryBuffer {
     /**
      * Calculates geometry area, only polygon outer ring is taken into account.
      *
-     * @return polygon area, 0 for other geometries
+     * @return unsigned polygon area, 0 for other geometries
      */
     public float area() {
+        float area = isClockwise();
+        return area < 0 ? -area : area;
+    }
+
+    public float isClockwise() {
         if (isPoint() || isLine() || getNumPoints() < 3)
             return 0f;
 
-        float area = 0f;
         // use only outer ring
-        int n = index[0];
-
-        for (int i = 0; i < n - 2; i += 2) {
-            area = area + (points[i] * points[i + 3]) - (points[i + 1] * points[i + 2]);
-        }
-        area = area + (points[n - 2] * points[1]) - (points[n - 1] * points[0]);
-
-        return 0.5f * area;
+        return GeometryUtils.isClockwise(points, index[0]);
     }
 
     public String toString() {

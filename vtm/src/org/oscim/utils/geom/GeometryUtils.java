@@ -66,6 +66,16 @@ public final class GeometryUtils {
         return inside;
     }
 
+    /**
+     * Returns the unsigned area of polygon;
+     *
+     * @param n number of points
+     */
+    public static float area(float[] points, int n) {
+        float area = isClockwise(points, n);
+        return area < 0 ? -area : area;
+    }
+
     public static float area(float ax, float ay, float bx, float by, float cx, float cy) {
 
         float area = ((ax - cx) * (by - cy)
@@ -105,6 +115,33 @@ public final class GeometryUtils {
             bisection[1] = -v1[0];
         }
         return bisection;
+    }
+
+    /**
+     * Calculates the center of a set of points
+     *
+     * @param points   the points array
+     * @param pointPos the start position of points
+     * @param n        the number of points
+     * @param out      the center output
+     * @return the center of points
+     */
+    public static float[] center(float[] points, int pointPos, int n, float[] out) {
+        if (out == null)
+            out = new float[2];
+
+        // Calculate center
+        for (int j = 0; j < n; j += 2, pointPos += 2) {
+            float x = points[pointPos];
+            float y = points[pointPos + 1];
+
+            out[0] += x;
+            out[1] += y;
+        }
+        out[0] = out[0] * 2 / n;
+        out[1] = out[1] * 2 / n;
+
+        return out;
     }
 
     /**
@@ -273,11 +310,35 @@ public final class GeometryUtils {
     }
 
     /**
-     * @return a positive value, if pA-pB-pC makes a counter-clockwise turn,
-     * negative for clockwise turn, and zero if the points are collinear.
+     * Is polygon clockwise
+     *
+     * @param points the points array
+     * @param n      the number of points
+     * @return the signed area of the polygon
+     * positive: clockwise
+     * negative: counter-clockwise
+     * 0: collinear
+     */
+    public static float isClockwise(float[] points, int n) {
+        float area = 0f;
+        for (int i = 0; i < n - 2; i += 2) {
+            area += (points[i] * points[i + 3]) - (points[i + 1] * points[i + 2]);
+        }
+        area += (points[n - 2] * points[1]) - (points[n - 1] * points[0]);
+
+        return 0.5f * area;
+    }
+
+    /**
+     * Indicates the turn of tris pA-pB-pC
+     *
+     * @return
+     * positive: clockwise
+     * negative: counter-clockwise
+     * 0: collinear
      */
     public static float isTrisClockwise(float[] pA, float[] pB, float[] pC) {
-        return (pB[0] - pA[0]) * (pC[1] - pA[1]) - (pB[1] - pA[1]) * (pC[0] - pA[0]);
+        return (pB[1] - pA[1]) * (pC[0] - pA[0]) - (pB[0] - pA[0]) * (pC[1] - pA[1]);
     }
 
     /**
