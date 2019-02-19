@@ -2,7 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Andrey Novikov
  * Copyright 2016 devemux86
- * Copyright 2017 Gustl22
+ * Copyright 2017-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -177,6 +177,16 @@ public class TagSet {
         System.arraycopy(tagArray, 0, tags, 0, newTags);
 
         numTags = newTags;
+    }
+
+    /**
+     * Sets the tags from 'tagSet'.
+     *
+     * @param tagSet the tag set
+     */
+    public void set(TagSet tagSet) {
+        set(tagSet.getTags());
+        numTags = tagSet.numTags;
     }
 
     /**
