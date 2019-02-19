@@ -27,6 +27,7 @@ import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.map.Map;
 import org.oscim.theme.styles.ExtrusionStyle;
 import org.oscim.utils.ExtrusionUtils;
+import org.oscim.utils.geom.GeometryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -191,16 +192,21 @@ public class S3DBLayer extends BuildingLayer {
                 continue;
 
             String refId = getValue(partBuilding.element, Tag.KEY_REF);
-            if (refId == null)
+            if (!RAW_DATA && refId == null)
                 continue;
 
             TagSet partTags = partBuilding.element.tags;
 
             // Search buildings which inherit parts
             for (BuildingElement rootBuilding : tileBuildings) {
-                if (rootBuilding.element.isBuildingPart()
-                        || !(refId.equals(rootBuilding.element.tags.getValue(Tag.KEY_ID))))
+                if (rootBuilding.element.isBuildingPart()) continue;
+                if (RAW_DATA) {
+                    float[] center = GeometryUtils.center(partBuilding.element.points, 0, partBuilding.element.pointNextPos, null);
+                    if (!GeometryUtils.pointInPoly(center[0], center[1], rootBuilding.element.points, rootBuilding.element.index[0], 0))
+                        continue;
+                } else if (!refId.equals(rootBuilding.element.tags.getValue(Tag.KEY_ID))) {
                     continue;
+                }
 
                 if ((getValue(rootBuilding.element, Tag.KEY_ROOF_SHAPE) != null)
                         && (getValue(partBuilding.element, Tag.KEY_ROOF_SHAPE) == null)) {

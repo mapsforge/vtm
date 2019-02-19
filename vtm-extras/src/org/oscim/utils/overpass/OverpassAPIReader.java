@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -75,25 +76,37 @@ public class OverpassAPIReader {
 
     private final String query;
 
+    public OverpassAPIReader() {
+        query = null;
+    }
+
     /**
      * Creates a new instance with the specified geographical coordinates.
-     *
-     * @param left    The longitude marking the left edge of the bounding box.
-     * @param right   The longitude marking the right edge of the bounding box.
-     * @param top     The latitude marking the top edge of the bounding box.
-     * @param bottom  The latitude marking the bottom edge of the bounding box.
-     * @param baseUrl (optional) The base url of the server (eg.
-     *                http://www.openstreetmap.org/api/0.5).
      */
     public OverpassAPIReader(final double left, final double right,
-                             final double top, final double bottom, final String baseUrl,
+                             final double top, final double bottom,
                              final String query) {
+
+        this.query = query(left, right, top, bottom, query);
+    }
+
+    /**
+     * @param left   The longitude marking the left edge of the bounding box.
+     * @param right  The longitude marking the right edge of the bounding box.
+     * @param top    The latitude marking the top edge of the bounding box.
+     * @param bottom The latitude marking the bottom edge of the bounding box.
+     * @param query  The prepared query.
+     * @return the processed query with specified bounding box
+     */
+    public static String query(final double left, final double right,
+                               final double top, final double bottom,
+                               final String query) {
 
         String bbox = "(" + Math.min(top, bottom) + "," + Math.min(left, right)
                 + "," + Math.max(top, bottom) + "," + Math.max(left, right)
                 + ")";
 
-        this.query = query.replaceAll("\\{\\{bbox\\}\\}", bbox);
+        return query.replaceAll("\\{\\{bbox\\}\\}", bbox);
 
     }
 
@@ -335,14 +348,13 @@ public class OverpassAPIReader {
         System.out.println(msg);
     }
 
-    public OsmData getData() {
-
+    public void parseInputStream() {
         String encoded;
         try {
             encoded = URLEncoder.encode(this.query, "utf-8");
         } catch (UnsupportedEncodingException e1) {
             e1.printStackTrace();
-            return null;
+            return;
         }
         System.out.println(myBaseUrl + "?data=" + encoded);
 
@@ -363,6 +375,9 @@ public class OverpassAPIReader {
                 }
             inputStream = null;
         }
+    }
+
+    public OsmData getData() {
 
         for (Entry<OsmRelation, List<TmpRelation>> entry : relationMembersForRelation
                 .entrySet()) {
@@ -392,8 +407,8 @@ public class OverpassAPIReader {
                 }
             }
         }
-        log("nodes: " + ownNodes.size() + " ways: " + ownWays.size()
-                + " relations: " + ownRelations.size());
+        /*log("nodes: " + ownNodes.size() + " ways: " + ownWays.size()
+                + " relations: " + ownRelations.size());*/
 
         // give up references to original collections
         nodesById = null;

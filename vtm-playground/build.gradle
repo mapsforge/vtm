@@ -5,6 +5,7 @@ dependencies {
     file("${rootDir}/vtm-desktop/natives").eachDir() { dir ->
         implementation files(dir.path)
     }
+    implementation project(':vtm-extras')
     implementation project(':vtm-gdx-poi3d')
     implementation project(':vtm-http')
     implementation project(':vtm-jeo')

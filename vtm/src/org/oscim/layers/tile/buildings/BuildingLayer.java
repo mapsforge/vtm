@@ -35,6 +35,7 @@ import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.styles.ExtrusionStyle;
 import org.oscim.theme.styles.RenderStyle;
+import org.oscim.utils.geom.GeometryUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +53,11 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
      * Use Fast Approximate Anti-Aliasing (FXAA) and Screen Space Ambient Occlusion (SSAO).
      */
     public static boolean POST_AA = false;
+
+    /**
+     * Use real time calculations to preprocess data
+     */
+    public static boolean RAW_DATA = false;
 
     /**
      * Let vanish extrusions / meshes which are covered by others.
@@ -147,6 +153,10 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
                 mBuildings.put(tile.hashCode(), buildingElements);
             }
             element = new MapElement(element); // Deep copy, because element will be cleared
+            if (RAW_DATA && element.isClockwise() > 0) {
+                // Buildings must be counter clockwise in VTM (mirrored to OSM)
+                element.reverse();
+            }
             buildingElements.add(new BuildingElement(element, extrusion));
             return true;
         }
@@ -216,9 +226,14 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
 
             // Search buildings which inherit parts
             for (BuildingElement rootBuilding : tileBuildings) {
-                if (rootBuilding.element.isBuildingPart()
-                        || !(refId.equals(getValue(rootBuilding.element, Tag.KEY_ID))))
+                if (rootBuilding.element.isBuildingPart()) continue;
+                if (RAW_DATA) {
+                    float[] center = GeometryUtils.center(partBuilding.element.points, 0, partBuilding.element.pointNextPos, null);
+                    if (!GeometryUtils.pointInPoly(center[0], center[1], rootBuilding.element.points, rootBuilding.element.index[0], 0))
+                        continue;
+                } else if (!(refId.equals(getValue(rootBuilding.element, Tag.KEY_ID)))) {
                     continue;
+                }
 
                 rootBuildings.add(rootBuilding);
                 break;
