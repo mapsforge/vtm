@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -41,6 +41,10 @@ public class GLState {
     private static int glIndexBuffer;
 
     private static int currentTexId;
+    private static int currentFrameBufferId;
+
+    private static int viewportWidth;
+    private static int viewportHeight;
 
     static void init() {
         vertexArray[0] = false;
@@ -151,6 +155,15 @@ public class GLState {
         }
     }
 
+    public static void bindFramebuffer(int id) {
+        gl.bindFramebuffer(GL.FRAMEBUFFER, id);
+        currentFrameBufferId = id;
+    }
+
+    public static int getFramebuffer() {
+        return currentFrameBufferId;
+    }
+
     public static void bindTex2D(int id) {
         if (id < 0) {
             gl.bindTexture(GL.TEXTURE_2D, 0);
@@ -159,6 +172,10 @@ public class GLState {
             gl.bindTexture(GL.TEXTURE_2D, id);
             currentTexId = id;
         }
+    }
+
+    public static int getTexture() {
+        return currentTexId;
     }
 
     public static void setClearColor(float[] color) {
@@ -217,5 +234,19 @@ public class GLState {
         if (id >= 0)
             gl.bindBuffer(GL.ARRAY_BUFFER, id);
 
+    }
+
+    public static void viewport(int width, int height) {
+        gl.viewport(0, 0, width, height);
+        viewportWidth = width;
+        viewportHeight = height;
+    }
+
+    public static int getViewportWidth() {
+        return viewportWidth;
+    }
+
+    public static int getViewportHeight() {
+        return viewportHeight;
     }
 }

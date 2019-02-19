@@ -172,7 +172,7 @@ public class MapRenderer {
         if (width <= 0 || height <= 0)
             return;
 
-        gl.viewport(0, 0, width, height);
+        GLState.viewport(width, height);
 
         //GL.scissor(0, 0, width, height);
         //GL.enable(GL20.SCISSOR_TEST);

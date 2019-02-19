@@ -88,7 +88,7 @@ public class GdxSpriteBatchTest extends GdxMapApp {
 
         GLState.enableVertexArrays(GLState.DISABLED, GLState.DISABLED);
 
-        gl.viewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        GLState.viewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gl.frontFace(GL.CW);
 
         mMapRenderer.onDrawFrame();

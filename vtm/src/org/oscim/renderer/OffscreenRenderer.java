@@ -144,13 +144,13 @@ public class OffscreenRenderer extends LayerRenderer {
 
     public void enable(boolean on) {
         if (on)
-            gl.bindFramebuffer(GL.FRAMEBUFFER, fb);
+            GLState.bindFramebuffer(fb);
         else
-            gl.bindFramebuffer(GL.FRAMEBUFFER, 0);
+            GLState.bindFramebuffer(0);
     }
 
     public void begin() {
-        gl.bindFramebuffer(GL.FRAMEBUFFER, fb);
+        GLState.bindFramebuffer(fb);
         gl.depthMask(true);
         gl.clear(GL.DEPTH_BUFFER_BIT);
     }
@@ -192,15 +192,16 @@ public class OffscreenRenderer extends LayerRenderer {
 
     @Override
     public void render(GLViewport viewport) {
-        gl.bindFramebuffer(GL.FRAMEBUFFER, fb);
-        gl.viewport(0, 0, texW, texH);
+        int fbTmp = GLState.getFramebuffer();
+        GLState.bindFramebuffer(fb);
+        GLState.viewport(texW, texH);
         gl.depthMask(true);
         GLState.setClearColor(mClearColor);
         gl.clear(GL.DEPTH_BUFFER_BIT | GL.COLOR_BUFFER_BIT);
 
         mRenderer.render(viewport);
 
-        gl.bindFramebuffer(GL.FRAMEBUFFER, 0);
+        GLState.bindFramebuffer(fbTmp);
 
         mShader.useProgram();
 

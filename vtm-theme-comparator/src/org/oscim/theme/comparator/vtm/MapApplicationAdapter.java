@@ -31,6 +31,7 @@ import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.map.Map;
+import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.scalebar.DefaultMapScaleBar;
@@ -164,7 +165,7 @@ public class MapApplicationAdapter extends ApplicationAdapter {
 
     @Override
     public void render() {
-        gl.viewport(0, 0, width, height);
+        GLState.viewport(width, height);
 
         try {
             mapRenderer.onDrawFrame();
