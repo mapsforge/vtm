@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -39,6 +40,17 @@ import org.oscim.theme.VtmThemes;
 public class SimpleMapActivity extends BaseMapActivity {
     private DefaultMapScaleBar mapScaleBar;
 
+    BuildingLayer mBuildingLayer;
+    LabelLayer mLabelLayer;
+
+    public SimpleMapActivity(int contentView) {
+        super(contentView);
+    }
+
+    public SimpleMapActivity() {
+        super();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +60,10 @@ public class SimpleMapActivity extends BaseMapActivity {
 
     void createLayers() {
         GroupLayer groupLayer = new GroupLayer(mMap);
-        groupLayer.layers.add(new BuildingLayer(mMap, mBaseLayer));
-        groupLayer.layers.add(new LabelLayer(mMap, mBaseLayer));
+        mBuildingLayer = new BuildingLayer(mMap, mBaseLayer);
+        groupLayer.layers.add(mBuildingLayer);
+        mLabelLayer = new LabelLayer(mMap, mBaseLayer);
+        groupLayer.layers.add(mLabelLayer);
         mMap.layers().add(groupLayer);
 
         mapScaleBar = new DefaultMapScaleBar(mMap);

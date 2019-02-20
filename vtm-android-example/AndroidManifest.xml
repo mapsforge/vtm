@@ -113,6 +113,9 @@
             android:name=".OSciMapS3DBActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".OverpassActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".PathOverlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
@@ -129,6 +132,9 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".RotateMarkerOverlayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ShadowActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".SimpleMapActivity"

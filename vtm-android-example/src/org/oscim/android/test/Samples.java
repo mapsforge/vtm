@@ -2,8 +2,12 @@
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
+ * Copyright 2016 mar-v-in
+ * Copyright 2016 Mathieu de Brito
  * Copyright 2017-2018 Longri
  * Copyright 2017 nebular
+ * Copyright 2018 boldtrn
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -101,6 +105,7 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(LocationActivity.class));
         linearLayout.addView(createButton(LocationTextureActivity.class));
         linearLayout.addView(createButton(PoiSearchActivity.class));
+        linearLayout.addView(createButton(ShadowActivity.class));
 
         linearLayout.addView(createLabel("Vector Features"));
         linearLayout.addView(createButton(MapsforgeStyleActivity.class));
@@ -136,5 +141,6 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(ThemeStylerActivity.class));
         linearLayout.addView(createButton(JeoIndoorActivity.class));
         linearLayout.addView(createButton(GdxPoi3DActivity.class));
+        linearLayout.addView(createButton(OverpassActivity.class));
     }
 }
