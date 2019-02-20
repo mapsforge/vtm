@@ -2,7 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
  * Copyright 2016 Robin Boldt
- * Copyright 2017-2018 Gustl22
+ * Copyright 2017-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -30,6 +30,7 @@ import org.oscim.map.Map;
 import org.oscim.renderer.ExtrusionRenderer;
 import org.oscim.renderer.OffscreenRenderer;
 import org.oscim.renderer.OffscreenRenderer.Mode;
+import org.oscim.renderer.light.ShadowRenderer;
 import org.oscim.renderer.bucket.ExtrusionBuckets;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.theme.IRenderTheme;
@@ -66,6 +67,11 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
      * To better notice the difference, reduce the alpha value of extrusion colors in themes.
      */
     public static boolean TRANSLUCENT = true;
+
+    /**
+     * Use shadow rendering
+     */
+    public static boolean SHADOW = false;
 
     private static final Object BUILDING_DATA = BuildingLayer.class.getName();
 
@@ -113,7 +119,11 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
         mZoomLimiter = new ZoomLimiter(tileLayer.getManager(), zoomMin, zoomMax, zoomMin);
 
         mRenderer = mExtrusionRenderer = new BuildingRenderer(tileLayer.tileRenderer(), mZoomLimiter, mesh, TRANSLUCENT);
-        if (POST_AA)
+        if (SHADOW) {
+            mRenderer = new ShadowRenderer(mExtrusionRenderer);
+        }
+        // TODO allow SHADOW and POST_AA at same time
+        else if (POST_AA)
             mRenderer = new OffscreenRenderer(Mode.SSAO_FXAA, mRenderer);
 
         mRenderTheme = tileLayer.getTheme();

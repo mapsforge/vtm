@@ -24,6 +24,7 @@ import org.oscim.core.Tile;
 import org.oscim.renderer.bucket.ExtrusionBucket;
 import org.oscim.renderer.bucket.ExtrusionBuckets;
 import org.oscim.renderer.bucket.RenderBuckets;
+import org.oscim.renderer.light.ShadowRenderer;
 import org.oscim.renderer.light.Sun;
 import org.oscim.utils.FastMath;
 import org.slf4j.Logger;
@@ -49,6 +50,7 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
     private Sun mSun;
     private boolean mEnableCurrentSunPos;
+    private boolean mUseLight = true;
 
     public ExtrusionRenderer(boolean mesh, boolean translucent) {
         mMesh = mesh;
@@ -106,7 +108,11 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
         int uZLimit;
 
         public Shader(String shader) {
-            if (!create(shader))
+            this(shader, null);
+        }
+
+        public Shader(String shader, String directives) {
+            if (!createDirective(shader, directives))
                 return;
 
             uMVP = getUniform("u_mvp");
@@ -126,6 +132,22 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
 
     public void enableCurrentSunPos(boolean enableSunPos) {
         mEnableCurrentSunPos = enableSunPos;
+    }
+
+    public Shader getShader() {
+        return mShader;
+    }
+
+    public void setShader(Shader shader) {
+        mShader = shader;
+    }
+
+    public boolean isMesh() {
+        return mMesh;
+    }
+
+    public void useLight(boolean useLight) {
+        mUseLight = useLight;
     }
 
     @Override
@@ -209,6 +231,9 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
             gl.uniform1i(s.uMode, -1);
 
             for (int i = 0; i < mBucketsCnt; i++) {
+                if (ebs[i] == null) {
+                    return;
+                }
                 if (ebs[i].ibo == null)
                     return;
 
@@ -232,7 +257,8 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
             gl.depthFunc(GL.EQUAL);
         }
 
-        GLState.blend(true);
+        // depth cannot be transparent (in gl20)
+        GLState.blend(mUseLight);
 
         GLState.enableVertexArrays(s.aPos, s.aNormal);
 
@@ -266,8 +292,10 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
                 gl.vertexAttribPointer(s.aPos, 3, GL.SHORT,
                         false, RenderBuckets.SHORT_BYTES * 4, eb.getVertexOffset());
 
-                gl.vertexAttribPointer(s.aNormal, 2, GL.UNSIGNED_BYTE,
-                        false, RenderBuckets.SHORT_BYTES * 4, eb.getVertexOffset() + RenderBuckets.SHORT_BYTES * 3);
+                if (mUseLight) {
+                    gl.vertexAttribPointer(s.aNormal, 2, GL.UNSIGNED_BYTE,
+                            false, RenderBuckets.SHORT_BYTES * 4, eb.getVertexOffset() + RenderBuckets.SHORT_BYTES * 3);
+                }
 
                 /* draw extruded outlines (mMesh == false) */
                 if (eb.idx[0] > 0) {
@@ -319,7 +347,8 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
             }
 
             /* just a temporary reference! */
-            ebs[i] = null;
+            /* But for shadows we use them multiple times */
+            //ebs[i] = null;
         }
 
         if (!mTranslucent)
@@ -345,8 +374,16 @@ public abstract class ExtrusionRenderer extends LayerRenderer {
         float x = (float) ((l.x - v.pos.x) * curScale);
         float y = (float) ((l.y - v.pos.y) * curScale);
 
+        // Create model matrix
         v.mvp.setTransScale(x, y, scale / COORD_SCALE);
         v.mvp.setValue(10, scale / 10);
+
+        // Create shadow map converter TODO may can code it cleaner
+        if (s instanceof ShadowRenderer.Shader) {
+            ((ShadowRenderer.Shader) s).setLightMVP(v.mvp);
+        }
+
+        // Apply model matrix to VP-Matrix
         v.mvp.multiplyLhs(v.viewproj);
 
         if (mTranslucent) {

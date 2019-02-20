@@ -195,7 +195,7 @@ public class OffscreenRenderer extends LayerRenderer {
         GLState.bindFramebuffer(fb);
         GLState.viewport(texW, texH);
         gl.depthMask(true);
-        GLState.setClearColor(mClearColor);
+        GLState.setClearColor(mClearColor); // FIXME SHADOW remove to use default clear color
         gl.clear(GL.DEPTH_BUFFER_BIT | GL.COLOR_BUFFER_BIT);
 
         mRenderer.render(viewport);
@@ -223,6 +223,7 @@ public class OffscreenRenderer extends LayerRenderer {
 
         GLState.test(false, false);
         GLState.blend(true);
+        // FIXME SHADOW to work with ShadowRenderer: gl.blendFunc(GL.ZERO, GL.SRC_COLOR);
         gl.drawArrays(GL.TRIANGLE_STRIP, 0, 4);
         GLUtils.checkGlError(getClass().getName() + ": render() end");
     }
