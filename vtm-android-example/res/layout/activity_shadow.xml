@@ -12,15 +12,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#cc000000"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <SeekBar
             android:id="@+id/seekBarShadow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:padding="10dp"
             android:progress="400"
             android:max="2000" />
+
+        <ToggleButton
+            android:id="@+id/toggleCurrentSun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:onClick="onToggleCurrentSun"
+            android:textOn="Now" />
 
     </LinearLayout>
 

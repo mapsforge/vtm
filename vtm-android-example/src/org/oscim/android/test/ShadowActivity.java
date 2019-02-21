@@ -15,9 +15,12 @@
 package org.oscim.android.test;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.SeekBar;
+import android.widget.ToggleButton;
 
 import org.oscim.layers.tile.buildings.BuildingLayer;
+import org.oscim.renderer.ExtrusionRenderer;
 import org.oscim.renderer.light.Sun;
 
 public class ShadowActivity extends SimpleMapActivity implements SeekBar.OnSeekBarChangeListener {
@@ -26,11 +29,14 @@ public class ShadowActivity extends SimpleMapActivity implements SeekBar.OnSeekB
         super(R.layout.activity_shadow);
     }
 
+    private SeekBar mSeekBar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         BuildingLayer.SHADOW = true;
         super.onCreate(savedInstanceState);
-        ((SeekBar) findViewById(R.id.seekBarShadow)).setOnSeekBarChangeListener(this);
+        mSeekBar = findViewById(R.id.seekBarShadow);
+        mSeekBar.setOnSeekBarChangeListener(this);
     }
 
     @Override
@@ -60,5 +66,15 @@ public class ShadowActivity extends SimpleMapActivity implements SeekBar.OnSeekB
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    public void onToggleCurrentSun(View view) {
+        boolean isCurrentSun = ((ToggleButton) view).isChecked();
+        mSeekBar.setEnabled(!isCurrentSun);
+        ExtrusionRenderer extrusionRenderer = mBuildingLayer.getExtrusionRenderer();
+        extrusionRenderer.enableCurrentSunPos(isCurrentSun);
+        extrusionRenderer.getSun().update();
+        mSeekBar.setProgress((int) (extrusionRenderer.getSun().getProgress() * 1000));
+        mMap.updateMap(true);
     }
 }
