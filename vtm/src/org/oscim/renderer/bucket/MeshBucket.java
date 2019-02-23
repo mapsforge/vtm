@@ -212,7 +212,7 @@ public class MeshBucket extends RenderBucket {
                     int c = (ml.area == null) ? Color.BLUE : ml.area.color;
                     gl.lineWidth(1);
                     //c = ColorUtil.shiftHue(c, 0.5);
-                    c = ColorUtil.modHsv(c, 1.1, 1.0, 0.8, true);
+                    c = ColorUtil.modHsv(c, 0.1, 1.0, 0.8, true);
                     GLUtils.setColor(s.uColor, c, 1);
                     gl.drawElements(GL.LINES,
                             ml.numIndices,

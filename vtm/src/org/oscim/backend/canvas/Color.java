@@ -24,11 +24,17 @@ import org.oscim.utils.FastMath;
 public final class Color {
 
     public static class HSV {
-        public float hue;
-        public float saturation;
-        public float value;
+        public double hue;
+        public double saturation;
+        public double value;
 
-        public HSV(float hue, float saturation, float value) {
+        public HSV() {
+            hue = 0;
+            saturation = 1;
+            value = 1;
+        }
+
+        public HSV(double hue, double saturation, double value) {
             this.hue = hue;
             this.saturation = saturation;
             this.value = value;
