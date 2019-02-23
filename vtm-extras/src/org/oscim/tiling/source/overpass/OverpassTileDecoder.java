@@ -212,6 +212,8 @@ public class OverpassTileDecoder implements ITileDecoder {
                     case "nnw":
                         tag.value = "337";
                         break;
+                    default:
+                        tag.value = "0";
                 }
             }
         }
