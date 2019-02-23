@@ -77,8 +77,10 @@ public class ColorTest {
 
             Desktop.getDesktop().browse(tempFile.toURI());
 
-            System.in.read();
+            Thread.sleep(2000);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
