@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.oscim.backend.canvas.Color.b;
+import static org.oscim.backend.canvas.Color.g;
+import static org.oscim.backend.canvas.Color.r;
+
 public class ColorTest {
 
     // See: https://en.wikipedia.org/wiki/ANSI_escape_code
@@ -18,10 +22,18 @@ public class ColorTest {
     public static final String ANSI_PREFIX_BACKGROUND_24Bit = "\033[48;2;";
     public static final String ANSI_PREFIX_FOREGROUND_24Bit = "\033[38;2;";
 
-    public static final boolean DISPLAY_IN_BROWSER = false;
-
     @Test
     public void testColorHSV() {
+        List<Integer> colors = initHSVTest();
+        for (int color : colors) {
+            // Try to display them in terminal (Intellij not supports 24 bit colors)
+            System.out.println(ANSI_PREFIX_BACKGROUND_24Bit + Color.r(color) + ";" + Color.g(color) + ";" + Color.b(color) + "m "
+                    + Color.toString(color) + "\t" + (new Color.HSV(ColorUtil.rgbToHsv(r(color), g(color), b(color)))).toString()
+                    + ANSI_RESET);
+        }
+    }
+
+    public List<Integer> initHSVTest() {
         List<Integer> colors = new ArrayList<>();
         int color;
 
@@ -52,42 +64,42 @@ public class ColorTest {
         colors.add(color);
         colors.add(ColorUtil.modHsv(color, 0f, 1f, 1.5f, false));
 
-        printColors(colors);
+        return colors;
     }
 
-    private void printColors(List<Integer> colors) {
+    private void displayHSVColorsInBrowser(List<Integer> colors) {
+        try {
+            File tempFile;
+            tempFile = File.createTempFile("test-color-", ".html");
+            tempFile.deleteOnExit();
+            StringBuilder builder = new StringBuilder("<html>");
 
-        for (int color : colors) {
-            // Try to display them in terminal (Intellij not supports 24 bit colors)
-            System.out.println(ANSI_PREFIX_BACKGROUND_24Bit + Color.r(color) + ";" + Color.g(color) + ";" + Color.b(color) + "m " + Integer.toString(color) + ANSI_RESET);
-        }
-
-        if (DISPLAY_IN_BROWSER) {
-            try {
-                File tempFile;
-                tempFile = File.createTempFile("test-color-", ".html");
-                tempFile.deleteOnExit();
-                StringBuilder builder = new StringBuilder("<html>");
-
-                for (int color : colors) {
-                    builder.append(String.format("<div style=\"background:rgb(%s,%s,%s);\">", Color.r(color), Color.g(color), Color.b(color)));
-                    builder.append(Color.toString(color));
-                    builder.append("</div>");
-                }
-                builder.append("</html>");
-
-                BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-                writer.write(builder.toString());
-                writer.close();
-
-                Desktop.getDesktop().browse(tempFile.toURI());
-
-                Thread.sleep(2000);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            for (int color : colors) {
+                builder.append(String.format("<div><pre style=\"background:rgb(%s,%s,%s);margin:0;\">", Color.r(color), Color.g(color), Color.b(color)));
+                builder.append(Color.toString(color));
+                builder.append("\t");
+                builder.append((new Color.HSV(ColorUtil.rgbToHsv(r(color), g(color), b(color)))).toString());
+                builder.append("</pre></div>");
             }
+            builder.append("</html>");
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+            writer.write(builder.toString());
+            writer.close();
+
+            Desktop.getDesktop().browse(tempFile.toURI());
+
+            Thread.sleep(2000);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        ColorTest test = new ColorTest();
+        List<Integer> colors = test.initHSVTest();
+        test.displayHSVColorsInBrowser(colors);
     }
 }

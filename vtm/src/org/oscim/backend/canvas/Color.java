@@ -20,6 +20,10 @@ package org.oscim.backend.canvas;
 
 import org.oscim.utils.ColorUtil;
 import org.oscim.utils.FastMath;
+import org.oscim.utils.math.Vec3;
+
+import java.text.DecimalFormat;
+import java.util.Locale;
 
 public final class Color {
 
@@ -34,6 +38,12 @@ public final class Color {
             value = 1;
         }
 
+        public HSV(Vec3 hsv) {
+            hue = hsv.x;
+            saturation = hsv.y;
+            value = hsv.z;
+        }
+
         public HSV(double hue, double saturation, double value) {
             this.hue = hue;
             this.saturation = saturation;
@@ -42,6 +52,12 @@ public final class Color {
 
         public int mod(int color, boolean relativ) {
             return ColorUtil.modHsv(color, hue, saturation, value, relativ);
+        }
+
+        @Override
+        public String toString() {
+            DecimalFormat df = new DecimalFormat("0.00");
+            return "HSV: " + df.format(hue) + ", " + df.format(saturation) + ", " + df.format(value);
         }
     }
 
@@ -286,7 +302,7 @@ public final class Color {
     }
 
     public static String toString(int color) {
-        return "RGB: " + Color.r(color) + ", " + Color.g(color) + ", " + Color.b(color);
+        return String.format(Locale.getDefault(), "RGB: %3d, %3d, %3d", Color.r(color), Color.g(color), Color.b(color));
     }
 
     private Color() {
