@@ -22,9 +22,6 @@ import org.oscim.utils.ColorUtil;
 import org.oscim.utils.FastMath;
 import org.oscim.utils.math.Vec3;
 
-import java.text.DecimalFormat;
-import java.util.Locale;
-
 public final class Color {
 
     public static class HSV {
@@ -56,8 +53,7 @@ public final class Color {
 
         @Override
         public String toString() {
-            DecimalFormat df = new DecimalFormat("0.00");
-            return "HSV: " + df.format(hue) + ", " + df.format(saturation) + ", " + df.format(value);
+            return "HSV: " + hue + ", " + saturation + ", " + value;
         }
     }
 
@@ -302,7 +298,7 @@ public final class Color {
     }
 
     public static String toString(int color) {
-        return String.format(Locale.getDefault(), "RGB: %3d, %3d, %3d", Color.r(color), Color.g(color), Color.b(color));
+        return "HSV: " + Color.r(color) + ", " + Color.g(color) + ", " + Color.b(color);
     }
 
     private Color() {
