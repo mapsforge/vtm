@@ -63,19 +63,27 @@ public class ColorUtil {
     }
 
     /**
-     * @param hue        the hue
+     * @param hue        the hue from 0 to 1 (exclusive)
+     *                   0: no color shift
+     *                   0.5: opposite hue
      * @param saturation the saturation
-     * @param value      the lightness (usual a range from 0 to 2)
+     *                   0 to 1: desaturate
+     *                   1 to 2: saturate
+     * @param value      the lightness
+     *                   0 to 1: darken
+     *                   1 to 2: lighten
      * @param relative   indicate if colors are modified relative to their values
      *                   (e.g black not changes if relative)
      */
     public static synchronized int modHsv(int color, double hue, double saturation, double value,
                                           boolean relative) {
         Vec3 hsl = TMP_VEC;
+        if (saturation == 1 && value == 1 && (hue == 0 || hue == 1)) return color;
         rgbToHsv(r(color), g(color), b(color), hsl);
-        return hsvToRgb(clamp(hue * hsl.x, 0, 1),
-                clamp(saturation * hsl.y, 0, 1),
-                clamp(relative || (value - 1) < 0 ? value * hsl.z :
+        return hsvToRgb(clamp((hue + hsl.x) % 1, 0, 1),
+                clamp(relative || saturation <= 1 ? saturation * hsl.y :
+                        hsl.y + (saturation - 1) * (1 - hsl.y), 0, 1),
+                clamp(relative || value <= 1 ? value * hsl.z :
                         hsl.z + (value - 1) * (1 - hsl.z), 0, 1));
     }
 

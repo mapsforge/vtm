@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -18,9 +18,26 @@
 
 package org.oscim.backend.canvas;
 
+import org.oscim.utils.ColorUtil;
 import org.oscim.utils.FastMath;
 
 public final class Color {
+
+    public static class HSV {
+        public float hue;
+        public float saturation;
+        public float value;
+
+        public HSV(float hue, float saturation, float value) {
+            this.hue = hue;
+            this.saturation = saturation;
+            this.value = value;
+        }
+
+        public int mod(int color, boolean relativ) {
+            return ColorUtil.modHsv(color, hue, saturation, value, relativ);
+        }
+    }
 
     private static final int OPAQUE = 0xff000000;
 
@@ -260,6 +277,10 @@ public final class Color {
 
     public static boolean isOpaque(int color) {
         return (color & OPAQUE) == OPAQUE;
+    }
+
+    public static String toString(int color) {
+        return "RGB: " + Color.r(color) + ", " + Color.g(color) + ", " + Color.b(color);
     }
 
     private Color() {
