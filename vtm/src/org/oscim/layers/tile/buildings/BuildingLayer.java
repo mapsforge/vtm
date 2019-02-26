@@ -275,10 +275,29 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
     protected String getKeyOrDefault(String key) {
         if (mRenderTheme == null)
             return key;
-        String res = mRenderTheme.transformKey(key);
-        return res != null ? res : key;
+        List<String> res = mRenderTheme.retransformKey(key);
+        return res != null ? res.get(0) : key;
     }
 
+    /**
+     * @param key the key to be retransformed.
+     * @return the transformed value of retransformed key.
+     */
+    protected String getTransformedValue(MapElement element, String key) {
+        if (mRenderTheme == null)
+            return element.tags.getValue(key);
+        key = getKeyOrDefault(key);
+        Tag res = mRenderTheme.transformTag(element.tags.get(key));
+        if (res == null) {
+            return element.tags.getValue(key);
+        }
+        return res.value;
+    }
+
+    /**
+     * @param key the key to be retransformed.
+     * @return the value of retransformed key.
+     */
     protected String getValue(MapElement element, String key) {
         return element.tags.getValue(getKeyOrDefault(key));
     }

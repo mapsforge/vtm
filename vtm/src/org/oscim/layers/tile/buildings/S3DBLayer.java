@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  * Copyright 2018-2019 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -158,9 +158,9 @@ public class S3DBLayer extends BuildingLayer {
         // Get building color
         Integer bColor = null;
         if (mColored) {
-            if ((v = getValue(element, Tag.KEY_BUILDING_COLOR)) != null) {
+            if ((v = getTransformedValue(element, Tag.KEY_BUILDING_COLOR)) != null) {
                 bColor = S3DBUtils.getColor(v, false, false);
-            } else if ((v = getValue(element, Tag.KEY_BUILDING_MATERIAL)) != null) {
+            } else if ((v = getTransformedValue(element, Tag.KEY_BUILDING_MATERIAL)) != null) {
                 bColor = S3DBUtils.getMaterialColor(v, false);
             }
         }
@@ -261,10 +261,10 @@ public class S3DBLayer extends BuildingLayer {
         String v;
 
         if (mColored) {
-            v = getValue(element, Tag.KEY_ROOF_COLOR);
+            v = getTransformedValue(element, Tag.KEY_ROOF_COLOR);
             if (v != null)
                 roofColor = S3DBUtils.getColor(v, true, false);
-            else if ((v = getValue(element, Tag.KEY_ROOF_MATERIAL)) != null)
+            else if ((v = getTransformedValue(element, Tag.KEY_ROOF_MATERIAL)) != null)
                 roofColor = S3DBUtils.getMaterialColor(v, true);
         }
 

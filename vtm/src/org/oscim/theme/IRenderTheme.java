@@ -2,7 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2017 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -23,6 +23,8 @@ import org.oscim.core.GeometryBuffer.GeometryType;
 import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 import org.oscim.theme.styles.RenderStyle;
+
+import java.util.List;
 
 public interface IRenderTheme {
 
@@ -71,9 +73,19 @@ public interface IRenderTheme {
     String transformKey(String key);
 
     /**
+     * @return the retransformed tag keys of this RenderTheme.
+     */
+    List<String> retransformKey(String key);
+
+    /**
      * @return the transformed tag of this RenderTheme.
      */
     Tag transformTag(Tag tag);
+
+    /**
+     * @return the retransformed tags of this RenderTheme.
+     */
+    List<Tag> retransformTag(Tag tag);
 
     class ThemeException extends IllegalArgumentException {
         public ThemeException(String string) {

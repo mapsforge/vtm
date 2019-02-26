@@ -4,7 +4,7 @@
  * Copyright 2016-2018 devemux86
  * Copyright 2016-2017 Longri
  * Copyright 2016 Andrey Novikov
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  * Copyright 2018 Izumi Kawashima
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -1299,9 +1299,9 @@ public class XmlThemeBuilder extends DefaultHandler {
         }
 
         if (v == null && matchValue == null) {
-            mTransformKeyMap.put(matchKey, k);
+            mTransformKeyMap.put(k, matchKey);
         } else {
-            mTransformTagMap.put(new Tag(matchKey, matchValue), new Tag(k, v));
+            mTransformTagMap.put(new Tag(k, v), new Tag(matchKey, matchValue));
         }
     }
 

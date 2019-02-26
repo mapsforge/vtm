@@ -9,6 +9,8 @@ import org.oscim.theme.styles.AreaStyle;
 import org.oscim.theme.styles.LineStyle;
 import org.oscim.theme.styles.RenderStyle;
 
+import java.util.List;
+
 public class DebugTheme implements IRenderTheme {
 
     private static final LineStyle[] line = {new LineStyle(1, Color.MAGENTA, 2)};
@@ -53,7 +55,17 @@ public class DebugTheme implements IRenderTheme {
     }
 
     @Override
+    public List<String> retransformKey(String key) {
+        return null;
+    }
+
+    @Override
     public Tag transformTag(Tag tag) {
+        return null;
+    }
+
+    @Override
+    public List<Tag> retransformTag(Tag tag) {
         return null;
     }
 

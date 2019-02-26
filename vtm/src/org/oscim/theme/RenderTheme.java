@@ -2,7 +2,7 @@
  * Copyright 2014 Hannes Janetzek
  * Copyright 2017 Longri
  * Copyright 2017 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -26,6 +26,7 @@ import org.oscim.theme.rule.Rule;
 import org.oscim.theme.rule.Rule.Element;
 import org.oscim.theme.rule.Rule.RuleVisitor;
 import org.oscim.theme.styles.RenderStyle;
+import org.oscim.utils.ArrayUtils;
 import org.oscim.utils.LRUCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -299,9 +300,24 @@ public class RenderTheme implements IRenderTheme {
     }
 
     @Override
+    public List<String> retransformKey(String key) {
+        if (mTransformKeyMap != null)
+            return ArrayUtils.getKeysByValue(mTransformKeyMap, key);
+        return null;
+    }
+
+    @Override
     public Tag transformTag(Tag tag) {
         if (mTransformTagMap != null)
             return mTransformTagMap.get(tag);
+        return null;
+    }
+
+    @Override
+    public List<Tag> retransformTag(Tag tag) {
+        if (mTransformTagMap != null) {
+            return ArrayUtils.getKeysByValue(mTransformTagMap, tag);
+        }
         return null;
     }
 

@@ -17,7 +17,30 @@
  */
 package org.oscim.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class ArrayUtils {
+
+    /**
+     * @return List with at least one element, else null
+     * TODO Improvable in Java 8
+     */
+    public static <K, V> List<K> getKeysByValue(Map<K, V> map, V value) {
+        List<K> keys = null;
+
+        if (map.containsValue(value)) {
+            keys = new ArrayList<>();
+
+            for (Map.Entry<K, V> entry : map.entrySet()) {
+                if (entry.getValue().equals(value)) {
+                    keys.add(entry.getKey());
+                }
+            }
+        }
+        return keys;
+    }
 
     public static <T> void reverse(T[] data) {
         reverse(data, 0, data.length);

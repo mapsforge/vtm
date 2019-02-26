@@ -17,6 +17,7 @@ import org.oscim.theme.styles.RenderStyle;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.System.out;
@@ -257,7 +258,17 @@ public class RenderTheme implements IRenderTheme {
     }
 
     @Override
+    public List<String> retransformKey(String key) {
+        return null;
+    }
+
+    @Override
     public Tag transformTag(Tag tag) {
+        return null;
+    }
+
+    @Override
+    public List<Tag> retransformTag(Tag tag) {
         return null;
     }
 
