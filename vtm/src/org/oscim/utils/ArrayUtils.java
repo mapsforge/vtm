@@ -17,6 +17,9 @@
  */
 package org.oscim.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ArrayUtils {
 
     public static <T> void reverse(T[] data) {
@@ -187,6 +190,16 @@ public class ArrayUtils {
         }
 
         return neg ? -val : val;
+    }
+
+    /**
+     * @return the HashMap with swapped keys and values
+     */
+    public static <K, V> HashMap<V, K> swap(Map<K, V> map) {
+        HashMap<V, K> swap = new HashMap<>();
+        for (Map.Entry<K, V> entry : map.entrySet())
+            swap.put(entry.getValue(), entry.getKey());
+        return swap;
     }
 
     public static boolean withinRange(float[] vec, float min, float max) {

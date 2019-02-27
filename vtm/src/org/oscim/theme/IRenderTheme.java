@@ -2,7 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2017 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -66,9 +66,9 @@ public interface IRenderTheme {
     void scaleTextSize(float scaleFactor);
 
     /**
-     * @return the transformed tag key of this RenderTheme.
+     * @return the retransformed tag key of this RenderTheme.
      */
-    String transformKey(String key);
+    String retransformKey(String key);
 
     /**
      * @return the transformed tag of this RenderTheme.

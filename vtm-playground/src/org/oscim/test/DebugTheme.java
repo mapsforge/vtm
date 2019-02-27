@@ -48,7 +48,7 @@ public class DebugTheme implements IRenderTheme {
     }
 
     @Override
-    public String transformKey(String key) {
+    public String retransformKey(String key) {
         return null;
     }
 

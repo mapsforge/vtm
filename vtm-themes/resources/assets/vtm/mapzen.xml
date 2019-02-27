@@ -3,16 +3,16 @@
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
-    <!--<tag-transform match-k="building" match-v="yes" output-k="kind" output-v="building" />-->
-    <!--<tag-transform match-k="building:part" match-v="yes" output-k="kind" output-v="building_part" />-->
-    <tag-transform match-k="ref" output-k="root_id" />
+    <!--<tag-transform k="kind" v="building" output-k="building" output-v="yes" />-->
+    <!--<tag-transform k="kind" v="building_part" output-k="building:part" output-v="yes" />-->
+    <tag-transform k="root_id" output-k="ref" />
 
-    <tag-transform match-k="roof:colour" output-k="roof_color" />
-    <tag-transform match-k="roof:direction" output-k="roof_direction" />
-    <tag-transform match-k="roof:height" output-k="roof_height" />
-    <tag-transform match-k="roof:material" output-k="roof_material" />
-    <tag-transform match-k="roof:orientation" output-k="roof_orientation" />
-    <tag-transform match-k="roof:shape" output-k="roof_shape" />
+    <tag-transform k="roof_color" output-k="roof:colour" />
+    <tag-transform k="roof_direction" output-k="roof:direction" />
+    <tag-transform k="roof_height" output-k="roof:height" />
+    <tag-transform k="roof_material" output-k="roof:material" />
+    <tag-transform k="roof_orientation" output-k="roof:orientation" />
+    <tag-transform k="roof_shape" output-k="roof:shape" />
 
     <!-- base style for fixed width lines -->
     <style-line cap="butt" fix="true" id="fix" width="1.0" />

@@ -252,7 +252,7 @@ public class RenderTheme implements IRenderTheme {
     }
 
     @Override
-    public String transformKey(String key) {
+    public String retransformKey(String key) {
         return null;
     }
 

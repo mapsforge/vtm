@@ -4,7 +4,7 @@
  * Copyright 2016-2019 devemux86
  * Copyright 2016-2017 Longri
  * Copyright 2016 Andrey Novikov
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  * Copyright 2018 Izumi Kawashima
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -1276,10 +1276,10 @@ public class XmlThemeBuilder extends DefaultHandler {
             String value = attributes.getValue(i);
 
             switch (name) {
-                case "match-k":
+                case "k":
                     matchKey = value;
                     break;
-                case "match-v":
+                case "v":
                     matchValue = value;
                     break;
                 case "output-k":

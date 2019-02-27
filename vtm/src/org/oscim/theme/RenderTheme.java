@@ -2,7 +2,7 @@
  * Copyright 2014 Hannes Janetzek
  * Copyright 2017 Longri
  * Copyright 2017 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -26,6 +26,7 @@ import org.oscim.theme.rule.Rule;
 import org.oscim.theme.rule.Rule.Element;
 import org.oscim.theme.rule.Rule.RuleVisitor;
 import org.oscim.theme.styles.RenderStyle;
+import org.oscim.utils.ArrayUtils;
 import org.oscim.utils.LRUCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class RenderTheme implements IRenderTheme {
     private final Rule[] mRules;
     private final boolean mMapsforgeTheme;
 
-    private final Map<String, String> mTransformKeyMap;
+    private final Map<String, String> mRetransformKeyMap;
     private final Map<Tag, Tag> mTransformTagMap;
 
     class RenderStyleCache {
@@ -105,7 +106,7 @@ public class RenderTheme implements IRenderTheme {
         mRules = rules;
         mMapsforgeTheme = mapsforgeTheme;
 
-        mTransformKeyMap = transformKeyMap;
+        mRetransformKeyMap = ArrayUtils.swap(transformKeyMap);
         mTransformTagMap = transformTagMap;
 
         mStyleCache = new RenderStyleCache[3];
@@ -292,9 +293,9 @@ public class RenderTheme implements IRenderTheme {
     }
 
     @Override
-    public String transformKey(String key) {
-        if (mTransformKeyMap != null)
-            return mTransformKeyMap.get(key);
+    public String retransformKey(String key) {
+        if (mRetransformKeyMap != null)
+            return mRetransformKeyMap.get(key);
         return null;
     }
 
