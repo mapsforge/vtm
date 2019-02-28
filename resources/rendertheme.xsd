@@ -305,8 +305,8 @@
     <xs:complexType name="tag-transform">
         <xs:attribute name="k" type="xs:string" use="required" />
         <xs:attribute name="v" type="xs:string" use="optional" />
-        <xs:attribute name="output-k" type="xs:string" use="required" />
-        <xs:attribute name="output-v" type="xs:string" use="optional" />
+        <xs:attribute name="k-internal" type="xs:string" use="required" />
+        <xs:attribute name="v-internal" type="xs:string" use="optional" />
     </xs:complexType>
 
     <!-- rendertheme element -->

@@ -66,14 +66,35 @@ public interface IRenderTheme {
     void scaleTextSize(float scaleFactor);
 
     /**
-     * @return the backwards transformed tag key.
+     * Used to transform tile source key to internal key.
+     *
+     * @return the forwards transformed tag key.
      */
-    String transformKeyBackward(String key);
+    String transformForwardKey(String key);
 
     /**
+     * Used to transform internal key to tile source key.
+     * E.g. for lazy fetch needed tag values via tile source key.
+     * Only use when tile source key and internal key have a 1 to 1 relation.
+     *
+     * @return the backwards transformed tag key.
+     */
+    String transformBackwardKey(String key);
+
+    /**
+     * Used to transform tile source tag to internal tag.
+     *
      * @return the forwards transformed tag of this RenderTheme.
      */
-    Tag transformTagForward(Tag tag);
+    Tag transformForwardTag(Tag tag);
+
+    /**
+     * Used to transform internal tag to tile source tag.
+     * Only use when tile source tag and internal tag have a 1 to 1 relation.
+     *
+     * @return the forwards transformed tag of this RenderTheme.
+     */
+    Tag transformBackwardTag(Tag tag);
 
     class ThemeException extends IllegalArgumentException {
         public ThemeException(String string) {

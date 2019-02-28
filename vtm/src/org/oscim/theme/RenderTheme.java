@@ -48,8 +48,10 @@ public class RenderTheme implements IRenderTheme {
     private final Rule[] mRules;
     private final boolean mMapsforgeTheme;
 
-    private final Map<String, String> mTransformKeyBackwardMap;
-    private final Map<Tag, Tag> mTransformTagForwardMap;
+    private final Map<String, String> mTransformForwardKeyMap;
+    private final Map<String, String> mTransformBackwardKeyMap;
+    private final Map<Tag, Tag> mTransformForwardTagMap;
+    private final Map<Tag, Tag> mTransformBackwardTagMap;
 
     class RenderStyleCache {
         final int matchType;
@@ -106,8 +108,10 @@ public class RenderTheme implements IRenderTheme {
         mRules = rules;
         mMapsforgeTheme = mapsforgeTheme;
 
-        mTransformKeyBackwardMap = ArrayUtils.swap(transformKeyMap);
-        mTransformTagForwardMap = transformTagMap;
+        mTransformForwardKeyMap = transformKeyMap;
+        mTransformBackwardKeyMap = ArrayUtils.swap(transformKeyMap);
+        mTransformForwardTagMap = transformTagMap;
+        mTransformBackwardTagMap = ArrayUtils.swap(transformTagMap);
 
         mStyleCache = new RenderStyleCache[3];
         mStyleCache[0] = new RenderStyleCache(Element.NODE);
@@ -293,16 +297,30 @@ public class RenderTheme implements IRenderTheme {
     }
 
     @Override
-    public String transformKeyBackward(String key) {
-        if (mTransformKeyBackwardMap != null)
-            return mTransformKeyBackwardMap.get(key);
+    public String transformForwardKey(String key) {
+        if (mTransformForwardKeyMap != null)
+            return mTransformForwardKeyMap.get(key);
         return null;
     }
 
     @Override
-    public Tag transformTagForward(Tag tag) {
-        if (mTransformTagForwardMap != null)
-            return mTransformTagForwardMap.get(tag);
+    public String transformBackwardKey(String key) {
+        if (mTransformBackwardKeyMap != null)
+            return mTransformBackwardKeyMap.get(key);
+        return null;
+    }
+
+    @Override
+    public Tag transformForwardTag(Tag tag) {
+        if (mTransformForwardTagMap != null)
+            return mTransformForwardTagMap.get(tag);
+        return null;
+    }
+
+    @Override
+    public Tag transformBackwardTag(Tag tag) {
+        if (mTransformBackwardTagMap != null)
+            return mTransformBackwardTagMap.get(tag);
         return null;
     }
 

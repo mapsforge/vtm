@@ -196,6 +196,7 @@ public class ArrayUtils {
      * @return the HashMap with swapped keys and values
      */
     public static <K, V> HashMap<V, K> swap(Map<K, V> map) {
+        if (map == null) return null;
         HashMap<V, K> swap = new HashMap<>();
         for (Map.Entry<K, V> entry : map.entrySet())
             swap.put(entry.getValue(), entry.getKey());
