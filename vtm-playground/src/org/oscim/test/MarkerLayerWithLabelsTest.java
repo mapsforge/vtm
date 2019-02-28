@@ -44,7 +44,7 @@ public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLaye
 
    ItemizedLayer<MarkerItem> mMarkerLayer;
    private int _fgColor = 0xFF000000; // 100 percent black. AARRGGBB
-   private int _bgColor = 0x8000FF00; // 50 percent green. AARRGGBB
+   private int _bgColor = 0x80FF69B4; // 50 percent pink. AARRGGBB
 
    @Override
    public void createLayers() {
@@ -63,7 +63,7 @@ public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLaye
         // goto berlin
            mMap.setMapPosition(52.513452, 13.363791, 1 << 13);
            
-        // red dot
+        // pink dot
            Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
            MarkerSymbol symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.CENTER, false);
 
@@ -73,7 +73,7 @@ public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLaye
            //creating some poi's
            List<MarkerItem> pts = new ArrayList<>();
            pts.add(new MarkerItem("Brandenburger Tor", "#1789-1793", new GeoPoint(52.516275, 13.377704)));
-           pts.add(new MarkerItem("Siegessäule, hidden description", "this is a hidden Description without a #", new GeoPoint(52.514543, 13.350119)));
+           pts.add(new MarkerItem("Siegessaeule, hidden description", "this is a hidden Description without a #", new GeoPoint(52.514543, 13.350119)));
            pts.add(new MarkerItem("Gleisdreieck, without description", "", new GeoPoint(52.499562, 13.374063)));
            pts.add(new MarkerItem("Potsdamer Platz", "#this is multiline description\n"
                  + "demonstrating that only\n"
