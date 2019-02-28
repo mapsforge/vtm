@@ -66,14 +66,14 @@ public interface IRenderTheme {
     void scaleTextSize(float scaleFactor);
 
     /**
-     * @return the retransformed tag key of this RenderTheme.
+     * @return the backwards transformed tag key.
      */
-    String retransformKey(String key);
+    String transformKeyBackward(String key);
 
     /**
-     * @return the transformed tag of this RenderTheme.
+     * @return the forwards transformed tag of this RenderTheme.
      */
-    Tag transformTag(Tag tag);
+    Tag transformTagForward(Tag tag);
 
     class ThemeException extends IllegalArgumentException {
         public ThemeException(String string) {

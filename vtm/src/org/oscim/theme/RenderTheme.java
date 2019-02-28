@@ -48,8 +48,8 @@ public class RenderTheme implements IRenderTheme {
     private final Rule[] mRules;
     private final boolean mMapsforgeTheme;
 
-    private final Map<String, String> mRetransformKeyMap;
-    private final Map<Tag, Tag> mTransformTagMap;
+    private final Map<String, String> mTransformKeyBackwardMap;
+    private final Map<Tag, Tag> mTransformTagForwardMap;
 
     class RenderStyleCache {
         final int matchType;
@@ -106,8 +106,8 @@ public class RenderTheme implements IRenderTheme {
         mRules = rules;
         mMapsforgeTheme = mapsforgeTheme;
 
-        mRetransformKeyMap = ArrayUtils.swap(transformKeyMap);
-        mTransformTagMap = transformTagMap;
+        mTransformKeyBackwardMap = ArrayUtils.swap(transformKeyMap);
+        mTransformTagForwardMap = transformTagMap;
 
         mStyleCache = new RenderStyleCache[3];
         mStyleCache[0] = new RenderStyleCache(Element.NODE);
@@ -293,16 +293,16 @@ public class RenderTheme implements IRenderTheme {
     }
 
     @Override
-    public String retransformKey(String key) {
-        if (mRetransformKeyMap != null)
-            return mRetransformKeyMap.get(key);
+    public String transformKeyBackward(String key) {
+        if (mTransformKeyBackwardMap != null)
+            return mTransformKeyBackwardMap.get(key);
         return null;
     }
 
     @Override
-    public Tag transformTag(Tag tag) {
-        if (mTransformTagMap != null)
-            return mTransformTagMap.get(tag);
+    public Tag transformTagForward(Tag tag) {
+        if (mTransformTagForwardMap != null)
+            return mTransformTagForwardMap.get(tag);
         return null;
     }
 

@@ -66,7 +66,7 @@ public class MapElement extends GeometryBuffer {
      * @return height in meters, if present
      */
     public Float getHeight(IRenderTheme theme) {
-        String res = theme != null ? theme.retransformKey(Tag.KEY_HEIGHT) : Tag.KEY_HEIGHT;
+        String res = theme != null ? theme.transformKeyBackward(Tag.KEY_HEIGHT) : Tag.KEY_HEIGHT;
         String v = tags.getValue(res != null ? res : Tag.KEY_HEIGHT);
         if (v != null)
             return Float.parseFloat(v);
@@ -77,7 +77,7 @@ public class MapElement extends GeometryBuffer {
      * @return minimum height in meters, if present
      */
     public Float getMinHeight(IRenderTheme theme) {
-        String res = theme != null ? theme.retransformKey(Tag.KEY_MIN_HEIGHT) : Tag.KEY_MIN_HEIGHT;
+        String res = theme != null ? theme.transformKeyBackward(Tag.KEY_MIN_HEIGHT) : Tag.KEY_MIN_HEIGHT;
         String v = tags.getValue(res != null ? res : Tag.KEY_MIN_HEIGHT);
         if (v != null)
             return Float.parseFloat(v);
