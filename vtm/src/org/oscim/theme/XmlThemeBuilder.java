@@ -1282,10 +1282,10 @@ public class XmlThemeBuilder extends DefaultHandler {
                 case "v":
                     matchValue = value;
                     break;
-                case "k-internal":
+                case "k-lib":
                     outputKey = value;
                     break;
-                case "v-internal":
+                case "v-lib":
                     outputValue = value;
                     break;
                 default:

@@ -3,10 +3,10 @@
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
-    <tag-transform k="render_height" k-internal="height" />
-    <tag-transform k="render_min_height" k-internal="min_height" />
-    <!--<tag-transform k="layer" v="building" k-internal="building" v-internal="yes" />-->
-    <!--<tag-transform k="layer" v="building:part" k-internal="building:part" v-internal="yes" />-->
+    <tag-transform k="render_height" k-lib="height" />
+    <tag-transform k="render_min_height" k-lib="min_height" />
+    <!--<tag-transform k="layer" v="building" k-lib="building" v-lib="yes" />-->
+    <!--<tag-transform k="layer" v="building:part" k-lib="building:part" v-lib="yes" />-->
 
     <!--###### TEXT styles ######-->
 
