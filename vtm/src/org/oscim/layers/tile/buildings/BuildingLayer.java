@@ -270,6 +270,9 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
         return mExtrusionRenderer;
     }
 
+    /**
+     * @return the tile source tag key or library tag key as fallback
+     */
     protected String getKeyOrDefault(String key) {
         if (mTileLayer.getTheme() == null)
             return key;
@@ -277,6 +280,31 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
         return res != null ? res : key;
     }
 
+    /**
+     * Get the forward transformed value from tile source tag via the library tag key.
+     *
+     * @param key the library tag key
+     * @return the tile source tag value transformed to library tag value
+     */
+    protected String getTransformedValue(MapElement element, String key) {
+        if (mTileLayer.getTheme() == null)
+            return element.tags.getValue(key);
+        key = getKeyOrDefault(key);
+        Tag res = element.tags.get(key);
+        if (res == null) return null;
+        res = mTileLayer.getTheme().transformForwardTag(res);
+        if (res == null) {
+            return element.tags.getValue(key);
+        }
+        return res.value;
+    }
+
+    /**
+     * Get the tile source tag value via the library tag key.
+     *
+     * @param key the library tag key
+     * @return the tile source tag value of specified library tag key
+     */
     protected String getValue(MapElement element, String key) {
         return element.tags.getValue(getKeyOrDefault(key));
     }
