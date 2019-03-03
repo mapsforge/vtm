@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -106,6 +106,7 @@ public class GdxModelLayer extends Layer implements Map.UpdateListener {
                     model.nodes.removeIndex(0);
                     model.nodes.add(node);
                 }
+                node.scale.set(-1, 1, 1);
                 node.rotation.setFromAxis(1, 0, 0, 90);
             }
             poiModel.setModel(model);
