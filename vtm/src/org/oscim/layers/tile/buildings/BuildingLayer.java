@@ -289,14 +289,18 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
     protected String getTransformedValue(MapElement element, String key) {
         if (mTileLayer.getTheme() == null)
             return element.tags.getValue(key);
+        /* Get tile source key of specified lib key from theme or fall back to lib key */
         key = getKeyOrDefault(key);
-        Tag res = element.tags.get(key);
-        if (res == null) return null;
-        res = mTileLayer.getTheme().transformForwardTag(res);
-        if (res == null) {
-            return element.tags.getValue(key);
-        }
-        return res.value;
+        /* Get element tag with ts key, if existent */
+        Tag tsTag = element.tags.get(key);
+        if (tsTag == null)
+            return null;
+        /* transform ts tag to lib tag */
+        Tag libTag = mTileLayer.getTheme().transformForwardTag(tsTag);
+        if (libTag != null)
+            return libTag.value;
+        /* Use ts value, if transformation rule not exists */
+        return tsTag.value;
     }
 
     /**
