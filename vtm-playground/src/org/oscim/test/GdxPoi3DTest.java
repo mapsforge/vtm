@@ -66,11 +66,11 @@ public class GdxPoi3DTest extends GdxMapApp {
 
         mMap.layers().add(new LabelLayer(mMap, mMapLayer));
 
-//        MapPosition pos = MapPreferences.getMapPosition();
-//        if (pos != null)
-//            mMap.setMapPosition(pos);
-//        else
-            mMap.setMapPosition(53.53202, 10.02599, 1 << 15);
+        MapPosition pos = MapPreferences.getMapPosition();
+        if (pos != null)
+            mMap.setMapPosition(pos);
+        else
+            mMap.setMapPosition(53.1, 8.8, 1 << 15);
     }
 
     @Override
