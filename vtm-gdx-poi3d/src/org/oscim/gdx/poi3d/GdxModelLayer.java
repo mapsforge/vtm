@@ -67,8 +67,8 @@ public class GdxModelLayer extends Layer implements Map.UpdateListener {
         mAssets = new AssetManager();
     }
 
-    public ModelPosition addModel(VtmModels model, double lat, double lon, float rotation) {
-        return addModel(GdxAssets.getAssetPath(model.getPath()), lat, lon, rotation);
+    public ModelPosition addModel(VtmModels model, double lat, double lon, float rotation, float xRotation) {
+        return addModel(GdxAssets.getAssetPath(model.getPath()), lat, lon, rotation, xRotation);
     }
 
     /**
@@ -77,8 +77,8 @@ public class GdxModelLayer extends Layer implements Map.UpdateListener {
      * @return the models position, can be modified during rendering e.g. to make animations.
      * Don't forget to trigger map events (as it usually does if something changes).
      */
-    public ModelPosition addModel(String path, double lat, double lon, float rotation) {
-        ModelPosition pos = new ModelPosition(lat, lon, rotation);
+    public ModelPosition addModel(String path, double lat, double lon, float rotation, float xRotation) {
+        ModelPosition pos = new ModelPosition(lat, lon, rotation, xRotation);
 
         mScenes.put(pos, new ModelHolder(path));
 
@@ -155,6 +155,7 @@ public class GdxModelLayer extends Layer implements Map.UpdateListener {
                 inst.transform.scale(scale, scale, scale);
                 inst.transform.translate(dx / scale, dy / scale, 0);
                 inst.transform.rotate(0, 0, 1, p.getRotation());
+                inst.transform.rotate(1, 0, 0, p.getXRotation());
             }
         }
 

@@ -20,9 +20,10 @@ public class ModelPosition {
     public double x;
     public double y;
     public float rotation;
+    public float xRotation;
 
-    public ModelPosition(double lat, double lon, float rotation) {
-        setPosition(lat, lon, rotation);
+    public ModelPosition(double lat, double lon, float rotation, float xRotation) {
+        setPosition(lat, lon, rotation, xRotation);
     }
 
     public double getLat() {
@@ -37,9 +38,14 @@ public class ModelPosition {
         return rotation;
     }
 
-    public void setPosition(double lat, double lon, float rotation) {
+    public float getXRotation() {
+        return xRotation;
+    }
+
+    public void setPosition(double lat, double lon, float rotation, float xRotation) {
         this.y = MercatorProjection.latitudeToY(lat);
         this.x = MercatorProjection.longitudeToX(lon);
         this.rotation = rotation;
+        this.xRotation = xRotation;
     }
 }

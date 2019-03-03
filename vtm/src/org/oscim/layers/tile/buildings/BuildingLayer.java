@@ -19,8 +19,10 @@
  */
 package org.oscim.layers.tile.buildings;
 
+import org.oscim.core.GeoPoint;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tag;
+import org.oscim.core.Tile;
 import org.oscim.layers.Layer;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.ZoomLimiter;
@@ -42,6 +44,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.oscim.core.MercatorProjection.latitudeToY;
+import static org.oscim.core.MercatorProjection.longitudeToX;
 
 public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLimiter.IZoomLimiter {
 
@@ -77,6 +82,8 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
     private final ZoomLimiter mZoomLimiter;
 
     protected final VectorTileLayer mTileLayer;
+
+    public Set<GeoPoint> eraserPoints = new HashSet<>();
 
     class BuildingElement {
         MapElement element;
@@ -145,6 +152,33 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
             return false;
 
         ExtrusionStyle extrusion = (ExtrusionStyle) style.current();
+
+        boolean isErased = false;
+        if (element.isBuilding() || element.isBuildingPart()) {
+            double mTileScale = 1 << tile.zoomLevel;
+            double mTileX = tile.tileX / mTileScale;
+            double mTileY = tile.tileY / mTileScale;
+            for (GeoPoint gp : eraserPoints) {
+                double longitude = gp.getLongitude();
+                double latitude = gp.getLatitude();
+                double x = (longitudeToX(longitude) - mTileX) * mTileScale * Tile.SIZE;
+                double y = (latitudeToY(latitude) - mTileY) * mTileScale * Tile.SIZE;
+                isErased = GeometryUtils.pointInPoly((float) x, (float) y, element.points, element.index[0], 0);
+                if (isErased) {
+                    return true;
+                }
+            }
+
+            List<BuildingElement> buildingElements = mBuildings.get(tile.hashCode());
+            if (buildingElements == null) {
+                buildingElements = new ArrayList<>();
+                mBuildings.put(tile.hashCode(), buildingElements);
+            }
+
+            element = new MapElement(element); // Deep copy, because element will be cleared
+            buildingElements.add(new BuildingElement(element, extrusion));
+            return true;
+        }
 
         // Filter all building elements
         // TODO #TagFromTheme: load from theme or decode tags to generalize mapsforge tags

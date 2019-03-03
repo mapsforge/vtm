@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
+import org.oscim.core.GeoPoint;
 import org.oscim.core.GeometryBuffer.GeometryType;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tile;
@@ -133,12 +134,14 @@ public class GeoJsonTileDecoder implements ITileDecoder {
                 break;
         }
 
-        //add tag information
-        mTileSource.decodeTags(mMapElement, mTagMap);
-        if (mMapElement.tags.size() == 0)
-            return;
+        if(mTileSource != null) {
+            //add tag information
+            mTileSource.decodeTags(mMapElement, mTagMap);
+            if (mMapElement.tags.size() == 0)
+                return;
 
-        mTileSource.postGeomHook(mMapElement);
+            mTileSource.postGeomHook(mMapElement);
+        }
 
         if (mMapElement.type == GeometryType.NONE)
             return;
@@ -327,6 +330,7 @@ public class GeoJsonTileDecoder implements ITileDecoder {
         mMapElement.addPoint((float) ((longitudeToX(x) - mTileX) * mTileScale),
                 (float) ((latitudeToY(y) - mTileY) * mTileScale));
 
+        mMapElement.geoPoints.add(new GeoPoint(y,x));
     }
 
     private static final boolean match(JsonParser jp, char[] fieldName)

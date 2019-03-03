@@ -18,6 +18,8 @@ package org.oscim.tiling.source.geojson;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import com.google.gwt.core.client.JsArray;
+import org.oscim.core.GeoPoint;
 import org.oscim.core.GeometryBuffer.GeometryType;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tile;
@@ -66,9 +68,11 @@ public class GeoJsonTileDecoder implements ITileDecoder {
             mapElement.tags.clear();
 
             /* add tag information */
-            mTileSource.decodeTags(mapElement, f.getProperties(mProperties));
-            if (mapElement.tags.size() == 0)
-                continue;
+            if(mTileSource != null) {
+                mTileSource.decodeTags(mapElement, f.getProperties(mProperties));
+                if (mapElement.tags.size() == 0)
+                    continue;
+            }
 
             /* add geometry information */
             decodeGeometry(f.getGeometry());
@@ -101,6 +105,12 @@ public class GeoJsonTileDecoder implements ITileDecoder {
             MultiLineString ml = (MultiLineString) geometry.getCoordinates();
             for (int k = 0, n = ml.getNumGeometries(); k < n; k++)
                 decodeLineString(ml.getGeometryN(k));
+        } else if ("Point".equals(type)) {
+            JsArray points = geometry.getCoordinates();
+            double lon = Double.parseDouble(points.get(0).toString());
+            double lat = Double.parseDouble(points.get(1).toString());
+            mapElement.geoPoints.add(new GeoPoint(lat, lon));
+            mapElement.type = GeometryType.POINT;
         }
     }
 

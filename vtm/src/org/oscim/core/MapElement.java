@@ -21,6 +21,9 @@ package org.oscim.core;
 
 import org.oscim.theme.IRenderTheme;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The MapElement class is a reusable container for a geometry
  * with tags.
@@ -30,6 +33,8 @@ import org.oscim.theme.IRenderTheme;
  * so don't keep a reference to it when passed as parameter.
  */
 public class MapElement extends GeometryBuffer {
+
+    public List<GeoPoint> geoPoints = new ArrayList<>();
 
     public PointF labelPosition;
 
