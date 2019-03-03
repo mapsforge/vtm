@@ -24,7 +24,7 @@ sourceSets {
     }
 }
 
-mainClassName = "org.oscim.test.MapsforgeTest"
+mainClassName = "org.oscim.test.GdxPoi3DTest"
 run {
     if (project.hasProperty("args")) {
         args project.getProperty("args").split(",")
