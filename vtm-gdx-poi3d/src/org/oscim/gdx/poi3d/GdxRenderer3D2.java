@@ -116,8 +116,9 @@ public class GdxRenderer3D2 extends LayerRenderer {
         GLState.test(false, false);
         GLState.blend(false);
 
-        // GL.cullFace(GL20.BACK);
-        // GL.frontFace(GL20.CW);
+        //gl.cullFace(GL.BACK);
+        /* flip front face cause of mirror inverted y-axis */
+        gl.frontFace(GL.CCW);
 
         cam.update(v);
         long time = System.currentTimeMillis();
@@ -160,6 +161,7 @@ public class GdxRenderer3D2 extends LayerRenderer {
 
         // GLUtils.checkGlError("<" + TAG);
 
+        gl.frontFace(GL.CW);
         gl.depthMask(false);
         GLState.bindElementBuffer(GLState.UNBIND);
         GLState.bindBuffer(GL.ARRAY_BUFFER, GLState.UNBIND);

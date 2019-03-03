@@ -307,9 +307,10 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
                         model.nodes.removeIndex(0);
                         model.nodes.add(node);
                     }
-                    node.scale.set(-1, 1, 1);
+                    node.scale.set(1, 1, -1);
                     node.rotation.setFromAxis(1, 0, 0, 90);
                 }
+                model.calculateTransforms();
                 holder.setModel(model);
             }
         }
