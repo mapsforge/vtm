@@ -24,7 +24,7 @@ sourceSets {
     }
 }
 
-mainClassName = "org.oscim.test.BuildingEraserTest"
+mainClassName = "org.oscim.test.MapsforgeTest"
 run {
     if (project.hasProperty("args")) {
         args project.getProperty("args").split(",")
