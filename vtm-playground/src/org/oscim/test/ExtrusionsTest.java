@@ -27,10 +27,10 @@ import org.oscim.theme.VtmThemes;
 public class ExtrusionsTest extends GdxMapApp {
 
     enum GroundShape {
-        Rect, Hexagon, L, O,
+        RECT, HEXAGON, SHAPE_L, SHAPE_O,
     }
 
-    public GroundShape mGroundShape = GroundShape.Rect;
+    public GroundShape mGroundShape = GroundShape.RECT;
 
     Tag[] mTags = {
             new Tag(Tag.KEY_BUILDING, Tag.VALUE_YES),
@@ -45,16 +45,16 @@ public class ExtrusionsTest extends GdxMapApp {
         MapElement e = new MapElement();
         e.startPolygon();
         switch (mGroundShape) {
-            case Rect:
+            case RECT:
                 rectangleGround(e);
                 break;
-            case Hexagon:
+            case HEXAGON:
                 hexagonGround(e);
                 break;
-            case L:
+            case SHAPE_L:
                 lGround(e);
                 break;
-            case O:
+            case SHAPE_O:
                 oGround(e);
                 break;
         }
