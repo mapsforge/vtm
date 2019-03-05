@@ -161,7 +161,7 @@ public class S3DBLayer extends BuildingLayer {
             if ((v = getTransformedValue(element, Tag.KEY_BUILDING_COLOR)) != null) {
                 bColor = S3DBUtils.getColor(v, false, false);
             } else if ((v = getTransformedValue(element, Tag.KEY_BUILDING_MATERIAL)) != null) {
-                bColor = S3DBUtils.getMaterialColor(v, false);
+                bColor = S3DBUtils.getMaterialColor(v);
             }
         }
 
@@ -265,7 +265,7 @@ public class S3DBLayer extends BuildingLayer {
             if (v != null)
                 roofColor = S3DBUtils.getColor(v, true, false);
             else if ((v = getTransformedValue(element, Tag.KEY_ROOF_MATERIAL)) != null)
-                roofColor = S3DBUtils.getMaterialColor(v, true);
+                roofColor = S3DBUtils.getMaterialColor(v);
         }
 
         boolean roofOrientationAcross = false;

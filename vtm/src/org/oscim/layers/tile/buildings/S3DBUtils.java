@@ -1251,15 +1251,14 @@ public final class S3DBUtils {
 
     /**
      * @param material the material as string (see http://wiki.openstreetmap.org/wiki/Key:material and following pages)
-     * @param roof     declare if material is used for roofs
      * @return the color as integer (8 bit each a, r, g, b)
      */
-    public static int getMaterialColor(String material, boolean roof) {
+    public static int getMaterialColor(String material) {
 
-        if (roof) {
-            if ("glass".equals(material))
-                return Color.fade(Color.get(130, 224, 255), 0.9f);
+        if (material.charAt(0) == '#') {
+            return Color.parseColor(material, Color.CYAN);
         }
+
         if ("roof_tiles".equals(material))
             return Color.get(216, 167, 111);
         if ("tile".equals(material))
@@ -1280,7 +1279,7 @@ public final class S3DBUtils {
         if ("asbestos".equals(material))
             return Color.get(160, 152, 141);
         if ("glass".equals(material))
-            return Color.get(130, 224, 255);
+            return Color.fade(Color.get(130, 224, 255), 0.4f);
         if ("slate".equals(material))
             return 0xFF605960;
         if ("zink".equals(material))

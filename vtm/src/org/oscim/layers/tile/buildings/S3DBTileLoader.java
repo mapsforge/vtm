@@ -129,7 +129,7 @@ class S3DBTileLoader extends TileLoader {
         }
 
         if (c == 0 && element.tags.containsKey(OSCIM4_KEY_MATERIAL)) {
-            c = S3DBUtils.getMaterialColor(element.tags.getValue(OSCIM4_KEY_MATERIAL), isRoof);
+            c = S3DBUtils.getMaterialColor(element.tags.getValue(OSCIM4_KEY_MATERIAL));
         }
 
         if (c == 0) {
