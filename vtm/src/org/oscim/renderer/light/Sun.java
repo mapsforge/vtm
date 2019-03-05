@@ -151,7 +151,7 @@ public class Sun {
     }
 
     /**
-     * Customize day of the year
+     * Customize day of the year.
      */
     public void setDayOfYear(int day) {
         mDayOfYear = day;
@@ -169,6 +169,28 @@ public class Sun {
      */
     public void setProgress(float progress) {
         mProgress = progress;
+    }
+
+    /**
+     * Customize progress with specified time.
+     *
+     * @param hour   the hour [0..23]
+     * @param minute the minute [0..59]
+     * @param second the second [0..59]
+     * @return the progress in range 0 to 2
+     */
+    public float setProgress(int hour, int minute, int second) {
+        float time = hour;
+        time += minute / 60f;
+        time += second / 3600f;
+
+        float progress = (time - mSunrise) / (mSunset - mSunrise);
+        if (progress > 1f || progress < 0f) {
+            progress = ((time + 24 - mSunset) % 24) / (mSunrise + 24 - mSunset);
+            progress += 1;
+        }
+        mProgress = MathUtils.clamp(progress, 0f, 2f);
+        return mProgress;
     }
 
     /**
@@ -244,17 +266,7 @@ public class Sun {
         // time += date.getMinute() / 60f;
         // time += date.getSecond() / 3600f;
 
-        float time = date.getHour();
-        time += date.getMinute() / 60f;
-        time += date.getSecond() / 3600f;
-
-        float progress = (time - mSunrise) / (mSunset - mSunrise);
-        if (progress > 1f || progress < 0f) {
-            progress = ((time + 24 - mSunset) % 24) / (mSunrise + 24 - mSunset);
-            progress += 1;
-        }
-        mProgress = MathUtils.clamp(progress, 0f, 2f);
-        return mProgress;
+        return setProgress(date.getHour(), date.getMinute(), date.getSecond());
     }
 
     /**
