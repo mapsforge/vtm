@@ -260,12 +260,6 @@ public class Sun {
      * @return the progress in range 0 to 2
      */
     public float updateProgress() {
-        // TODO Java8 replace with LocalDateTime
-        // LocalDateTime date = new LocalDateTime();
-        // float time = date.getHour();
-        // time += date.getMinute() / 60f;
-        // time += date.getSecond() / 3600f;
-
         return setProgress(date.getHour(), date.getMinute(), date.getSecond());
     }
 
