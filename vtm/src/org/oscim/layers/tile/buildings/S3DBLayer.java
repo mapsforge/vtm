@@ -159,9 +159,9 @@ public class S3DBLayer extends BuildingLayer {
         Integer bColor = null;
         if (mColored) {
             if ((v = getTransformedValue(element, Tag.KEY_BUILDING_COLOR)) != null) {
-                bColor = S3DBUtils.getColor(v, false);
+                bColor = S3DBUtils.getColor(v, extrusion.hsv, false);
             } else if ((v = getTransformedValue(element, Tag.KEY_BUILDING_MATERIAL)) != null) {
-                bColor = S3DBUtils.getMaterialColor(v);
+                bColor = S3DBUtils.getMaterialColor(v, extrusion.hsv, false);
             }
         }
 
@@ -179,7 +179,7 @@ public class S3DBLayer extends BuildingLayer {
         float minRoofHeightS = ExtrusionUtils.mapGroundScale(maxHeight - roofHeight, groundScale) * TILE_SCALE;
 
         // Process building and roof
-        processRoof(element, tile, minRoofHeightS, maxHeightS, bColor, extrusion.colorTop);
+        processRoof(element, tile, minRoofHeightS, maxHeightS, bColor, extrusion);
         if (S3DBUtils.calcOutlines(element, minHeightS, minRoofHeightS)) {
             get(tile).addMeshElement(element, groundScale, bColor);
         }
@@ -253,19 +253,19 @@ public class S3DBLayer extends BuildingLayer {
      * @param minHeight        the height of the underlying building
      * @param maxHeight        the height of the roof + minHeight (whole building)
      * @param buildingColor    the color of main building
-     * @param defaultRoofColor the default color of roof
+     * @param extrusion        the extrusion style
      */
     private void processRoof(MapElement element, MapTile tile, float minHeight, float maxHeight,
-                             int buildingColor, int defaultRoofColor) {
-        int roofColor = defaultRoofColor;
+                             int buildingColor, ExtrusionStyle extrusion) {
+        int roofColor = extrusion.colorTop;
         String v;
 
         if (mColored) {
             v = getTransformedValue(element, Tag.KEY_ROOF_COLOR);
             if (v != null)
-                roofColor = S3DBUtils.getColor(v, false);
+                roofColor = S3DBUtils.getColor(v, extrusion.hsv, false);
             else if ((v = getTransformedValue(element, Tag.KEY_ROOF_MATERIAL)) != null)
-                roofColor = S3DBUtils.getMaterialColor(v);
+                roofColor = S3DBUtils.getMaterialColor(v, extrusion.hsv, false);
         }
 
         boolean roofOrientationAcross = false;
@@ -288,7 +288,7 @@ public class S3DBLayer extends BuildingLayer {
 
         if (mTransparent) {
             // Use transparency of default roof color
-            roofColor = ExtrusionStyle.blendAlpha(roofColor, Color.aToFloat(defaultRoofColor));
+            roofColor = ExtrusionStyle.blendAlpha(roofColor, Color.aToFloat(extrusion.colorTop));
         }
 
         boolean success;

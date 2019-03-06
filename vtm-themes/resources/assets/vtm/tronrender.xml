@@ -569,7 +569,8 @@
                   <area fill="#e9e6e3" fade="15" /> -->
             </m>
             <m zoom-min="17">
-                <extrusion line-color="#50808080" side-color="#ea606060" top-color="#ea606060" />
+                <extrusion line-color="#50808080" side-color="#ea606060" top-color="#ea606060"
+                    hsv-s="0.5" hsv-v="0.8" />
             </m>
 
             <!--Only add house numbers where no name exist-->

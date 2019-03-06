@@ -20,7 +20,6 @@ package org.oscim.layers.tile.buildings;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.core.Tag;
-import org.oscim.utils.ColorUtil;
 import org.oscim.utils.ColorsCSS;
 import org.oscim.utils.Tessellator;
 import org.oscim.utils.geom.GeometryUtils;
@@ -41,10 +40,6 @@ import java.util.TreeMap;
  */
 public final class S3DBUtils {
     private static final Logger log = LoggerFactory.getLogger(S3DBUtils.class);
-
-    /* TODO get from theme */
-    private static final double HSV_S = 0.5;
-    private static final double HSV_V = 1.2;
 
     // Toggle this to debug and improve ridge calculation, you can see the faults in map then.
     private static final boolean IMPROVE_RIDGE_CALCULATION = false;
@@ -1062,27 +1057,28 @@ public final class S3DBUtils {
 
     /**
      * @param color    the color as string (see http://wiki.openstreetmap.org/wiki/Key:colour)
+     * @param hsv      the hsv color to modify given color
      * @param relative declare if colors are modified relative to their values
      * @return the color as integer (8 bit each a, r, g, b)
      */
-    public static int getColor(String color, boolean relative) {
+    public static int getColor(String color, Color.HSV hsv, boolean relative) {
 
+        int c;
         if (color.charAt(0) == '#') {
-            int c = Color.parseColor(color, Color.CYAN);
-            /* hardcoded colors are way too saturated for my taste */
-            return ColorUtil.modHsv(c, 1.0, HSV_S, HSV_V, relative);
+            c = Color.parseColor(color, Color.CYAN);
+        } else if ("transparent".equals(color)) {
+            return Color.get(0, 1, 1, 1);
+        } else {
+            Integer css = ColorsCSS.get(color);
+            if (css == null) {
+                log.debug("unknown color:{}", color);
+                c = Color.CYAN;
+            } else {
+                c = css;
+            }
         }
 
-        if ("transparent".equals(color))
-            return Color.get(0, 1, 1, 1);
-
-        Integer css = ColorsCSS.get(color);
-
-        if (css != null)
-            return ColorUtil.modHsv(css, 1.0, HSV_S, HSV_V, relative);
-
-        log.debug("unknown color:{}", color);
-        return 0;
+        return hsv.mod(c, relative);
     }
 
     /**
@@ -1221,9 +1217,10 @@ public final class S3DBUtils {
 
     /**
      * @param material the material as string (see http://wiki.openstreetmap.org/wiki/Key:material and following pages)
+     * @param hsv      the hsv color to modify given material
      * @return the color as integer (8 bit each a, r, g, b)
      */
-    public static int getMaterialColor(String material) {
+    public static int getMaterialColor(String material, Color.HSV hsv, boolean relative) {
 
         int c;
         if (material.charAt(0) == '#') {
@@ -1295,12 +1292,11 @@ public final class S3DBUtils {
                 default:
                     c = Color.CYAN;
                     log.debug("unknown material:{}", material);
+                    break;
             }
         }
 
-        // TODO option to mod color c with hsv
-
-        return c;
+        return hsv.mod(c, relative);
     }
 
     /**

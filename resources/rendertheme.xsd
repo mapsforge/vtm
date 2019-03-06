@@ -245,6 +245,9 @@
         <xs:attribute name="line-color" type="tns:color" use="optional" />
         <xs:attribute name="side-color" type="tns:color" use="required" />
         <xs:attribute name="top-color" type="tns:color" use="required" />
+        <xs:attribute name="hsv-h" default="0" type="xs:double" use="optional" />
+        <xs:attribute name="hsv-s" default="1" type="xs:double" use="optional" />
+        <xs:attribute name="hsv-v" default="1" type="xs:double" use="optional" />
         <!-- 12m default -->
         <xs:attribute name="default-height" default="12" type="xs:positiveInteger" use="optional" />
     </xs:complexType>

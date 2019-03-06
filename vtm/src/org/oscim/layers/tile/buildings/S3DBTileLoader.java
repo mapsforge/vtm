@@ -38,6 +38,8 @@ class S3DBTileLoader extends TileLoader {
     private static final String OSCIM4_KEY_COLOR = "c";
     private static final String OSCIM4_KEY_MATERIAL = "m";
 
+    private static final Color.HSV HSV = new Color.HSV(0f, 0.5f, 1.2f);
+
     /**
      * current TileDataSource used by this MapTileLoader
      */
@@ -125,11 +127,11 @@ class S3DBTileLoader extends TileLoader {
 
         int c = 0;
         if (element.tags.containsKey(OSCIM4_KEY_COLOR)) {
-            c = S3DBUtils.getColor(element.tags.getValue(OSCIM4_KEY_COLOR), true);
+            c = S3DBUtils.getColor(element.tags.getValue(OSCIM4_KEY_COLOR), HSV, true);
         }
 
         if (c == 0 && element.tags.containsKey(OSCIM4_KEY_MATERIAL)) {
-            c = S3DBUtils.getMaterialColor(element.tags.getValue(OSCIM4_KEY_MATERIAL));
+            c = S3DBUtils.getMaterialColor(element.tags.getValue(OSCIM4_KEY_MATERIAL), HSV, true);
         }
 
         if (c == 0) {

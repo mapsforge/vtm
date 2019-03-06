@@ -647,7 +647,8 @@
                 </m>
             </m>
             <m zoom-min="17">
-                <extrusion line-color="#ffd9d8d6" side-color="#eaecebe9" top-color="#eaf9f8f6" />
+                <extrusion line-color="#ffd9d8d6" side-color="#eaecebe9" top-color="#eaf9f8f6"
+                    hsv-s="0.5" hsv-v="1.2" />
             </m>
             <!--Only add house numbers where no name exist-->
             <m k="addr:housenumber" zoom-min="18">

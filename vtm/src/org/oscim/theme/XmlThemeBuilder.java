@@ -1226,6 +1226,15 @@ public class XmlThemeBuilder extends DefaultHandler {
             else if ("default-height".equals(name))
                 b.defaultHeight(Integer.parseInt(value));
 
+            else if ("hsv-h".equals(name))
+                b.hsvHue(Double.parseDouble(value));
+
+            else if ("hsv-s".equals(name))
+                b.hsvSaturation(Double.parseDouble(value));
+
+            else if ("hsv-v".equals(name))
+                b.hsvValue(Double.parseDouble(value));
+
             else
                 logUnknownAttribute(elementName, name, value, i);
         }
