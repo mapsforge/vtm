@@ -1255,58 +1255,82 @@ public final class S3DBUtils {
      */
     public static int getMaterialColor(String material) {
 
+        int c;
         if (material.charAt(0) == '#') {
-            return Color.parseColor(material, Color.CYAN);
+            c = Color.parseColor(material, Color.CYAN);
+        } else {
+            switch (material) {
+                case "roof_tiles":
+                    c = Color.get(216, 167, 111);
+                    break;
+                case "tile":
+                    c = Color.get(216, 167, 111);
+                    break;
+                case "concrete":
+                case "cement_block":
+                    c = Color.get(210, 212, 212);
+                    break;
+                case "metal":
+                    c = 0xFFC0C0C0;
+                    break;
+                case "tar_paper":
+                    c = 0xFF969998;
+                    break;
+                case "eternit":
+                    c = Color.get(216, 167, 111);
+                    break;
+                case "tin":
+                    c = 0xFFC0C0C0;
+                    break;
+                case "asbestos":
+                    c = Color.get(160, 152, 141);
+                    break;
+                case "glass":
+                    c = Color.fade(Color.get(130, 224, 255), 0.6f);
+                    break;
+                case "slate":
+                    c = 0xFF605960;
+                    break;
+                case "zink":
+                    c = Color.get(180, 180, 180);
+                    break;
+                case "gravel":
+                    c = Color.get(170, 130, 80);
+                    break;
+                case "copper":
+                    // same as roof color:green
+                    c = Color.get(150, 200, 130);
+                    break;
+                case "wood":
+                    c = Color.get(170, 130, 80);
+                    break;
+                case "grass":
+                    c = 0xFF50AA50;
+                    break;
+                case "stone":
+                    c = Color.get(206, 207, 181);
+                    break;
+                case "plaster":
+                    c = Color.get(236, 237, 181);
+                    break;
+                case "brick":
+                    c = Color.get(255, 217, 191);
+                    break;
+                case "stainless_steel":
+                    c = Color.get(153, 157, 160);
+                    break;
+                case "gold":
+                    c = 0xFFFFD700;
+                    break;
+                default:
+                    c = Color.CYAN;
+                    log.debug("unknown material:{}", material);
+            }
         }
 
-        if ("roof_tiles".equals(material))
-            return Color.get(216, 167, 111);
-        if ("tile".equals(material))
-            return Color.get(216, 167, 111);
+        // TODO option to mod color c with hsv
 
-        if ("concrete".equals(material) ||
-                "cement_block".equals(material))
-            return Color.get(210, 212, 212);
-
-        if ("metal".equals(material))
-            return 0xFFC0C0C0;
-        if ("tar_paper".equals(material))
-            return 0xFF969998;
-        if ("eternit".equals(material))
-            return Color.get(216, 167, 111);
-        if ("tin".equals(material))
-            return 0xFFC0C0C0;
-        if ("asbestos".equals(material))
-            return Color.get(160, 152, 141);
-        if ("glass".equals(material))
-            return Color.fade(Color.get(130, 224, 255), 0.6f);
-        if ("slate".equals(material))
-            return 0xFF605960;
-        if ("zink".equals(material))
-            return Color.get(180, 180, 180);
-        if ("gravel".equals(material))
-            return Color.get(170, 130, 80);
-        if ("copper".equals(material))
-            // same as roof color:green
-            return Color.get(150, 200, 130);
-        if ("wood".equals(material))
-            return Color.get(170, 130, 80);
-        if ("grass".equals(material))
-            return 0xFF50AA50;
-        if ("stone".equals(material))
-            return Color.get(206, 207, 181);
-        if ("plaster".equals(material))
-            return Color.get(236, 237, 181);
-        if ("brick".equals(material))
-            return Color.get(255, 217, 191);
-        if ("stainless_steel".equals(material))
-            return Color.get(153, 157, 160);
-        if ("gold".equals(material))
-            return 0xFFFFD700;
-
-        log.debug("unknown material:{}", material);
-
-        return 0;
+        return c;
     }
 
     /**
