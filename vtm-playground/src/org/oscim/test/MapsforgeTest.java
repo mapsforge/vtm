@@ -40,6 +40,7 @@ import org.oscim.tiling.source.mapfile.MapFileTileSource;
 import org.oscim.tiling.source.mapfile.MapInfo;
 
 import java.io.File;
+import java.util.Calendar;
 
 public class MapsforgeTest extends GdxMapApp {
 
@@ -99,12 +100,18 @@ public class MapsforgeTest extends GdxMapApp {
         if (SHADOWS) {
             final ExtrusionRenderer extrusionRenderer = buildingLayer.getExtrusionRenderer();
             mMap.events.bind(new Map.UpdateListener() {
+                Calendar date = Calendar.getInstance();
+                long prevTime = System.currentTimeMillis();
+
                 @Override
                 public void onMapEvent(Event e, MapPosition mapPosition) {
-                    long t = System.currentTimeMillis();
-                    float progress = (((t % 2000) / 1000f));
+                    long curTime = System.currentTimeMillis();
+                    int diff = (int) (curTime - prevTime);
+                    prevTime = curTime;
+                    date.add(Calendar.MILLISECOND, diff * 60 * 60); // Every second equates to one hour
 
-                    extrusionRenderer.getSun().setProgress(progress);
+                    //extrusionRenderer.getSun().setProgress((curTime % 2000) / 1000f);
+                    extrusionRenderer.getSun().setProgress(date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE), date.get(Calendar.SECOND));
                     extrusionRenderer.getSun().updatePosition();
                     extrusionRenderer.getSun().updateColor(); // only relevant for shadow implementation
 
