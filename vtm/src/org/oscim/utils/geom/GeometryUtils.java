@@ -69,7 +69,7 @@ public final class GeometryUtils {
     /**
      * Returns the unsigned area of polygon.
      *
-     * @param n number of points
+     * @param n number of point coordinates
      */
     public static float area(float[] points, int n) {
         float area = isClockwise(points, n);
@@ -118,22 +118,22 @@ public final class GeometryUtils {
     }
 
     /**
-     * Calculates the center of a set of points.
+     * Calculates the center of a set of 2D points.
      *
-     * @param points   the points array
-     * @param pointPos the start position of points
+     * @param points   the 2D points array
+     * @param coordPos the start position of coordinates
      * @param n        the number of points
      * @param out      the center output
      * @return the center of points
      */
-    public static float[] center(float[] points, int pointPos, int n, float[] out) {
+    public static float[] center(float[] points, int coordPos, int n, float[] out) {
         if (out == null)
             out = new float[2];
 
         // Calculate center
-        for (int i = 0; i < n; i += 2, pointPos += 2) {
-            float x = points[pointPos];
-            float y = points[pointPos + 1];
+        for (int i = 0; i < n; i += 2, coordPos += 2) {
+            float x = points[coordPos];
+            float y = points[coordPos + 1];
 
             out[0] += x;
             out[1] += y;
@@ -313,7 +313,7 @@ public final class GeometryUtils {
      * Is polygon clockwise.
      *
      * @param points the points array
-     * @param n      the number of points
+     * @param n      the number of point coordinates
      * @return the signed area of the polygon
      * positive: clockwise
      * negative: counter-clockwise

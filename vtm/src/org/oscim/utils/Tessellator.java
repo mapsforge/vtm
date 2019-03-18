@@ -32,20 +32,19 @@ public class Tessellator {
      * Special version for ExtrusionLayer to match indices with vertex positions.
      * Tessellates polygon in tris elements.
      *
-     * @param points       the {@link org.oscim.core.GeometryBuffer#points}
-     * @param ppos         the {@link org.oscim.core.GeometryBuffer#pointNextPos} (not needed)
-     * @param numPoints    equals ppos?
-     * @param index        the {@link org.oscim.core.GeometryBuffer#index}
-     * @param ipos         the {@link org.oscim.core.GeometryBuffer#indexCurrentPos}
+     * @param points       the {@link GeometryBuffer#points}
+     * @param numCoords    the {@link GeometryBuffer#getNumCoords()}
+     * @param index        the {@link GeometryBuffer#index}
+     * @param ipos         the {@link GeometryBuffer#indexCurrentPos}
      * @param numRings     the number of ring polygons
      * @param vertexOffset shift outTris index with offset
      * @param outTris      the tessellated polygon as triangular {@link org.oscim.renderer.bucket.VertexData}
      * @return number of indices of outTris
      */
-    public static int tessellate(float[] points, int ppos, int numPoints, int[] index,
+    public static int tessellate(float[] points, int numCoords, int[] index,
                                  int ipos, int numRings, int vertexOffset, VertexData outTris) {
 
-        int buckets = FastMath.log2(MathUtils.nextPowerOfTwo(numPoints));
+        int buckets = FastMath.log2(MathUtils.nextPowerOfTwo(numCoords));
         buckets -= 2;
         //log.debug("tess use {}", buckets);
 
@@ -60,10 +59,10 @@ public class Tessellator {
         int nverts = tess.getVertexCount() * 2;
         int nelems = tess.getElementCount() * 3;
 
-        //log.debug("tess elems:{} verts:{} points:{}", nelems, nverts, numPoints);
+        //log.debug("tess elems:{} verts:{} points:{}", nelems, nverts, numCoords);
 
-        if (numPoints != nverts) {
-            log.debug("tess ----- skip poly: " + nverts + " " + numPoints);
+        if (numCoords != nverts) {
+            log.debug("tess ----- skip poly: " + nverts + " " + numCoords);
             tess.dispose();
             return 0;
         }

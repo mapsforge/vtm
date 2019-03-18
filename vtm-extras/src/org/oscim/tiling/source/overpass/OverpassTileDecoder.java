@@ -127,13 +127,8 @@ public class OverpassTileDecoder implements ITileDecoder {
 
         //ring++;
         parseCoordSequence(element);
-        removeLastPoint();
+        mMapElement.removeLastPoint();
         //}
-    }
-
-    private void removeLastPoint() {
-        mMapElement.pointNextPos -= 2;
-        mMapElement.index[mMapElement.indexCurrentPos] -= 2;
     }
 
     private void parseLine(OsmWay element) {

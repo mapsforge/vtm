@@ -207,7 +207,7 @@ public class S3DBLayer extends BuildingLayer {
                 if (rootBuilding.element.isBuildingPart())
                     continue;
                 if (RAW_DATA) {
-                    float[] center = GeometryUtils.center(partBuilding.element.points, 0, partBuilding.element.pointNextPos, null);
+                    float[] center = GeometryUtils.center(partBuilding.element.points, 0, partBuilding.element.getNumCoords(), null);
                     if (!GeometryUtils.pointInPoly(center[0], center[1], rootBuilding.element.points, rootBuilding.element.index[0], 0))
                         continue;
                 } else if (!refId.equals(rootBuilding.element.tags.getValue(Tag.KEY_ID)))

@@ -41,7 +41,7 @@ public final class ExtrusionUtils {
     public static void mapPolyCoordScale(GeometryBuffer buffer) {
         float tileScale = REF_TILE_SIZE / Tile.SIZE;
         float[] points = buffer.points;
-        for (int pPos = 0; pPos < buffer.pointNextPos; pPos++) {
+        for (int pPos = 0; pPos < buffer.getNumCoords(); pPos++) {
             points[pPos] = points[pPos] * tileScale;
         }
     }

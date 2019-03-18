@@ -45,7 +45,7 @@ public class MeshBucket extends RenderBucket {
 
     private TessJNI tess;
 
-    private int numPoints;
+    private int numCoords;
 
     public MeshBucket(int level) {
         super(RenderBucket.MESH, true, false);
@@ -53,7 +53,7 @@ public class MeshBucket extends RenderBucket {
     }
 
     public void addMesh(GeometryBuffer geom) {
-        numPoints += geom.pointNextPos;
+        numCoords += geom.getNumCoords();
         if (tess == null)
             tess = new TessJNI(8);
 
@@ -87,7 +87,7 @@ public class MeshBucket extends RenderBucket {
             numIndices += 3;
         }
 
-        //numPoints += geom.pointPos;
+        //numCoords += geom.pointPos;
         //tess.addContour2D(geom.index, geom.points);
     }
 
@@ -96,13 +96,13 @@ public class MeshBucket extends RenderBucket {
         if (tess == null)
             return;
 
-        if (numPoints == 0) {
+        if (numCoords == 0) {
             tess.dispose();
             return;
         }
         if (!tess.tesselate()) {
             tess.dispose();
-            log.debug("error in tessellation {}", numPoints);
+            log.debug("error in tessellation {}", numCoords);
             return;
         }
 

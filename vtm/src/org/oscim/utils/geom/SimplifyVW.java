@@ -54,12 +54,12 @@ public class SimplifyVW {
 
         size = 0;
 
-        if (heap.length < geom.pointNextPos >> 1)
-            heap = new Item[geom.pointNextPos >> 1];
+        if (heap.length < geom.getNumPoints())
+            heap = new Item[geom.getNumPoints()];
 
         first = prev = push(0, Float.MAX_VALUE);
 
-        for (int i = 2; i < geom.pointNextPos - 2; i += 2) {
+        for (int i = 2; i < geom.getNumCoords() - 2; i += 2) {
             it = push(i, area(geom.points, i - 2, i, i + 2));
             prev.next = it;
             it.prev = prev;
@@ -67,7 +67,7 @@ public class SimplifyVW {
             prev = it;
         }
 
-        Item last = push(geom.pointNextPos - 2, Float.MAX_VALUE);
+        Item last = push(geom.getNumCoords() - 2, Float.MAX_VALUE);
 
         //        sorter.doSort(heap, DistanceComparator, 0, size);
         //        for (int i = 0; i < size; i++)
@@ -102,8 +102,8 @@ public class SimplifyVW {
         first.prev = null;
         it = first;
 
-        float[] points = new float[geom.pointNextPos];
-        System.arraycopy(geom.points, 0, points, 0, geom.pointNextPos);
+        float[] points = new float[geom.getNumCoords()];
+        System.arraycopy(geom.points, 0, points, 0, geom.getNumCoords());
 
         geom.clear();
         geom.startPolygon();

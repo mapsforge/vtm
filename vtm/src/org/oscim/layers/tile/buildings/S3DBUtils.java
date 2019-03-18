@@ -75,7 +75,7 @@ public final class S3DBUtils {
         int[] index = element.index;
 
         boolean outerProcessed = false;
-        for (int i = 0, pointPos = 0; i < index.length && !outerProcessed; i++) {
+        for (int i = 0, coordPos = 0; i < index.length && !outerProcessed; i++) {
             if (index[i] < 0) {
                 break;
             }
@@ -119,9 +119,9 @@ public final class S3DBUtils {
 
             List<float[]> point3Fs = new ArrayList<>();
 
-            for (int j = 0; j < (numSections * 2); j += 2, pointPos += 2) {
-                float x = points[pointPos];
-                float y = points[pointPos + 1];
+            for (int j = 0; j < (numSections * 2); j += 2, coordPos += 2) {
+                float x = points[coordPos];
+                float y = points[coordPos + 1];
 
                 point3Fs.add(new float[]{x, y, minHeight});
 
@@ -174,7 +174,7 @@ public final class S3DBUtils {
             }
 
             element.index = mesh.index;
-            element.pointNextPos = element.points.length;
+            element.setNumCoords(element.points.length);
         }
 
         element.type = GeometryBuffer.GeometryType.TRIS;
@@ -195,9 +195,9 @@ public final class S3DBUtils {
         List<float[]> point3Fs = new ArrayList<>();
 
         // Calculate center and load points
-        for (int pointPos = 0; pointPos < points.length; pointPos += 2) {
-            float x = points[pointPos];
-            float y = points[pointPos + 1];
+        for (int coordPos = 0; coordPos < points.length; coordPos += 2) {
+            float x = points[coordPos];
+            float y = points[coordPos + 1];
             point3Fs.add(new float[]{x, y, maxHeight});
         }
 
@@ -211,7 +211,7 @@ public final class S3DBUtils {
         }
 
         element.points = points;
-        element.pointNextPos = element.points.length;
+        element.setNumCoords(element.points.length);
         element.type = GeometryBuffer.GeometryType.TRIS;
         return true;
     }
@@ -229,7 +229,7 @@ public final class S3DBUtils {
         element.points = null;
         element.index = null;
 
-        for (int i = 0, pointPos = 0; i < index.length; i++) {
+        for (int i = 0, coordPos = 0; i < index.length; i++) {
             if (index[i] < 0) {
                 break;
             }
@@ -240,9 +240,9 @@ public final class S3DBUtils {
             List<float[]> point3Fs = new ArrayList<>();
 
             // load points
-            for (int j = 0; j < numPoints; j++, pointPos += 2) {
-                float x = points[pointPos];
-                float y = points[pointPos + 1];
+            for (int j = 0; j < numPoints; j++, coordPos += 2) {
+                float x = points[coordPos];
+                float y = points[coordPos + 1];
 
                 point3Fs.add(new float[]{x, y, minHeight});
                 point3Fs.add(new float[]{x, y, maxHeight});
@@ -288,10 +288,10 @@ public final class S3DBUtils {
                 System.arraycopy(tmpIndex, 0, element.index, 0, tmpIndex.length);
                 // Shift all indices with previous element.points.length
                 for (int k = 0; k < meshIndex.length; k++) {
-                    element.index[k + tmpIndex.length] = meshIndex[k] + (element.pointNextPos / 3);
+                    element.index[k + tmpIndex.length] = meshIndex[k] + (element.getNumCoords() / 3);
                 }
             }
-            element.pointNextPos = element.points.length;
+            element.setNumCoords(element.points.length);
         }
 
         if (element.points == null) {
@@ -315,7 +315,7 @@ public final class S3DBUtils {
         float[] topPoint = new float[3];
         topPoint[2] = maxHeight;
 
-        for (int i = 0, pointPos = 0; i < index.length; i++) {
+        for (int i = 0, coordPos = 0; i < index.length; i++) {
             if (index[i] < 0) {
                 break;
             }
@@ -324,13 +324,13 @@ public final class S3DBUtils {
             int numPoints = index[i] / 2;
             if (numPoints < 0) continue;
 
-            // Init top of roof (attention with pointPos)
-            GeometryUtils.center(points, pointPos, numPoints << 1, topPoint);
+            // Init top of roof (attention with coordPos)
+            GeometryUtils.center(points, coordPos, numPoints << 1, topPoint);
 
             List<float[]> point3Fs = new ArrayList<>();
             // Load points
-            for (int j = 0; j < (numPoints * 2); j += 2, pointPos += 2)
-                point3Fs.add(new float[]{points[pointPos], points[pointPos + 1], minHeight});
+            for (int j = 0; j < (numPoints * 2); j += 2, coordPos += 2)
+                point3Fs.add(new float[]{points[coordPos], points[coordPos + 1], minHeight});
 
             // Write index: index gives the first point of triangle mesh (divided 3)
             int[] meshIndex = new int[numPoints * 3];
@@ -355,7 +355,7 @@ public final class S3DBUtils {
             element.points = meshPoints;
             element.index = meshIndex;
             //element.indexCurrentPos = 0;
-            element.pointNextPos = meshPoints.length;
+            element.setNumCoords(meshPoints.length);
         }
 
         element.type = GeometryBuffer.GeometryType.TRIS;
@@ -377,7 +377,7 @@ public final class S3DBUtils {
         float[] points = element.points;
         int[] index = element.index;
 
-        for (int i = 0, pointPos = 0; i < index.length; i++) {
+        for (int i = 0, coordPos = 0; i < index.length; i++) {
             if (index[i] < 0) {
                 break;
             }
@@ -394,9 +394,9 @@ public final class S3DBUtils {
             List<float[]> point3Fs = new ArrayList<>();
 
             // Calculate center and load points
-            for (int j = 0; j < (numPoints * 2); j += 2, pointPos += 2) {
-                float x = points[pointPos];
-                float y = points[pointPos + 1];
+            for (int j = 0; j < (numPoints * 2); j += 2, coordPos += 2) {
+                float x = points[coordPos];
+                float y = points[coordPos + 1];
 
                 point3Fs.add(new float[]{x, y, minHeight});
             }
@@ -770,13 +770,13 @@ public final class S3DBUtils {
 
                 specialParts.points = meshPoints;
                 specialParts.index = meshPartsIndex;
-                specialParts.pointNextPos = meshPoints.length;
+                specialParts.setNumCoords(meshPoints.length);
                 specialParts.type = GeometryBuffer.GeometryType.TRIS;
             }
 
             element.points = meshPoints;
             element.index = meshIndex;
-            element.pointNextPos = meshPoints.length;
+            element.setNumCoords(meshPoints.length);
             element.type = GeometryBuffer.GeometryType.TRIS;
         }
 
@@ -793,7 +793,7 @@ public final class S3DBUtils {
         float[] points = element.points;
         int[] index = element.index;
 
-        for (int i = 0, pointPos = 0; i < index.length; i++) {
+        for (int i = 0, coordPos = 0; i < index.length; i++) {
             if (index[i] < 0) {
                 break;
             }
@@ -810,9 +810,9 @@ public final class S3DBUtils {
             List<float[]> point3Fs = new ArrayList<>();
 
             // Calculate center and load points
-            for (int j = 0; j < (numPoints * 2); j += 2, pointPos += 2) {
-                float x = points[pointPos];
-                float y = points[pointPos + 1];
+            for (int j = 0; j < (numPoints * 2); j += 2, coordPos += 2) {
+                float x = points[coordPos];
+                float y = points[coordPos + 1];
 
                 point3Fs.add(new float[]{x, y, minHeight});
             }
@@ -891,7 +891,7 @@ public final class S3DBUtils {
                 geoEle1.points[2 * k + 1] = elementPoints1.get(k)[1];
             }
             geoEle1.index[0] = geoEle1.points.length;
-            geoEle1.pointNextPos = geoEle1.points.length;
+            geoEle1.setNumCoords(geoEle1.points.length);
 
             GeometryBuffer geoEle2 = new GeometryBuffer(elementPoints2.size(), 1);
             for (int k = 0; k < elementPoints2.size(); k++) {
@@ -899,7 +899,7 @@ public final class S3DBUtils {
                 geoEle2.points[2 * k + 1] = elementPoints2.get(k)[1];
             }
             geoEle2.index[0] = geoEle2.points.length;
-            geoEle2.pointNextPos = geoEle2.points.length;
+            geoEle2.setNumCoords(geoEle2.points.length);
 
             GeometryBuffer specialParts1 = new GeometryBuffer(geoEle1);
             GeometryBuffer specialParts2 = new GeometryBuffer(geoEle2);
@@ -939,7 +939,7 @@ public final class S3DBUtils {
         float[] points = element.points;
         int[] index = element.index;
 
-        for (int i = 0, pointPos = 0; i < index.length; i++) {
+        for (int i = 0, coordPos = 0; i < index.length; i++) {
             if (index[i] < 0) {
                 break;
             }
@@ -949,9 +949,9 @@ public final class S3DBUtils {
             if (numPoints < 0) continue;
 
             List<float[]> point3Fs = new ArrayList<>();
-            for (int j = 0; j < (numPoints * 2); j += 2, pointPos += 2) {
-                float x = points[pointPos];
-                float y = points[pointPos + 1];
+            for (int j = 0; j < (numPoints * 2); j += 2, coordPos += 2) {
+                float x = points[coordPos];
+                float y = points[coordPos + 1];
 
                 point3Fs.add(new float[]{x, y, minHeight});
             }
@@ -1385,7 +1385,7 @@ public final class S3DBUtils {
         System.arraycopy(gb1.points, 0, mergedPoints, 0, gb1PointSize);
         System.arraycopy(gb2.points, 0, mergedPoints, gb1PointSize, gb2.points.length);
         out.points = mergedPoints;
-        out.pointNextPos = mergedPoints.length;
+        out.setNumCoords(mergedPoints.length);
 
         int gb1IndexSize = gb1.index.length;
         int[] mergedIndices = new int[gb1IndexSize + gb2.index.length];

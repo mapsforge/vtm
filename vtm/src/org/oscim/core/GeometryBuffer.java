@@ -88,9 +88,9 @@ public class GeometryBuffer {
     public int indexCurrentPos;
 
     /**
-     * The next position to insert a point in points array (equal to array size).
+     * The next position to insert point coordinates in points array (equal to array size).
      */
-    public int pointNextPos;
+    private int numCoords;
 
     /**
      * The current geometry type.
@@ -107,7 +107,7 @@ public class GeometryBuffer {
     /**
      * Instantiates a new geometry buffer.
      *
-     * @param numPoints  the num of expected points
+     * @param numPoints  the num of expected 2D points
      * @param numIndices the num of expected indices
      */
     public GeometryBuffer(int numPoints, int numIndices) {
@@ -130,7 +130,7 @@ public class GeometryBuffer {
         this.index = index;
         this.type = GeometryType.NONE;
         this.indexCurrentPos = 0;
-        this.pointNextPos = 0;
+        this.numCoords = 0;
         this.pointLimit = points.length - 2;
     }
 
@@ -142,16 +142,17 @@ public class GeometryBuffer {
         while (indexSize < buffer.index.length && buffer.index[indexSize] != -1) {
             indexSize++;
         }
-        this.points = Arrays.copyOf(buffer.points, buffer.pointNextPos);
+        this.points = Arrays.copyOf(buffer.points, buffer.numCoords);
         this.index = Arrays.copyOf(buffer.index, indexSize);
 
-        this.pointNextPos = buffer.pointNextPos;
+        this.numCoords = buffer.numCoords;
         this.indexCurrentPos = buffer.indexCurrentPos;
         this.type = buffer.type;
     }
 
     /**
      * @param out PointF to set coordinates to.
+     * @param i the 2D point position.
      * @return when out is null a temporary PointF is
      * returned which belongs to GeometryBuffer.
      */
@@ -160,16 +161,25 @@ public class GeometryBuffer {
         out.y = points[(i << 1) + 1];
     }
 
+    /**
+     * @param i the 2D point position.
+     * @return the x-coordinate of point.
+     */
     public float getPointX(int i) {
         return points[(i << 1)];
     }
 
+    /**
+     * @param i the 2D point position.
+     * @return the y-coordinate of point.
+     */
     public float getPointY(int i) {
         return points[(i << 1) + 1];
     }
 
     /**
-     * @return PointF belongs to GeometryBuffer.
+     * @param i the 2D point position.
+     * @return the PointF that belongs to GeometryBuffer.
      */
     public PointF getPoint(int i) {
         PointF out = mTmpPoint;
@@ -178,8 +188,30 @@ public class GeometryBuffer {
         return out;
     }
 
+    /**
+     * Get the number of coordinates in point array.
+     * Equal to the next position to insert point coordinates in points array.
+     *
+     * @return the number of coordinates in point array.
+     */
+    public int getNumCoords() {
+        return numCoords;
+    }
+
+    /**
+     * Set the number of coordinates in points array.
+     *
+     * @param n the number of coordinates in point array.
+     */
+    public void setNumCoords(int n) {
+        numCoords = n;
+    }
+
+    /**
+     * @return the number of points
+     */
     public int getNumPoints() {
-        return pointNextPos >> 1;
+        return numCoords >> 1;
     }
 
     /**
@@ -188,7 +220,7 @@ public class GeometryBuffer {
     public GeometryBuffer clear() {
         index[0] = 0;
         indexCurrentPos = 0;
-        pointNextPos = 0;
+        numCoords = 0;
         type = GeometryType.NONE;
         return this;
     }
@@ -200,11 +232,11 @@ public class GeometryBuffer {
      * @param y the y ordinate
      */
     public GeometryBuffer addPoint(float x, float y) {
-        if (pointNextPos > pointLimit)
-            ensurePointSize((pointNextPos >> 1) + 1, true);
+        if (numCoords > pointLimit)
+            ensurePointSize((numCoords >> 1) + 1, true);
 
-        points[pointNextPos++] = x;
-        points[pointNextPos++] = y;
+        points[numCoords++] = x;
+        points[numCoords++] = y;
 
         index[indexCurrentPos] += 2;
         return this;
@@ -229,9 +261,9 @@ public class GeometryBuffer {
     /**
      * Sets the point x,y at position pos.
      *
-     * @param pos the pos
-     * @param x   the x ordinate
-     * @param y   the y ordinate
+     * @param pos the 2D point position
+     * @param x   the x coordinate (abscissa)
+     * @param y   the y coordinate (ordinate)
      */
     public void setPoint(int pos, float x, float y) {
         points[(pos << 1) + 0] = x;
@@ -314,7 +346,7 @@ public class GeometryBuffer {
     }
 
     public GeometryBuffer translate(float dx, float dy) {
-        for (int i = 0; i < pointNextPos; i += 2) {
+        for (int i = 0; i < numCoords; i += 2) {
             points[i] += dx;
             points[i + 1] += dy;
         }
@@ -322,7 +354,7 @@ public class GeometryBuffer {
     }
 
     public GeometryBuffer scale(float scaleX, float scaleY) {
-        for (int i = 0; i < pointNextPos; i += 2) {
+        for (int i = 0; i < numCoords; i += 2) {
             points[i] *= scaleX;
             points[i + 1] *= scaleY;
         }
@@ -332,7 +364,7 @@ public class GeometryBuffer {
     /**
      * Ensure that 'points' array can hold the number of points.
      *
-     * @param size the number of points to hold
+     * @param size the number of 2D points to hold
      * @param copy the current data when array is reallocated
      * @return the float[] array holding current coordinates
      */
@@ -466,6 +498,14 @@ public class GeometryBuffer {
 
         // use only outer ring
         return GeometryUtils.isClockwise(points, index[0]);
+    }
+
+    /**
+     * Remove the last 2D point of polygon / line.
+     */
+    public void removeLastPoint() {
+        numCoords -= 2;
+        index[indexCurrentPos] -= 2;
     }
 
     /**

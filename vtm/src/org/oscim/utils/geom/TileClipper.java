@@ -81,10 +81,10 @@ public class TileClipper {
             System.arraycopy(out.index, 0, idx, 0, numLines);
             geom.index[numLines] = -1;
 
-            float pts[] = geom.ensurePointSize(out.pointNextPos >> 1, false);
-            System.arraycopy(out.points, 0, pts, 0, out.pointNextPos);
+            float pts[] = geom.ensurePointSize(out.getNumPoints(), false);
+            System.arraycopy(out.points, 0, pts, 0, out.getNumCoords());
             geom.indexCurrentPos = out.indexCurrentPos;
-            geom.pointNextPos = out.pointNextPos;
+            geom.setNumCoords(out.getNumCoords());
 
             if ((geom.indexCurrentPos == 0) && (geom.index[0] < 4))
                 return false;
