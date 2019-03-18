@@ -406,7 +406,7 @@ public class ExtrusionBucket extends RenderBucket {
                 addRoofSimple(startVertex, len);
             } else if (!complexOutline) {
                 complexOutline = true;
-                addRoof(startVertex, element, ipos);
+                addRoof(startVertex, element, ipos, ppos);
             }
         }
     }
@@ -429,7 +429,7 @@ public class ExtrusionBucket extends RenderBucket {
     /**
      * roof indices for concave shapes
      */
-    private void addRoof(int startVertex, GeometryBuffer geom, int ipos) {
+    private void addRoof(int startVertex, GeometryBuffer geom, int ipos, int ppos) {
         int[] index = geom.index;
         float[] points = geom.points;
 
@@ -443,7 +443,7 @@ public class ExtrusionBucket extends RenderBucket {
             numRings++;
         }
 
-        numIndices += Tessellator.tessellate(points, numCoords,
+        numIndices += Tessellator.tessellate(points, ppos, numCoords,
                 index, ipos, numRings,
                 startVertex + 1,
                 mIndices[IND_ROOF]);

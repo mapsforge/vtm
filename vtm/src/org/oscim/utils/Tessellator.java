@@ -33,6 +33,7 @@ public class Tessellator {
      * Tessellates polygon in tris elements.
      *
      * @param points       the {@link GeometryBuffer#points}
+     * @param posCoords    the start index of point coordinates
      * @param numCoords    the {@link GeometryBuffer#getNumCoords()}
      * @param index        the {@link GeometryBuffer#index}
      * @param ipos         the {@link GeometryBuffer#indexCurrentPos}
@@ -41,7 +42,7 @@ public class Tessellator {
      * @param outTris      the tessellated polygon as triangular {@link org.oscim.renderer.bucket.VertexData}
      * @return number of indices of outTris
      */
-    public static int tessellate(float[] points, int numCoords, int[] index,
+    public static int tessellate(float[] points, int posCoords, int numCoords, int[] index,
                                  int ipos, int numRings, int vertexOffset, VertexData outTris) {
 
         int buckets = FastMath.log2(MathUtils.nextPowerOfTwo(numCoords));
