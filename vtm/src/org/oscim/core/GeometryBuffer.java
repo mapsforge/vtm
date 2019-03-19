@@ -107,7 +107,7 @@ public class GeometryBuffer {
     /**
      * Instantiates a new geometry buffer.
      *
-     * @param numPoints  the num of expected points
+     * @param numPoints  the num of expected 2D points
      * @param numIndices the num of expected indices
      */
     public GeometryBuffer(int numPoints, int numIndices) {
@@ -152,6 +152,7 @@ public class GeometryBuffer {
 
     /**
      * @param out PointF to set coordinates to.
+     * @param i the 2D point position.
      * @return when out is null a temporary PointF is
      * returned which belongs to GeometryBuffer.
      */
@@ -160,16 +161,25 @@ public class GeometryBuffer {
         out.y = points[(i << 1) + 1];
     }
 
+    /**
+     * @param i the 2D point position.
+     * @return the x-coordinate of point.
+     */
     public float getPointX(int i) {
         return points[(i << 1)];
     }
 
+    /**
+     * @param i the 2D point position.
+     * @return the y-coordinate of point.
+     */
     public float getPointY(int i) {
         return points[(i << 1) + 1];
     }
 
     /**
-     * @return PointF belongs to GeometryBuffer.
+     * @param i the 2D point position.
+     * @return the PointF that belongs to GeometryBuffer.
      */
     public PointF getPoint(int i) {
         PointF out = mTmpPoint;
@@ -178,6 +188,11 @@ public class GeometryBuffer {
         return out;
     }
 
+    /**
+     * Get the number of 2D points.
+     *
+     * @return the number of 2D points.
+     */
     public int getNumPoints() {
         return pointNextPos >> 1;
     }
@@ -229,9 +244,9 @@ public class GeometryBuffer {
     /**
      * Sets the point x,y at position pos.
      *
-     * @param pos the pos
-     * @param x   the x ordinate
-     * @param y   the y ordinate
+     * @param pos the 2D point position
+     * @param x   the x coordinate (abscissa)
+     * @param y   the y coordinate (ordinate)
      */
     public void setPoint(int pos, float x, float y) {
         points[(pos << 1) + 0] = x;
