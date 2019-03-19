@@ -357,7 +357,7 @@ public class GeometryBuffer {
     /**
      * Ensure that 'points' array can hold the number of points.
      *
-     * @param size the number of points to hold
+     * @param size the number of points to hold  // TODO number of points or pointNextPos?
      * @param copy the current data when array is reallocated
      * @return the float[] array holding current coordinates
      */
