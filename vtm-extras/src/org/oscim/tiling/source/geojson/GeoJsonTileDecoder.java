@@ -259,18 +259,13 @@ public class GeoJsonTileDecoder implements ITileDecoder {
 
                 ring++;
                 parseCoordSequence(jp);
-                removeLastPoint();
+                mMapElement.removeLastPoint();
                 continue;
             }
 
             if (t == END_ARRAY)
                 break;
         }
-    }
-
-    private void removeLastPoint() {
-        mMapElement.pointNextPos -= 2;
-        mMapElement.index[mMapElement.indexCurrentPos] -= 2;
     }
 
     private void parseLineString(JsonParser jp)
