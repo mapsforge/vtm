@@ -198,6 +198,16 @@ public class GeometryBuffer {
     }
 
     /**
+     * Get the used size of points array.
+     * Equal to the next position to insert point in points array.
+     *
+     * @return the size of point array.
+     */
+    public int getPointsSize() {
+        return pointNextPos;
+    }
+
+    /**
      * Reset buffer.
      */
     public GeometryBuffer clear() {
