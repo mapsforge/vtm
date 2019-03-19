@@ -700,7 +700,7 @@ public final class S3DBUtils {
                                 if (Arrays.equals(ridgePoints.get(k), ridgePoints.get(secIndex)))
                                     ridgeSkipFaceIndex.add(k);
                             }
-                            if (isClockwise < 0 && IMPROVE_RIDGE_CALCULATION) {
+                            if (isClockwise > 0 && IMPROVE_RIDGE_CALCULATION) {
                                 // TODO Improve handling of counter clockwise faces and support multiple faces
                                 isTessellateAble = false;
                                 break;
@@ -845,7 +845,7 @@ public final class S3DBUtils {
                 }
             }
             // Scale of normal vec
-            maxDist = -Math.signum(GeometryUtils.isTrisClockwise(
+            maxDist = Math.signum(GeometryUtils.isTrisClockwise(
                     pL,
                     GeometryUtils.sumVec(pL, vL),
                     splitLinePoint)) * (maxDist / 2);
@@ -861,7 +861,7 @@ public final class S3DBUtils {
             List<float[]> elementPoints2 = new ArrayList<>();
             float[] secSplitPoint = GeometryUtils.sumVec(splitLinePoint, vL);
             float sideLastPoint = Math.signum(GeometryUtils.isTrisClockwise(splitLinePoint, secSplitPoint, point3Fs.get(groundSize - 1)));
-            degreeNormL = sideLastPoint < 0 ? degreeNormL : (degreeNormL + 180f) % 360; // Correct angle
+            degreeNormL = sideLastPoint > 0 ? degreeNormL : (degreeNormL + 180f) % 360; // Correct angle
             List<Integer> intersection1 = new ArrayList<>(), intersection2 = new ArrayList<>();
             for (int k = 0; k < groundSize; k++) {
                 // If point is not on the same side as the previous point, the split line intersect and can calc split point

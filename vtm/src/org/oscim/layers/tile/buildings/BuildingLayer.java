@@ -155,7 +155,7 @@ public class BuildingLayer extends Layer implements TileLoaderThemeHook, ZoomLim
                 mBuildings.put(tile.hashCode(), buildingElements);
             }
             element = new MapElement(element); // Deep copy, because element will be cleared
-            if (RAW_DATA && element.isClockwise() > 0) {
+            if (RAW_DATA && element.isClockwise() < 0) {
                 // Buildings must be counter clockwise in VTM (mirrored to OSM)
                 element.reverse();
             }

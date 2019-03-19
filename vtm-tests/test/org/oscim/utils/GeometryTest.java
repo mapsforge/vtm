@@ -8,9 +8,10 @@ public class GeometryTest {
 
     @Test
     public void testIsTrisClockwise() {
+        // Coordinate system is lhs
         float[] pA = new float[]{0, 0};
-        float[] pB = new float[]{1, 1};
-        float[] pC = new float[]{1, 0};
+        float[] pB = new float[]{1, 0};
+        float[] pC = new float[]{1, 1};
 
         float area = GeometryUtils.isTrisClockwise(pA, pB, pC);
         Assert.assertTrue(area > 0);
@@ -21,12 +22,13 @@ public class GeometryTest {
 
     @Test
     public void testIsClockwise() {
-        float[] points = new float[]{0, 0, 1, 1, 1, 0};
+        // Coordinate system is lhs
+        float[] points = new float[]{0, 0, 1, 0, 1, 1};
 
         float area = GeometryUtils.isClockwise(points, points.length);
         Assert.assertTrue(area > 0);
 
-        points = new float[]{0, 0, 1, 0, 1, 1};
+        points = new float[]{0, 0, 1, 1, 1, 0};
         area = GeometryUtils.isClockwise(points, points.length);
         Assert.assertTrue(area < 0);
     }
