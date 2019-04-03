@@ -122,7 +122,7 @@ public class MarkerLayerLabelsTest extends GdxMapApp implements ItemizedLayer.On
      */
     private MarkerSymbol createAdvancedSymbol(MarkerItem item, Bitmap poiBitmap) {
         final Paint textPainter = CanvasAdapter.newPaint();
-        textPainter.setStyle(Paint.Style.STROKE);
+        textPainter.setStyle(Paint.Style.FILL);
         textPainter.setColor(FG_COLOR);
 
         final Paint fillPainter = CanvasAdapter.newPaint();
@@ -180,7 +180,7 @@ public class MarkerLayerLabelsTest extends GdxMapApp implements ItemizedLayer.On
         // titleCanvas.fillRectangle() does not support transparency
         titleCanvas.drawCircle(0, 0, xSize * 2, fillPainter);
 
-        titleCanvas.drawText(item.title, margin, titleHeight - margin, textPainter);
+        titleCanvas.drawText(item.title, margin, titleHeight - margin - textPainter.getFontDescent(), textPainter);
 
         if (hasSubtitle) {
             Bitmap subtitleBitmap = CanvasAdapter.newBitmap(subtitleWidth + margin, subtitleHeight + margin, 0);
