@@ -133,7 +133,7 @@ public class MarkerLayerLabelsTest extends GdxMapApp implements ItemizedLayer.On
         int dist2symbol = 30;
 
         int titleWidth = ((int) textPainter.getTextWidth(item.title) + 2 * margin);
-        int titleHeight = ((int) textPainter.getTextHeight(item.title) + 2 * margin);
+        int titleHeight = (int) (textPainter.getTextHeight(item.title) + textPainter.getFontDescent() + 2 * margin);
 
         int symbolWidth = poiBitmap.getWidth();
 
@@ -146,7 +146,7 @@ public class MarkerLayerLabelsTest extends GdxMapApp implements ItemizedLayer.On
                 subtitle = item.description.substring(1); // not the first # char
                 subtitle = subtitle.split("\\R", 2)[0]; // only first line
                 subtitleWidth = ((int) textPainter.getTextWidth(subtitle)) + 2 * margin;
-                subtitleHeight = ((int) textPainter.getTextHeight(subtitle)) + 2 * margin;
+                subtitleHeight = (int) ((textPainter.getTextHeight(subtitle)) + textPainter.getFontDescent()+ 2 * margin);
                 hasSubtitle = true;
             }
         }
