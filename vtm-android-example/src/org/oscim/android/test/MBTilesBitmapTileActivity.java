@@ -81,12 +81,5 @@ public class MBTilesBitmapTileActivity extends MapActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }
