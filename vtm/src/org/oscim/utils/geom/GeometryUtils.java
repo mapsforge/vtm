@@ -143,7 +143,7 @@ public final class GeometryUtils {
 
     /**
      * Calculate the closest point on a line.
-     * See: https://de.wikipedia.org/wiki/Skalarprodukt#Orthogonalit%C3%A4t_und_orthogonale_Projektion
+     * See: https://en.wikipedia.org/wiki/Vector_projection#Vector_projection_2
      *
      * @param pP point
      * @param pL point of line
@@ -234,7 +234,7 @@ public final class GeometryUtils {
 
     /**
      * Calculate the distance from a point to a line.
-     * See: https://de.wikipedia.org/wiki/Skalarprodukt#Orthogonalit%C3%A4t_und_orthogonale_Projektion
+     * See: https://en.wikipedia.org/wiki/Vector_projection#Vector_projection_2
      *
      * @param pP point
      * @param pL point of line
