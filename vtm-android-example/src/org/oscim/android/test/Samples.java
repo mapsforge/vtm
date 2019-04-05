@@ -115,7 +115,7 @@ public class Samples extends Activity {
 
         linearLayout.addView(createLabel("Raster Maps"));
         linearLayout.addView(createButton(BitmapTileActivity.class));
-        linearLayout.addView(createButton(MBTilesBitmapMapActivity.class));
+        linearLayout.addView(createButton(MBTilesBitmapTileActivity.class));
 
         linearLayout.addView(createLabel("Overlays"));
         linearLayout.addView(createButton(MarkerOverlayActivity.class));

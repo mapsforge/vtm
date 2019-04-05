@@ -92,7 +92,7 @@
             android:name=".MarkerOverlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".MBTilesBitmapMapActivity"
+            android:name=".MBTilesBitmapTileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".MultiMapViewActivity"

@@ -38,19 +38,19 @@ import java.io.File;
 /**
  * An example activity making use of mbtiles.
  */
-public class MBTilesBitmapMapActivity extends MapActivity {
-    static final Logger log = LoggerFactory.getLogger(MBTilesBitmapMapActivity.class);
+public class MBTilesBitmapTileActivity extends MapActivity {
+    static final Logger log = LoggerFactory.getLogger(MBTilesBitmapTileActivity.class);
 
     static final boolean USE_CACHE = false;
 
 
     private TileCache mCache;
 
-    public MBTilesBitmapMapActivity(int contentView) {
+    public MBTilesBitmapTileActivity(int contentView) {
         super(contentView);
     }
 
-    public MBTilesBitmapMapActivity() {
+    public MBTilesBitmapTileActivity() {
     }
 
     @Override
