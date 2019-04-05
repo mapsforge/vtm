@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 devemux86
+ * Copyright 2019 Andrea Antonello
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -50,6 +51,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * An example activity making use of mbtiles.
+ */
 public class MBTilesMapActivity extends MapActivity {
     static final Logger log = LoggerFactory.getLogger(MBTilesMapActivity.class);
 
@@ -107,28 +111,6 @@ public class MBTilesMapActivity extends MapActivity {
         }
 
 
-    }
-
-    /**
-     * Copy a file.
-     *
-     * @param fis source file.
-     * @param fos dest file.
-     * @throws IOException if something goes wrong.
-     */
-    public static void copyFile(InputStream fis, OutputStream fos) throws IOException {
-        try {
-            byte[] buf = new byte[1024];
-            int i = 0;
-            while ((i = fis.read(buf)) != -1) {
-                fos.write(buf, 0, i);
-            }
-        } finally {
-            if (fis != null)
-                fis.close();
-            if (fos != null)
-                fos.close();
-        }
     }
 
     @Override
