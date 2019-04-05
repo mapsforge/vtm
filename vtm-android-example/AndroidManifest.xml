@@ -92,6 +92,9 @@
             android:name=".MarkerOverlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".MBTilesBitmapMapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".MultiMapViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
@@ -138,9 +141,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".VectorLayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".MBTilesBitmapMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
 
