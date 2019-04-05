@@ -413,7 +413,7 @@ public final class S3DBUtils {
 
             int countConcavAngles = 0;
             for (Byte simpleAngle : simpleAngles) {
-                if (simpleAngle > 1)
+                if (simpleAngle < -1)
                     countConcavAngles++;
             }
 
@@ -447,14 +447,14 @@ public final class S3DBUtils {
                 byte direction = simpleAngles.get(shift);
                 if (direction == 0) {
                     continue; // direction is similar to last one
-                } else if (direction > 0) {
-                    // If shape turns right
+                } else if (direction < 0) {
+                    // If shape turns left (concave)
                     float[] positionRidgeA = null;
                     float[] positionRidgeB = null;
 
                     // Check two previous corners
-                    Integer indexPrevious = getIndexPreviousLeftTurn(shift, simpleAngles);
-                    Integer indexPrevious2 = getIndexPreviousLeftTurn(indexPrevious == null ? shift - 1 : indexPrevious, simpleAngles);
+                    Integer indexPrevious = getIndexPreviousConvexTurn(shift, simpleAngles);
+                    Integer indexPrevious2 = getIndexPreviousConvexTurn(indexPrevious == null ? shift - 1 : indexPrevious, simpleAngles);
 
                     if (indexPrevious != null && indexPrevious2 != null) {
                         // Write two previous
@@ -477,8 +477,8 @@ public final class S3DBUtils {
                     }
 
                     // Check two next corners
-                    Integer indexNext = getIndexNextLeftTurn(shift, simpleAngles);
-                    Integer indexNext2 = getIndexNextLeftTurn(indexNext == null ? shift + 1 : indexNext, simpleAngles);
+                    Integer indexNext = getIndexNextConvexTurn(shift, simpleAngles);
+                    Integer indexNext2 = getIndexNextConvexTurn(indexNext == null ? shift + 1 : indexNext, simpleAngles);
 
                     if (indexNext != null && indexNext2 != null) {
                         if (ridgePoints.get(indexNext) == null) {
@@ -535,7 +535,7 @@ public final class S3DBUtils {
 
                     // Set opposite ridge, if only one concave corner
                     if (countConcavAngles == 1) {
-                        Integer opposite = getIndexNextLeftTurn(indexNext2, simpleAngles);
+                        Integer opposite = getIndexNextConvexTurn(indexNext2, simpleAngles);
                         if (opposite != null) {
                             if (isGabled)
                                 gablePoints.remove(opposite);
@@ -548,12 +548,12 @@ public final class S3DBUtils {
                     isOdd = false;
                     continue;
                 }
-                // Regular right angle (left turn)
+                // Regular right angle (convex turn)
                 if (isOdd) {
                     isOdd = false;
                     continue;
                 }
-                if (simpleAngles.get(shift) < -1) {
+                if (simpleAngles.get(shift) > 1) {
                     isOdd = true;
                 }
                 if (ridgePoints.containsKey(shift) && ridgeLines.containsKey(shift)) {
@@ -563,7 +563,7 @@ public final class S3DBUtils {
                 if (currentRidgeInd != null) {
                     float[] intersection;
                     // If is gabled, then use the normal line as intersection instead of bisection, but if the angle is not right, this is usually not a gable point
-                    if (isGabled && direction < -1) {
+                    if (isGabled && direction > 1) {
                         if (ridgePoints.get(currentRidgeInd) == null) {
                             log.debug("Gabled intersection calc failed");
                             currentRidgeInd = null;
@@ -588,7 +588,7 @@ public final class S3DBUtils {
                         currentRidgeInd = shift;
                     }
                 } else {
-                    Integer indexNext = getIndexNextLeftTurn(shift, simpleAngles);
+                    Integer indexNext = getIndexNextConvexTurn(shift, simpleAngles);
                     if (indexNext == null) continue;
                     if (!ridgeLines.containsKey(shift)) {
                         ridgeLines.put(shift, normVectors.get(indexNext));
@@ -620,7 +620,7 @@ public final class S3DBUtils {
                 }
 
                 // Only remove ridgePoint at concave corners
-                if (!isGabled || simpleAngles.get(key) > 0) {
+                if (!isGabled || simpleAngles.get(key) < 0) {
                     boolean isIn = GeometryUtils.pointInPoly(ridgeEntry.getValue()[0], ridgeEntry.getValue()[1], points, points.length, 0);
                     if (!isIn) {
                         // FIXME can improve shapes with concaves that intersect each other and remove shapes which have ridgepoints outside the outline
@@ -827,7 +827,7 @@ public final class S3DBUtils {
 
             int indexStart = getIndicesLongestSide(simpleAngles, lengths, null)[0];
             if (orientationAcross) {
-                Integer tmp = getIndexPreviousLeftTurn(indexStart, simpleAngles);
+                Integer tmp = getIndexPreviousConvexTurn(indexStart, simpleAngles);
                 if (tmp == null) {
                     tmp = getIndexNextTurn(indexStart, simpleAngles);
                 }
@@ -1081,14 +1081,14 @@ public final class S3DBUtils {
     }
 
     /**
-     * @return the index of next left turn after specified index
+     * @return the index of convex turn after specified index or null, if it's concave.
      */
-    private static Integer getIndexNextLeftTurn(int index, List<Byte> simpleAngles) {
+    private static Integer getIndexNextConvexTurn(int index, List<Byte> simpleAngles) {
         for (int i = index + 1; i < simpleAngles.size() + index; i++) {
             int iMod = i % simpleAngles.size();
-            if (simpleAngles.get(iMod) < 0) {
+            if (simpleAngles.get(iMod) > 0) {
                 return iMod;
-            } else if (simpleAngles.get(iMod) > 0) {
+            } else if (simpleAngles.get(iMod) < 0) {
                 return null;
             }
         }
@@ -1109,14 +1109,14 @@ public final class S3DBUtils {
     }
 
     /**
-     * @return the index of previous left turn at specified index
+     * @return the index of previous convex turn at specified index
      */
-    private static Integer getIndexPreviousLeftTurn(int index, List<Byte> simpleAngles) {
+    private static Integer getIndexPreviousConvexTurn(int index, List<Byte> simpleAngles) {
         for (int i = simpleAngles.size() + index - 1; i >= 0; i--) {
             int iMod = i % simpleAngles.size();
-            if (simpleAngles.get(iMod) < 0) {
+            if (simpleAngles.get(iMod) > 0) {
                 return iMod;
-            } else if (simpleAngles.get(iMod) > 0) {
+            } else if (simpleAngles.get(iMod) < 0) {
                 return null;
             }
         }
@@ -1132,10 +1132,10 @@ public final class S3DBUtils {
         Integer concaveStart = null;
         for (int i = 0; i < size; i++) {
             if (indexStart != null && concaveStart != null) break;
-            if (indexStart == null && simpleAngles.get(i) < -1) {
+            if (indexStart == null && simpleAngles.get(i) > 1) {
                 // Use first angle as start index;
                 indexStart = i;
-            } else if (concaveStart == null && simpleAngles.get(i) > 1) {
+            } else if (concaveStart == null && simpleAngles.get(i) < -1) {
                 // A real concave corner
                 concaveStart = i;
             }
@@ -1156,9 +1156,9 @@ public final class S3DBUtils {
 
         // Calculate longest side with right angle next to it.
         int[] iLongSide = getIndicesLongestSide(simpleAngles, lengths, indexStart);
-        if (simpleAngles.get(iLongSide[1]) > -2) {
+        if (simpleAngles.get(iLongSide[1]) < 2) {
             // If angle is not good to start a ridge use previous
-            indexStart = getIndexPreviousLeftTurn(iLongSide[0], simpleAngles);
+            indexStart = getIndexPreviousConvexTurn(iLongSide[0], simpleAngles);
         } else {
             indexStart = iLongSide[1]; // Get side next to longest one
         }
@@ -1180,8 +1180,8 @@ public final class S3DBUtils {
         int size = simpleAngles.size();
         if (indexStart == null) {
             for (int i = 0; i < size; i++) {
-                if (simpleAngles.get(i) < 0) {
-                    // Use first angle as start index;
+                if (simpleAngles.get(i) > 0) {
+                    // Use first convex angle as start index;
                     indexStart = i;
                     break;
                 }
@@ -1302,8 +1302,12 @@ public final class S3DBUtils {
      * @param normVectors the normalized vectors
      * @return a list of simple angles:
      * 0           straight
-     * (+/-) 1     (right/left) obtuse angle
-     * (+/-) 2     (right/left) right angle (or acute angle)
+     * (+/-) 1     (convex/concave) obtuse angle
+     * (+/-) 2     (convex/concave) right angle (or acute angle)
+     *
+     * Note lhs coordinate system.
+     * convex: turns right
+     * concave: turns left
      */
     private static List<Byte> getSimpleAngles(List<float[]> normVectors) {
         int size = normVectors.size();
@@ -1319,8 +1323,8 @@ public final class S3DBUtils {
             float angle = (float) Math.acos(Math.abs(val) > 1 ? Math.signum(val) : val);
             // angles.add(angle);
 
-            // Positive is turns right, negative turns left
-            byte simpAngle = (byte) Math.signum(v1[0] * (-v2[1]) + v1[1] * v2[0]);
+            // Positive turns right (convex), negative turns left (concave)
+            byte simpAngle = (byte) Math.signum(v1[0] * v2[1] - v1[1] * v2[0]);
             if (angle > (MathUtils.PI / 2) - threshold) {
                 // Right angle
                 simpAngle *= 2;
