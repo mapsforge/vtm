@@ -140,7 +140,7 @@
             android:name=".VectorLayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".MBTilesMapActivity"
+            android:name=".MBTilesBitmapMapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
 

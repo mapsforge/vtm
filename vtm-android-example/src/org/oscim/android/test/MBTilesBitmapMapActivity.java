@@ -19,54 +19,38 @@
 package org.oscim.android.test;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.oscim.android.cache.TileCache;
-import org.oscim.android.tiling.MBTilesTileSource;
-import org.oscim.backend.canvas.Color;
+import org.oscim.android.tiling.MBTilesBitmapTileSource;
 import org.oscim.core.MapPosition;
-import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
-import org.oscim.layers.tile.vector.VectorTileLayer;
-import org.oscim.map.Layers;
-import org.oscim.theme.VtmThemes;
-import org.oscim.tiling.TileSource;
-import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
-import org.oscim.tiling.source.mvt.OpenMapTilesMvtTileSource;
-import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * An example activity making use of mbtiles.
  */
-public class MBTilesMapActivity extends MapActivity {
-    static final Logger log = LoggerFactory.getLogger(MBTilesMapActivity.class);
+public class MBTilesBitmapMapActivity extends MapActivity {
+    static final Logger log = LoggerFactory.getLogger(MBTilesBitmapMapActivity.class);
 
     static final boolean USE_CACHE = false;
 
 
     private TileCache mCache;
 
-    public MBTilesMapActivity(int contentView) {
+    public MBTilesBitmapMapActivity(int contentView) {
         super(contentView);
     }
 
-    public MBTilesMapActivity() {
+    public MBTilesBitmapMapActivity() {
     }
 
     @Override
@@ -88,7 +72,7 @@ public class MBTilesMapActivity extends MapActivity {
                 alertDialog.show();
             } else {
                 String mbtilesPath = mbtilesFile.getAbsolutePath();
-                MBTilesTileSource mbTilesTileSource = new MBTilesTileSource(this, mbtilesPath, 128, null);
+                MBTilesBitmapTileSource mbTilesTileSource = new MBTilesBitmapTileSource(this, mbtilesPath, 128, null);
                 BitmapTileLayer bitmapLayer = new BitmapTileLayer(mMap, mbTilesTileSource);
                 mMap.layers().add(bitmapLayer);
 

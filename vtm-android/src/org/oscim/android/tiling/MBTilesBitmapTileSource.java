@@ -26,8 +26,8 @@ import org.oscim.tiling.TileSource;
  *
  * @author Andrea Antonello
  */
-public class MBTilesTileSource extends TileSource {
-    private final MBTilesTileDataSource ds;
+public class MBTilesBitmapTileSource extends TileSource {
+    private final MBTilesBitmapTileDataSource ds;
 
     /**
      * Build a tile source.
@@ -38,8 +38,8 @@ public class MBTilesTileSource extends TileSource {
      * @param transparentColor an optional color that will be made transparent in the bitmap.
      * @throws Exception
      */
-    public MBTilesTileSource(Context context, String dbPath, Integer alpha, Integer transparentColor) throws Exception {
-        ds = new MBTilesTileDataSource(context, dbPath, alpha, transparentColor);
+    public MBTilesBitmapTileSource(Context context, String dbPath, Integer alpha, Integer transparentColor) throws Exception {
+        ds = new MBTilesBitmapTileDataSource(context, dbPath, alpha, transparentColor);
     }
 
     /**

@@ -44,8 +44,8 @@ import static org.oscim.tiling.QueryResult.FAILED;
  *
  * @author Andrea Antonello
  */
-public class MBTilesTileDataSource implements ITileDataSource {
-    static final Logger log = LoggerFactory.getLogger(MBTilesTileDataSource.class);
+public class MBTilesBitmapTileDataSource implements ITileDataSource {
+    static final Logger log = LoggerFactory.getLogger(MBTilesBitmapTileDataSource.class);
 
     private final Integer mTransparentColor;
     private Integer alpha;
@@ -78,7 +78,7 @@ public class MBTilesTileDataSource implements ITileDataSource {
      * @param transparentColor an optional color that will be made transparent in the bitmap.
      * @throws Exception
      */
-    MBTilesTileDataSource(Context context, String dbPath, Integer alpha, Integer transparentColor) throws Exception {
+    MBTilesBitmapTileDataSource(Context context, String dbPath, Integer alpha, Integer transparentColor) throws Exception {
 
         this.mDb = SQLiteDatabase.openDatabase(dbPath, null, SQLiteDatabase.OPEN_READONLY);
 
