@@ -139,6 +139,9 @@
         <activity
             android:name=".VectorLayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".MBTilesMapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>
