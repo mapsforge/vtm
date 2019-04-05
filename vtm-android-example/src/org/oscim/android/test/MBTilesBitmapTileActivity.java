@@ -21,17 +21,12 @@ package org.oscim.android.test;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import org.oscim.android.cache.TileCache;
 import org.oscim.android.tiling.MBTilesBitmapTileSource;
 import org.oscim.core.MapPosition;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -39,13 +34,6 @@ import java.io.File;
  * An example activity making use of mbtiles.
  */
 public class MBTilesBitmapTileActivity extends MapActivity {
-    static final Logger log = LoggerFactory.getLogger(MBTilesBitmapTileActivity.class);
-
-    static final boolean USE_CACHE = false;
-
-
-    private TileCache mCache;
-
     public MBTilesBitmapTileActivity(int contentView) {
         super(contentView);
     }
@@ -66,7 +54,7 @@ public class MBTilesBitmapTileActivity extends MapActivity {
             if (!mbtilesFile.exists()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Missing map")
-                        .setMessage("Thi sample needs an mbtiles db named test.mbtiles in the root folder.")
+                        .setMessage("This sample needs an mbtiles db named test.mbtiles in the root folder.")
                         .setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true);
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
@@ -100,19 +88,5 @@ public class MBTilesBitmapTileActivity extends MapActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (mCache != null)
-            mCache.dispose();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.theme_menu, menu);
-        return true;
     }
 }
