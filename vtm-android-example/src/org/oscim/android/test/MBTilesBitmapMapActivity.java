@@ -72,7 +72,7 @@ public class MBTilesBitmapMapActivity extends MapActivity {
                 alertDialog.show();
             } else {
                 String mbtilesPath = mbtilesFile.getAbsolutePath();
-                MBTilesBitmapTileSource mbTilesTileSource = new MBTilesBitmapTileSource(this, mbtilesPath, 128, null);
+                MBTilesBitmapTileSource mbTilesTileSource = new MBTilesBitmapTileSource(mbtilesPath, 128, null);
                 BitmapTileLayer bitmapLayer = new BitmapTileLayer(mMap, mbTilesTileSource);
                 mMap.layers().add(bitmapLayer);
 
