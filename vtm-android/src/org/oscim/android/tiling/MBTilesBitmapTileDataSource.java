@@ -41,8 +41,6 @@ import static org.oscim.tiling.QueryResult.FAILED;
 
 /**
  * A tile data source for MBTiles raster databases.
- *
- * @author Andrea Antonello
  */
 public class MBTilesBitmapTileDataSource implements ITileDataSource {
     static final Logger log = LoggerFactory.getLogger(MBTilesBitmapTileDataSource.class);

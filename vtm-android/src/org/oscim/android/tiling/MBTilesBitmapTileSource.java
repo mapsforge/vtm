@@ -23,8 +23,6 @@ import org.oscim.tiling.TileSource;
 
 /**
  * A tile source for MBTiles raster databases.
- *
- * @author Andrea Antonello
  */
 public class MBTilesBitmapTileSource extends TileSource {
     private final MBTilesBitmapTileDataSource ds;
@@ -73,7 +71,7 @@ public class MBTilesBitmapTileSource extends TileSource {
     public String getImageFormat() throws Exception {
         return ds.getImageFormat();
     }
-    
+
     public int getMaxZoom() throws Exception {
         return ds.getMaxZoom();
     }
