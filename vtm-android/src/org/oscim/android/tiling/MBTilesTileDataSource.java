@@ -123,10 +123,12 @@ public class MBTilesTileDataSource implements ITileDataSource {
             Cursor cursor = null;
             try {
                 cursor = mDb.rawQuery(SELECT_METADATA, null);
-                while (cursor.moveToNext()) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
                     String key = cursor.getString(0);
                     String value = cursor.getString(1);
                     metadataMap.put(key, value);
+                    cursor.moveToNext();
                 }
             } finally {
                 if (cursor != null)
