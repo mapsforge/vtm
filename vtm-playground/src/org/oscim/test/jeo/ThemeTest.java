@@ -16,7 +16,7 @@
  */
 package org.oscim.test.jeo;
 
-import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.lwjgl.GdxMapApp;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.carto.RenderTheme;

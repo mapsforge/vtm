@@ -20,7 +20,7 @@ package org.oscim.test.jeo;
 import org.jeo.map.Style;
 import org.jeo.vector.VectorDataset;
 import org.oscim.backend.canvas.Color;
-import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.lwjgl.GdxMapApp;
 import org.oscim.layers.JeoVectorLayer;
 import org.oscim.layers.OSMIndoorLayer;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;

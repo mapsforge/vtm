@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.gdx;
+package org.oscim.gdx.lwjgl;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -29,6 +29,8 @@ import org.oscim.backend.DateTime;
 import org.oscim.backend.DateTimeAdapter;
 import org.oscim.backend.GLAdapter;
 import org.oscim.core.Tile;
+import org.oscim.gdx.GdxAssets;
+import org.oscim.gdx.GdxMap;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 import org.oscim.utils.FastMath;
@@ -66,7 +68,7 @@ public class GdxMapApp extends GdxMap {
     protected static LwjglApplicationConfiguration getConfig(String title) {
         LwjglApplicationConfiguration.disableAudio = true;
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = title != null ? title : "vtm-gdx";
+        cfg.title = title != null ? title : "vtm-gdx-lwjgl";
 
         int[] sizes = new int[]{128, 64, 32, 16};
         for (int size : sizes) {

@@ -21,7 +21,7 @@ import org.oscim.core.MapElement;
 import org.oscim.core.MapPosition;
 import org.oscim.core.MercatorProjection;
 import org.oscim.event.Event;
-import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.lwjgl.GdxMapApp;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.MapTile.TileNode;
 import org.oscim.layers.tile.TileLoader;

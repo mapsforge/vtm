@@ -18,7 +18,7 @@ package org.oscim.test;
 
 import com.badlogic.gdx.Input;
 
-import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.lwjgl.GdxMapApp;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.renderer.MapRenderer;

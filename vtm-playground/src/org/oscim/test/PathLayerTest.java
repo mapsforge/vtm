@@ -22,7 +22,7 @@ import org.oscim.core.MapPosition;
 import org.oscim.event.Event;
 import org.oscim.event.Gesture;
 import org.oscim.event.MotionEvent;
-import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.lwjgl.GdxMapApp;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.layers.vector.PathLayer;
 import org.oscim.map.Map.UpdateListener;

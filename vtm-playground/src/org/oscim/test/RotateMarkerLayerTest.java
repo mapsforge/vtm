@@ -15,7 +15,7 @@
  */
 package org.oscim.test;
 
-import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.lwjgl.GdxMapApp;
 import org.oscim.layers.marker.MarkerItem;
 
 import java.util.Timer;

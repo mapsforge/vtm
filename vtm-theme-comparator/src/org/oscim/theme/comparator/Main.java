@@ -24,7 +24,7 @@ import org.oscim.backend.DateTime;
 import org.oscim.backend.DateTimeAdapter;
 import org.oscim.backend.GLAdapter;
 import org.oscim.gdx.GdxAssets;
-import org.oscim.gdx.LwjglGL20;
+import org.oscim.gdx.lwjgl.LwjglGL20;
 import org.oscim.theme.comparator.logging.AllAppender;
 import org.oscim.theme.comparator.logging.BaseAppender;
 import org.oscim.theme.comparator.logging.MapsforgeAppender;

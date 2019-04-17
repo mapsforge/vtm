@@ -8,7 +8,7 @@ configurations.all {
 */
 
 dependencies {
-    implementation project(':vtm-desktop')
+    implementation project(':vtm-desktop-lwjgl')
     file("${rootDir}/vtm-desktop/natives").eachDir() { dir ->
         implementation files(dir.path)
     }

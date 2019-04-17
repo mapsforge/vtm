@@ -14,7 +14,7 @@
  */
 package org.oscim.test;
 
-import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.lwjgl.GdxMapApp;
 import org.oscim.utils.Parameters;
 
 public class MapEventLayer2Test extends MarkerLayerTest {

@@ -16,7 +16,7 @@ package org.oscim.test;
 
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
-import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.lwjgl.GdxMapApp;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;

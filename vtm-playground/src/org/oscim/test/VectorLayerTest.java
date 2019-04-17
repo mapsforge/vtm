@@ -17,7 +17,7 @@
 package org.oscim.test;
 
 import org.oscim.backend.canvas.Color;
-import org.oscim.gdx.GdxMapApp;
+import org.oscim.gdx.lwjgl.GdxMapApp;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.layers.vector.VectorLayer;
 import org.oscim.layers.vector.geometries.PointDrawable;

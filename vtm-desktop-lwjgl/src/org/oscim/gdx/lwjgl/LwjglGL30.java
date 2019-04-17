@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package org.oscim.gdx;
+package org.oscim.gdx.lwjgl;
 
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
@@ -40,7 +40,7 @@ import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
 
 /**
- * See https://github.com/libgdx/libgdx/blob/master/backends/gdx-backend-lwjgl3/src/com/badlogic/gdx/backends/lwjgl3/Lwjgl3GL30.java
+ * See https://github.com/libgdx/libgdx/blob/master/backends/gdx-backend-lwjgl/src/com/badlogic/gdx/backends/lwjgl/LwjglGL30.java
  */
 public class LwjglGL30 extends LwjglGL20 implements GL30 {
     @Override
