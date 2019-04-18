@@ -55,6 +55,10 @@ public class GLAdapter {
         GDX_DESKTOP_QUIRKS = CanvasAdapter.platform.isDesktop();
         GDX_WEBGL_QUIRKS = (CanvasAdapter.platform == Platform.WEBGL);
 
+        // Point sprite sometimes isn't enabled by default, see #268
+        if (GLAdapter.GDX_DESKTOP_QUIRKS)
+            gl.enable(0x8861); // GL.POINT_SPRITE
+
         // Buildings translucency does not work on macOS, see #61
         if (CanvasAdapter.platform == Platform.MACOS)
             BuildingLayer.TRANSLUCENT = false;
