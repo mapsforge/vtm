@@ -589,10 +589,22 @@ public final class MercatorProjection {
         return (long) (zoomLevelToScale(zoomLevel) - tileY - 1);
     }
 
+    /**
+     * Converts y map position to latitude degree.
+     *
+     * @param y the map position {@link MapPosition#getY() y}.
+     * @return the latitude as degree.
+     */
     public static double toLatitude(double y) {
         return 90 - 360 * Math.atan(Math.exp((y - 0.5) * (2 * Math.PI))) / Math.PI;
     }
 
+    /**
+     * Converts x map position to longitude degree.
+     *
+     * @param x the map position {@link MapPosition#getX() x}.
+     * @return the longitude as degree.
+     */
     public static double toLongitude(double x) {
         return 360.0 * (x - 0.5);
     }

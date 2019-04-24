@@ -338,6 +338,13 @@ public class GeometryBuffer {
             index[indexCurrentPos + 1] = -1;
     }
 
+    /**
+     * Translate.
+     *
+     * @param dx the x translation.
+     * @param dy the y translation.
+     * @return a reference to this object.
+     */
     public GeometryBuffer translate(float dx, float dy) {
         for (int i = 0; i < pointNextPos; i += 2) {
             points[i] += dx;
@@ -346,6 +353,13 @@ public class GeometryBuffer {
         return this;
     }
 
+    /**
+     * Scale.
+     *
+     * @param scaleX the x scale.
+     * @param scaleY the y scale.
+     * @return a reference to this object.
+     */
     public GeometryBuffer scale(float scaleX, float scaleY) {
         for (int i = 0; i < pointNextPos; i += 2) {
             points[i] *= scaleX;
@@ -412,10 +426,20 @@ public class GeometryBuffer {
             throw new IllegalArgumentException("not cleared " + m + "<>" + type);
     }
 
+    /**
+     * Add a {@link Point}.
+     *
+     * @param p the point.
+     */
     public void addPoint(Point p) {
         addPoint((float) p.x, (float) p.y);
     }
 
+    /**
+     * Add a {@link PointF}.
+     *
+     * @param p the point.
+     */
     public void addPoint(PointF p) {
         addPoint(p.x, p.y);
     }
