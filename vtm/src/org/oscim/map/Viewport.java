@@ -4,6 +4,7 @@
  * Copyright 2016 Erik Duisters
  * Copyright 2017 Luca Osten
  * Copyright 2018 Izumi Kawashima
+ * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -270,7 +271,7 @@ public class Viewport {
              */
             dist = 0; // Near plane
         else {
-            // Calc factor to get map coords on default map height.
+            // Calc factor to get map coords on current distance.
             dist = Math.abs(-nz / dz);
             if (Double.isNaN(dist) || dist > 1) {
                 // Limit distance as it may exceeds to infinity.
