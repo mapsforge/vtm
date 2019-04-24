@@ -48,7 +48,7 @@ public class Viewport {
      * - numTiles in {@link org.oscim.layers.tile.TileManager#init() TileManager}
      * - tilt of map when cutting map on near and far plane.
      */
-    public static final float MAX_TILT = 120;
+    public static final float MAX_TILT = 65;
 
     protected double mMaxScale = (1 << MAX_ZOOM_LEVEL);
     protected double mMinScale = (1 << MIN_ZOOM_LEVEL);
