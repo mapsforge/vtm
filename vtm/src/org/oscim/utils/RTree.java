@@ -17,6 +17,7 @@
 package org.oscim.utils;
 
 import org.oscim.core.Box;
+import org.oscim.core.Point;
 import org.oscim.utils.RTree.Branch;
 import org.oscim.utils.RTree.Node;
 import org.oscim.utils.RTree.Rect;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Implementation of RTree, a multidimensional bounding rectangle tree.
@@ -247,6 +249,16 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
                 add(node.branch[idx]);
             }
         }
+
+        double squareDistanceFromPoint(Point xy) {
+            double dx = axisDistance(xy.x, xmin, xmax);
+            double dy = axisDistance(xy.y, ymin, ymax);
+            return dx * dx + dy * dy;
+        }
+
+        double axisDistance(double k, double min, double max) {
+            return k < min ? min - k : k <= max ? 0 : k - max;
+        }
     }
 
     /**
@@ -353,6 +365,68 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
 
         releaseRect(r);
         return true;
+    }
+
+    class KnnItem implements Comparable<KnnItem> {
+        Branch<?> branch;
+        boolean isLeaf;
+        double squareDistance;
+
+        @Override
+        public int compareTo(KnnItem o) {
+            return Double.compare(squareDistance, o.squareDistance);
+        }
+    }
+
+    @Override
+    public List<T> searchKNearestNeighbors(Point center, int k, List<T> results) {
+        // Refered https://github.com/mourner/rbush-knn/blob/master/index.js
+
+        if (results == null)
+            results = new ArrayList<T>(16);
+        results.clear();
+
+        PriorityQueue<KnnItem> queue = new PriorityQueue<>();
+
+        Node node = mRoot;
+        while (node != null) {
+            for (int idx = 0; idx < node.count; idx++) {
+                Branch[] branch = node.branch;
+                double squareDistance = branch[idx].squareDistanceFromPoint(center);
+
+                KnnItem knnItem = new KnnItem();
+                knnItem.branch = branch[idx];
+                knnItem.isLeaf = node.level == 0;
+                knnItem.squareDistance = squareDistance;
+                queue.add(knnItem);
+            }
+
+            while (!queue.isEmpty() && queue.peek().isLeaf) {
+                KnnItem knnItem = queue.poll();
+                T obj = (T) (knnItem.branch);
+                results.add(obj);
+                if (results.size() >= k) {
+                    return results;
+                }
+            }
+
+            KnnItem knnItem = queue.poll();
+            if (knnItem != null) {
+                node = (Node) knnItem.branch.node;
+            } else {
+                node = null;
+            }
+        }
+
+        return results;
+    }
+
+    @Override
+    public void searchKNearestNeighbors(Point center, int k, SearchCb<T> cb, Object context) {
+        List<T> results = searchKNearestNeighbors(center, k, null);
+        for (T result : results) {
+            cb.call(result, context);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.oscim.utils;
 
 import org.oscim.core.Box;
+import org.oscim.core.Point;
 
 import java.util.List;
 
@@ -23,6 +24,10 @@ public interface SpatialIndex<T> {
     public List<T> search(Box bbox, List<T> results);
 
     public boolean search(Box bbox, SearchCb<T> cb, Object context);
+
+    public List<T> searchKNearestNeighbors(Point center, int k, List<T> results);
+
+    public void searchKNearestNeighbors(Point center, int k, SearchCb<T> cb, Object context);
 
     public int size();
 

@@ -66,7 +66,7 @@ public final class GeoPointUtils {
     }
 
     /**
-     * Returns the distance between the given segment and point.
+     * Returns the squareDistance between the given segment and point.
      * <p>
      * libGDX (Apache 2.0)
      */
