@@ -1,5 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
+ * Copyright 2019 Izumi Kawashima
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -42,6 +43,7 @@ import java.util.PriorityQueue;
  * @author 2004 Templated C++ port by Greg Douglas
  * @author 2008 Portability issues fixed by Maxence Laurent
  * @author 2014 Ported to Java by Hannes Janetzek
+ * @author 2019 Added k-nearest neighbor search by Izumi Kawashima
  */
 public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
 
