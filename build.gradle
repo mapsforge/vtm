@@ -28,16 +28,13 @@ allprojects {
     }
 }
 
-static def androidCompileSdk() { return 28 }
-
-// 14 for Support Library, 16 for sqlite-android
-static def androidMinSdk() { return 16 }
-
-static def androidTargetSdk() { return 22 }
-
-static def versionCode() { return 1 }
-
-def versionName() { return version }
+ext {
+    androidCompileSdk = { return 28 }
+    androidMinSdk = { return 16 } // 14 for Support Library, 16 for sqlite-android
+    androidTargetSdk = { return 22 }
+    versionCode = { return 1 }
+    versionName = { return version }
+}
 
 subprojects {
     repositories {

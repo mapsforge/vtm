@@ -16,10 +16,10 @@ android {
     }
 
     defaultConfig {
-        versionCode versionCode()
-        versionName versionName()
-        minSdkVersion androidMinSdk()
-        targetSdkVersion androidTargetSdk()
+        versionCode project.versionCode()
+        versionName project.versionName()
+        minSdkVersion project.androidMinSdk()
+        targetSdkVersion project.androidTargetSdk()
     }
 
     sourceSets {
