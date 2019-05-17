@@ -466,10 +466,13 @@ public class RTreeTest {
             t.insert(item.min, item.max, item);
         }
 
-        List<Item> result = t.searchKNearestNeighbors(new Point(40, 40), 10, null);
+        List<Item> result = t.searchKNearestNeighbors(new Point(40, 40), 10, Double.POSITIVE_INFINITY, null);
         Assert.assertEquals(10, result.size());
 
-        result = t.searchKNearestNeighbors(new Point(40, 60), 90, result);
+        result = t.searchKNearestNeighbors(new Point(40, 40), 10, 17, null);
+        Assert.assertEquals(9, result.size()); // The last element [57,36,61,40] in the previous query is distance=17, so it should disappear (comparison is neq)
+
+        result = t.searchKNearestNeighbors(new Point(40, 60), 90, Double.POSITIVE_INFINITY, result);
         Assert.assertEquals(90, result.size());
     }
 

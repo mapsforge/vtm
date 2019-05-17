@@ -81,13 +81,13 @@ public class QuadTree<T> extends BoxTree<BoxItem<T>, T> implements SpatialIndex<
     }
 
     @Override
-    public List<T> searchKNearestNeighbors(Point center, int k, List<T> results) {
+    public List<T> searchKNearestNeighbors(Point center, int k, double maxDistance, List<T> results) {
         // TODO:
         return results;
     }
 
     @Override
-    public void searchKNearestNeighbors(Point center, int k, SearchCb<T> cb, Object context) {
+    public void searchKNearestNeighbors(Point center, int k, double maxDistance, SearchCb<T> cb, Object context) {
         // TODO:
     }
 }

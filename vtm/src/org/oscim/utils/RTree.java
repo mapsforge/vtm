@@ -381,7 +381,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
     }
 
     @Override
-    public List<T> searchKNearestNeighbors(Point center, int k, List<T> results) {
+    public List<T> searchKNearestNeighbors(Point center, int k, double maxDistance, List<T> results) {
         // Refered https://github.com/mourner/rbush-knn/blob/master/index.js
 
         if (results == null)
@@ -389,18 +389,20 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
         results.clear();
 
         PriorityQueue<KnnItem> queue = new PriorityQueue<>();
+        double maxSquareDistance = maxDistance * maxDistance;
 
         Node node = mRoot;
         while (node != null) {
             for (int idx = 0; idx < node.count; idx++) {
                 Branch[] branch = node.branch;
                 double squareDistance = branch[idx].squareDistanceFromPoint(center);
-
-                KnnItem knnItem = new KnnItem();
-                knnItem.branch = branch[idx];
-                knnItem.isLeaf = node.level == 0;
-                knnItem.squareDistance = squareDistance;
-                queue.add(knnItem);
+                if(squareDistance < maxSquareDistance) {
+                    KnnItem knnItem = new KnnItem();
+                    knnItem.branch = branch[idx];
+                    knnItem.isLeaf = node.level == 0;
+                    knnItem.squareDistance = squareDistance;
+                    queue.add(knnItem);
+                }
             }
 
             while (!queue.isEmpty() && queue.peek().isLeaf) {
@@ -424,8 +426,8 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
     }
 
     @Override
-    public void searchKNearestNeighbors(Point center, int k, SearchCb<T> cb, Object context) {
-        List<T> results = searchKNearestNeighbors(center, k, null);
+    public void searchKNearestNeighbors(Point center, int k, double maxDistance, SearchCb<T> cb, Object context) {
+        List<T> results = searchKNearestNeighbors(center, k, maxDistance, null);
         for (T result : results) {
             cb.call(result, context);
         }

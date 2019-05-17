@@ -25,9 +25,9 @@ public interface SpatialIndex<T> {
 
     public boolean search(Box bbox, SearchCb<T> cb, Object context);
 
-    public List<T> searchKNearestNeighbors(Point center, int k, List<T> results);
+    public List<T> searchKNearestNeighbors(Point center, int k, double maxDistance, List<T> results);
 
-    public void searchKNearestNeighbors(Point center, int k, SearchCb<T> cb, Object context);
+    public void searchKNearestNeighbors(Point center, int k, double maxDistance, SearchCb<T> cb, Object context);
 
     public int size();
 
