@@ -968,7 +968,30 @@ public class MapDatabase implements ITileDataSource {
 
                 if (labelPosition != null && wayDataBlock == 0)
                     e.setLabelPosition(e.points[0] + labelPosition[0], e.points[1] + labelPosition[1]);
+                else if(Parameters.POLY_SYMBOL_CENTER_PRECALC)
+                    e.labelPosition = null;
+
                 mTileProjection.project(e);
+
+                // when an osm-way will be rendered then typically a label/symbol will be applied
+                // by the render theme - if the osm-way does not come with a defined labelPosition
+                // we should calculate a position, that is based on all points of the given way...
+                // This "auto" position calculation is also done in the LabelTileLoaderHook class
+                // but then the points of the way have been already reduced cause of the clipping
+                // that is happening... So the suggestion here is to calculate the center of the way
+                // and use that as centerPosition of the element
+                if(Parameters.POLY_SYMBOL_CENTER_PRECALC && e.labelPosition == null){
+                    float x = 0;
+                    float y = 0;
+                    int n = e.index[0];
+                    for (int i = 0; i < n; ) {
+                        x += e.points[i++];
+                        y += e.points[i++];
+                    }
+                    x /= (n / 2);
+                    y /= (n / 2);
+                    e.setCenterPosition(x, y);
+                }
 
                 // Avoid clipping for buildings, which slows rendering.
                 // But clip everything if buildings are displayed.
@@ -1278,6 +1301,10 @@ public class MapDatabase implements ITileDataSource {
             if (e.labelPosition != null) {
                 e.labelPosition.x = projectLon(e.labelPosition.x);
                 e.labelPosition.y = projectLat(e.labelPosition.y);
+            }
+            if (e.centerPosition != null) {
+                e.centerPosition.x = projectLon(e.centerPosition.x);
+                e.centerPosition.y = projectLat(e.centerPosition.y);
             }
         }
     }

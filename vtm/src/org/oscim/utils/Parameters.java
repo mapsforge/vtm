@@ -52,6 +52,12 @@ public final class Parameters {
     public static boolean POLY_SYMBOL = true;
 
     /**
+     * Pre calculation of the center for polygon symbols (will effect performance since a simple
+     * centroid will be calculated for every single osm way.
+     */
+    public static boolean POLY_SYMBOL_CENTER_PRECALC = false;
+
+    /**
      * POT textures in themes.
      */
     public static boolean POT_TEXTURES = false;

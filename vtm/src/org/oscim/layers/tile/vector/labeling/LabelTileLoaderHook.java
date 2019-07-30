@@ -94,6 +94,13 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
                         label = PolyLabel.get(element);
                         x = label.x;
                         y = label.y;
+                    } else if (element.centerPosition != null) {
+                        label = element.centerPosition;
+                        // skip unnecessary calculations if centroid is outside of visible area
+                        if (label.x < 0 || label.x > Tile.SIZE || label.y < 0 || label.y > Tile.SIZE)
+                            return false;
+                        x = label.x;
+                        y = label.y;
                     } else {
                         int n = element.index[0];
                         for (int i = 0; i < n; ) {
@@ -146,8 +153,11 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
                 float x = 0;
                 float y = 0;
                 if (centroid == null) {
-                    if (Parameters.POLY_LABEL) {
-                        centroid = PolyLabel.get(element);
+                    if(element.centerPosition != null) {
+                        centroid = element.centerPosition;
+                        // skip unnecessary calculations if centroid is outside of visible area
+                        if (centroid.x < 0 || centroid.x > Tile.SIZE || centroid.y < 0 || centroid.y > Tile.SIZE)
+                            return false;
                         x = centroid.x;
                         y = centroid.y;
                     } else {
