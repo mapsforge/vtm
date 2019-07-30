@@ -31,6 +31,7 @@ import org.oscim.theme.IRenderTheme;
 public class MapElement extends GeometryBuffer {
 
     public PointF labelPosition;
+    public PointF centerPosition;
 
     /**
      * layer of the element (0-10) overrides the theme drawing order.
@@ -58,6 +59,7 @@ public class MapElement extends GeometryBuffer {
         super(element);
         this.tags.set(element.tags.asArray());
         this.labelPosition = element.labelPosition;
+        this.centerPosition = element.centerPosition;
         this.setLayer(element.layer);
     }
 
@@ -105,6 +107,10 @@ public class MapElement extends GeometryBuffer {
         labelPosition = new PointF(x, y);
     }
 
+    public void setCenterPosition(float x, float y) {
+        centerPosition = new PointF(x, y);
+    }
+
     /**
      * Set the layer of the element (0-10) to override theme drawing order.
      */
@@ -126,6 +132,10 @@ public class MapElement extends GeometryBuffer {
             labelPosition.x *= scaleX;
             labelPosition.y *= scaleY;
         }
+        if(centerPosition != null){
+            centerPosition.x *= scaleX;
+            centerPosition.y *= scaleY;
+        }
         return this;
     }
 
@@ -135,6 +145,10 @@ public class MapElement extends GeometryBuffer {
         if (labelPosition != null) {
             labelPosition.x += dx;
             labelPosition.y += dy;
+        }
+        if(centerPosition != null){
+            centerPosition.x += dx;
+            centerPosition.y += dy;
         }
         return this;
     }

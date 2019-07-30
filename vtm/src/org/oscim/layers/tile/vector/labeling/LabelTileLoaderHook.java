@@ -94,6 +94,9 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
                         label = PolyLabel.get(element);
                         x = label.x;
                         y = label.y;
+                    } else if (element.centerPosition != null) {
+                        x = element.centerPosition.x;
+                        y = element.centerPosition.y;
                     } else {
                         int n = element.index[0];
                         for (int i = 0; i < n; ) {
@@ -150,6 +153,9 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
                         centroid = PolyLabel.get(element);
                         x = centroid.x;
                         y = centroid.y;
+                    } else if(element.centerPosition != null) {
+                        x = element.centerPosition.x;
+                        y = element.centerPosition.y;
                     } else {
                         int n = element.index[0];
                         for (int i = 0; i < n; ) {
