@@ -153,11 +153,7 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
                 float x = 0;
                 float y = 0;
                 if (centroid == null) {
-                    if (Parameters.POLY_LABEL) {
-                        centroid = PolyLabel.get(element);
-                        x = centroid.x;
-                        y = centroid.y;
-                    } else if(element.centerPosition != null) {
+                    if(element.centerPosition != null) {
                         centroid = element.centerPosition;
                         // skip unnecessary calculations if centroid is outside of visible area
                         if (centroid.x < 0 || centroid.x > Tile.SIZE || centroid.y < 0 || centroid.y > Tile.SIZE)
