@@ -9,6 +9,7 @@
  * Copyright 2018 boldtrn
  * Copyright 2018-2019 Gustl22
  * Copyright 2019 Andrea Antonello
+ * Copyright 2019 Kostas Tzounopoulos
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -95,6 +96,7 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(NextzenGeojsonActivity.class));
         linearLayout.addView(createButton(OpenMapTilesMvtActivity.class));*/
         linearLayout.addView(createButton(GdxActivity.class));
+        linearLayout.addView(createButton(MBTilesMvtTileActivity.class));
 
         linearLayout.addView(createLabel("Features"));
         linearLayout.addView(createButton(null, "GraphHopper Routing", new View.OnClickListener() {

@@ -26,7 +26,8 @@
     <string name="search_value">void or value</string>
     <string name="now">Now</string>
     <string name="warning">Warning</string>
-    <string name="startup_message_mbtiles">To run this sample activity, you need any  MBTiles with filename test.mbtiles installed on storage.\n\nadb push file.mbtiles /sdcard/test.mbtiles</string>
+    <string name="startup_message_mbtiles">To run this sample activity, you need an MBTiles Database installed on storage.\n\nadb push %s %s</string>
+    <string name="unknown_format_mbtiles">Unknown format \'%s\' found in MBTiles database \'%s\' in field \'metadata.format\'. Supported format(s) are: \'%s\'</string>
     <string name="exit">Exit</string>
 
 </resources>

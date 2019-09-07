@@ -1,6 +1,7 @@
 /*
  * Copyright 2019 Andrea Antonello
  * Copyright 2019 devemux86
+ * Copyright 2019 Kostas Tzounopoulos
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -35,125 +36,33 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * A tile data source for MBTiles raster databases.
+ * A tile data source for MBTiles Raster databases.
  */
-public class MBTilesBitmapTileDataSource implements ITileDataSource {
-
-    private static final Logger log = LoggerFactory.getLogger(MBTilesBitmapTileDataSource.class);
-
-    private static final String TABLE_TILES = "tiles";
-    private static final String COL_TILES_ZOOM_LEVEL = "zoom_level";
-    private static final String COL_TILES_TILE_COLUMN = "tile_column";
-    private static final String COL_TILES_TILE_ROW = "tile_row";
-    private static final String COL_TILES_TILE_DATA = "tile_data";
-    private static final String SELECT_TILES = "SELECT " + COL_TILES_TILE_DATA + " from " + TABLE_TILES + " where "
-            + COL_TILES_ZOOM_LEVEL + "=? AND " + COL_TILES_TILE_COLUMN + "=? AND " + COL_TILES_TILE_ROW + "=?";
-
-    private static final String TABLE_METADATA = "metadata";
-    private static final String COL_METADATA_NAME = "name";
-    private static final String COL_METADATA_VALUE = "value";
-    private static final String SELECT_METADATA = "select " + COL_METADATA_NAME + "," + COL_METADATA_VALUE + " from "
-            + TABLE_METADATA;
+public class MBTilesBitmapTileDataSourceWorker implements ITileDataSource {
+    public final static List<String> SUPPORTED_FORMATS = Arrays.asList("png", "jpg", "jpeg");
+    protected static final Logger log = LoggerFactory.getLogger(MBTilesBitmapTileDataSourceWorker.class);
 
     private final Integer mAlpha;
-    private final SQLiteDatabase mDatabase;
-    private Map<String, String> mMetadata;
     private final Integer mTransparentColor;
+    private final SQLiteDatabase mDatabase;
 
     /**
      * Create a MBTiles tile data source.
      *
-     * @param path             the path to the MBTiles database.
+     * @param database         the MBTiles database
      * @param alpha            an optional alpha value [0-255] to make the tiles transparent.
      * @param transparentColor an optional color that will be made transparent in the bitmap.
      */
-    MBTilesBitmapTileDataSource(String path, Integer alpha, Integer transparentColor) {
-        mDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
+    MBTilesBitmapTileDataSourceWorker(SQLiteDatabase database, Integer alpha, Integer transparentColor) {
+        mDatabase = database;
         mAlpha = alpha;
         mTransparentColor = transparentColor;
-    }
-
-    @Override
-    public void cancel() {
-        mDatabase.close();
-    }
-
-    @Override
-    public void dispose() {
-        mDatabase.close();
-    }
-
-    String getAttribution() {
-        return getMetadata().get("attribution");
-    }
-
-    BoundingBox getBounds() {
-        String bounds = getMetadata().get("bounds");
-        if (bounds != null) {
-            String[] split = bounds.split(",");
-            double w = Double.parseDouble(split[0]);
-            double s = Double.parseDouble(split[1]);
-            double e = Double.parseDouble(split[2]);
-            double n = Double.parseDouble(split[3]);
-            return new BoundingBox(s, w, n, e);
-        }
-        return null;
-    }
-
-    public String getDescription() {
-        return getMetadata().get("description");
-    }
-
-    /**
-     * @return the image format (jpg, png)
-     */
-    public String getFormat() {
-        return getMetadata().get("format");
-    }
-
-    int getMaxZoom() {
-        String maxZoom = getMetadata().get("maxzoom");
-        if (maxZoom != null)
-            return Integer.parseInt(maxZoom);
-        return Viewport.MAX_ZOOM_LEVEL;
-    }
-
-    private Map<String, String> getMetadata() {
-        if (mMetadata == null) {
-            mMetadata = new HashMap<>();
-            Cursor cursor = null;
-            try {
-                cursor = mDatabase.rawQuery(SELECT_METADATA, null);
-                while (cursor.moveToNext()) {
-                    String key = cursor.getString(0);
-                    String value = cursor.getString(1);
-                    mMetadata.put(key, value);
-                }
-            } finally {
-                if (cursor != null)
-                    cursor.close();
-            }
-        }
-        return mMetadata;
-    }
-
-    int getMinZoom() {
-        String minZoom = getMetadata().get("minzoom");
-        if (minZoom != null)
-            return Integer.parseInt(minZoom);
-        return Viewport.MIN_ZOOM_LEVEL;
-    }
-
-    String getName() {
-        return getMetadata().get("name");
-    }
-
-    public String getVersion() {
-        return getMetadata().get("version");
     }
 
     private static android.graphics.Bitmap processAlpha(android.graphics.Bitmap bitmap, int alpha) {
@@ -204,6 +113,20 @@ public class MBTilesBitmapTileDataSource implements ITileDataSource {
         }
     }
 
+    @Override
+    public void cancel() {
+        if (mDatabase != null && mDatabase.isOpen()) {
+            mDatabase.close();
+        }
+    }
+
+    @Override
+    public void dispose() {
+        if (mDatabase != null && mDatabase.isOpen()) {
+            mDatabase.close();
+        }
+    }
+
     /**
      * Read a Tile's image bytes from the MBTiles database.
      *
@@ -216,13 +139,20 @@ public class MBTilesBitmapTileDataSource implements ITileDataSource {
         Cursor cursor = null;
         try {
             long tmsTileY = MercatorProjection.tileYToTMS(tileY, zoomLevel);
-            cursor = mDatabase.rawQuery(SELECT_TILES, new String[]{String.valueOf(zoomLevel), String.valueOf(tileX), String.valueOf(tmsTileY)});
-            if (cursor.moveToFirst())
+            cursor = mDatabase.rawQuery(
+                    MBTilesTileDataSource.SELECT_TILES,
+                    new String[]{String.valueOf(zoomLevel), String.valueOf(tileX), String.valueOf(tmsTileY)}
+            );
+
+            if (cursor.moveToFirst()) {
                 return cursor.getBlob(0);
+            }
         } finally {
-            if (cursor != null)
+            if (cursor != null) {
                 cursor.close();
+            }
         }
+
         return null;
     }
 }

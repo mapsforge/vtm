@@ -3,6 +3,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 dependencies {
     api project(':vtm')
+    api project(':vtm-mvt')
     api 'com.caverock:androidsvg:1.3'
 }
 

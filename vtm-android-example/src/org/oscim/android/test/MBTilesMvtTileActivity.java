@@ -21,26 +21,30 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import org.oscim.android.tiling.source.mbtiles.MBTilesBitmapTileDataSourceWorker;
+import org.oscim.android.cache.TileCache;
 import org.oscim.android.tiling.source.mbtiles.MBTilesMvtTileDataSourceWorker;
 import org.oscim.android.tiling.source.mbtiles.MBTilesTileSource;
 import org.oscim.core.BoundingBox;
+import org.oscim.core.GeoPoint;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
-import org.oscim.layers.tile.bitmap.BitmapTileLayer;
+import org.oscim.layers.tile.buildings.BuildingLayer;
+import org.oscim.layers.tile.vector.VectorTileLayer;
+import org.oscim.layers.tile.vector.labeling.LabelLayer;
+import org.oscim.theme.VtmThemes;
+import org.oscim.tiling.TileSource;
+import org.oscim.tiling.source.OkHttpEngine;
+import org.oscim.tiling.source.UrlTileSource;
+import org.oscim.tiling.source.mvt.OpenMapTilesMvtTileSource;
 
 import java.io.File;
 
-/**
- * An example activity making use of Raster MBTiles.
- */
-public class MBTilesBitmapTileActivity extends BitmapTileActivity {
-
+public class MBTilesMvtTileActivity extends MapActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        File file = new File(getExternalFilesDir(null), "raster.mbtiles");
+        File file = new File(getExternalFilesDir(null), "vector.mbtiles");
         if (!file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setTitle(R.string.warning)
@@ -52,12 +56,13 @@ public class MBTilesBitmapTileActivity extends BitmapTileActivity {
                         }
                     });
             builder.show();
+
             return;
         }
 
-        MBTilesTileSource tileSource = new MBTilesTileSource(file.getAbsolutePath(), null, 128, null);
+        MBTilesTileSource tileSource = new MBTilesTileSource(file.getAbsolutePath(), "en");
 
-        if (!MBTilesBitmapTileDataSourceWorker.SUPPORTED_FORMATS.contains(tileSource.getMetadataFormat())) {
+        if (!MBTilesMvtTileDataSourceWorker.SUPPORTED_FORMATS.contains(tileSource.getMetadataFormat())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setTitle(R.string.warning)
                     .setMessage(
@@ -79,10 +84,12 @@ public class MBTilesBitmapTileActivity extends BitmapTileActivity {
             return;
         }
 
-        BitmapTileLayer bitmapLayer = new BitmapTileLayer(mMap, tileSource);
-        mMap.layers().add(bitmapLayer);
+        VectorTileLayer vectorTileLayer = mMap.setBaseMap(tileSource);
+        mMap.setTheme(VtmThemes.OPENMAPTILES);
 
-        /* set initial position on first run */
+        mMap.layers().add(new BuildingLayer(mMap, vectorTileLayer));
+        mMap.layers().add(new LabelLayer(mMap, vectorTileLayer));
+
         MapPosition pos = new MapPosition();
         mMap.getMapPosition(pos);
         if (pos.x == 0.5 && pos.y == 0.5) {

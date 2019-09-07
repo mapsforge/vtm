@@ -82,6 +82,9 @@
             android:name=".MBTilesBitmapTileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".MBTilesMvtTileActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".NextzenGeojsonActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
