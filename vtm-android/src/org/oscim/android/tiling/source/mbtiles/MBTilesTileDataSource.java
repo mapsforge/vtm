@@ -43,8 +43,8 @@ abstract public class MBTilesTileDataSource implements ITileDataSource {
     protected final SQLiteDatabase mDatabase;
     protected Map<String, String> mMetadata;
 
-    public MBTilesTileDataSource(String path) {
-        mDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
+    public MBTilesTileDataSource(String databasePath) {
+        mDatabase = SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READONLY);
     }
 
     abstract public List<String> getSupportedFormats();
@@ -59,7 +59,7 @@ abstract public class MBTilesTileDataSource implements ITileDataSource {
         List<String> supportedFormats = getSupportedFormats();
 
         if (!supportedFormats.contains(mbTilesFormat)) {
-            throw new RuntimeException(
+            throw new UnsupportedMBTilesDatabaseException(
                     String.format(
                             "Unsupported MBTiles 'metadata.format: %s'. Supported format(s) are: %s",
                             mbTilesFormat,

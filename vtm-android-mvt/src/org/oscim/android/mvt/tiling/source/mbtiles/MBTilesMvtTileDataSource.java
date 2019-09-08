@@ -154,7 +154,7 @@ public class MBTilesMvtTileDataSource extends MBTilesTileDataSource {
         return String.format(SELECT_TILES_FORMAT, whereBuilder.toString());
     }
 
-    private MapTile create( Cursor cursor) {
+    private MapTile create(Cursor cursor) {
         int tileX = cursor.getInt(cursor.getColumnIndexOrThrow("tile_column"));
         int tileY = cursor.getInt(cursor.getColumnIndexOrThrow("tile_row"));
         byte zoomLevel = (byte) cursor.getInt(cursor.getColumnIndexOrThrow("zoom_level"));

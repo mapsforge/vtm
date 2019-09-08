@@ -49,12 +49,12 @@ public class MBTilesBitmapTileDataSource extends MBTilesTileDataSource {
     /**
      * Create a MBTiles tile data source for Raster databases
      *
-     * @param path             the MBTiles database path
+     * @param databasePath     the MBTiles database path
      * @param alpha            an optional alpha value [0-255] to make the tiles transparent.
      * @param transparentColor an optional color that will be made transparent in the bitmap.
      */
-    public MBTilesBitmapTileDataSource(String path, Integer alpha, Integer transparentColor) {
-        super(path);
+    public MBTilesBitmapTileDataSource(String databasePath, Integer alpha, Integer transparentColor) {
+        super(databasePath);
 
         try {
             assertDatabaseFormat();
