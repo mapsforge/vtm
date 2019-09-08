@@ -46,13 +46,6 @@ android.libraryVariants.all { variant ->
     jar.exclude '**/R$*.class'
     jar.from variant.javaCompileProvider.get().destinationDir
     artifacts.add('archives', jar)
-
-    file('natives').eachDir() { dir ->
-        def nativesJar = project.tasks.create "nativesJar${name.capitalize()}-${dir.name}", Jar
-        nativesJar.classifier = "natives-${dir.name}"
-        nativesJar.from(dir.path)
-        artifacts.add('archives', nativesJar)
-    }
 }
 
 if (project.hasProperty("SONATYPE_USERNAME")) {
