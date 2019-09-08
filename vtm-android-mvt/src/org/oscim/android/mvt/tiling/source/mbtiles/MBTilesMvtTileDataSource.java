@@ -12,17 +12,14 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.android.tiling.source.mbtiles;
+package org.oscim.android.mvt.tiling.source.mbtiles;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
-import org.oscim.core.BoundingBox;
+import org.oscim.android.tiling.source.mbtiles.MBTilesTileDataSource;
 import org.oscim.core.MercatorProjection;
 import org.oscim.layers.tile.MapTile;
-import org.oscim.map.Viewport;
 import org.oscim.tiling.ITileDataSink;
-import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.OverzoomDataSink;
 import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.source.mvt.MvtTileDecoder;
@@ -30,26 +27,16 @@ import org.oscim.tiling.source.mvt.MvtTileDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-public class MBTilesMvtTileDataSourceWorker implements ITileDataSource {
-    public final static List<String> SUPPORTED_FORMATS = Arrays.asList("pbf");
+public class MBTilesMvtTileDataSource extends MBTilesTileDataSource {
+    private final static List<String> SUPPORTED_FORMATS = Arrays.asList("pbf");
 
-    private static final String SELECT_TILES_FORMAT =
-            "SELECT zoom_level, tile_column, tile_row, tile_data " +
-            "FROM tiles " +
-            "WHERE %s " +
-            "ORDER BY zoom_level DESC " +
-            "LIMIT 1";
-
-    private static final String WHERE_FORMAT = "zoom_level=%d AND tile_column=%d AND tile_row=%d";
+    public static final String WHERE_FORMAT = "zoom_level=%d AND tile_column=%d AND tile_row=%d";
 
     private final String mLocale;
-    private final SQLiteDatabase mDatabase;
 
     private final ThreadLocal<MvtTileDecoder> mThreadLocalMvtTileDecoders = new ThreadLocal<MvtTileDecoder>() {
         @Override
@@ -58,9 +45,17 @@ public class MBTilesMvtTileDataSourceWorker implements ITileDataSource {
         }
     };
 
-    public MBTilesMvtTileDataSourceWorker(SQLiteDatabase database, String locale) {
+    public MBTilesMvtTileDataSource(String databasePath, String locale) {
+        super(databasePath);
+
+        assertDatabaseFormat();
+
         mLocale = locale != null ? locale : "en";
-        mDatabase = database;
+    }
+
+    @Override
+    public List<String> getSupportedFormats() {
+        return SUPPORTED_FORMATS;
     }
 
     @Override

@@ -19,23 +19,17 @@ package org.oscim.android.test;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 
-import org.oscim.android.cache.TileCache;
-import org.oscim.android.tiling.source.mbtiles.MBTilesMvtTileDataSourceWorker;
+import org.oscim.android.mvt.tiling.source.mbtiles.MBTilesMvtTileSource;
 import org.oscim.android.tiling.source.mbtiles.MBTilesTileSource;
+import org.oscim.android.tiling.source.mbtiles.UnsupportedMBTilesDatabaseException;
 import org.oscim.core.BoundingBox;
-import org.oscim.core.GeoPoint;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.theme.VtmThemes;
-import org.oscim.tiling.TileSource;
-import org.oscim.tiling.source.OkHttpEngine;
-import org.oscim.tiling.source.UrlTileSource;
-import org.oscim.tiling.source.mvt.OpenMapTilesMvtTileSource;
 
 import java.io.File;
 
@@ -60,19 +54,13 @@ public class MBTilesMvtTileActivity extends MapActivity {
             return;
         }
 
-        MBTilesTileSource tileSource = new MBTilesTileSource(file.getAbsolutePath(), "en");
-
-        if (!MBTilesMvtTileDataSourceWorker.SUPPORTED_FORMATS.contains(tileSource.getMetadataFormat())) {
+        MBTilesTileSource tileSource;
+        try {
+            tileSource = new MBTilesMvtTileSource(file.getAbsolutePath(), "en");
+        } catch (UnsupportedMBTilesDatabaseException e) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setTitle(R.string.warning)
-                    .setMessage(
-                            getResources().getString(
-                                    R.string.unknown_format_mbtiles,
-                                    tileSource.getMetadataFormat(),
-                                    file.getAbsolutePath(),
-                                    TextUtils.join(", ", MBTilesMvtTileDataSourceWorker.SUPPORTED_FORMATS)
-                            )
-                    )
+                    .setMessage(e.getMessage())
                     .setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

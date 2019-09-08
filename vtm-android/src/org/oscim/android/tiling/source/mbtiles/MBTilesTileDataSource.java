@@ -20,106 +20,60 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import org.locationtech.jts.geom.Point;
 import org.oscim.core.BoundingBox;
-import org.oscim.core.GeoPoint;
 import org.oscim.core.MapPosition;
-import org.oscim.layers.tile.MapTile;
 import org.oscim.map.Viewport;
-import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MBTilesTileDataSource implements ITileDataSource {
-    private static final String TABLE_TILES = "tiles";
-    private static final String COL_TILES_ZOOM_LEVEL = "zoom_level";
-    private static final String COL_TILES_TILE_COLUMN = "tile_column";
-    private static final String COL_TILES_TILE_ROW = "tile_row";
-    private static final String COL_TILES_TILE_DATA = "tile_data";
-    private static final String TABLE_METADATA = "metadata";
-    private static final String COL_METADATA_NAME = "name";
-    private static final String COL_METADATA_VALUE = "value";
+abstract public class MBTilesTileDataSource implements ITileDataSource {
+    public static final String SELECT_TILES_FORMAT =
+            "SELECT zoom_level, tile_column, tile_row, tile_data " +
+            "FROM tiles " +
+            "WHERE %s " +
+            "ORDER BY zoom_level DESC " +
+            "LIMIT 1";
 
-    public static final String SELECT_TILES = "SELECT " + COL_TILES_TILE_DATA + " from " + TABLE_TILES + " where "
-            + COL_TILES_ZOOM_LEVEL + "=? AND " + COL_TILES_TILE_COLUMN + "=? AND " + COL_TILES_TILE_ROW + "=?";
-    public static final String SELECT_METADATA = "select " + COL_METADATA_NAME + "," + COL_METADATA_VALUE + " from "
-            + TABLE_METADATA;
+    public static final String WHERE_FORMAT = "zoom_level=? AND tile_column=? AND tile_row=?";
+    public static final String SELECT_METADATA = "SELECT name, value FROM metadata";
 
-    private final SQLiteDatabase mDatabase;
-    private final String mLocale;
-    private final Integer mAlpha;
-    private final Integer mTransparentColor;
-    private Map<String, String> mMetadata;
-    private ITileDataSource mTileDataSource;
+    protected final SQLiteDatabase mDatabase;
+    protected Map<String, String> mMetadata;
 
-    public MBTilesTileDataSource(String path, String locale, Integer alpha, Integer transparentColor) {
+    public MBTilesTileDataSource(String path) {
         mDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
-        mLocale = locale;
-        mAlpha = alpha;
-        mTransparentColor = transparentColor;
     }
 
-    @Override
-    public void cancel() {
-        findWorker().cancel();
-    }
+    abstract public List<String> getSupportedFormats();
 
-    @Override
-    public void dispose() {
-        findWorker().cancel();
-    }
-
-    @Override
-    public void query(MapTile requestTile, ITileDataSink requestDataSink) {
-        findWorker().query(requestTile, requestDataSink);
-    }
-
-    protected ITileDataSource findWorker() {
-        if (mTileDataSource != null) {
-            return mTileDataSource;
-        }
-
+    protected void assertDatabaseFormat() {
         String mbTilesFormat = getFormat();
 
         if (mbTilesFormat == null) {
-            throw new RuntimeException("Unable to read the '" + TABLE_METADATA + ".format' field of the database.");
+            throw new RuntimeException("'metadata.format' field was not found. Is this an MBTiles database?");
         }
 
-        if (MBTilesBitmapTileDataSourceWorker.SUPPORTED_FORMATS.contains(mbTilesFormat)) {
-            mTileDataSource = new MBTilesBitmapTileDataSourceWorker(mDatabase, mAlpha, mTransparentColor);
+        List<String> supportedFormats = getSupportedFormats();
 
-            return mTileDataSource;
+        if (!supportedFormats.contains(mbTilesFormat)) {
+            throw new RuntimeException(
+                    String.format(
+                            "Unsupported MBTiles 'metadata.format: %s'. Supported format(s) are: %s",
+                            mbTilesFormat,
+                            TextUtils.join(", ", supportedFormats)
+                    )
+            );
         }
-
-        if (MBTilesMvtTileDataSourceWorker.SUPPORTED_FORMATS.contains(mbTilesFormat)) {
-            mTileDataSource = new MBTilesMvtTileDataSourceWorker(mDatabase, mLocale);
-
-            return mTileDataSource;
-        }
-
-        List<String> supportedFormats = new ArrayList<>();
-        supportedFormats.addAll(MBTilesBitmapTileDataSourceWorker.SUPPORTED_FORMATS);
-        supportedFormats.addAll(MBTilesMvtTileDataSourceWorker.SUPPORTED_FORMATS);
-
-        throw new RuntimeException(
-                String.format(
-                        "Unknown MBtiles database format '%s' found in the 'metadata.format' field of the database. "
-                        + "Expected one of: '%s'",
-                        mbTilesFormat,
-                        TextUtils.join(", ", supportedFormats)
-                )
-        );
     }
 
-    String getAttribution() {
+    public String getAttribution() {
         return getMetadata().get("attribution");
     }
 
-    BoundingBox getBounds() {
+    public BoundingBox getBounds() {
         String bounds = getMetadata().get("bounds");
 
         if (bounds == null) {
@@ -135,7 +89,7 @@ public class MBTilesTileDataSource implements ITileDataSource {
         return new BoundingBox(s, w, n, e);
     }
 
-    MapPosition getCenter() {
+    public MapPosition getCenter() {
         String center = getMetadata().get("center");
 
         if (center == null) {
@@ -154,51 +108,51 @@ public class MBTilesTileDataSource implements ITileDataSource {
         return centerMapPosition;
     }
 
-    String getDescription() {
+    public String getDescription() {
         return getMetadata().get("description");
     }
 
-    String getFormat() {
+    public String getFormat() {
         return getMetadata().get("format");
     }
 
-    Integer getPixelScale() {
+    public Integer getPixelScale() {
         String pixelScale = getMetadata().get("pixel_scale");
 
         return pixelScale != null ? Integer.parseInt(pixelScale) : null;
     }
 
-    int getMaxZoom() {
+    public int getMaxZoom() {
         String maxZoom = getMetadata().get("maxzoom");
 
         return maxZoom != null ? Integer.parseInt(maxZoom) : Viewport.MAX_ZOOM_LEVEL;
     }
 
-    int getMinZoom() {
+    public int getMinZoom() {
         String minZoom = getMetadata().get("minzoom");
 
         return minZoom != null ? Integer.parseInt(minZoom) : Viewport.MIN_ZOOM_LEVEL;
     }
 
-    String getName() {
+    public String getName() {
         return getMetadata().get("name");
     }
 
-    String getVersion() {
+    public String getVersion() {
         return getMetadata().get("version");
     }
 
-    String getId() {
+    public String getId() {
         return getMetadata().get("id");
     }
 
-    Long getMTime() {
+    public Long getMTime() {
         String mTime = getMetadata().get("mtime");
 
         return mTime != null ? Long.parseLong(mTime) : null;
     }
 
-    String getJson() {
+    public String getJson() {
         return getMetadata().get("json");
     }
 

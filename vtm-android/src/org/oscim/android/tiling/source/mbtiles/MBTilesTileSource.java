@@ -17,46 +17,17 @@
 package org.oscim.android.tiling.source.mbtiles;
 
 import org.oscim.core.BoundingBox;
-import org.oscim.core.GeoPoint;
 import org.oscim.core.MapPosition;
-import org.oscim.map.Viewport;
 import org.oscim.tiling.TileSource;
 
 /**
- * A tile source for MBTiles Raster and Vector databases.
- * Supports the OpenMapTiles MVT pbf-gzip MBTiles format
+ * A tile source for MBTiles databases.
  */
-public class MBTilesTileSource extends TileSource {
-    private final MBTilesTileDataSource mTileDataSource;
+abstract public class MBTilesTileSource extends TileSource {
+    protected final MBTilesTileDataSource mTileDataSource;
 
-    /**
-     * Create a MBTiles tile source (Raster/Vector)
-     *
-     * @param path the path to the MBTiles database.
-     */
-    public MBTilesTileSource(String path) {
-        this(path, null, null, null);
-    }
-
-    /**
-     * Create an MBTiles tile source with additional parameters
-     *
-     * @param path             the path to the MBTiles database. (Raster & Vector)
-     * @param locale           the database locale to use, e.g. "en", "de" (Vector only)
-     * @param alpha            an optional alpha value [0-255] to make the tiles transparent. (Raster only)
-     * @param transparentColor an optional color that will be made transparent in the bitmap. (Raster only)
-     */
-    public MBTilesTileSource(String path, String locale, Integer alpha, Integer transparentColor) {
-        mTileDataSource = new MBTilesTileDataSource(path, locale, alpha, transparentColor);
-    }
-
-    /**
-     * Create a MBTiles tile source (Vector only)
-     *
-     * @param path the path to the MBTiles database.
-     */
-    public MBTilesTileSource(String path, String locale) {
-        this(path, locale, null, null);
+    public MBTilesTileSource(MBTilesTileDataSource tileDataSource) {
+        mTileDataSource = tileDataSource;
     }
 
     @Override

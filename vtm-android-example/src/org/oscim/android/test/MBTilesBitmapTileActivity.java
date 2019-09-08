@@ -19,10 +19,8 @@ package org.oscim.android.test;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 
-import org.oscim.android.tiling.source.mbtiles.MBTilesBitmapTileDataSourceWorker;
-import org.oscim.android.tiling.source.mbtiles.MBTilesMvtTileDataSourceWorker;
+import org.oscim.android.tiling.source.mbtiles.MBTilesBitmapTileSource;
 import org.oscim.android.tiling.source.mbtiles.MBTilesTileSource;
 import org.oscim.core.BoundingBox;
 import org.oscim.core.MapPosition;
@@ -55,29 +53,7 @@ public class MBTilesBitmapTileActivity extends BitmapTileActivity {
             return;
         }
 
-        MBTilesTileSource tileSource = new MBTilesTileSource(file.getAbsolutePath(), null, 128, null);
-
-        if (!MBTilesBitmapTileDataSourceWorker.SUPPORTED_FORMATS.contains(tileSource.getMetadataFormat())) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                    .setTitle(R.string.warning)
-                    .setMessage(
-                            getResources().getString(
-                                    R.string.unknown_format_mbtiles,
-                                    tileSource.getMetadataFormat(),
-                                    file.getAbsolutePath(),
-                                    TextUtils.join(", ", MBTilesMvtTileDataSourceWorker.SUPPORTED_FORMATS)
-                            )
-                    )
-                    .setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-            builder.show();
-
-            return;
-        }
+        MBTilesTileSource tileSource = new MBTilesBitmapTileSource(file.getAbsolutePath(), 128, null);
 
         BitmapTileLayer bitmapLayer = new BitmapTileLayer(mMap, tileSource);
         mMap.layers().add(bitmapLayer);

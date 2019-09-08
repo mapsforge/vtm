@@ -17,19 +17,16 @@
 package org.oscim.android.tiling.source.mbtiles;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
-import org.oscim.core.BoundingBox;
 import org.oscim.core.MercatorProjection;
 import org.oscim.layers.tile.MapTile;
-import org.oscim.map.Viewport;
 import org.oscim.tiling.ITileDataSink;
-import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,32 +34,41 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A tile data source for MBTiles Raster databases.
  */
-public class MBTilesBitmapTileDataSourceWorker implements ITileDataSource {
-    public final static List<String> SUPPORTED_FORMATS = Arrays.asList("png", "jpg", "jpeg");
-    protected static final Logger log = LoggerFactory.getLogger(MBTilesBitmapTileDataSourceWorker.class);
+public class MBTilesBitmapTileDataSource extends MBTilesTileDataSource {
+    private final static List<String> SUPPORTED_FORMATS = Arrays.asList("png", "jpg", "jpeg");
+    protected static final Logger log = LoggerFactory.getLogger(MBTilesBitmapTileDataSource.class);
 
     private final Integer mAlpha;
     private final Integer mTransparentColor;
-    private final SQLiteDatabase mDatabase;
 
     /**
-     * Create a MBTiles tile data source.
+     * Create a MBTiles tile data source for Raster databases
      *
-     * @param database         the MBTiles database
+     * @param path             the MBTiles database path
      * @param alpha            an optional alpha value [0-255] to make the tiles transparent.
      * @param transparentColor an optional color that will be made transparent in the bitmap.
      */
-    MBTilesBitmapTileDataSourceWorker(SQLiteDatabase database, Integer alpha, Integer transparentColor) {
-        mDatabase = database;
+    public MBTilesBitmapTileDataSource(String path, Integer alpha, Integer transparentColor) {
+        super(path);
+
+        try {
+            assertDatabaseFormat();
+        } catch (UnsupportedMBTilesDatabaseException e) {
+            log.error("Invalid MBTiles database", e);
+        }
+
         mAlpha = alpha;
         mTransparentColor = transparentColor;
+    }
+
+    @Override
+    public List<String> getSupportedFormats() {
+        return SUPPORTED_FORMATS;
     }
 
     private static android.graphics.Bitmap processAlpha(android.graphics.Bitmap bitmap, int alpha) {
@@ -136,16 +142,17 @@ public class MBTilesBitmapTileDataSourceWorker implements ITileDataSource {
      * @return the tile image bytes.
      */
     private byte[] readTile(int tileX, int tileY, byte zoomLevel) {
+        long tmsTileY = MercatorProjection.tileYToTMS(tileY, zoomLevel);
+
         Cursor cursor = null;
         try {
-            long tmsTileY = MercatorProjection.tileYToTMS(tileY, zoomLevel);
             cursor = mDatabase.rawQuery(
-                    MBTilesTileDataSource.SELECT_TILES,
+                    String.format(MBTilesTileDataSource.SELECT_TILES_FORMAT, MBTilesTileDataSource.WHERE_FORMAT),
                     new String[]{String.valueOf(zoomLevel), String.valueOf(tileX), String.valueOf(tmsTileY)}
             );
 
             if (cursor.moveToFirst()) {
-                return cursor.getBlob(0);
+                return cursor.getBlob(cursor.getColumnIndexOrThrow("tile_data"));
             }
         } finally {
             if (cursor != null) {
