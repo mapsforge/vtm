@@ -64,7 +64,7 @@ public final class S3DBUtils {
      * @param element the GeometryBuffer which is used to write the 3D mesh
      * @return true if calculation succeeded, false otherwise
      */
-    public static boolean calcCircleMesh(GeometryBuffer element, float minHeight, float maxHeight, String type) {
+    public static boolean calcCircleMesh(GeometryBuffer element, float minHeight, float maxHeight, String roofShape) {
         float[] points = element.points;
         int[] index = element.index;
 
@@ -81,29 +81,7 @@ public final class S3DBUtils {
 
             // Init mesh
             GeometryBuffer mesh;
-            switch (type) {
-                case Tag.VALUE_ONION:
-                    float[][] onionShape = new float[][]{
-                            {1, 0, 0},
-                            {0.2f, 0, 0.01f},
-                            {0.875f, 0, 0.1875f},
-                            {1, 0, 0.375f},
-                            {0.875f, 0, 0.5625f},
-                            {0.5f, 0, 0.75f},
-                            {0.2f, 0, 0.8125f},
-                            {0, 0, 1}};
-                    mesh = initCircleMesh(onionShape, numSections);
-                    break;
-                case Tag.VALUE_DOME:
-                default:
-                    float[][] domeShape = new float[][]{
-                            {1, 0, 0},
-                            {0.825f, 0, 0.5f},
-                            {0.5f, 0, 0.825f},
-                            {0, 0, 1}};
-                    mesh = initCircleMesh(domeShape, numSections);
-                    break;
-            }
+            mesh = initCircleMesh(getProfile(roofShape), numSections);
 
 
             // Calculate center and load points
@@ -363,13 +341,15 @@ public final class S3DBUtils {
      * @param minHeight         the minimum height
      * @param maxHeight         the maximum height
      * @param orientationAcross indicates if ridge is parallel to short side
-     * @param isGabled          indicates if should calculate a gable
+     * @param roofShape         the roof shape
      * @param specialParts      element to add missing parts of underlying element
      * @return true if calculation succeeded, false otherwise
      */
-    public static boolean calcRidgeMesh(GeometryBuffer element, float minHeight, float maxHeight, boolean orientationAcross, boolean isGabled, GeometryBuffer specialParts) {
+    public static boolean calcRidgeMesh(GeometryBuffer element, float minHeight, float maxHeight, boolean orientationAcross, String roofShape, GeometryBuffer specialParts) {
         float[] points = element.points;
         int[] index = element.index;
+
+        boolean isGabled = isGabled(roofShape);
 
         for (int i = 0, pointPos = 0; i < index.length; i++) {
             if (index[i] < 0) {
@@ -395,9 +375,10 @@ public final class S3DBUtils {
                 point3Fs.add(new float[]{x, y, minHeight});
             }
 
-            // Calc vectors
+            /* Number of ground points */
             int groundSize = point3Fs.size();
 
+            // Calc vectors
             List<Float> lengths = new ArrayList<>();
             List<float[]> normVectors = GeometryUtils.normalizedVectors2D(point3Fs, lengths);
 
@@ -627,9 +608,13 @@ public final class S3DBUtils {
                 }
             }
 
+            float[][] profile = getProfile(roofShape);
+            int profileSize = profile.length - 2;
+            int profileSizePlus = profile.length - 1; // profile roof shape size + ground size (+1)
+
             // Allocate the indices to the points
             int ridgePointSize = ridgePoints.size();
-            float[] meshPoints = new float[(groundSize + ridgePointSize) * 3]; //(ridgePoints * 3 = 6)
+            float[] meshPoints = new float[(groundSize * profileSizePlus + ridgePointSize) * 3]; //(ridgePoints * 3 = 6)
             List<Integer> meshVarIndex = new ArrayList<>();
 
             // Add special building parts
@@ -638,41 +623,93 @@ public final class S3DBUtils {
                 meshPartVarIndex = new ArrayList<>();
             }
 
-            for (int k = 0; k < groundSize; k++) {
+            float heightRange = maxHeight - minHeight;
+
+            /* number of 3D-points for the roof (groundSize * inner profile + groundSize) */
+            int grRsSize = groundSize * profileSizePlus;
+
+            // WRITE MESH
+
+            for (int l = 0; l < groundSize; l++) {
+                // l: #ground points
+                // k: #(shape points + ground points)
+                int k = l * profileSizePlus;
+
                 // Add first face
-                float[] p = point3Fs.get(k);
-                int ridgePointIndex1 = k;
+                float[] p = point3Fs.get(l);
+                int ridgePointIndex1 = l;
                 while (!ridgePoints.containsKey(ridgePointIndex1)) {
-                    ridgePointIndex1 = (ridgePointIndex1 + groundSize - 1) % groundSize; // Decrease ridgePointIndex
+                    ridgePointIndex1 = (ridgePointIndex1 + groundSize - 1) % groundSize; // Decrease ridgePointIndex until a ridge point is found for the k point.
                 }
                 int ridgeIndex1 = ridgePoints.headMap(ridgePointIndex1).size(); // set ridgeIndex to shift in ridgePoints
-                if (meshPartVarIndex != null && gablePoints.contains(ridgePointIndex1) && getIndexNextTurn(ridgePointIndex1, simpleAngles).equals(getIndexNextTurn(k, simpleAngles))) {
-                    meshPartVarIndex.add(k);
-                    meshPartVarIndex.add((k + 1) % groundSize);
-                    meshPartVarIndex.add(ridgeIndex1 + groundSize);
+                boolean isGable = false;
+                if (meshPartVarIndex != null && gablePoints.contains(ridgePointIndex1) && getIndexNextTurn(ridgePointIndex1, simpleAngles).equals(getIndexNextTurn(l, simpleAngles))) {
+                    isGable = true;
+                    // Add missing parts to building
+                    meshPartVarIndex.add(k + profileSize);
+                    meshPartVarIndex.add((k + profileSizePlus + profileSize) % grRsSize);
+                    meshPartVarIndex.add(ridgeIndex1 + grRsSize);
                 } else {
-                    meshVarIndex.add(k);
-                    meshVarIndex.add((k + 1) % groundSize);
-                    meshVarIndex.add(ridgeIndex1 + groundSize);
+                    // Add first roof face
+                    meshVarIndex.add(k + profileSize);
+                    meshVarIndex.add((k + profileSizePlus + profileSize) % grRsSize);
+                    meshVarIndex.add(ridgeIndex1 + grRsSize);
                 }
 
                 // Add second face, if necessary
-                int ridgePointIndex2 = (k + 1) % groundSize;
+                int ridgePointIndex2 = (l + 1) % groundSize;
                 while (!ridgePoints.containsKey(ridgePointIndex2)) {
                     ridgePointIndex2 = (ridgePointIndex2 + groundSize - 1) % groundSize; // Decrease ridgePointIndex
                 }
 
                 if (ridgePointIndex2 != ridgePointIndex1) {
                     int ridgeIndex2 = ridgePoints.headMap(ridgePointIndex2).size(); // Set ridgeIndex to position in ridgePoints
-                    meshVarIndex.add(ridgeIndex1 + groundSize);
-                    meshVarIndex.add((k + 1) % groundSize);
-                    meshVarIndex.add(ridgeIndex2 + groundSize);
+                    meshVarIndex.add(ridgeIndex1 + grRsSize);
+                    meshVarIndex.add((k + profileSizePlus + profileSize) % grRsSize);
+                    meshVarIndex.add(ridgeIndex2 + grRsSize);
                 }
 
-                // Write points
-                meshPoints[3 * k + 0] = p[0];
-                meshPoints[3 * k + 1] = p[1];
-                meshPoints[3 * k + 2] = p[2];
+                // Write ground points
+                int offset = 3 * k;
+                meshPoints[offset + 0] = p[0];
+                meshPoints[offset + 1] = p[1];
+                meshPoints[offset + 2] = p[2];
+
+                // Write profile roof shape points, skip ground points and ridge points of profile
+                float[] rp1 = ridgePoints.get(ridgePointIndex1);
+                float[] dif = GeometryUtils.diffVec(p, rp1); // Vector from ridge point to ground point
+                float phi = (float) Math.atan2(dif[0], dif[1]); // direction of diff
+                float r = (float) GeometryUtils.length(dif);
+                for (int m = 1; m < profileSizePlus; m++) {
+                    offset = 3 * (k + m); // (+ 1 - 1 = 0)
+                    int o = k + m - 1; // the ground + actual point of profile (m = 0 is the ground point)
+
+                    // Add profile roof faces (2 per side and profile point)
+                    if (isGable) {
+                        // Add missing parts to building
+                        meshPartVarIndex.add(o); // ground
+                        meshPartVarIndex.add((o + profileSizePlus) % grRsSize); // ground
+                        meshPartVarIndex.add((o + 1) % grRsSize); // profile
+
+                        meshPartVarIndex.add((o + profileSizePlus) % grRsSize); // ground + 1
+                        meshPartVarIndex.add((o + 1 + profileSizePlus) % grRsSize); // profile
+                        meshPartVarIndex.add((o + 1) % grRsSize); // profile
+                    } else {
+                        meshVarIndex.add(o); // ground
+                        meshVarIndex.add((o + profileSizePlus) % grRsSize); // ground + 1
+                        meshVarIndex.add((o + 1) % grRsSize); // profile
+
+                        meshVarIndex.add((o + profileSizePlus) % grRsSize); // ground + 1
+                        meshVarIndex.add((o + 1 + profileSizePlus) % grRsSize); // profile + 1
+                        meshVarIndex.add((o + 1) % grRsSize); // profile
+                    }
+
+                    // Calculate position of profile point.
+                    // profile[m][0] is same length for x and y
+                    meshPoints[offset + 0] = rp1[0] + (float) (r * profile[m][0] * Math.sin(phi));
+                    meshPoints[offset + 1] = rp1[1] + (float) (r * profile[m][0] * Math.cos(phi));
+                    meshPoints[offset + 2] = p[2] + heightRange * profile[m][2];
+                }
             }
 
             // Tessellate top, if necessary (can be used to improve wrong rendered roofs)
@@ -723,7 +760,7 @@ public final class S3DBUtils {
                     if (Tessellator.tessellate(buffer, buffer) != 0) {
                         for (int ind : buffer.index) {
                             // Get position in ridgePoints, considering skipped points
-                            meshVarIndex.add(ridgePoints.headMap(faceIndex.get(ind)).size() + groundSize);
+                            meshVarIndex.add(ridgePoints.headMap(faceIndex.get(ind)).size() + grRsSize);
                         }
                     } else {
                         // TODO Improve wrong or not tessellated faces
@@ -746,11 +783,10 @@ public final class S3DBUtils {
                 // Add ridge points
                 float[] tmp = ridgePoints.get(k);
                 if (tmp != null) {
-                    float[] p = new float[]{tmp[0], tmp[1], maxHeight};
-                    int ppos = 3 * (l + groundSize);
-                    meshPoints[ppos + 0] = p[0];
-                    meshPoints[ppos + 1] = p[1];
-                    meshPoints[ppos + 2] = p[2];
+                    int ppos = 3 * (l + grRsSize);
+                    meshPoints[ppos + 0] = tmp[0];
+                    meshPoints[ppos + 1] = tmp[1];
+                    meshPoints[ppos + 2] = maxHeight;
                     l++;
                 }
             }
@@ -1075,6 +1111,58 @@ public final class S3DBUtils {
     }
 
     /**
+     * Get the profile (half cross section) of roof shape.
+     *
+     * @param roofShape the roof shape value
+     * @return the profile as 2D array.
+     */
+    public static float[][] getProfile(String roofShape) {
+        float[][] shape;
+        switch (roofShape) {
+            case Tag.VALUE_ONION:
+                shape = new float[][]{
+                        {1, 0, 0},
+                        {0.2f, 0, 0.01f},
+                        {0.875f, 0, 0.1875f},
+                        {1, 0, 0.375f},
+                        {0.875f, 0, 0.5625f},
+                        {0.5f, 0, 0.75f},
+                        {0.2f, 0, 0.8125f},
+                        {0, 0, 1}};
+                break;
+            case Tag.VALUE_ROUND:
+            case Tag.VALUE_DOME:
+                shape = new float[][]{
+                        {1, 0, 0},
+                        {0.825f, 0, 0.5f},
+                        {0.5f, 0, 0.825f},
+                        {0, 0, 1}};
+                break;
+            case Tag.VALUE_SALTBOX:
+                shape = new float[][]{
+                        {1, 0, 0},
+                        {0.5f, 0, 1},
+                        {0, 0, 1}};
+                break;
+            case Tag.VALUE_MANSARD:
+            case Tag.VALUE_GAMBREL:
+                shape = new float[][]{
+                        {1, 0, 0},
+                        {0.75f, 0, 0.75f},
+                        {0, 0, 1}};
+                break;
+            case Tag.VALUE_GABLED:
+            case Tag.VALUE_HIPPED:
+            default:
+                shape = new float[][]{
+                        {1, 0, 0},
+                        {0, 0, 1}};
+                break;
+        }
+        return shape;
+    }
+
+    /**
      * @return the index of convex turn after specified index or null, if it's concave.
      */
     private static Integer getIndexNextConvexTurn(int index, List<Byte> simpleAngles) {
@@ -1342,38 +1430,53 @@ public final class S3DBUtils {
         return simpAngls;
     }
 
-    private static GeometryBuffer initCircleMesh(float[][] circleShape, int numSections) {
-        int indexSize = numSections * (circleShape.length - 1) * 2 * 3; // * 2 faces * 3 vertices
+    private static GeometryBuffer initCircleMesh(float[][] profile, int numSections) {
+        int indexSize = numSections * (profile.length - 1) * 2 * 3; // * 2 faces * 3 vertices
         int[] meshIndex = new int[indexSize];
 
-        int meshSize = numSections * circleShape.length;
+        int meshSize = numSections * profile.length;
         float[] meshPoints = new float[meshSize * 3];
         for (int i = 0; i < numSections; i++) {
-            for (int j = 0; j < circleShape.length; j++) {
+            for (int j = 0; j < profile.length; j++) {
                 // Write point mesh
-                int pPos = 3 * (i * circleShape.length + j);
-                meshPoints[pPos + 0] = circleShape[j][0];
-                meshPoints[pPos + 1] = circleShape[j][1];
-                meshPoints[pPos + 2] = circleShape[j][2];
+                int pPos = 3 * (i * profile.length + j);
+                meshPoints[pPos + 0] = profile[j][0];
+                meshPoints[pPos + 1] = profile[j][1];
+                meshPoints[pPos + 2] = profile[j][2];
 
                 // Write point indices
-                if (j != circleShape.length - 1) {
-                    int iPos = 6 * (i * (circleShape.length - 1) + j); // 6 = 2 * Mesh * 3PointsPerMesh
+                if (j != profile.length - 1) {
+                    int iPos = 6 * (i * (profile.length - 1) + j); // 6 = 2 * Mesh * 3PointsPerMesh
                     pPos = pPos / 3;
                     meshIndex[iPos + 2] = pPos + 0;
                     meshIndex[iPos + 1] = pPos + 1;
-                    meshIndex[iPos + 0] = (pPos + circleShape.length) % meshSize;
+                    meshIndex[iPos + 0] = (pPos + profile.length) % meshSize;
 
                     // FIXME if is last point, only one tris is needed, if top shape is closed
                     meshIndex[iPos + 5] = pPos + 1;
-                    meshIndex[iPos + 4] = (pPos + circleShape.length + 1) % meshSize;
-                    meshIndex[iPos + 3] = (pPos + circleShape.length) % meshSize;
+                    meshIndex[iPos + 4] = (pPos + profile.length + 1) % meshSize;
+                    meshIndex[iPos + 3] = (pPos + profile.length) % meshSize;
                 }
             }
 
         }
 
         return new GeometryBuffer(meshPoints, meshIndex);
+    }
+
+    private static boolean isGabled(String roofShape) {
+        switch (roofShape) {
+            case Tag.VALUE_ROUND:
+            case Tag.VALUE_SALTBOX:
+            case Tag.VALUE_GABLED:
+            case Tag.VALUE_GAMBREL:
+                return true;
+            case Tag.VALUE_MANSARD:
+            case Tag.VALUE_HALF_HIPPED:
+            case Tag.VALUE_HIPPED:
+            default:
+                return false;
+        }
     }
 
     private static void mergeMeshGeometryBuffer(GeometryBuffer gb1, GeometryBuffer gb2, GeometryBuffer out) {

@@ -302,12 +302,12 @@ public class S3DBLayer extends BuildingLayer {
             case Tag.VALUE_GABLED:
             case Tag.VALUE_GAMBREL:
                 specialParts = new GeometryBuffer(0, 0); // No data in GeometryBuffer needed
-                success = S3DBUtils.calcRidgeMesh(gElement, minHeight, maxHeight, roofOrientationAcross, true, specialParts);
+                success = S3DBUtils.calcRidgeMesh(gElement, minHeight, maxHeight, roofOrientationAcross, v, specialParts);
                 break;
             case Tag.VALUE_MANSARD:
             case Tag.VALUE_HALF_HIPPED:
             case Tag.VALUE_HIPPED:
-                success = S3DBUtils.calcRidgeMesh(gElement, minHeight, maxHeight, roofOrientationAcross, false, null);
+                success = S3DBUtils.calcRidgeMesh(gElement, minHeight, maxHeight, roofOrientationAcross, v, null);
                 break;
             case Tag.VALUE_SKILLION:
                 // ROOF_SLOPE_DIRECTION is not supported yet
