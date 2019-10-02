@@ -28,7 +28,7 @@ import org.oscim.theme.VtmThemes;
 public class ExtrusionsTest extends GdxMapApp {
 
     enum GroundShape {
-        HEXAGON, RECTANGLE, SHAPE_L, SHAPE_O, SHAPE_T, SHAPE_U, SHAPE_V, SHAPE_X, SHAPE_Z, TEST
+        HEXAGON, RECTANGLE, SHAPE_L, SHAPE_M, SHAPE_O, SHAPE_T, SHAPE_U, SHAPE_V, SHAPE_X, SHAPE_Z, TEST
     }
 
     /**
@@ -123,6 +123,9 @@ public class ExtrusionsTest extends GdxMapApp {
             case SHAPE_L:
                 shapeLGround(e);
                 break;
+            case SHAPE_M:
+                shapeMGround(e);
+                break;
             case SHAPE_O:
                 shapeOGround(e);
                 break;
@@ -179,6 +182,19 @@ public class ExtrusionsTest extends GdxMapApp {
         e.addPoint(12, 15);
         e.addPoint(12, 10);
         e.addPoint(0, 10);
+    }
+
+    private void shapeMGround(MapElement e) {
+        e.addPoint(0, 0);
+        e.addPoint(10, 0);
+        e.addPoint(10, 5);
+        e.addPoint(20, 5);
+        e.addPoint(20, 20);
+        e.addPoint(37, 20);
+        e.addPoint(37, 25);
+        e.addPoint(12, 25);
+        e.addPoint(12, 15);
+        e.addPoint(0, 15);
     }
 
     private void shapeOGround(MapElement e) {
