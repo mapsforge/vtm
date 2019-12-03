@@ -264,11 +264,13 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
 
     @Override
     public boolean onGesture(Gesture g, MotionEvent e) {
-        if (g instanceof Gesture.Tap)
-            return activateSelectedItems(e, mActiveItemSingleTap);
+        if (isEnabled()) {
+            if (g instanceof Gesture.Tap)
+                return activateSelectedItems(e, mActiveItemSingleTap);
 
-        if (g instanceof Gesture.LongPress)
-            return activateSelectedItems(e, mActiveItemLongPress);
+            if (g instanceof Gesture.LongPress)
+                return activateSelectedItems(e, mActiveItemLongPress);
+        }
 
         return false;
     }
