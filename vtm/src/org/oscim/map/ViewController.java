@@ -1,5 +1,6 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2014 Hannes Janetzek
+ * Copyright 2016-2019 devemux86
  * Copyright 2017 Luca Osten
  * Copyright 2018 Izumi Kawashima
  * Copyright 2018 Mathieu De Brito
@@ -74,21 +75,49 @@ public class ViewController extends Viewport {
     }
 
     /**
-     * Get pivot horizontal / vertical relative to view center.
+     * Get pivot horizontal / vertical relative to view center in [-1, 1].
      * e.g. pivotY 0.5 is usually preferred for navigation, moving center to 25% of view height.
-     * Range is [-1, 1].
      */
     public float[] getMapViewCenter() {
         return new float[]{mPivotX, mPivotY};
     }
 
     /**
-     * Set pivot horizontal / vertical relative to view center.
+     * Get pivot horizontal relative to view center in [-1, 1].
+     */
+    public float getMapViewCenterX() {
+        return mPivotX;
+    }
+
+    /**
+     * Get pivot vertical relative to view center in [-1, 1].
      * e.g. pivotY 0.5 is usually preferred for navigation, moving center to 25% of view height.
-     * Range is [-1, 1].
+     */
+    public float getMapViewCenterY() {
+        return mPivotY;
+    }
+
+    /**
+     * Set pivot horizontal / vertical relative to view center in [-1, 1].
+     * e.g. pivotY 0.5 is usually preferred for navigation, moving center to 25% of view height.
      */
     public void setMapViewCenter(float pivotX, float pivotY) {
+        setMapViewCenterX(pivotX);
+        setMapViewCenterY(pivotY);
+    }
+
+    /**
+     * Set pivot horizontal relative to view center in [-1, 1].
+     */
+    public void setMapViewCenterX(float pivotX) {
         mPivotX = FastMath.clamp(pivotX, -1, 1) * 0.5f;
+    }
+
+    /**
+     * Set pivot horizontal / vertical relative to view center in [-1, 1].
+     * e.g. pivotY 0.5 is usually preferred for navigation, moving center to 25% of view height.
+     */
+    public void setMapViewCenterY(float pivotY) {
         mPivotY = FastMath.clamp(pivotY, -1, 1) * 0.5f;
     }
 
@@ -306,7 +335,7 @@ public class ViewController extends Viewport {
         }
     }
 
-    void syncViewport() {
+    public void syncViewport() {
         synchronized (mNextFrame) {
             mNextFrame.copy(this);
         }

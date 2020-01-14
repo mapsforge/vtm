@@ -17,7 +17,7 @@ package org.oscim.utils.animation;
 
 /**
  * See https://developer.android.com/reference/android/support/animation/FlingAnimation.html
- * Class android.support.animation.FlingAnimation
+ * Class androidx.dynamicanimation.animation.FlingAnimation
  */
 public final class DragForce {
 

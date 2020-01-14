@@ -35,6 +35,8 @@ import org.slf4j.LoggerFactory;
 class S3DBTileLoader extends TileLoader {
     static final Logger log = LoggerFactory.getLogger(S3DBTileLoader.class);
 
+    private static final Color.HSV HSV = new Color.HSV(0f, 0.5f, 1.2f);
+
     private static final String OSCIM4_KEY_COLOR = "c";
     private static final String OSCIM4_KEY_MATERIAL = "m";
 
@@ -125,11 +127,11 @@ class S3DBTileLoader extends TileLoader {
 
         int c = 0;
         if (element.tags.containsKey(OSCIM4_KEY_COLOR)) {
-            c = S3DBUtils.getColor(element.tags.getValue(OSCIM4_KEY_COLOR), isRoof, true);
+            c = S3DBUtils.getColor(element.tags.getValue(OSCIM4_KEY_COLOR), HSV, true);
         }
 
         if (c == 0 && element.tags.containsKey(OSCIM4_KEY_MATERIAL)) {
-            c = S3DBUtils.getMaterialColor(element.tags.getValue(OSCIM4_KEY_MATERIAL), isRoof);
+            c = S3DBUtils.getMaterialColor(element.tags.getValue(OSCIM4_KEY_MATERIAL), HSV, true);
         }
 
         if (c == 0) {

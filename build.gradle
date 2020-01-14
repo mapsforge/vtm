@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:3.5.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
@@ -14,10 +14,10 @@ allprojects {
     version = 'master-SNAPSHOT'
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
-    ext.androidBuildVersionTools = "28.0.3"
-    ext.gdxVersion = "1.9.9"
-    ext.gwtVersion = "2.8.0"
-    ext.slf4jVersion = "1.7.25"
+    ext.androidBuildVersionTools = "29.0.2"
+    ext.gdxVersion = "1.9.10"
+    ext.gwtVersion = "2.8.2"
+    ext.slf4jVersion = "1.7.28"
 
     if (JavaVersion.current().isJava8Compatible()) {
         tasks.withType(Javadoc) {
@@ -28,12 +28,12 @@ allprojects {
     }
 }
 
-static def androidCompileSdk() { return 28 }
+static def androidCompileSdk() { return 29 }
 
 // 14 for Support Library, 16 for sqlite-android
 static def androidMinSdk() { return 16 }
 
-static def androidTargetSdk() { return 22 }
+static def androidTargetSdk() { return 29 }
 
 static def versionCode() { return 1 }
 
@@ -44,12 +44,12 @@ subprojects {
         google()
         maven { url 'https://repo.boundlessgeo.com/main/' }
         jcenter()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url 'https://jitpack.io' }
     }
 
     tasks.withType(JavaCompile) {
         sourceCompatibility = JavaVersion.VERSION_1_7
         targetCompatibility = JavaVersion.VERSION_1_7
+        options.encoding = 'UTF-8'
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2018 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -522,7 +522,8 @@ public class LabelPlacement {
                     s.texRegion = ti.texRegion;
                 s.x = x;
                 s.y = y;
-                s.billboard = true;
+                s.billboard = ti.billboard;
+                s.rotation = ti.rotation;
                 sl.addSymbol(s);
             }
         }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2017 devemux86
+ * Copyright 2017-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -102,7 +102,7 @@ public class MeshBucket extends RenderBucket {
         }
         if (!tess.tesselate()) {
             tess.dispose();
-            log.debug("error in tessellation {}", numPoints);
+            log.error("error in tessellation {}", numPoints);
             return;
         }
 
@@ -191,8 +191,7 @@ public class MeshBucket extends RenderBucket {
                 if (ml.heightOffset != heightOffset) {
                     heightOffset = ml.heightOffset;
 
-                    gl.uniform1f(s.uHeight, heightOffset /
-                            MercatorProjection.groundResolution(v.pos));
+                    gl.uniform1f(s.uHeight, (float) (heightOffset / MercatorProjection.groundResolution(v.pos)));
                 }
 
                 if (ml.area == null)

@@ -65,6 +65,6 @@ public class MapilionMvtTileSource extends UrlTileSource {
 
     @Override
     public ITileDataSource getDataSource() {
-        return new OverzoomTileDataSource(new UrlTileDataSource(this, new MvtTileDecoder(locale), getHttpEngine()), mOverZoom);
+        return new OverzoomTileDataSource(new UrlTileDataSource(this, new TileDecoder(locale), getHttpEngine()), mOverZoom);
     }
 }

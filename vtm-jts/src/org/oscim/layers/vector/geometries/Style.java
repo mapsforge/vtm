@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -94,7 +94,7 @@ public class Style {
     public static class Builder {
 
         private float strokeWidth = 1f;
-        private int strokeColor = Color.GRAY;
+        public int strokeColor = Color.GRAY;
         private int fillColor = Color.GRAY;
         private float fillAlpha = 0.25f;
 

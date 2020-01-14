@@ -3,7 +3,7 @@ apply plugin: 'maven'
 
 dependencies {
     api project(':vtm')
-    api 'com.fasterxml.jackson.core:jackson-core:2.8.4'
+    api 'com.fasterxml.jackson.core:jackson-core:2.9.9'
 }
 
 sourceSets {

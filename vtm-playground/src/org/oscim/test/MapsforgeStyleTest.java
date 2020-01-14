@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -15,7 +15,6 @@
 package org.oscim.test;
 
 import com.badlogic.gdx.Input;
-
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.theme.StreamRenderTheme;
 import org.oscim.theme.XmlRenderThemeMenuCallback;
@@ -23,16 +22,17 @@ import org.oscim.theme.XmlRenderThemeStyleLayer;
 import org.oscim.theme.XmlRenderThemeStyleMenu;
 
 import java.io.File;
+import java.util.List;
 import java.util.Set;
 
 public class MapsforgeStyleTest extends MapsforgeTest {
 
-    private MapsforgeStyleTest(File mapFile) {
-        super(mapFile);
+    private MapsforgeStyleTest(List<File> mapFiles) {
+        super(mapFiles);
     }
 
     @Override
-    protected void loadTheme(final String styleId) {
+    void loadTheme(final String styleId) {
         mMap.setTheme(new StreamRenderTheme("", getClass().getResourceAsStream("/assets/vtm/stylemenu.xml"), new XmlRenderThemeMenuCallback() {
             @Override
             public Set<String> getCategories(XmlRenderThemeStyleMenu renderThemeStyleMenu) {
@@ -80,6 +80,6 @@ public class MapsforgeStyleTest extends MapsforgeTest {
 
     public static void main(String[] args) {
         GdxMapApp.init();
-        GdxMapApp.run(new MapsforgeStyleTest(getMapFile(args)));
+        GdxMapApp.run(new MapsforgeStyleTest(getMapFiles(args)));
     }
 }

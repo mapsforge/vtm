@@ -15,10 +15,10 @@
  */
 package org.oscim.theme.comparator;
 
+import ch.qos.logback.classic.LoggerContext;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 import com.jtattoo.plaf.DecorationHelper;
 import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
-
 import org.oscim.awt.AwtGraphics;
 import org.oscim.backend.DateTime;
 import org.oscim.backend.DateTimeAdapter;
@@ -32,17 +32,10 @@ import org.oscim.theme.comparator.logging.VtmAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.util.Properties;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JRootPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
-import ch.qos.logback.classic.LoggerContext;
 
 public class Main {
 

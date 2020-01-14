@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -38,7 +38,7 @@ import java.util.List;
 
 public class LineTexTest extends GdxMapApp {
 
-    private static final boolean ANIMATION = false;
+    private static final boolean ANIMATION = true;
 
     private List<PathLayer> mPathLayers = new ArrayList<>();
     private TextureItem tex;
@@ -54,7 +54,7 @@ public class LineTexTest extends GdxMapApp {
 
         try {
             tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png"));
-            tex.mipmap = true;
+            //tex.mipmap = true;
         } catch (IOException e) {
             e.printStackTrace();
         }

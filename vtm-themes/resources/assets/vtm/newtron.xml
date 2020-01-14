@@ -35,7 +35,8 @@
     <!--references-->
     <style-text style="bold" fill="#606060" id="ref" k="ref" priority="2" size="12" stroke="#ffffff"
         stroke-width="2.0" />
-    <style-text caption="true" id="ref-caption" use="ref" />
+    <style-text caption="true" style="bold" fill="#ffffff" id="ref-caption" k="ref" priority="2"
+        size="12" bg-fill="#45a976" />
 
 
     <!--###### AREA styles ######-->
@@ -73,7 +74,7 @@
     <style-area fade="15" fill="#ee404040" id="building" />
 
     <!--water-->
-    <style-area fill="#001223" id="water" mesh="true" />
+    <style-area fill="#001223" id="water" />
 
 
     <!--###### LINE styles ######-->
@@ -121,7 +122,7 @@
     <!--###### ASSIGNMENT ######-->
 
     <m e="way" k="natural" v="issea|sea">
-        <area use="water" />
+        <area mesh="true" use="water" />
     </m>
 
     <m e="way" k="natural" v="nosea">
@@ -167,7 +168,7 @@
         <m k="landuse|natural|leisure||amenity">
             <!-- kind of more like landuse imho -->
             <m k="leisure|landuse" v="nature_reserve">
-                <area use="greens2" />
+                <area fill="#40abe29c" />
                 <m zoom-min="14">
                     <line cap="butt" fix="true" stroke="#abe29c" width="1.0" />
                 </m>
@@ -228,17 +229,17 @@
             <!-- amenity -->
             <m k="amenity">
                 <m v="kindergarten|school|college|university" zoom-min="14">
-                    <area fill="#323439" stroke="#b094bf" stroke-width="2.0" />
+                    <area fill="#323439" />
                 </m>
                 <m v="hospital">
                     <area fill="#716553" />
                 </m>
                 <m v="parking" zoom-min="14">
-                    <area fill="#444434" stroke="#d4d4d4" stroke-width="0.2" />
+                    <area fill="#444434" />
                 </m>
 
                 <m closed="yes" v="fountain">
-                    <area fill="#b4cbdc" stroke="#000080" stroke-width="0.15" />
+                    <area fill="#b4cbdc" />
                 </m>
             </m>
 
@@ -291,7 +292,7 @@
                   </m>
                 -->
                 <m v="swimming_pool">
-                    <area fill="#b4cbdc" stroke="#6060ff" stroke-width="0.2" />
+                    <area fill="#b4cbdc" />
                 </m>
 
                 <!-- <m v="track"> <m k="area" v="yes|true">
@@ -569,7 +570,8 @@
                   <area fill="#e9e6e3" fade="15" /> -->
             </m>
             <m zoom-min="17">
-                <extrusion line-color="#50606060" side-color="#ea404040" top-color="#ea404040" />
+                <extrusion hsv-s="0.1" hsv-v="0.5" line-color="#50606060" side-color="#ea404040"
+                    top-color="#ea404040" />
             </m>
 
             <!--Only add house numbers where no name exist-->
@@ -930,7 +932,7 @@
           <line stroke="#e4e4e4" width="0.3" cap="butt" />
           </m>
           <m closed="yes">
-          <area fill="#e4e4e4" stroke="#d0d0d0" stroke-width="0.05" />
+          <area fill="#e4e4e4" />
           </m>
           </m> -->
 
@@ -1019,9 +1021,9 @@
 
 
         <!-- non-physical boundaries -->
-        <!-- <m k="boundary"> <m k="boundary" v="national_park">
-          <line stroke="#4ef94b" width="0.25" stroke-dasharray="15, 5, 5, 5"
-          /> -->
+        <m k="boundary" v="national_park">
+            <area fill="#40abe29c" />
+        </m>
 
         <!--<m k="boundary" v="administrative"> -->
         <m k="admin_level">
@@ -1078,7 +1080,7 @@
             <m k="area" v="~|false|no">
                 <m k="highway">
                     <m k="oneway" v="yes|true" zoom-min="16">
-                        <lineSymbol src="assets:symbols/oneway.svg" />
+                        <symbol repeat="true" src="assets:symbols/oneway.svg" />
                     </m>
                 </m>
             </m>

@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -17,9 +17,10 @@
  */
 package org.oscim.android.test;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Toast;
-
+import org.oscim.android.canvas.AndroidBitmap;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.GeoPoint;
 import org.oscim.event.Gesture;
@@ -38,8 +39,6 @@ import org.oscim.tiling.source.bitmap.DefaultSources;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.oscim.android.canvas.AndroidGraphics.drawableToBitmap;
 
 public class MarkerOverlayActivity extends MapActivity
         implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
@@ -64,14 +63,14 @@ public class MarkerOverlayActivity extends MapActivity
                 .build();
         mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
-        Bitmap bitmapPoi = drawableToBitmap(getResources().getDrawable(R.drawable.marker_poi));
+        Bitmap bitmapPoi = new AndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.marker_poi));
         MarkerSymbol symbol;
         if (BILLBOARDS)
             symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.BOTTOM_CENTER);
         else
             symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.CENTER, false);
 
-        Bitmap bitmapFocus = drawableToBitmap(getResources().getDrawable(R.drawable.marker_focus));
+        Bitmap bitmapFocus = new AndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.marker_focus));
         if (BILLBOARDS)
             mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.BOTTOM_CENTER);
         else

@@ -1,6 +1,6 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
- * Copyright 2016 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -24,11 +24,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-
 import org.oscim.app.R;
 import org.oscim.app.filefilter.ValidFileFilter;
 
@@ -62,7 +60,6 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
     public static final String SELECTED_FILE = "selectedFile";
 
     private static final String CURRENT_DIRECTORY = "currentDirectory";
-    private static final String DEFAULT_DIRECTORY = Environment.getExternalStorageDirectory().getAbsolutePath();
     private static final int DIALOG_FILE_INVALID = 0;
     // private static final int DIALOG_FILE_SELECT = 1;
     private static Comparator<File> fileComparator = getDefaultFileComparator();
@@ -125,6 +122,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
     }
 
     private File currentDirectory;
+    private String defaultDirectory;
     private FilePickerIconAdapter filePickerIconAdapter;
     private File[] files;
     private File[] filesWithParentFolder;
@@ -166,7 +164,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         }
 
         // if a parent directory exists, add it at the first position
-        if (this.currentDirectory.getParentFile() != null) {
+        if (this.currentDirectory.getParentFile() != null && this.currentDirectory.getParentFile().canRead()) {
             this.filesWithParentFolder = new File[this.files.length + 1];
             this.filesWithParentFolder[0] = this.currentDirectory.getParentFile();
             System.arraycopy(this.files, 0, this.filesWithParentFolder, 1,
@@ -184,6 +182,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_picker);
 
+        defaultDirectory = getExternalFilesDir(null) != null ? getExternalFilesDir(null).getAbsolutePath() : "/sdcard/";
         this.filePickerIconAdapter = new FilePickerIconAdapter(this);
         GridView gridView = (GridView) findViewById(R.id.filePickerView);
         gridView.setOnItemClickListener(this);
@@ -254,10 +253,9 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         // restore the current directory
         SharedPreferences preferences = getSharedPreferences(PREFERENCES_FILE,
                 MODE_PRIVATE);
-        this.currentDirectory = new File(preferences.getString(CURRENT_DIRECTORY,
-                DEFAULT_DIRECTORY));
+        this.currentDirectory = new File(preferences.getString(CURRENT_DIRECTORY, defaultDirectory));
         if (!this.currentDirectory.exists() || !this.currentDirectory.canRead()) {
-            this.currentDirectory = new File(DEFAULT_DIRECTORY);
+            this.currentDirectory = new File(defaultDirectory);
         }
         browseToCurrentDirectory();
     }

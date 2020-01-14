@@ -4,7 +4,8 @@ dependencies {
     implementation project(':vtm-android')
     implementation project(':vtm-extras')
     implementation project(':vtm-themes')
-    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
+    // https://github.com/square/okhttp/issues/4481
+    implementation 'com.squareup.okhttp3:okhttp:3.12.5'
     implementation "org.slf4j:slf4j-android:$slf4jVersion"
 }
 
@@ -18,8 +19,8 @@ android {
     }
 
     defaultConfig {
-        versionCode versionCode()
-        versionName versionName()
+        versionCode project.versionCode()
+        versionName project.versionName()
         minSdkVersion androidMinSdk()
         targetSdkVersion androidTargetSdk()
     }

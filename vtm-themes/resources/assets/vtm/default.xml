@@ -3,6 +3,16 @@
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
+    <!--###### TRANSFORM tags ######-->
+    <tag-transform k="roof:colour" k-lib="roof:colour" v="blue" v-lib="#4e7ee0" />
+    <tag-transform k="roof:colour" k-lib="roof:colour" v="green" v-lib="#3ed889" />
+    <tag-transform k="roof:colour" k-lib="roof:colour" v="red" v-lib="#ad4340" />
+    <tag-transform k="roof:colour" k-lib="roof:colour" v="yellow" v-lib="#e5d522" />
+    <tag-transform k="building:colour" k-lib="building:colour" v="blue" v-lib="#416fcc" />
+    <tag-transform k="building:colour" k-lib="building:colour" v="green" v-lib="#38c459" />
+    <tag-transform k="building:colour" k-lib="building:colour" v="red" v-lib="#cc3733" />
+    <tag-transform k="building:colour" k-lib="building:colour" v="yellow" v-lib="#f4e216" />
+
     <!--###### TEXT styles ######-->
 
     <!--default label-->
@@ -35,7 +45,8 @@
     <!--references-->
     <style-text style="bold" fill="#606060" id="ref" k="ref" priority="2" size="12" stroke="#ffffff"
         stroke-width="2.0" />
-    <style-text caption="true" id="ref-caption" use="ref" />
+    <style-text caption="true" style="bold" fill="#ffffff" id="ref-caption" k="ref" priority="2"
+        size="12" bg-fill="#45a976" />
     <!--ferry-->
     <style-text style="bold" fill="#606060" id="ferry" k="name" size="12" stroke="#ffffff"
         stroke-width="2.0" />
@@ -49,40 +60,41 @@
     <style-area fade="10" fill="#e6e3e5" id="railway|industrial" />
 
     <!--Note: ordered according to their inheritance via the `use` attribute-->
-    <style-area id="tex1" src="assets:textures/rough.png" />
+
+    <!-- Avoid patterns and textures because of old GPU issues -->
+    <!--<style-area id="tex1" src="assets:textures/rough.png" />-->
 
     <!-- meadow|garden -->
-    <style-area fade="10" fill="#c9dc91" id="greens" use="tex1" />
+    <style-area fade="10" fill="#c9dc91" id="greens" />
 
     <!-- grass -->
-    <style-area fade="12" fill="#d3dcb9" id="lightgreen" use="tex1" />
+    <style-area fade="12" fill="#d3dcb9" id="lightgreen" />
 
     <!-- grassland|scrub -->
-    <style-area fade="10" fill="#c2cba5" id="darkgreen" use="tex1" />
+    <style-area fade="10" fill="#c2cba5" id="darkgreen" />
 
     <!-- <style-area id="greens" fill="#d2e5ce" fade="10" /> -->
 
     <!--farmland-->
-    <style-area fade="12" fill="#e4dab5" id="farmland" stroke="#d1dbc7" stroke-width="1.0"
-        use="tex1" />
+    <style-area fade="12" fill="#e4dab5" id="farmland" />
 
     <!-- marsh|wetland|mud|nature_reserve -->
     <style-area fade="12" fill="#deecb9" id="greens2" />
 
     <!-- park|common|green|cemetery|golf_course|dog_park -->
-    <style-area fade="11" fill="#9ac56e" id="park" use="tex1" />
+    <style-area fade="11" fill="#9ac56e" id="park" />
     <!-- <style-area id="park" fill="#a3ca7b" fade="11" /> -->
 
     <!--wood-->
     <!-- fade out at z=7, blend over to 'blend-fill' in z=11 -->
     <!-- src="assets:textures/wood.png" -->
     <!-- <style-area id="wood" fill="#d1dbc7" fade="8" blend="11" blend-fill="#9ac56e" /> -->
-    <!-- <style-area id="wood" use="park" fill="#9ac56e" fade="8" stroke="#d1dbc7" stroke-width="1.0"/> -->
+    <!-- <style-area id="wood" use="park" fill="#9ac56e" fade="8" /> -->
     <style-area blend="11" blend-fill="#83aa5b" fade="8" fill="#b3d095" id="wood" use="park" />
     <!-- <style-line id="wood" fix="true" cap="butt" width="1.0" stroke="#9ac56e" /> -->
 
     <!-- de:Kleingartengebiet -->
-    <style-area fade="12" fill="#efeae0" id="allotments" use="tex1" />
+    <style-area fade="12" fill="#efeae0" id="allotments" />
 
     <!-- de:Steinbruch, Schotter-, Kies-, Sand- und Tongrube -->
     <style-area fade="10" fill="#ddddcc" id="quarry" />
@@ -90,12 +102,12 @@
     <!--military-->
     <style-area fade="10" fill="#eeedea" id="military" />
     <!--building-->
-    <style-area fade="15" fill="#f2f0eb" id="building" stroke="#b7b6b3" stroke-width="1.0" />
+    <style-area fade="15" fill="#f2f0eb" id="building" />
 
     <!--water-->
     <!--<style-area id="water" fill="#97b7e5" afc5e3 /> -->
     <!-- src="assets:textures/water.png" -->
-    <style-area fade="-1" fill="#99badf" id="water" mesh="true" />
+    <style-area fade="-1" fill="#99badf" id="water" />
 
     <!--###### LINE styles ######-->
 
@@ -157,7 +169,7 @@
     <!--###### ASSIGNMENT ######-->
 
     <m e="way" k="natural" v="issea|sea">
-        <area use="water" />
+        <area mesh="true" use="water" />
     </m>
 
     <m e="way" k="natural" v="nosea">
@@ -209,7 +221,7 @@
         <m k="landuse|natural|leisure|amenity|tourism">
             <!-- kind of more like landuse imho -->
             <m k="leisure|landuse" v="nature_reserve">
-                <area use="greens2" />
+                <area fill="#40abe29c" />
                 <m zoom-min="14">
                     <line cap="butt" fix="true" stroke="#abe29c" width="1.0" />
                 </m>
@@ -237,10 +249,10 @@
                     <area fill="#f2d9b1" />
                 </m>
                 <!-- <m v="parking" zoom-min="15">
-                  <area fill="#f4f4f4" stroke="#d4d4d4" stroke-width="0.2" />
+                  <area fill="#f4f4f4" />
                   </m>
                   <m v="fountain" closed="yes">
-                  <area fill="#b4cbdc" stroke="#000080" stroke-width="0.15" />
+                  <area fill="#b4cbdc" />
                   </m> -->
             </m>
 
@@ -270,15 +282,12 @@
 
             <!-- Heideland, keep below forest -->
             <m v="heath|sand" zoom-min="10">
-                <area fade="10" fill="#fffad1" use="tex1" />
+                <area fade="10" fill="#fffad1" />
             </m>
 
             <m k="landuse|natural" v="forest|wood">
-                <m zoom-max="13" zoom-min="8">
+                <m zoom-min="8">
                     <area use="wood" />
-                </m>
-                <m zoom-min="14">
-                    <area stroke="#91bf63" stroke-width="1.0" use="wood" />
                 </m>
             </m>
 
@@ -305,10 +314,10 @@
                   </m>
                 -->
                 <m v="parking" zoom-min="15">
-                    <area fill="#f4f4f4" stroke="#d4d4d4" stroke-width="0.2" />
+                    <area fill="#f4f4f4" />
                 </m>
                 <m closed="yes" v="fountain">
-                    <area fill="#b4cbdc" stroke="#000080" stroke-width="0.15" />
+                    <area fill="#b4cbdc" />
                 </m>
 
             </m>
@@ -346,7 +355,7 @@
                     <area fade="12" fill="#daefdb" />
                 </m>
                 <m v="playground|miniature_golf" zoom-min="15">
-                    <area fill="#f4f4de" use="tex1" />
+                    <area fill="#f4f4de" />
                     <line cap="butt" fix="true" stroke="#d9d9a3" width="1.0" />
                 </m>
                 <m v="playing_fields|pitch">
@@ -354,7 +363,7 @@
                     <line cap="butt" fix="true" stroke="#d9d9a3" width="1.0" />
                 </m>
                 <m v="swimming_pool">
-                    <area fill="#d4ebfc" stroke="#6060ff" stroke-width="0.2" />
+                    <area fill="#d4ebfc" />
                 </m>
 
                 <!-- <m v="track"> <m k="area" v="yes|true">
@@ -606,6 +615,7 @@
             <!-- Airport passenger building -->
             <m v="terminal|hangar">
                 <area use="building" />
+                <line use="building" />
             </m>
         </m>
 
@@ -620,6 +630,7 @@
                 <m zoom-min="14">
                     <m closed="yes">
                         <area fade="14" use="building" />
+                        <line fade="14" use="building" />
                     </m>
                     <m closed="no">
                         <line fade="14" use="building" />
@@ -630,6 +641,7 @@
                 <m zoom-min="16">
                     <m closed="yes">
                         <area fade="16" use="building" />
+                        <line fade="16" use="building" />
                     </m>
                     <m closed="no">
                         <line fade="16" use="building" />
@@ -637,7 +649,8 @@
                 </m>
             </m>
             <m zoom-min="17">
-                <extrusion line-color="#ffd9d8d6" side-color="#eaecebe9" top-color="#eaf9f8f6" />
+                <extrusion hsv-s="0.5" hsv-v="1.2" line-color="#ffd9d8d6" side-color="#eaecebe9"
+                    top-color="#eaf9f8f6" />
             </m>
             <!--Only add house numbers where no name exist-->
             <m k="addr:housenumber" zoom-min="18">
@@ -951,7 +964,7 @@
                 <line cap="butt" stroke="#e4e4e4" width="0.3" />
             </m>
             <m closed="yes">
-                <area fill="#e4e4e4" stroke="#d0d0d0" stroke-width="1.05" />
+                <area fill="#e4e4e4" />
             </m>
         </m>
 
@@ -970,7 +983,7 @@
             <m k="tunnel" v="~|false|no">
 
                 <m v="station">
-                    <area fill="#dbdbc9" stroke="#707070" stroke-width="0.3" />
+                    <area fill="#dbdbc9" />
                 </m>
 
                 <!-- railway bridge casings -->
@@ -1018,26 +1031,19 @@
         </m>
 
         <!-- non-physical boundaries -->
-        <!-- <m k="boundary"> <m k="boundary" v="national_park">
-          <line stroke="#4ef94b" width="0.25" stroke-dasharray="15, 5, 5, 5"
-          /> -->
-
-        <!--
-          maybe use some alpha texture for this
-          <m k="boundary" v="national_park">
-          <area fill="#d7e6b0" />
-          </m>
-        -->
+        <m k="boundary" v="national_park">
+            <area fill="#40abe29c" />
+        </m>
 
         <!--<m k="boundary" v="administrative"> -->
         <m k="admin_level">
             <m v="4">
                 <line fix="true" stipple="6" stipple-stroke="#888888" stipple-width="1.0"
-                    stroke="#dadada" width="2.0" />
+                    stroke="#dadada" width="1.8" />
             </m>
             <m v="2">
                 <line fix="true" stipple="8" stipple-stroke="#647b9c" stipple-width="1.0"
-                    stroke="#bbbbbb" width="2.5" />
+                    stroke="#bbbbbb" width="2.0" />
             </m>
         </m>
         <!-- </m> -->
@@ -1073,7 +1079,7 @@
             <m k="area" v="~|false|no">
                 <m k="highway">
                     <m k="oneway" v="yes|true" zoom-min="16">
-                        <lineSymbol src="assets:symbols/oneway.svg" />
+                        <symbol repeat="true" src="assets:symbols/oneway.svg" />
                     </m>
                 </m>
             </m>

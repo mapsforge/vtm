@@ -1,17 +1,64 @@
 # Changelog
 
-## New since 0.10.0
+## Version 0.13.0 (2020-01-12)
+
+- Render themes: symbols on lines with billboard / rotation [#743](https://github.com/mapsforge/vtm/pull/743)
+- Location texture renderer: rewrite and optimize [#750](https://github.com/mapsforge/vtm/pull/750)
+- Fix stroke cap line ending [#758](https://github.com/mapsforge/vtm/pull/758)
+- Mapsforge: fix ways precision loss [#752](https://github.com/mapsforge/vtm/pull/752)
+- Mapsforge: additional simplification [#757](https://github.com/mapsforge/vtm/pull/757)
+  - `Parameters.SIMPLIFICATION_TOLERANCE`
+- Android: OpenGL ES 2.0 default for performance / stability [#749](https://github.com/mapsforge/vtm/pull/749)
+  - `MapView.OPENGL_VERSION`
+- Android: threaded system initialization
+  - `Parameters.THREADED_INIT`
+- Many other minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.13.0)
+
+## Version 0.12.0 (2019-09-17)
+
+- MBTiles vector tile source (Android) [#740](https://github.com/mapsforge/vtm/pull/740)
+  - vtm-android-mvt module
+- Render themes: text background color [#737](https://github.com/mapsforge/vtm/pull/737)
+- vtm-desktop-lwjgl module [#714](https://github.com/mapsforge/vtm/pull/714)
+- vtm-desktop-lwjgl3 module [#717](https://github.com/mapsforge/vtm/pull/717)
+- Fix marker touch events [#723](https://github.com/mapsforge/vtm/issues/723)
+- Calculation of centroids for all polygons [#734](https://github.com/mapsforge/vtm/pull/734)
+  - `Parameters.POLY_CENTROID`
+- Disable optimal placement of labels or symbols on polygons
+  - `Parameters.POLY_LABEL`
+- Android 10 compatibility [#728](https://github.com/mapsforge/vtm/issues/728)
+- libGDX 1.9.10 [#731](https://github.com/mapsforge/vtm/issues/731)
+- Many other minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.12.0)
+
+## Version 0.11.1 (2019-04-12)
+
+- MBTiles raster tile source (Android) [#708](https://github.com/mapsforge/vtm/pull/708)
+- Fix Android 4.2 crash [#713](https://github.com/mapsforge/vtm/issues/713)
+- Many other minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.11.1)
+
+## Version 0.11.0 (2019-03-25)
 
 - Render themes: tag transform [#420](https://github.com/mapsforge/vtm/issues/420)
 - Render themes: PNG scaling [#595](https://github.com/mapsforge/vtm/issues/595)
-- Mapilion MVT vector tiles & Hillshading [#614](https://github.com/mapsforge/vtm/issues/614)
 - Building shadows [#575](https://github.com/mapsforge/vtm/issues/575)
+- Map scaling improvements [#401](https://github.com/mapsforge/vtm/issues/401)
 - PathLayer(s) scaled width [#594](https://github.com/mapsforge/vtm/issues/594)
+- Mapilion MVT vector tiles & Hillshading [#614](https://github.com/mapsforge/vtm/issues/614)
 - Overpass tile source [#663](https://github.com/mapsforge/vtm/issues/663)
 - vtm-gdx-poi3d module [#600](https://github.com/mapsforge/vtm/pull/600)
 - vtm-models module [#580](https://github.com/mapsforge/vtm/issues/580)
-- ViewController refactor [#625](https://github.com/mapsforge/vtm/pull/625)
+- `ViewController` refactor [#625](https://github.com/mapsforge/vtm/pull/625)
   - `getMapViewCenter`, `setMapViewCenter` with pivotX, pivotY
+- `ThemeCallback.getColor` refactor [#274](https://github.com/mapsforge/vtm/issues/274)
+- Enable physical fling and fling on rotation / scale
+  - `Parameters.ANIMATOR2`
+- Enable optimal placement of labels or symbols on polygons
+  - `Parameters.POLY_LABEL`
+- Enable placement of symbols on polygons
+  - `Parameters.POLY_SYMBOL`
 - OpenGL ES 3.0 support [#646](https://github.com/mapsforge/vtm/issues/646)
 - OpenGL ES 2.0 complete [#642](https://github.com/mapsforge/vtm/pull/642)
 - libGDX 1.9.9 [#635](https://github.com/mapsforge/vtm/issues/635)
@@ -158,7 +205,8 @@
 - vtm-ios module update [#29](https://github.com/mapsforge/vtm/issues/29)
 - Native libraries for all platforms [#14](https://github.com/mapsforge/vtm/issues/14)
 - Line stipple and texture rendering [#105](https://github.com/mapsforge/vtm/issues/105)
-- Layer groups [#99](https://github.com/mapsforge/vtm/issues/99) [#103](https://github.com/mapsforge/vtm/issues/103)
+- Group layer implementation [#99](https://github.com/mapsforge/vtm/issues/99)
+- Layer groups implementation [#103](https://github.com/mapsforge/vtm/issues/103)
 - Location renderer and layer [#171](https://github.com/mapsforge/vtm/issues/171)
 - Map scale bar [#84](https://github.com/mapsforge/vtm/issues/84)
 - Tile size based on scale factor [#183](https://github.com/mapsforge/vtm/issues/183)

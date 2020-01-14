@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Ahmad Saleem
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -45,7 +45,7 @@ public class LocationLayer extends Layer {
             locationRenderer.animate(false);
     }
 
-    public void setPosition(double latitude, double longitude, double accuracy) {
+    public void setPosition(double latitude, double longitude, float accuracy) {
         double x = MercatorProjection.longitudeToX(longitude);
         double y = MercatorProjection.latitudeToY(latitude);
         double radius = accuracy / MercatorProjection.groundResolutionWithScale(latitude, 1);

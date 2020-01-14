@@ -252,12 +252,22 @@ public class RenderTheme implements IRenderTheme {
     }
 
     @Override
-    public String transformKey(String key) {
+    public String transformBackwardKey(String key) {
         return null;
     }
 
     @Override
-    public Tag transformTag(Tag tag) {
+    public String transformForwardKey(String key) {
+        return null;
+    }
+
+    @Override
+    public Tag transformBackwardTag(Tag tag) {
+        return null;
+    }
+
+    @Override
+    public Tag transformForwardTag(Tag tag) {
         return null;
     }
 

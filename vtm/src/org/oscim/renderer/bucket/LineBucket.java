@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -638,8 +638,7 @@ public class LineBucket extends RenderBucket {
                 if (lb.heightOffset != heightOffset) {
                     heightOffset = lb.heightOffset;
 
-                    gl.uniform1f(uLineHeight, heightOffset /
-                            MercatorProjection.groundResolution(v.pos));
+                    gl.uniform1f(uLineHeight, (float) (heightOffset / MercatorProjection.groundResolution(v.pos)));
                 }
 
                 if (line.fadeScale < v.pos.zoomLevel) {
@@ -679,7 +678,7 @@ public class LineBucket extends RenderBucket {
                     }
 
                     /* Cap mode */
-                    if (lb.scale < 1.5/* || lb.line.fixed*/) {
+                    if (lb.scale < 1.0) {
                         if (capMode != CAP_THIN) {
                             capMode = CAP_THIN;
                             gl.uniform1i(uLineMode, capMode);

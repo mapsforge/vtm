@@ -107,7 +107,7 @@ public class GeometryBuffer {
     /**
      * Instantiates a new geometry buffer.
      *
-     * @param numPoints  the num of expected points
+     * @param numPoints  the num of expected 2D points
      * @param numIndices the num of expected indices
      */
     public GeometryBuffer(int numPoints, int numIndices) {
@@ -152,6 +152,7 @@ public class GeometryBuffer {
 
     /**
      * @param out PointF to set coordinates to.
+     * @param i   the 2D point position.
      * @return when out is null a temporary PointF is
      * returned which belongs to GeometryBuffer.
      */
@@ -160,16 +161,25 @@ public class GeometryBuffer {
         out.y = points[(i << 1) + 1];
     }
 
+    /**
+     * @param i the 2D point position.
+     * @return the x-coordinate of point.
+     */
     public float getPointX(int i) {
         return points[(i << 1)];
     }
 
+    /**
+     * @param i the 2D point position.
+     * @return the y-coordinate of point.
+     */
     public float getPointY(int i) {
         return points[(i << 1) + 1];
     }
 
     /**
-     * @return PointF belongs to GeometryBuffer.
+     * @param i the 2D point position.
+     * @return the PointF that belongs to GeometryBuffer.
      */
     public PointF getPoint(int i) {
         PointF out = mTmpPoint;
@@ -178,8 +188,23 @@ public class GeometryBuffer {
         return out;
     }
 
+    /**
+     * Get the number of 2D points.
+     *
+     * @return the number of 2D points.
+     */
     public int getNumPoints() {
         return pointNextPos >> 1;
+    }
+
+    /**
+     * Get the used size of points array.
+     * Equal to the next position to insert point in points array.
+     *
+     * @return the size of point array.
+     */
+    public int getPointsSize() {
+        return pointNextPos;
     }
 
     /**
@@ -229,9 +254,9 @@ public class GeometryBuffer {
     /**
      * Sets the point x,y at position pos.
      *
-     * @param pos the pos
-     * @param x   the x ordinate
-     * @param y   the y ordinate
+     * @param pos the 2D point position
+     * @param x   the x coordinate (abscissa)
+     * @param y   the y coordinate (ordinate)
      */
     public void setPoint(int pos, float x, float y) {
         points[(pos << 1) + 0] = x;
@@ -313,6 +338,13 @@ public class GeometryBuffer {
             index[indexCurrentPos + 1] = -1;
     }
 
+    /**
+     * Translate.
+     *
+     * @param dx the x translation.
+     * @param dy the y translation.
+     * @return a reference to this object.
+     */
     public GeometryBuffer translate(float dx, float dy) {
         for (int i = 0; i < pointNextPos; i += 2) {
             points[i] += dx;
@@ -321,6 +353,13 @@ public class GeometryBuffer {
         return this;
     }
 
+    /**
+     * Scale.
+     *
+     * @param scaleX the x scale.
+     * @param scaleY the y scale.
+     * @return a reference to this object.
+     */
     public GeometryBuffer scale(float scaleX, float scaleY) {
         for (int i = 0; i < pointNextPos; i += 2) {
             points[i] *= scaleX;
@@ -387,10 +426,20 @@ public class GeometryBuffer {
             throw new IllegalArgumentException("not cleared " + m + "<>" + type);
     }
 
+    /**
+     * Add a {@link Point}.
+     *
+     * @param p the point.
+     */
     public void addPoint(Point p) {
         addPoint((float) p.x, (float) p.y);
     }
 
+    /**
+     * Add a {@link PointF}.
+     *
+     * @param p the point.
+     */
     public void addPoint(PointF p) {
         addPoint(p.x, p.y);
     }
@@ -454,18 +503,32 @@ public class GeometryBuffer {
      * Calculates geometry area, only polygon outer ring is taken into account.
      *
      * @return unsigned polygon area, 0 for other geometries
+     * @see GeometryUtils#area(float[], int)
      */
     public float area() {
         float area = isClockwise();
         return area < 0 ? -area : area;
     }
 
+    /**
+     * @see GeometryUtils#isClockwise(float[], int).
+     */
     public float isClockwise() {
         if (isPoint() || isLine() || getNumPoints() < 3)
             return 0f;
 
         // use only outer ring
         return GeometryUtils.isClockwise(points, index[0]);
+    }
+
+    /**
+     * Remove the last point.
+     */
+    public void removeLastPoint() {
+        if (!isTris()) {
+            pointNextPos -= 2;
+            index[indexCurrentPos] -= 2;
+        }
     }
 
     /**

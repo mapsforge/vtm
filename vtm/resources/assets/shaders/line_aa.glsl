@@ -26,7 +26,7 @@ $$
 #ifdef GLES
 precision highp float;
 #endif
-uniform sampler2D tex;
+uniform sampler2D u_tex;
 uniform float u_fade;
 uniform int u_mode;
 uniform vec4 u_color;
@@ -39,7 +39,7 @@ void main() {
 #ifdef DESKTOP_QUIRKS
         len = length(v_st);
 #else
-        len = texture2D(tex, v_st).a;
+        len = texture2D(u_tex, v_st).a;
 #endif
     } else {
         // flat cap line

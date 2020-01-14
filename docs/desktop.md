@@ -15,3 +15,5 @@ The jar file can be found in `build/libs` folder. Depending on the main class, p
 ```
 java -jar vtm-playground-master-SNAPSHOT-jar-with-dependencies.jar /path/to/map
 ```
+
+To change the libGDX backend can replace the dependency: `vtm-desktop-lwjgl` or `vtm-desktop-lwjgl3`.

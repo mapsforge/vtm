@@ -2,7 +2,7 @@
  * Copyright 2014 Hannes Janetzek
  * Copyright 2017 Longri
  * Copyright 2017 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -26,6 +26,7 @@ import org.oscim.theme.rule.Rule;
 import org.oscim.theme.rule.Rule.Element;
 import org.oscim.theme.rule.Rule.RuleVisitor;
 import org.oscim.theme.styles.RenderStyle;
+import org.oscim.utils.ArrayUtils;
 import org.oscim.utils.LRUCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +48,8 @@ public class RenderTheme implements IRenderTheme {
     private final Rule[] mRules;
     private final boolean mMapsforgeTheme;
 
-    private final Map<String, String> mTransformKeyMap;
-    private final Map<Tag, Tag> mTransformTagMap;
+    private final Map<String, String> mTransformBackwardKeyMap, mTransformForwardKeyMap;
+    private final Map<Tag, Tag> mTransformBackwardTagMap, mTransformForwardTagMap;
 
     class RenderStyleCache {
         final int matchType;
@@ -105,8 +106,10 @@ public class RenderTheme implements IRenderTheme {
         mRules = rules;
         mMapsforgeTheme = mapsforgeTheme;
 
-        mTransformKeyMap = transformKeyMap;
-        mTransformTagMap = transformTagMap;
+        mTransformForwardKeyMap = transformKeyMap;
+        mTransformBackwardKeyMap = ArrayUtils.swap(transformKeyMap);
+        mTransformForwardTagMap = transformTagMap;
+        mTransformBackwardTagMap = ArrayUtils.swap(transformTagMap);
 
         mStyleCache = new RenderStyleCache[3];
         mStyleCache[0] = new RenderStyleCache(Element.NODE);
@@ -292,16 +295,30 @@ public class RenderTheme implements IRenderTheme {
     }
 
     @Override
-    public String transformKey(String key) {
-        if (mTransformKeyMap != null)
-            return mTransformKeyMap.get(key);
+    public String transformBackwardKey(String key) {
+        if (mTransformBackwardKeyMap != null)
+            return mTransformBackwardKeyMap.get(key);
         return null;
     }
 
     @Override
-    public Tag transformTag(Tag tag) {
-        if (mTransformTagMap != null)
-            return mTransformTagMap.get(tag);
+    public String transformForwardKey(String key) {
+        if (mTransformForwardKeyMap != null)
+            return mTransformForwardKeyMap.get(key);
+        return null;
+    }
+
+    @Override
+    public Tag transformBackwardTag(Tag tag) {
+        if (mTransformBackwardTagMap != null)
+            return mTransformBackwardTagMap.get(tag);
+        return null;
+    }
+
+    @Override
+    public Tag transformForwardTag(Tag tag) {
+        if (mTransformForwardTagMap != null)
+            return mTransformForwardTagMap.get(tag);
         return null;
     }
 

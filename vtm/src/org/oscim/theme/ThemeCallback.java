@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -14,6 +14,8 @@
  */
 package org.oscim.theme;
 
+import org.oscim.theme.styles.RenderStyle;
+
 /**
  * Callback methods for render theme.
  */
@@ -21,5 +23,5 @@ public interface ThemeCallback {
     /**
      * @return the color-int
      */
-    int getColor(int color);
+    int getColor(RenderStyle origin, int color);
 }

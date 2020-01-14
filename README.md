@@ -8,11 +8,11 @@
 
 VTM (Vector Tile Map) was developed within the [OpenScienceMap](https://github.com/opensciencemap) project.
 
-**This fork continues VTM development. And provides compatibility with latest [Mapsforge](https://github.com/mapsforge/mapsforge).**
+**This fork continues VTM development and provides compatibility with [Mapsforge](https://github.com/mapsforge/mapsforge).**
 
-See the **[integration guide](docs/Integration.md)** and [changelog](docs/Changelog.md). And read through [how to contribute](.github/CONTRIBUTING.md) guidelines.
+See the **[integration guide](docs/Integration.md)** and [changelog](docs/Changelog.md). And read through [how to contribute](docs/CONTRIBUTING.md) guidelines.
 
-If you have any questions or problems, don't hesitate to ask our public [mailing list](https://groups.google.com/group/mapsforge-dev) for help.
+If you have any questions or problems, don't hesitate to ask our public [forum](https://groups.google.com/group/mapsforge-dev) for help.
 
 ## Features
 - Java map library
@@ -21,7 +21,8 @@ If you have any questions or problems, don't hesitate to ask our public [mailing
 - Support for multiple tile sources:
   - OpenScienceMap vector tiles
   - Mapsforge vector maps
-  - Mapbox vector tiles (e.g. Mapzen, Nextzen, OpenMapTiles)
+  - MBTiles vector & raster maps
+  - Mapbox vector tiles (e.g. Mapilion, Mapzen, Nextzen, OpenMapTiles)
   - GeoJSON vector tiles (e.g. Mapzen, Nextzen)
   - Raster tiles: any quadtree-scheme tiles as texture
 - Backends:
@@ -37,6 +38,8 @@ If you have any questions or problems, don't hesitate to ask our public [mailing
 - **vtm-gdx** common libGDX backend
 - **vtm-android-gdx** Android libGDX backend
 - **vtm-desktop** Desktop libGDX backend
+- **vtm-desktop-lwjgl** Desktop LWJGL backend
+- **vtm-desktop-lwjgl3** Desktop LWJGL 3 backend
 - **vtm-playground** Desktop examples
 - **vtm-ios** iOS libGDX backend
 - **vtm-ios-example** iOS examples

@@ -1,6 +1,10 @@
 /*
+ * Copyright 2013 Ahmad Saleem
+ * Copyright 2013 Hannes Janetzek
+ * Copyright 2016-2019 devemux86
+ * Copyright 2016 ocsike
+ * Copyright 2017 Mathieu De Brito
  * Copyright 2017-2018 Longri
- * Copyright 2018 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -17,142 +21,125 @@ package org.oscim.renderer;
 
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GL;
-import org.oscim.backend.canvas.Color;
+import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.Box;
 import org.oscim.core.Point;
-import org.oscim.core.PointF;
 import org.oscim.core.Tile;
+import org.oscim.layers.Layer;
 import org.oscim.map.Map;
-import org.oscim.renderer.atlas.TextureRegion;
 import org.oscim.renderer.bucket.SymbolBucket;
 import org.oscim.renderer.bucket.SymbolItem;
 import org.oscim.utils.FastMath;
-import org.oscim.utils.geom.GeometryUtils;
 import org.oscim.utils.math.Interpolation;
-
-import java.util.Locale;
 
 import static org.oscim.backend.GLAdapter.gl;
 
 public class LocationTextureRenderer extends BucketRenderer {
 
-    private static final PointF CENTER_OFFSET = new PointF(0.5f, 0.5f);
     private static final long ANIM_RATE = 50;
     private static final long INTERVAL = 2000;
-    private static final float CIRCLE_SIZE = 30;
-    private static final int SHOW_ACCURACY_ZOOM = 13;
-    private static final boolean IS_MAC = System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("mac");
 
-    private static final String V_SHADER = (""
-            + "precision highp float;"
-            + "uniform mat4 u_mvp;"
-            + "uniform float u_phase;"
-            + "uniform float u_scale;"
-            + "attribute vec2 a_pos;"
-            + "varying vec2 v_tex;"
-            + "void main() {"
-            + "  gl_Position = u_mvp * vec4(a_pos * u_scale * u_phase, 0.0, 1.0);"
-            + "  v_tex = a_pos;"
-            + "}").replace("precision highp float;", IS_MAC ? "" : "precision highp float;");
+    public static float CIRCLE_SIZE = /*30*/0;
+    private static final int COLOR = 0xff3333cc;
+    private static final int SHOW_ACCURACY_ZOOM = 16;
 
-    // only circle without direction
-    private static final String F_SHADER = (""
-            + "precision highp float;"
-            + "varying vec2 v_tex;"
-            + "uniform float u_scale;"
-            + "uniform float u_phase;"
-            + "uniform vec4 u_fill;"
-            + "void main() {"
-            + "  float len = 1.0 - length(v_tex);"
-            ///  outer ring
-            + "  float a = smoothstep(0.0, 2.0 / u_scale, len);"
-            ///  inner ring
-            + "  float b = 0.8 * smoothstep(3.0 / u_scale, 4.0 / u_scale, len);"
-            ///  center point
-            + "  float c = 0.5 * (1.0 - smoothstep(14.0 / u_scale, 16.0 / u_scale, 1.0 - len));"
-            + "  vec2 dir = normalize(v_tex);"
-            ///  - subtract inner from outer to create the outline
-            ///  - multiply by viewshed
-            ///  - add center point
-            + "  a = (a - (b + c)) + c;"
-            + "  gl_FragColor = u_fill * a;"
-            + "}").replace("precision highp float;", IS_MAC ? "" : "precision highp float;");
+    private final Map mMap;
+    private final Layer mLayer;
+    protected final float mScale;
+    private final SymbolBucket mSymbolLayer;
 
-    private final SymbolBucket symbolBucket;
-    private final float[] box = new float[8];
-    private final Point mapPoint = new Point();
-    private final Map map;
-    private boolean initialized;
-    private boolean locationIsVisible;
-    private int shaderProgramNumber;
+    private String mShaderFile;
+    protected int mShaderProgram;
     private int hVertexPosition;
     private int hMatrixPosition;
     private int hScale;
     private int hPhase;
-    private int uFill;
-    private double radius;
+    private int uColor;
+    private int uMode;
 
-    private final Point indicatorPosition = new Point();
-    private final Point screenPoint = new Point();
-    private final Box boundingBox = new Box();
-    private boolean runAnim;
-    private boolean animate = true;
-    private long animStart;
-    private boolean update;
-    private float bearing;
+    private final Point mIndicatorPosition = new Point();
 
-    // properties
-    private TextureRegion textureRegion;
-    private int accuracyColor = Color.BLUE;
-    private int viewShedColor = Color.RED;
-    private boolean billboard = false;
+    private final Point mScreenPoint = new Point();
+    private final Box mBBox = new Box();
 
-    public LocationTextureRenderer(Map map) {
-        this.map = map;
-        symbolBucket = new SymbolBucket();
+    private boolean mLocationIsVisible;
+
+    private boolean mRunAnim;
+    private boolean mAnimate = true;
+    private long mAnimStart;
+    private boolean mCenter;
+
+    private boolean mBillboard;
+    private Bitmap mBitmapArrow, mBitmapMarker;
+    private LocationCallback mCallback;
+    private int mColor = COLOR;
+    private final Point mLocation = new Point(Double.NaN, Double.NaN);
+    private double mRadius;
+    private int mShowAccuracyZoom = SHOW_ACCURACY_ZOOM;
+
+    public LocationTextureRenderer(Map map, Layer layer) {
+        this(map, layer, CanvasAdapter.getScale());
     }
 
-    public void setAccuracyColor(int color) {
-        this.accuracyColor = color;
+    public LocationTextureRenderer(Map map, Layer layer, float scale) {
+        mMap = map;
+        mLayer = layer;
+        mScale = scale;
+
+        mSymbolLayer = new SymbolBucket();
     }
 
     public void setAnimate(boolean animate) {
-        this.animate = animate;
+        mAnimate = animate;
     }
 
     public void setBillboard(boolean billboard) {
-        this.billboard = billboard;
+        mBillboard = billboard;
     }
 
-    public void setIndicatorColor(int color) {
-        this.viewShedColor = color;
+    public void setBitmapArrow(Bitmap bitmap) {
+        mBitmapArrow = bitmap;
     }
 
-    public void setLocation(double x, double y, float bearing, double radius) {
-        update = true;
-        mapPoint.x = x;
-        mapPoint.y = y;
-        this.bearing = bearing;
-        this.radius = radius;
+    public void setBitmapMarker(Bitmap bitmap) {
+        mBitmapMarker = bitmap;
     }
 
-    public void setTextureRegion(TextureRegion textureRegion) {
-        this.textureRegion = textureRegion;
+    public void setCallback(LocationCallback callback) {
+        mCallback = callback;
     }
 
-    public void setTextureRegion(TextureRegion textureRegion, boolean billboard) {
-        this.textureRegion = textureRegion;
-        this.billboard = billboard;
+    public void setCenter(boolean center) {
+        mCenter = center;
+    }
+
+    public void setColor(int color) {
+        mColor = color;
+    }
+
+    public void setLocation(double x, double y, double radius) {
+        mLocation.x = x;
+        mLocation.y = y;
+        mRadius = radius;
+    }
+
+    public void setShader(String shaderFile) {
+        mShaderFile = shaderFile;
+        mInitialized = false;
+    }
+
+    public void setShowAccuracyZoom(int showAccuracyZoom) {
+        mShowAccuracyZoom = showAccuracyZoom;
     }
 
     public void animate(boolean enable) {
-        if (runAnim == enable)
+        if (mRunAnim == enable)
             return;
 
-        runAnim = enable;
+        mRunAnim = enable;
         if (!enable)
             return;
-        if (!animate)
+        if (!mAnimate)
             return;
 
         final Runnable action = new Runnable() {
@@ -160,56 +147,71 @@ public class LocationTextureRenderer extends BucketRenderer {
 
             @Override
             public void run() {
-                if (!runAnim)
+                if (!mRunAnim)
                     return;
-                if (!animate)
+                if (!mAnimate)
                     return;
 
                 long diff = System.currentTimeMillis() - lastRun;
-                map.postDelayed(this, Math.min(ANIM_RATE, diff));
-                map.render();
+                mMap.postDelayed(this, Math.min(ANIM_RATE, diff));
+                mMap.render();
                 lastRun = System.currentTimeMillis();
             }
         };
 
-        animStart = System.currentTimeMillis();
-        map.postDelayed(action, ANIM_RATE);
+        mAnimStart = System.currentTimeMillis();
+        mMap.postDelayed(action, ANIM_RATE);
     }
 
     private float animPhase() {
-        return (float) ((MapRenderer.frametime - animStart) % INTERVAL) / INTERVAL;
+        return (float) ((MapRenderer.frametime - mAnimStart) % INTERVAL) / INTERVAL;
     }
 
     @Override
     public synchronized void update(GLViewport v) {
-        if (!v.changed() && !update)
-            return;
 
-        // accuracy
-        if (!initialized) {
+        if (!mInitialized) {
             init();
-            initialized = true;
+            mInitialized = true;
         }
+
+        if (!mLayer.isEnabled()) {
+            setReady(false);
+            return;
+        }
+
+        /*if (!v.changed() && isReady())
+            return;*/
+
         setReady(true);
 
-        int width = map.getWidth();
-        int height = map.getHeight();
-        v.getBBox(boundingBox, 0);
+        int width = mMap.getWidth();
+        int height = mMap.getHeight();
 
-        double x = mapPoint.x;
-        double y = mapPoint.y;
+        double x, y;
+        if (mCenter) {
+            x = (width >> 1) + width * mMap.viewport().getMapViewCenterX();
+            y = (height >> 1) + height * mMap.viewport().getMapViewCenterY();
+        } else {
+            // clamp location to a position that can be
+            // safely translated to screen coordinates
+            v.getBBox(mBBox, 0);
 
-        if (!boundingBox.contains(mapPoint)) {
-            x = FastMath.clamp(x, boundingBox.xmin, boundingBox.xmax);
-            y = FastMath.clamp(y, boundingBox.ymin, boundingBox.ymax);
+            x = mLocation.x;
+            y = mLocation.y;
+
+            if (!mBBox.contains(mLocation)) {
+                x = FastMath.clamp(x, mBBox.xmin, mBBox.xmax);
+                y = FastMath.clamp(y, mBBox.ymin, mBBox.ymax);
+            }
+
+            // get position of Location in pixel relative to
+            // screen center
+            v.toScreenPoint(x, y, mScreenPoint);
+
+            x = mScreenPoint.x + (width >> 1);
+            y = mScreenPoint.y + (height >> 1);
         }
-
-        // get position of Location in pixel relative to
-        // screen center
-        v.toScreenPoint(x, y, screenPoint);
-
-        x = screenPoint.x + width / 2;
-        y = screenPoint.y + height / 2;
 
         // clip position to screen boundaries
         int visible = 0;
@@ -228,112 +230,130 @@ public class LocationTextureRenderer extends BucketRenderer {
         else
             visible++;
 
-        locationIsVisible = (visible == 2);
+        mLocationIsVisible = (visible == 2);
 
-        if (locationIsVisible)
-            animate(false);
-        else
-            animate(true);
         // set location indicator position
-        v.fromScreenPoint(x, y, indicatorPosition);
+        v.fromScreenPoint(x, y, mIndicatorPosition);
 
-        // Texture
-        mMapPosition.copy(v.pos);
+        /* Texture */
 
-        double mx = v.pos.x;
-        double my = v.pos.y;
-        double scale = Tile.SIZE * v.pos.scale;
-        map.viewport().getMapExtents(box, 100);
-        long flip = (long) (Tile.SIZE * v.pos.scale) >> 1;
-
-        /* check visibility */
-        float symbolX = (float) ((mapPoint.x - mx) * scale);
-        float symbolY = (float) ((mapPoint.y - my) * scale);
-
-        if (symbolX > flip)
-            symbolX -= (flip << 1);
-        else if (symbolX < -flip)
-            symbolX += (flip << 1);
         buckets.clear();
-        if (!GeometryUtils.pointInPoly(symbolX, symbolY, box, 8, 0))
+
+        if (mBitmapArrow == null || mBitmapMarker == null)
             return;
 
+        if (!mLocationIsVisible)
+            return;
+
+        float itx, ity;
+        if (mCenter) {
+            itx = 0;
+            ity = 0;
+        } else {
+            double mx = v.pos.x;
+            double my = v.pos.y;
+            double scale = Tile.SIZE * v.pos.scale;
+
+            long flip = (long) (Tile.SIZE * v.pos.scale) >> 1;
+
+            itx = (float) ((mLocation.x - mx) * scale);
+            ity = (float) ((mLocation.y - my) * scale);
+
+            if (itx > flip)
+                itx -= (flip << 1);
+            else if (itx < -flip)
+                itx += (flip << 1);
+        }
+
+        mMapPosition.copy(v.pos);
         mMapPosition.bearing = -mMapPosition.bearing;
-        if (textureRegion == null)
-            return;
-        SymbolItem symbolItem = SymbolItem.pool.get();
-        symbolItem.set(symbolX, symbolY, textureRegion, this.bearing, this.billboard);
-        symbolItem.offset = CENTER_OFFSET;
-        symbolBucket.pushSymbol(symbolItem);
 
-        buckets.set(symbolBucket);
+        SymbolItem s = SymbolItem.pool.get();
+        if (mCallback != null && mCallback.hasRotation())
+            s.set(itx, ity, mBitmapArrow, mCallback.getRotation(), mBillboard);
+        else
+            s.set(itx, ity, mBitmapMarker, mBillboard);
+        mSymbolLayer.pushSymbol(s);
+
+        buckets.set(mSymbolLayer);
         buckets.prepare();
-        buckets.compile(true);
+
         compile();
-        update = false;
     }
 
     @Override
-    public void render(GLViewport v) {
-        renderAccuracyCircle(v);
-        super.render(v);
-    }
+    public synchronized void render(GLViewport v) {
 
-    private void init() {
-        int shader = GLShader.createProgram(V_SHADER, F_SHADER);
-        if (shader == 0)
-            return;
-
-        shaderProgramNumber = shader;
-        hVertexPosition = gl.getAttribLocation(shader, "a_pos");
-        hMatrixPosition = gl.getUniformLocation(shader, "u_mvp");
-        hPhase = gl.getUniformLocation(shader, "u_phase");
-        hScale = gl.getUniformLocation(shader, "u_scale");
-        uFill = gl.getUniformLocation(shader, "u_fill");
-    }
-
-    private void renderAccuracyCircle(GLViewport v) {
-        GLState.useProgram(shaderProgramNumber);
+        GLState.useProgram(mShaderProgram);
         GLState.blend(true);
         GLState.test(false, false);
 
         GLState.enableVertexArrays(hVertexPosition, GLState.DISABLED);
         MapRenderer.bindQuadVertexVBO(hVertexPosition/*, true*/);
 
-        float radius = 10;
+        float radius = CIRCLE_SIZE * mScale;
+
         boolean viewShed = false;
-        if (!locationIsVisible)
-            radius = CIRCLE_SIZE * CanvasAdapter.getScale();
-        else {
-            if (v.pos.zoomLevel >= SHOW_ACCURACY_ZOOM)
-                radius = (float) (this.radius * v.pos.scale);
-            radius = Math.max(2, radius);
+        if (!mLocationIsVisible /* || pos.zoomLevel < SHOW_ACCURACY_ZOOM */) {
+            animate(true);
+        } else {
+            if (v.pos.zoomLevel >= mShowAccuracyZoom)
+                radius = (float) (mRadius * v.pos.scale);
+            radius = Math.max(CIRCLE_SIZE * mScale, radius);
+
             viewShed = true;
+            animate(false);
         }
         gl.uniform1f(hScale, radius);
 
-        double x = indicatorPosition.x - v.pos.x;
-        double y = indicatorPosition.y - v.pos.y;
+        double x = mIndicatorPosition.x - v.pos.x;
+        double y = mIndicatorPosition.y - v.pos.y;
         double tileScale = Tile.SIZE * v.pos.scale;
 
         v.mvp.setTransScale((float) (x * tileScale), (float) (y * tileScale), 1);
         v.mvp.multiplyMM(v.viewproj, v.mvp);
         v.mvp.setAsUniform(hMatrixPosition);
 
-        if (!viewShed && animate) {
+        if (!viewShed && mAnimate) {
             float phase = Math.abs(animPhase() - 0.5f) * 2;
             //phase = Interpolation.fade.apply(phase);
             phase = Interpolation.swing.apply(phase);
-            gl.uniform1f(hPhase, 0.8f + phase * 0.2f);
-        } else
-            gl.uniform1f(hPhase, 1);
 
-        if (viewShed && locationIsVisible)
-            GLUtils.setColor(uFill, accuracyColor, 1);
-        else
-            GLUtils.setColor(uFill, viewShedColor, 1);
+            gl.uniform1f(hPhase, 0.8f + phase * 0.2f);
+        } else {
+            gl.uniform1f(hPhase, 1);
+        }
+
+        if (viewShed && mLocationIsVisible) {
+            if (mCallback != null && mCallback.hasRotation())
+                gl.uniform1i(uMode, 1); // With bearing
+            else
+                gl.uniform1i(uMode, 0); // Without bearing
+        } else
+            gl.uniform1i(uMode, -1); // Outside screen
+
+        GLUtils.setColor(uColor, mColor);
 
         gl.drawArrays(GL.TRIANGLE_STRIP, 0, 4);
-        gl.flush();
+
+        /* Texture */
+
+        super.render(v);
+    }
+
+    protected boolean init() {
+        int program = GLShader.loadShader(mShaderFile != null ? mShaderFile : "accuracy_1");
+        if (program == 0)
+            return false;
+
+        mShaderProgram = program;
+        hVertexPosition = gl.getAttribLocation(program, "a_pos");
+        hMatrixPosition = gl.getUniformLocation(program, "u_mvp");
+        hPhase = gl.getUniformLocation(program, "u_phase");
+        hScale = gl.getUniformLocation(program, "u_scale");
+        uColor = gl.getUniformLocation(program, "u_color");
+        uMode = gl.getUniformLocation(program, "u_mode");
+
+        return true;
     }
 }

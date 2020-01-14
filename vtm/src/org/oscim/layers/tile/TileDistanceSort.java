@@ -28,6 +28,13 @@ public class TileDistanceSort extends TimSort<MapTile> {
         super();
     }
 
+    /**
+     * Sort tiles by current {@link MapTile#distance} from map center.
+     *
+     * @param a  the tiles to be sorted.
+     * @param lo the start index.
+     * @param hi the end index (excluded).
+     */
     public static void sort(MapTile[] a, int lo, int hi) {
         int nRemaining = hi - lo;
         if (nRemaining < 2) {

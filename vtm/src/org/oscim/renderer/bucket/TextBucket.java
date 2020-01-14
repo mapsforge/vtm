@@ -1,5 +1,6 @@
 /*
  * Copyright 2012 Hannes Janetzek
+ * Copyright 2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -89,7 +90,7 @@ public class TextBucket extends TextureBucket {
         int advanceY = 0;
         float x = 0;
         float y = 0;
-        float yy;
+        float xx, yy;
 
         TextureItem t = pool.get();
         textures = t;
@@ -127,13 +128,17 @@ public class TextBucket extends TextureBucket {
                 }
             }
 
+            xx = x + mFontPadX;
             yy = y + height - it.text.fontDescent;
-
-            mCanvas.drawText(it.label, x, yy, it.text.paint, it.text.stroke);
 
             // FIXME !!!
             if (width > TEXTURE_WIDTH)
                 width = TEXTURE_WIDTH;
+
+            if (it.text.bgFill != null)
+                mCanvas.fillRectangle(x + mFontPadX, y + 1, width - 2 * mFontPadX, height, it.text.bgFill.getColor());
+
+            mCanvas.drawText(it.label, xx, yy, it.text.paint, it.text.stroke);
 
             while (it != null) {
                 addItem(it, width, height, x, y);

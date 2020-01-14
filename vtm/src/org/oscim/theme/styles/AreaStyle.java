@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -24,7 +24,8 @@ import org.oscim.utils.FastMath;
 
 import static org.oscim.backend.canvas.Color.parseColor;
 
-/*TODO 
+/**
+ * TODO
  * - add custom shaders
  * - create distance field per tile?
  */
@@ -112,11 +113,11 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
         this.level = b.level;
         this.style = b.style;
         this.fadeScale = b.fadeScale;
-        this.blendColor = b.themeCallback != null ? b.themeCallback.getColor(b.blendColor) : b.blendColor;
+        this.blendColor = b.themeCallback != null ? b.themeCallback.getColor(this, b.blendColor) : b.blendColor;
         this.blendScale = b.blendScale;
-        this.color = b.themeCallback != null ? b.themeCallback.getColor(b.fillColor) : b.fillColor;
+        this.color = b.themeCallback != null ? b.themeCallback.getColor(this, b.fillColor) : b.fillColor;
         this.texture = b.texture;
-        this.strokeColor = b.themeCallback != null ? b.themeCallback.getColor(b.strokeColor) : b.strokeColor;
+        this.strokeColor = b.themeCallback != null ? b.themeCallback.getColor(this, b.strokeColor) : b.strokeColor;
         this.strokeWidth = b.strokeWidth;
         this.mesh = b.mesh;
 
@@ -200,11 +201,11 @@ public class AreaStyle extends RenderStyle<AreaStyle> {
             this.level = area.level;
             this.style = area.style;
             this.fadeScale = area.fadeScale;
-            this.blendColor = themeCallback != null ? themeCallback.getColor(area.blendColor) : area.blendColor;
+            this.blendColor = themeCallback != null ? themeCallback.getColor(area, area.blendColor) : area.blendColor;
             this.blendScale = area.blendScale;
-            this.fillColor = themeCallback != null ? themeCallback.getColor(area.color) : area.color;
+            this.fillColor = themeCallback != null ? themeCallback.getColor(area, area.color) : area.color;
             this.texture = area.texture;
-            this.strokeColor = themeCallback != null ? themeCallback.getColor(area.strokeColor) : area.strokeColor;
+            this.strokeColor = themeCallback != null ? themeCallback.getColor(area, area.strokeColor) : area.strokeColor;
             this.strokeWidth = area.strokeWidth;
             this.mesh = area.mesh;
 

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2017 nebular
  * Copyright 2018 Gustl22
  *
@@ -22,12 +22,7 @@ package org.oscim.awt;
 
 import org.oscim.backend.canvas.Paint;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.text.AttributedCharacterIterator.Attribute;
@@ -125,8 +120,8 @@ public class AwtPaint implements Paint {
     Font font = DEFAULT_FONT; // new Font("Default", Font.PLAIN, 13);
     Stroke stroke;
     Style style = Style.FILL;
-    private int cap = getCap(Cap.BUTT);
-    private int join = getJoin(Join.MITER);
+    private int cap = getCap(Cap.ROUND);
+    private int join = getJoin(Join.ROUND);
     private float strokeWidth;
     private float textSize = DEFAULT_FONT.getSize();
 

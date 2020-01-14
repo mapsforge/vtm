@@ -3,7 +3,6 @@ apply plugin: 'maven'
 
 dependencies {
     api project(':vtm-gdx')
-    api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     api 'com.github.blackears:svgSalamander:v1.1.1'
 }
 

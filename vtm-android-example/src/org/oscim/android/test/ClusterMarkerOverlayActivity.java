@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2017 nebular
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -15,16 +15,12 @@
  */
 package org.oscim.android.test;
 
+import android.graphics.BitmapFactory;
+import org.oscim.android.canvas.AndroidBitmap;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeoPoint;
-import org.oscim.layers.marker.ClusterMarkerRenderer;
-import org.oscim.layers.marker.ItemizedLayer;
-import org.oscim.layers.marker.MarkerItem;
-import org.oscim.layers.marker.MarkerLayer;
-import org.oscim.layers.marker.MarkerRenderer;
-import org.oscim.layers.marker.MarkerRendererFactory;
-import org.oscim.layers.marker.MarkerSymbol;
+import org.oscim.layers.marker.*;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
@@ -32,8 +28,6 @@ import org.oscim.tiling.source.bitmap.DefaultSources;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.oscim.android.canvas.AndroidGraphics.drawableToBitmap;
 
 public class ClusterMarkerOverlayActivity extends MarkerOverlayActivity {
 
@@ -50,7 +44,7 @@ public class ClusterMarkerOverlayActivity extends MarkerOverlayActivity {
                 .build();
         mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
-        Bitmap bitmapPoi = drawableToBitmap(getResources().getDrawable(R.drawable.marker_poi));
+        Bitmap bitmapPoi = new AndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.marker_poi));
         final MarkerSymbol symbol;
         if (BILLBOARDS)
             symbol = new MarkerSymbol(bitmapPoi, MarkerSymbol.HotspotPlace.BOTTOM_CENTER);

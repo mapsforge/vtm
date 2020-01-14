@@ -3,10 +3,10 @@
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
-    <tag-transform match-k="height" output-k="render_height" />
-    <tag-transform match-k="min_height" output-k="render_min_height" />
-    <!--<tag-transform match-k="building" match-v="yes" output-k="layer" output-v="building" />-->
-    <!--<tag-transform match-k="building:part" match-v="yes" output-k="layer" output-v="building:part" />-->
+    <tag-transform k="render_height" k-lib="height" />
+    <tag-transform k="render_min_height" k-lib="min_height" />
+    <!--<tag-transform k="layer" v="building" k-lib="building" v-lib="yes" />-->
+    <!--<tag-transform k="layer" v="building:part" k-lib="building:part" v-lib="yes" />-->
 
     <!--###### TEXT styles ######-->
 
@@ -40,7 +40,8 @@
     <!--references-->
     <style-text style="bold" fill="#606060" id="ref" k="ref" priority="2" size="12" stroke="#ffffff"
         stroke-width="2.0" />
-    <style-text caption="true" id="ref-caption" use="ref" />
+    <style-text caption="true" style="bold" fill="#ffffff" id="ref-caption" k="ref" priority="2"
+        size="12" bg-fill="#45a976" />
     <!--ferry-->
     <style-text style="bold" fill="#606060" id="ferry" k="name" size="12" stroke="#ffffff"
         stroke-width="2.0" />
@@ -58,20 +59,21 @@
     <!-- <style-area id="wood" fill="#d1dbc7" fade="8" blend="11" blend-fill="#9ac56e" /> -->
 
     <!--Note: ordered according to their inheritance via the `use` attribute-->
-    <style-area id="tex1" src="assets:textures/rough.png" />
+
+    <!-- Avoid patterns and textures because of old GPU issues -->
+    <!--<style-area id="tex1" src="assets:textures/rough.png" />-->
 
     <!-- meadow|garden -->
-    <style-area fade="10" fill="#c9dc91" id="greens" use="tex1" />
+    <style-area fade="10" fill="#c9dc91" id="greens" />
 
     <!-- grass -->
-    <style-area fade="12" fill="#d3dcb9" id="lightgreen" use="tex1" />
+    <style-area fade="12" fill="#d3dcb9" id="lightgreen" />
 
     <!-- grassland|scrub -->
-    <style-area fade="10" fill="#c2cba5" id="darkgreen" use="tex1" />
+    <style-area fade="10" fill="#c2cba5" id="darkgreen" />
 
     <!--farmland-->
-    <style-area fade="12" fill="#e4dab5" id="farmland" stroke="#d1dbc7" stroke-width="1.0"
-        use="tex1" />
+    <style-area fade="12" fill="#e4dab5" id="farmland" />
 
     <!-- <style-area id="greens" fill="#d2e5ce" fade="10" /> -->
 
@@ -79,15 +81,15 @@
     <style-area fade="12" fill="#deecb9" id="greens2" />
 
     <!-- park|common|green|cemetery|golf_course|dog_park -->
-    <style-area fade="11" fill="#9ac56e" id="park" use="tex1" />
-    <!-- <style-area id="wood" use="park" fill="#9ac56e" fade="8" stroke="#d1dbc7" stroke-width="1.0"/> -->
+    <style-area fade="11" fill="#9ac56e" id="park" />
+    <!-- <style-area id="wood" use="park" fill="#9ac56e" fade="8" /> -->
 
     <!--wood-->
     <style-area blend="11" blend-fill="#83aa5b" fade="8" fill="#b3d095" id="wood" use="park" />
     <!-- <style-line id="wood" fix="true" cap="butt" width="1.0" stroke="#9ac56e" /> -->
 
     <!-- de:Kleingartengebiet -->
-    <style-area fade="12" fill="#efeae0" id="allotments" use="tex1" />
+    <style-area fade="12" fill="#efeae0" id="allotments" />
 
     <!-- de:Steinbruch, Schotter-, Kies-, Sand- und Tongrube -->
     <style-area fade="10" fill="#ddddcc" id="quarry" />
@@ -95,13 +97,13 @@
     <!--military-->
     <style-area fade="10" fill="#eeedea" id="military" />
     <!--building-->
-    <style-area fade="15" fill="#f2f0eb" id="building" stroke="#b7b6b3" stroke-width="1.0" />
+    <style-area fade="15" fill="#f2f0eb" id="building" />
     <!--<style-area id="building" fill="#e9e6e3" fade="15"/>-->
 
     <!--water-->
     <!--<style-area id="water" fill="#97b7e5" afc5e3 /> -->
     <!-- src="assets:textures/water.png" -->
-    <style-area fade="-1" fill="#99badf" id="water" mesh="true" />
+    <style-area fade="-1" fill="#99badf" id="water" />
 
 
     <!--###### LINE styles ######-->
@@ -240,7 +242,7 @@
     <m k="layer" v="park">
         <m k="class">
             <m v="national_park|nature_reserve">
-                <area use="greens2" />
+                <area fill="#40abe29c" />
             </m>
         </m>
     </m>
@@ -327,7 +329,12 @@
                 <line outline="motorway" use="highway:z11" />
             </m>
         </m>
-        <!--</m>-->
+
+        <m k="oneway" v="1" zoom-min="16">
+            <m k="class" v="motorway|trunk|primary|secondary|tertiary|minor">
+                <symbol repeat="true" src="assets:symbols/oneway.svg" />
+            </m>
+        </m>
     </m>
 
     <m k="layer" v="transportation_name">
@@ -350,7 +357,7 @@
     <m k="layer" v="water">
         <m k="class">
             <m v="ocean|lake|river">
-                <area use="water" />
+                <area mesh="true" use="water" />
             </m>
         </m>
     </m>
@@ -383,6 +390,7 @@
             <m zoom-min="14">
                 <m closed="yes">
                     <area fade="14" use="building" />
+                    <line fade="14" use="building" />
                 </m>
                 <m closed="no">
                     <line fade="14" use="building" />
@@ -393,6 +401,7 @@
             <m zoom-min="16">
                 <m closed="yes">
                     <area fade="16" use="building" />
+                    <line fade="16" use="building" />
                 </m>
                 <m closed="no">
                     <line fade="16" use="building" />

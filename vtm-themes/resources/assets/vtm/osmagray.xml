@@ -34,13 +34,14 @@
     <!--references-->
     <style-text style="bold" fill="#606060" id="ref" k="ref" priority="2" size="12" stroke="#ffffff"
         stroke-width="2.0" />
-    <style-text caption="true" id="ref-caption" use="ref" />
+    <style-text caption="true" style="bold" fill="#ffffff" id="ref-caption" k="ref" priority="2"
+        size="12" bg-fill="#5b5b5b" />
 
 
     <!--###### AREA styles ######-->
 
     <!--water-->
-    <style-area fill="#d0d0d0" id="water" mesh="true" />
+    <style-area fill="#d0d0d0" id="water" />
 
 
     <!--###### LINE styles ######-->
@@ -55,7 +56,7 @@
     <!--###### ASSIGNMENT ######-->
 
     <m e="way" k="natural" v="issea|sea">
-        <area use="water" />
+        <area mesh="true" use="water" />
     </m>
 
     <m e="way" k="natural" v="nosea">
@@ -68,38 +69,38 @@
         <m k="landuse">
             <m select="first">
                 <m v="military">
-                    <area src="assets:patterns/military.png" stroke="#e4e4e4" stroke-width="0.2" />
+                    <area fill="#40ededed" />
                 </m>
                 <m v="residential|farmyard">
                     <area fill="#e4e4e4" />
                 </m>
                 <m v="retail">
-                    <area fill="#efefef" stroke="#e4e4e4" stroke-width="0.2" />
+                    <area fill="#efefef" />
                 </m>
                 <m v="industrial|brownfield|railway">
-                    <area fill="#dedede" stroke="#e4e4e4" stroke-width="0.2" />
+                    <area fill="#dedede" />
                 </m>
                 <m v="commercial">
-                    <area fill="#fafafa" stroke="#e4e4e4" stroke-width="0.2" />
+                    <area fill="#fafafa" />
                 </m>
                 <m v="construction|greenfield">
-                    <area fill="#808080" stroke="#e4e4e4" stroke-width="0.2" />
+                    <area fill="#808080" />
                 </m>
                 <m v="garages">
                     <area fill="#d6d6d6" />
                 </m>
 
                 <m v="landfill|quarry">
-                    <area fill="#d8d8d8" stroke="#626262" stroke-width="0.2" />
+                    <area fill="#d8d8d8" />
                 </m>
                 <m v="cemetery">
-                    <area src="assets:patterns/cemetery.png" stroke="#e4e4e4" stroke-width="0.2" />
+                    <area fill="#e2e2e2" />
                 </m>
                 <m v="field|farm|farmland|meadow|grass">
-                    <area fill="#f9f9f9" stroke="#cecece" stroke-width="0.1" />
+                    <area fill="#f9f9f9" />
                 </m>
                 <m v="allotments|village_green|recreation_ground">
-                    <area fill="#d9d9d9" stroke="#a6a6a6" stroke-width="0.2" />
+                    <area fill="#d9d9d9" />
                 </m>
                 <m v="reservoir|basin">
                     <area fill="#d0d0d0" />
@@ -112,24 +113,11 @@
 
 
         <m k="natural" v="grassland|scrub">
-            <area fill="#acacac" stroke="#acacac" stroke-width="0.2" />
+            <area fill="#acacac" />
         </m>
 
         <m k="natural|landuse" v="forest|wood">
-            <m k="wood">
-                <m k="wood" v="coniferous">
-                    <area src="assets:patterns/wood-coniferous.png" />
-                </m>
-                <m k="wood" v="deciduous">
-                    <area src="assets:patterns/wood-deciduous.png" />
-                </m>
-                <m k="wood" v="mixed">
-                    <area src="assets:patterns/wood-mixed.png" />
-                </m>
-            </m>
-            <m k="wood" v="~">
-                <area fill="#acacac" stroke="#acacac" stroke-width="0.2" />
-            </m>
+            <area fill="#acacac" />
 
             <m zoom-min="16">
                 <text use="caption-small-blue" />
@@ -141,19 +129,19 @@
         <m k="amenity">
             <m select="first">
                 <m v="kindergarten|school|college|university">
-                    <area fill="#b5b5b5" stroke="#d8d8d8" stroke-width="0.2" />
+                    <area fill="#b5b5b5" />
                 </m>
                 <m v="grave_yard">
-                    <area src="assets:patterns/cemetery.png" stroke="#e4e4e4" stroke-width="0.2" />
+                    <area fill="#e2e2e2" />
                 </m>
                 <m v="parking">
-                    <area fill="#fafafa" stroke="#d8d8d8" stroke-width="0.2" />
+                    <area fill="#fafafa" />
                     <m k="access" v="private" zoom-min="15">
-                        <area src="assets:patterns/access-private.png" />
+                        <area fill="#40363636" />
                     </m>
                 </m>
                 <m closed="yes" v="fountain">
-                    <area fill="#d0d0d0" stroke="#080808" stroke-width="0.15" />
+                    <area fill="#d0d0d0" />
                 </m>
             </m>
         </m>
@@ -167,23 +155,23 @@
                     <line stroke="#708599" fix="true" cap="butt" width="2.0" />
                     </m> &ndash;&gt;
                   <m closed="yes">
-                    <area fill="#d0d0d0" stroke="#d0d0d0" stroke-width="0.4" />
+                    <area fill="#d0d0d0" />
                   </m>
                 </m>-->
                 <m v="glacier">
-                    <area fill="#fafafa" stroke="#cfcfcf" stroke-width="0.8" />
+                    <area fill="#fafafa" />
                 </m>
                 <m v="land">
-                    <area fill="#f8f8f8" stroke="#e0e0e0" stroke-width="0.1" />
+                    <area fill="#f8f8f8" />
                 </m>
                 <m v="beach">
                     <area fill="#cacaca" />
                 </m>
                 <m v="heath">
-                    <area fill="#fafafa" stroke="#f7f7f7" stroke-width="0.2" />
+                    <area fill="#fafafa" />
                 </m>
                 <m v="marsh|wetland">
-                    <area src="assets:patterns/marsh.png" />
+                    <area fill="#e5e5e5" />
                 </m>
             </m>
             <m k="name" zoom-min="16">
@@ -196,25 +184,24 @@
         <m k="leisure">
             <m select="first">
                 <m v="park|garden|golf_course|common|green">
-                    <area fill="#e2e2e2" stroke="#acacac" stroke-width="0.2" />
+                    <area fill="#e2e2e2" />
                 </m>
                 <m v="playground|playing_fields|pitch|dog_park">
-                    <area fill="#e2e2e2" stroke="#acacac" stroke-width="0.2" />
+                    <area fill="#e2e2e2" />
                     <m v="playground" zoom-min="17">
                         <symbol src="assets:symbols/amenity/playground.svg" />
                     </m>
                 </m>
                 <m v="nature_reserve">
-                    <area src="assets:patterns/nature-reserve.png" stroke="#acacac"
-                        stroke-width="0.2" />
+                    <area fill="#40d1d1d1" />
                 </m>
 
                 <m v="stadium|sports_centre|water_park">
-                    <area fill="#d9d9d9" stroke="#acacac" stroke-width="0.2" />
+                    <area fill="#d9d9d9" />
                 </m>
                 <m v="track">
                     <m k="area" v="yes|true">
-                        <area fill="#d9d9d9" stroke="#acacac" stroke-width="0.025" />
+                        <area fill="#d9d9d9" />
                     </m>
                     <m k="area" v="~|no|false">
                         <line stroke="#acacac" width="0.75" />
@@ -222,7 +209,7 @@
                     </m>
                 </m>
                 <m v="swimming_pool">
-                    <area fill="#d0d0d0" stroke="#6b6b6b" stroke-width="0.2" />
+                    <area fill="#d0d0d0" />
                 </m>
             </m>
             <m k="name" zoom-min="16">
@@ -280,7 +267,7 @@
 
         <!-- military -->
         <m k="military">
-            <area src="assets:patterns/military.png" stroke="#e4e4e4" stroke-width="0.2" />
+            <area fill="#40ededed" />
         </m>
 
 
@@ -290,10 +277,10 @@
                 <symbol src="assets:symbols/sport/soccer.svg" />
             </m>
             <m v="swimming|canoe|diving|scuba_diving">
-                <area fill="#d0d0d0" stroke="#6b6b6b" stroke-width="0.2" />
+                <area fill="#d0d0d0" />
             </m>
             <m v="tennis">
-                <area fill="#969696" stroke="#787878" stroke-width="0.2" />
+                <area fill="#969696" />
                 <m zoom-min="17">
                     <symbol src="assets:symbols/sport/tennis.svg" />
                 </m>
@@ -307,7 +294,7 @@
                 <area fill="#d4d4d4" />
             </m>
             <m v="zoo|picnic_site|caravan_site|camp_site">
-                <area fill="#e2e2e2" stroke="#acacac" stroke-width="0.2" />
+                <area fill="#e2e2e2" />
             </m>
         </m>
 
@@ -392,28 +379,28 @@
         <m k="area" v="yes|true">
             <m k="highway">
                 <m v="footway|footpath">
-                    <area fill="#dedede" stroke="#707070" stroke-width="1.15" />
+                    <area fill="#dedede" />
                 </m>
                 <m v="pedestrian">
-                    <area fill="#dedede" stroke="#707070" stroke-width="1.15" />
+                    <area fill="#dedede" />
                 </m>
                 <m v="path">
-                    <area fill="#d0d0d0" stroke="#d0d0d0" stroke-width="1.15" />
+                    <area fill="#d0d0d0" />
                 </m>
                 <m v="service">
-                    <area fill="#ffffff" stroke="#707070" stroke-width="1.15" />
+                    <area fill="#ffffff" />
                 </m>
                 <m v="unclassified">
-                    <area fill="#ffffff" stroke="#707070" stroke-width="1.3" />
+                    <area fill="#ffffff" />
                 </m>
                 <m v="residential">
-                    <area fill="#ffffff" stroke="#707070" stroke-width="1.15" />
+                    <area fill="#ffffff" />
                 </m>
                 <m v="road">
                     <area fill="#d0d0d0" />
                 </m>
                 <m v="living_street">
-                    <area fill="#ffffff" stroke="#ffffff" stroke-width="1.15" />
+                    <area fill="#ffffff" />
                 </m>
             </m>
         </m>
@@ -434,7 +421,7 @@
         <m k="aeroway">
             <m closed="yes" v="aerodrome">
                 <m zoom-min="12">
-                    <area fill="#dadada" stroke="#aeaeae" stroke-width="0.8" />
+                    <area fill="#dadada" />
                 </m>
                 <m zoom-max="11">
                     <caption dy="18" fill="#000000" k="ref" priority="5" size="19" stroke="#ffffff"
@@ -449,7 +436,8 @@
                 <area fill="#f0f0f0" />
             </m>
             <m v="terminal">
-                <area fill="#d9d9d9" stroke="#616161" stroke-width="0.2" />
+                <area fill="#d9d9d9" />
+                <line cap="butt" fix="true" stroke="#616161" width="1.0" />
             </m>
 
             <!-- <m v="runway">
@@ -552,15 +540,17 @@
         <m k="building|building:part">
             <m select="first">
                 <m closed="yes">
-                    <area fill="#d9d9d9" stroke="#616161" stroke-width="1.0" />
+                    <area fill="#d9d9d9" />
+                    <line cap="butt" fix="true" stroke="#616161" width="1.0" />
                 </m>
-                <m zoom-max="16">
+                <m closed="no">
                     <line cap="butt" fix="true" stroke="#616161" width="1.0" />
                 </m>
             </m>
 
             <m zoom-min="17">
-                <extrusion line-color="#50616161" side-color="#ead9d9d9" top-color="#eadddddd" />
+                <extrusion hsv-s="0" hsv-v="1.4" line-color="#50616161" side-color="#ead9d9d9"
+                    top-color="#eadddddd" />
             </m>
 
             <!--Only add house numbers where no name exist-->
@@ -779,18 +769,6 @@
                                 </m>
                             </m>
 
-                            <!-- <m zoom-min="16">
-
-                              <line width="1.0" stroke="#ff0000" />
-
-                              <m k="access" v="destination">
-                              <line src="assets:patterns/access-destination.png" width="1.5" />
-                              </m>
-                              <m k="access" v="private">
-                              <line src="assets:patterns/access-private.png" width="1.5" />
-                              </m>
-                              </m> -->
-
                             <!-- add outline for all matches -->
                             <m select="when-matched">
                                 <outline use="casing" />
@@ -950,7 +928,7 @@
                 <line cap="butt" stroke="#e4e4e4" width="0.3" />
             </m>
             <m closed="yes">
-                <area fill="#e4e4e4" stroke="#d0d0d0" stroke-width="0.05" />
+                <area fill="#e4e4e4" />
             </m>
         </m>
 
@@ -981,7 +959,7 @@
             <m k="area" v="~|false|no">
                 <m k="highway">
                     <m k="oneway" v="yes|true" zoom-min="16">
-                        <lineSymbol src="assets:symbols/oneway.svg" />
+                        <symbol repeat="true" src="assets:symbols/oneway.svg" />
                     </m>
                 </m>
             </m>
@@ -1011,7 +989,7 @@
             <m k="tunnel" v="~|false|no">
 
                 <m v="station">
-                    <area fill="#909090" stroke="#707070" stroke-width="0.3" />
+                    <area fill="#909090" />
                 </m>
 
                 <m k="bridge" v="yes|true">
@@ -1059,7 +1037,7 @@
 
         <m k="boundary">
             <m k="boundary" v="national_park">
-                <line dasharray="15, 5, 5, 5" fix="true" stroke="#c8c8c8" width="1.25" />
+                <area fill="#40d1d1d1" />
             </m>
             <m k="boundary" v="administrative">
                 <m k="admin_level">
@@ -1086,7 +1064,7 @@
                     </m>
                     <m v="4">
                         <line dasharray="15, 5, 5, 5" fix="true" stipple="4"
-                            stipple-stroke="#787878" stipple-width="0.9" stroke="#00000000"
+                            stipple-stroke="#787878" stipple-width="0.9" stroke="#80000000"
                             width="1.25" />
                     </m>
                     <m v="3">

@@ -16,8 +16,6 @@ package org.oscim.android.test;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Environment;
-
 import org.oscim.android.MapView;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.layers.tile.buildings.BuildingLayer;
@@ -35,7 +33,8 @@ import java.io.File;
 /**
  * A very basic Android app example.
  * <p>
- * You'll need a map with filename berlin.map from download.mapsforge.org in device storage.
+ * You'll need a map with filename berlin.map from download.mapsforge.org in device storage:
+ * /sdcard/Android/data/org.oscim.android.test/files/
  */
 public class GettingStarted extends Activity {
 
@@ -55,7 +54,7 @@ public class GettingStarted extends Activity {
 
         // Tile source
         MapFileTileSource tileSource = new MapFileTileSource();
-        String mapPath = new File(Environment.getExternalStorageDirectory(), MAP_FILE).getAbsolutePath();
+        String mapPath = new File(getExternalFilesDir(null), MAP_FILE).getAbsolutePath();
         if (tileSource.setMapFile(mapPath)) {
             // Vector layer
             VectorTileLayer tileLayer = mapView.map().setBaseMap(tileSource);

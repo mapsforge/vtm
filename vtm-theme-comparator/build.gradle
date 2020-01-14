@@ -1,14 +1,7 @@
 apply plugin: 'application'
 
-/*
-configurations.all {
-    // Check latest snapshot on every build
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
-*/
-
 dependencies {
-    implementation project(':vtm-desktop')
+    implementation project(':vtm-desktop-lwjgl')
     file("${rootDir}/vtm-desktop/natives").eachDir() { dir ->
         implementation files(dir.path)
     }
@@ -17,11 +10,11 @@ dependencies {
     implementation 'com.fifesoft:rsyntaxtextarea:2.6.1'
     implementation 'com.jtattoo:JTattoo:1.6.11'
 
-    implementation 'org.mapsforge:mapsforge-core:master-SNAPSHOT'
-    implementation 'org.mapsforge:mapsforge-map:master-SNAPSHOT'
-    implementation 'org.mapsforge:mapsforge-map-awt:master-SNAPSHOT'
-    implementation 'org.mapsforge:mapsforge-map-reader:master-SNAPSHOT'
-    implementation 'org.mapsforge:mapsforge-themes:master-SNAPSHOT'
+    implementation 'org.mapsforge:mapsforge-core:0.13.0'
+    implementation 'org.mapsforge:mapsforge-map:0.13.0'
+    implementation 'org.mapsforge:mapsforge-map-awt:0.13.0'
+    implementation 'org.mapsforge:mapsforge-map-reader:0.13.0'
+    implementation 'org.mapsforge:mapsforge-themes:0.13.0'
     implementation 'net.sf.kxml:kxml2:2.3.0'
 }
 

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2018 devemux86
+ * Copyright 2018-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -63,20 +63,19 @@ public final class WayDecorator {
                 previousX += diffX * segmentSkipPercentage;
                 previousY += diffY * segmentSkipPercentage;
 
-                // TODO
-                /*if (rotate) {
+                if (symbol.rotate) {
                     // if we do not rotate theta will be 0, which is correct
-                    theta = (float) Math.atan2(currentY - previousY, currentX - previousX);
-                }*/
+                    theta = (float) Math.toDegrees(Math.atan2(currentY - previousY, currentX - previousX));
+                }
 
                 float x = previousX;
                 float y = previousY;
                 if (x >= 0 && x <= Tile.SIZE && y >= 0 && y <= Tile.SIZE) {
                     SymbolItem s = SymbolItem.pool.get();
                     if (symbol.bitmap != null)
-                        s.set(x, y, symbol.bitmap, 0, true);
+                        s.set(x, y, symbol.bitmap, theta, symbol.billboard);
                     else
-                        s.set(x, y, symbol.texture, 0, true);
+                        s.set(x, y, symbol.texture, theta, symbol.billboard);
                     ld.symbols.push(s);
                 }
 

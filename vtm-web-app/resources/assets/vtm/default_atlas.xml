@@ -56,8 +56,7 @@
     <!-- <style-area id="greens" fill="#d2e5ce" fade="10" /> -->
 
     <!--farmland-->
-    <style-area fade="12" fill="#e4dab5" id="farmland" stroke="#d1dbc7" stroke-width="1.0"
-        use="tex1" />
+    <style-area fade="12" fill="#e4dab5" id="farmland" use="tex1" />
 
     <!-- marsh|wetland|mud|nature_reserve -->
     <style-area fade="12" fill="#deecb9" id="greens2" />
@@ -72,7 +71,7 @@
     <!-- <style-area id="wood" fill="#d1dbc7" fade="8" blend="11" blend-fill="#9ac56e" /> -->
     <style-area blend="11" blend-fill="#83aa5b" fade="8" fill="#b3d095" id="wood" use="park" />
     <!-- <style-line id="wood" fix="true" cap="butt" width="1.0" stroke="#9ac56e" /> -->
-    <!-- <style-area id="wood" use="park" fill="#9ac56e" fade="8" stroke="#d1dbc7" stroke-width="1.0"/> -->
+    <!-- <style-area id="wood" use="park" fill="#9ac56e" fade="8" /> -->
 
     <!-- de:Kleingartengebiet -->
     <style-area fade="12" fill="#efeae0" id="allotments" use="tex1" />
@@ -83,7 +82,7 @@
     <!--military-->
     <style-area fade="10" fill="#eeedea" id="military" />
     <!--building-->
-    <style-area fade="15" fill="#f2f0eb" id="building" stroke="#b7b6b3" stroke-width="1.0" />
+    <style-area fade="15" fill="#f2f0eb" id="building" />
     <!--<style-area id="building" fill="#e9e6e3" fade="15"/>-->
 
     <!--water-->
@@ -268,10 +267,10 @@
                     <area fill="#f2d9b1" />
                 </m>
                 <!-- <m v="parking" zoom-min="15">
-                  <area fill="#f4f4f4" stroke="#d4d4d4" stroke-width="0.2" />
+                  <area fill="#f4f4f4" />
                   </m>
                   <m v="fountain" closed="yes">
-                  <area fill="#b4cbdc" stroke="#000080" stroke-width="0.15" />
+                  <area fill="#b4cbdc" />
                   </m> -->
             </m>
 
@@ -305,11 +304,8 @@
             </m>
 
             <m k="landuse|natural" v="forest|wood">
-                <m zoom-max="9" zoom-min="8">
+                <m zoom-min="8">
                     <area use="wood" />
-                </m>
-                <m zoom-min="10">
-                    <area stroke="#91bf63" stroke-width="1.0" use="wood" />
                 </m>
             </m>
 
@@ -336,10 +332,10 @@
                   </m>
                 -->
                 <m v="parking" zoom-min="15">
-                    <area fill="#f4f4f4" stroke="#d4d4d4" stroke-width="0.2" />
+                    <area fill="#f4f4f4" />
                 </m>
                 <m closed="yes" v="fountain">
-                    <area fill="#b4cbdc" stroke="#000080" stroke-width="0.15" />
+                    <area fill="#b4cbdc" />
                 </m>
 
             </m>
@@ -385,7 +381,7 @@
                     <line cap="butt" fix="true" stroke="#d9d9a3" width="1.0" />
                 </m>
                 <m v="swimming_pool">
-                    <area fill="#d4ebfc" stroke="#6060ff" stroke-width="0.2" />
+                    <area fill="#d4ebfc" />
                 </m>
 
                 <!-- <m v="track"> <m k="area" v="yes|true">
@@ -607,6 +603,7 @@
             <!-- Airport passenger building -->
             <m v="terminal|hangar">
                 <area use="building" />
+                <line use="building" />
             </m>
         </m>
 
@@ -620,6 +617,7 @@
             <m zoom-max="16" zoom-min="14">
                 <m closed="yes">
                     <area fade="14" use="building" />
+                    <line fade="14" use="building" />
                 </m>
                 <m closed="no">
                     <line fade="14" use="building" />
@@ -905,7 +903,7 @@
                 <line cap="butt" stroke="#e4e4e4" width="0.3" />
             </m>
             <m closed="yes">
-                <area fill="#e4e4e4" stroke="#d0d0d0" stroke-width="1.05" />
+                <area fill="#e4e4e4" />
             </m>
         </m>
 
@@ -924,7 +922,7 @@
             <m k="tunnel" v="~|false|no">
 
                 <m k="railway" v="station">
-                    <area fill="#dbdbc9" stroke="#707070" stroke-width="0.3" />
+                    <area fill="#dbdbc9" />
                 </m>
 
                 <!-- railway bridge casings -->

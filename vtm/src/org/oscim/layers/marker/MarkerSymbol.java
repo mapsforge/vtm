@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2016 Izumi Kawashima
  * Copyright 2017 Longri
  *
@@ -179,7 +179,7 @@ public class MarkerSymbol {
             h = mTextureRegion.rect.h;
         }
         float ox = -w * mOffset.x;
-        float oy = -h * (1 - mOffset.y);
+        float oy = -h * mOffset.y;
 
         return dx >= ox && dy >= oy && dx <= ox + w && dy <= oy + h;
     }

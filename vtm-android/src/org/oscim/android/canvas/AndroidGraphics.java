@@ -1,6 +1,6 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -22,7 +22,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap.Config;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-
+import android.os.Build;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.Platform;
 import org.oscim.backend.canvas.Bitmap;
@@ -90,7 +90,7 @@ public final class AndroidGraphics extends CanvasAdapter {
 
     //-------------------------------------
     public static Bitmap drawableToBitmap(Drawable drawable) {
-        if (drawable instanceof BitmapDrawable) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P && drawable instanceof BitmapDrawable) {
             return new AndroidBitmap(((BitmapDrawable) drawable).getBitmap());
         }
 

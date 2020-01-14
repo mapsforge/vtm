@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -46,8 +46,8 @@ public final class CircleStyle extends RenderStyle<CircleStyle> {
         this.cat = b.cat;
         this.radius = b.radius;
         this.scaleRadius = b.scaleRadius;
-        this.fillColor = b.themeCallback != null ? b.themeCallback.getColor(b.fillColor) : b.fillColor;
-        this.strokeColor = b.themeCallback != null ? b.themeCallback.getColor(b.strokeColor) : b.strokeColor;
+        this.fillColor = b.themeCallback != null ? b.themeCallback.getColor(this, b.fillColor) : b.fillColor;
+        this.strokeColor = b.themeCallback != null ? b.themeCallback.getColor(this, b.strokeColor) : b.strokeColor;
         this.strokeWidth = b.strokeWidth;
         this.level = b.level;
     }
@@ -76,8 +76,8 @@ public final class CircleStyle extends RenderStyle<CircleStyle> {
 
             this.radius = circle.radius;
             this.scaleRadius = circle.scaleRadius;
-            this.fillColor = themeCallback != null ? themeCallback.getColor(circle.fillColor) : circle.fillColor;
-            this.strokeColor = themeCallback != null ? themeCallback.getColor(circle.strokeColor) : circle.strokeColor;
+            this.fillColor = themeCallback != null ? themeCallback.getColor(circle, circle.fillColor) : circle.fillColor;
+            this.strokeColor = themeCallback != null ? themeCallback.getColor(circle, circle.strokeColor) : circle.strokeColor;
             this.strokeWidth = circle.strokeWidth;
             this.cat = circle.cat;
             this.level = circle.level;

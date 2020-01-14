@@ -2,10 +2,12 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013, 2014 Hannes Janetzek
  * Copyright 2014-2015 Ludwig M Brinckmann
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2016 Andrey Novikov
  * Copyright 2017-2018 Gustl22
  * Copyright 2018 Bezzu
+ * Copyright 2019 marq24
+ * Copyright 2019 Justus Schmidt
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -23,13 +25,8 @@
 package org.oscim.tiling.source.mapfile;
 
 import org.oscim.backend.CanvasAdapter;
-import org.oscim.core.BoundingBox;
-import org.oscim.core.GeoPoint;
+import org.oscim.core.*;
 import org.oscim.core.GeometryBuffer.GeometryType;
-import org.oscim.core.MapElement;
-import org.oscim.core.MercatorProjection;
-import org.oscim.core.Tag;
-import org.oscim.core.Tile;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.tiling.ITileDataSink;
@@ -55,7 +52,7 @@ import static org.oscim.tiling.QueryResult.SUCCESS;
 /**
  * A class for reading binary map files.
  *
- * @see <a href="http://code.google.com/p/mapsforge/wiki/SpecificationBinaryMapFile">Specification</a>
+ * @see <a href="https://github.com/mapsforge/mapsforge/blob/master/docs/Specification-Binary-Map-File.md">Specification</a>
  */
 public class MapDatabase implements ITileDataSource {
     /**
@@ -190,6 +187,19 @@ public class MapDatabase implements ITileDataSource {
     public static boolean wayFilterEnabled = true;
     public static int wayFilterDistance = 20;
 
+    /**
+     * Reduce points on-the-fly while reading from map files.
+     */
+    public static int SIMPLIFICATION_MIN_ZOOM = 8;
+    public static int SIMPLIFICATION_MAX_ZOOM = 11;
+
+    /**
+     * Mapsforge artificial tags for land/sea areas.
+     */
+    private static final Tag TAG_ISSEA = new Tag("natural", "issea");
+    private static final Tag TAG_NOSEA = new Tag("natural", "nosea");
+    private static final Tag TAG_SEA = new Tag("natural", "sea");
+
     private long mFileSize;
     private boolean mDebugFile;
     private RandomAccessFile mInputFile;
@@ -253,20 +263,26 @@ public class MapDatabase implements ITileDataSource {
             mTileProjection.setTile(tile);
             //mTile = tile;
 
-            /* size of tile in map coordinates; */
-            double size = 1.0 / (1 << tile.zoomLevel);
+            if (Parameters.SIMPLIFICATION_TOLERANCE > 0
+                    && tile.zoomLevel >= SIMPLIFICATION_MIN_ZOOM && tile.zoomLevel <= SIMPLIFICATION_MAX_ZOOM) {
+                /* size of tile in map coordinates; */
+                double size = 1.0 / (1 << tile.zoomLevel);
 
-            /* simplification tolerance */
-            int pixel = (tile.zoomLevel > 11) ? 1 : 2;
+                /* simplification tolerance */
+                int pixel = Parameters.SIMPLIFICATION_TOLERANCE;
 
-            int simplify = Tile.SIZE / pixel;
+                int simplify = Tile.SIZE / pixel;
 
-            /* translate screen pixel for tile to latitude and longitude
-             * tolerance for point reduction before projection. */
-            minDeltaLat = (int) (Math.abs(MercatorProjection.toLatitude(tile.y + size)
-                    - MercatorProjection.toLatitude(tile.y)) * 1e6) / simplify;
-            minDeltaLon = (int) (Math.abs(MercatorProjection.toLongitude(tile.x + size)
-                    - MercatorProjection.toLongitude(tile.x)) * 1e6) / simplify;
+                /* translate screen pixel for tile to latitude and longitude
+                 * tolerance for point reduction before projection. */
+                minDeltaLat = (int) (Math.abs(MercatorProjection.toLatitude(tile.y + size)
+                        - MercatorProjection.toLatitude(tile.y)) * 1e6) / simplify;
+                minDeltaLon = (int) (Math.abs(MercatorProjection.toLongitude(tile.x + size)
+                        - MercatorProjection.toLongitude(tile.x)) * 1e6) / simplify;
+            } else {
+                minDeltaLat = 0;
+                minDeltaLon = 0;
+            }
 
             QueryParameters queryParameters = new QueryParameters();
             queryParameters.queryZoomLevel =
@@ -696,7 +712,7 @@ public class MapDatabase implements ITileDataSource {
         return true;
     }
 
-    private boolean processWayDataBlock(MapElement e, boolean doubleDeltaEncoding, boolean isLine, List<GeoPoint[]> wayCoordinates) {
+    private boolean processWayDataBlock(MapElement e, boolean doubleDeltaEncoding, boolean isLine, List<GeoPoint[]> wayCoordinates, int[] labelPosition) {
         /* get and check the number of way coordinate blocks (VBE-U) */
         int numBlocks = mReadBuffer.readUnsignedInt();
         if (numBlocks < 1 || numBlocks > Short.MAX_VALUE) {
@@ -721,36 +737,49 @@ public class MapDatabase implements ITileDataSource {
             /* each way node consists of latitude and longitude */
             int len = numWayNodes * 2;
 
-            wayLengths[coordinateBlock] = decodeWayNodes(doubleDeltaEncoding,
-                    e, len, isLine);
+            // create the array which will store the current way segment
+            GeoPoint[] waySegment = null;
+            if (wayCoordinates != null)
+                waySegment = new GeoPoint[numWayNodes];
 
-            if (wayCoordinates != null) {
-                // create the array which will store the current way segment
-                GeoPoint[] waySegment = new GeoPoint[e.getNumPoints()];
-                for (int i = 0; i < e.getNumPoints(); i++)
-                    waySegment[i] = new GeoPoint(e.getPointY(i) / 1E6, e.getPointX(i) / 1E6);
+            // label position must be set on first coordinate block
+            wayLengths[coordinateBlock] = decodeWayNodes(doubleDeltaEncoding, e, len, isLine,
+                    coordinateBlock == 0 ? labelPosition : null, waySegment);
+
+            if (wayCoordinates != null)
                 wayCoordinates.add(waySegment);
-            }
         }
 
         return true;
     }
 
-    private int decodeWayNodes(boolean doubleDelta, MapElement e, int length, boolean isLine) {
+    private int decodeWayNodes(boolean doubleDelta, MapElement e, int length, boolean isLine, int[] labelPosition, GeoPoint[] waySegment) {
         int[] buffer = mIntBuffer;
         mReadBuffer.readSignedInt(buffer, length);
 
         float[] outBuffer = e.ensurePointSize(e.pointNextPos + length, true);
         int outPos = e.pointNextPos;
-        int lat, lon;
+        float pLat, pLon;
 
         /* first node latitude single-delta offset */
-        int firstLat = lat = mTileLatitude + buffer[0];
-        int firstLon = lon = mTileLongitude + buffer[1];
+        int rawLat = mTileLatitude + buffer[0];
+        int rawLon = mTileLongitude + buffer[1];
 
-        outBuffer[outPos++] = lon;
-        outBuffer[outPos++] = lat;
+        float firstLat = pLat = mTileProjection.projectLat(rawLat);
+        float firstLon = pLon = mTileProjection.projectLon(rawLon);
+
+        outBuffer[outPos++] = pLon;
+        outBuffer[outPos++] = pLat;
         int cnt = 2;
+
+        /* reset label position single-delta to first way node */
+        if (labelPosition != null) {
+            labelPosition[1] = rawLat + labelPosition[1];
+            labelPosition[0] = rawLon + labelPosition[0];
+        }
+
+        if (waySegment != null)
+            waySegment[0] = new GeoPoint(rawLat / 1E6, rawLon / 1E6);
 
         int deltaLat = 0;
         int deltaLon = 0;
@@ -763,8 +792,14 @@ public class MapDatabase implements ITileDataSource {
                 deltaLat = buffer[pos];
                 deltaLon = buffer[pos + 1];
             }
-            lat += deltaLat;
-            lon += deltaLon;
+            rawLat += deltaLat;
+            rawLon += deltaLon;
+
+            if (waySegment != null)
+                waySegment[pos / 2] = new GeoPoint(rawLat / 1E6, rawLon / 1E6);
+
+            float lat = mTileProjection.projectLat(rawLat);
+            float lon = mTileProjection.projectLon(rawLon);
 
             if (pos == length - 2) {
                 boolean line = isLine || (lon != firstLon || lat != firstLat);
@@ -778,13 +813,19 @@ public class MapDatabase implements ITileDataSource {
                 if (e.type == GeometryType.NONE)
                     e.type = line ? LINE : POLY;
 
-            } else /*if ((deltaLon > minDeltaLon || deltaLon < -minDeltaLon
-                    || deltaLat > minDeltaLat || deltaLat < -minDeltaLat)
-                    || e.tags.contains("natural", "nosea"))*/ {
-                // Avoid additional simplification
-                // https://github.com/mapsforge/vtm/issues/39
-                outBuffer[outPos++] = lon;
-                outBuffer[outPos++] = lat;
+            } else if (lat == pLat && lon == pLon) {
+                /* drop small distance intermediate nodes */
+                //log.debug("drop zero delta ");
+            } else if (Parameters.SIMPLIFICATION_TOLERANCE == 0
+                    || (isLine
+                    || e.tags.contains(TAG_ISSEA)
+                    || e.tags.contains(TAG_SEA)
+                    || e.tags.contains(TAG_NOSEA)
+                    || deltaLon > minDeltaLon || deltaLon < -minDeltaLon
+                    || deltaLat > minDeltaLat || deltaLat < -minDeltaLat)) {
+                // Point reduction except lines and land/sea polygons
+                outBuffer[outPos++] = pLon = lon;
+                outBuffer[outPos++] = pLat = lat;
                 cnt += 2;
             }
         }
@@ -958,7 +999,7 @@ public class MapDatabase implements ITileDataSource {
                 if (ways != null)
                     wayNodes = new ArrayList<>();
 
-                if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, linearFeature, wayNodes))
+                if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, linearFeature, wayNodes, labelPosition))
                     return false;
 
                 /* drop invalid outer ring */
@@ -967,8 +1008,29 @@ public class MapDatabase implements ITileDataSource {
                 }
 
                 if (labelPosition != null && wayDataBlock == 0)
-                    e.setLabelPosition(e.points[0] + labelPosition[0], e.points[1] + labelPosition[1]);
-                mTileProjection.project(e);
+                    e.setLabelPosition(mTileProjection.projectLon(labelPosition[0]), mTileProjection.projectLat(labelPosition[1]));
+                else
+                    e.labelPosition = null;
+
+                // When a way will be rendered then typically a label / symbol will be applied
+                // by the render theme. If the way does not come with a defined labelPosition
+                // we should calculate a position, that is based on all points of the given way.
+                // This "auto" position calculation is also done in the LabelTileLoaderHook class
+                // but then the points of the way have been already reduced cause of the clipping
+                // that is happening. So the suggestion here is to calculate the centroid of the way
+                // and use that as centroidPosition of the element.
+                if (Parameters.POLY_CENTROID && e.labelPosition == null) {
+                    float x = 0;
+                    float y = 0;
+                    int n = e.index[0];
+                    for (int i = 0; i < n; ) {
+                        x += e.points[i++];
+                        y += e.points[i++];
+                    }
+                    x /= (n / 2);
+                    y /= (n / 2);
+                    e.setCentroidPosition(x, y);
+                }
 
                 // Avoid clipping for buildings, which slows rendering.
                 // But clip everything if buildings are displayed.
@@ -992,7 +1054,7 @@ public class MapDatabase implements ITileDataSource {
                         for (int i = 0; i < e.tags.size(); i++)
                             tags.add(e.tags.get(i));
                         if (Selector.ALL == selector || hasName || hasHouseNr || hasRef || wayAsLabelTagFilter(tags)) {
-                            GeoPoint labelPos = e.labelPosition != null ? new GeoPoint(e.labelPosition.y / 1E6, e.labelPosition.x / 1E6) : null;
+                            GeoPoint labelPos = labelPosition != null ? new GeoPoint(labelPosition[1] / 1E6, labelPosition[0] / 1E6) : null;
                             ways.add(new Way(layer, tags, wayNodesArray, labelPos, e.type));
                         }
                     }
@@ -1278,6 +1340,10 @@ public class MapDatabase implements ITileDataSource {
             if (e.labelPosition != null) {
                 e.labelPosition.x = projectLon(e.labelPosition.x);
                 e.labelPosition.y = projectLat(e.labelPosition.y);
+            }
+            if (e.centroidPosition != null) {
+                e.centroidPosition.x = projectLon(e.centroidPosition.x);
+                e.centroidPosition.y = projectLat(e.centroidPosition.y);
             }
         }
     }

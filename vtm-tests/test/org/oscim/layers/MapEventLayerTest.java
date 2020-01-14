@@ -9,6 +9,7 @@ import org.oscim.event.MotionEvent;
 import org.oscim.map.Animator;
 import org.oscim.map.Map;
 import org.oscim.map.ViewController;
+import org.oscim.utils.Parameters;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -24,6 +25,7 @@ public class MapEventLayerTest {
 
     @Before
     public void setUp() throws Exception {
+        Parameters.ANIMATOR2 = false;
         Map mockMap = Mockito.mock(Map.class);
         mockViewport = Mockito.mock(ViewController.class);
         mockAnimator = Mockito.mock(Animator.class);

@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2017 nebular
  * Copyright 2017 Longri
  *
@@ -21,8 +21,8 @@ package org.oscim.android.canvas;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
@@ -93,6 +93,7 @@ public class AndroidCanvas implements Canvas {
         RectF rect = new RectF(x, y, x + width, y + height);
         android.graphics.Paint paint = new android.graphics.Paint();
         paint.setColor(color);
+        paint.setXfermode(new PorterDuffXfermode(color == Color.TRANSPARENT ? PorterDuff.Mode.CLEAR : PorterDuff.Mode.SRC_OVER));
         canvas.drawRect(rect, paint);
     }
 

@@ -2,7 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2017 devemux86
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -66,14 +66,35 @@ public interface IRenderTheme {
     void scaleTextSize(float scaleFactor);
 
     /**
-     * @return the transformed tag key of this RenderTheme.
+     * Transform internal key to tile source key.
+     * e.g. for lazy fetched tag values via tile source key.
+     * Use when tile source and internal keys have 1-1 relation.
+     *
+     * @return the backwards transformed tag key.
      */
-    String transformKey(String key);
+    String transformBackwardKey(String key);
 
     /**
-     * @return the transformed tag of this RenderTheme.
+     * Transform tile source key to internal key.
+     *
+     * @return the forward transformed tag key.
      */
-    Tag transformTag(Tag tag);
+    String transformForwardKey(String key);
+
+    /**
+     * Transform internal tag to tile source tag.
+     * Use when tile source and internal tags have 1-1 relation.
+     *
+     * @return the backwards transformed tag.
+     */
+    Tag transformBackwardTag(Tag tag);
+
+    /**
+     * Transform tile source tag to internal tag.
+     *
+     * @return the forward transformed tag.
+     */
+    Tag transformForwardTag(Tag tag);
 
     class ThemeException extends IllegalArgumentException {
         public ThemeException(String string) {

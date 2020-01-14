@@ -78,6 +78,6 @@ public class OverpassTileSource extends UrlTileSource {
 
     @Override
     public ITileDataSource getDataSource() {
-        return new OverzoomTileDataSource(new UrlTileDataSource(this, new OverpassTileDecoder(), getHttpEngine()), mOverZoom);
+        return new OverzoomTileDataSource(new UrlTileDataSource(this, new TileDecoder(), getHttpEngine()), mOverZoom);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Ahmad Saleem
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2016 ocsike
  * Copyright 2017 Mathieu De Brito
  *
@@ -20,8 +20,8 @@ package org.oscim.renderer;
 
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GL;
-import org.oscim.backend.canvas.Color;
 import org.oscim.core.Box;
+import org.oscim.core.MapPosition;
 import org.oscim.core.Point;
 import org.oscim.core.Tile;
 import org.oscim.layers.Layer;
@@ -36,13 +36,20 @@ public class LocationRenderer extends LayerRenderer {
     private static final long ANIM_RATE = 50;
     private static final long INTERVAL = 2000;
 
-    private static final float CIRCLE_SIZE = 30;
+    public static float CIRCLE_SIZE = 30;
     private static final int COLOR = 0xff3333cc;
     private static final int SHOW_ACCURACY_ZOOM = 16;
 
     private final Map mMap;
     private final Layer mLayer;
-    private final float mScale;
+    protected final float mScale;
+
+    /**
+     * Use mMapPosition.copy(position) to keep the position for which
+     * the Overlay is *compiled*. NOTE: required by setMatrix utility
+     * functions to draw this layer fixed to the map
+     */
+    protected MapPosition mMapPosition;
 
     private String mShaderFile;
     protected int mShaderProgram;
@@ -66,9 +73,10 @@ public class LocationRenderer extends LayerRenderer {
     private boolean mRunAnim;
     private boolean mAnimate = true;
     private long mAnimStart;
+    private boolean mCenter;
 
-    private Callback mCallback;
-    private final float[] mColors = new float[4];
+    private LocationCallback mCallback;
+    private int mColor = COLOR;
     private final Point mLocation = new Point(Double.NaN, Double.NaN);
     private double mRadius;
     private int mShowAccuracyZoom = SHOW_ACCURACY_ZOOM;
@@ -82,27 +90,23 @@ public class LocationRenderer extends LayerRenderer {
         mLayer = layer;
         mScale = scale;
 
-        float a = Color.aToFloat(COLOR);
-        mColors[0] = a * Color.rToFloat(COLOR);
-        mColors[1] = a * Color.gToFloat(COLOR);
-        mColors[2] = a * Color.bToFloat(COLOR);
-        mColors[3] = a;
+        mMapPosition = new MapPosition();
     }
 
     public void setAnimate(boolean animate) {
         mAnimate = animate;
     }
 
-    public void setCallback(Callback callback) {
+    public void setCallback(LocationCallback callback) {
         mCallback = callback;
     }
 
+    public void setCenter(boolean center) {
+        mCenter = center;
+    }
+
     public void setColor(int color) {
-        float a = Color.aToFloat(color);
-        mColors[0] = a * Color.rToFloat(color);
-        mColors[1] = a * Color.gToFloat(color);
-        mColors[2] = a * Color.bToFloat(color);
-        mColors[3] = a;
+        mColor = color;
     }
 
     public void setLocation(double x, double y, double radius) {
@@ -168,32 +172,38 @@ public class LocationRenderer extends LayerRenderer {
             return;
         }
 
-            /*if (!v.changed() && isReady())
-                return;*/
+        /*if (!v.changed() && isReady())
+            return;*/
 
         setReady(true);
 
         int width = mMap.getWidth();
         int height = mMap.getHeight();
 
-        // clamp location to a position that can be
-        // savely translated to screen coordinates
-        v.getBBox(mBBox, 0);
+        double x, y;
+        if (mCenter) {
+            x = (width >> 1) + width * mMap.viewport().getMapViewCenterX();
+            y = (height >> 1) + height * mMap.viewport().getMapViewCenterY();
+        } else {
+            // clamp location to a position that can be
+            // safely translated to screen coordinates
+            v.getBBox(mBBox, 0);
 
-        double x = mLocation.x;
-        double y = mLocation.y;
+            x = mLocation.x;
+            y = mLocation.y;
 
-        if (!mBBox.contains(mLocation)) {
-            x = FastMath.clamp(x, mBBox.xmin, mBBox.xmax);
-            y = FastMath.clamp(y, mBBox.ymin, mBBox.ymax);
+            if (!mBBox.contains(mLocation)) {
+                x = FastMath.clamp(x, mBBox.xmin, mBBox.xmax);
+                y = FastMath.clamp(y, mBBox.ymin, mBBox.ymax);
+            }
+
+            // get position of Location in pixel relative to
+            // screen center
+            v.toScreenPoint(x, y, mScreenPoint);
+
+            x = mScreenPoint.x + (width >> 1);
+            y = mScreenPoint.y + (height >> 1);
         }
-
-        // get position of Location in pixel relative to
-        // screen center
-        v.toScreenPoint(x, y, mScreenPoint);
-
-        x = mScreenPoint.x + width / 2;
-        y = mScreenPoint.y + height / 2;
 
         // clip position to screen boundaries
         int visible = 0;
@@ -216,6 +226,9 @@ public class LocationRenderer extends LayerRenderer {
 
         // set location indicator position
         v.fromScreenPoint(x, y, mIndicatorPosition);
+
+        mMapPosition.copy(v.pos);
+        mMapPosition.bearing = -mMapPosition.bearing;
     }
 
     @Override
@@ -276,7 +289,7 @@ public class LocationRenderer extends LayerRenderer {
         } else
             gl.uniform1i(uMode, -1); // Outside screen
 
-        GLUtils.glUniform4fv(uColor, 1, mColors);
+        GLUtils.setColor(uColor, mColor);
 
         gl.drawArrays(GL.TRIANGLE_STRIP, 0, 4);
     }
@@ -296,14 +309,5 @@ public class LocationRenderer extends LayerRenderer {
         uMode = gl.getUniformLocation(program, "u_mode");
 
         return true;
-    }
-
-    public interface Callback {
-        /**
-         * Usually true, can be used with e.g. Android Location.hasBearing().
-         */
-        boolean hasRotation();
-
-        float getRotation();
     }
 }

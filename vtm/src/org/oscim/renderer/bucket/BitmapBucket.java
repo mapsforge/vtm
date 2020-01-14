@@ -171,8 +171,8 @@ public class BitmapBucket extends TextureBucket {
                 return;
             uMVP = getUniform("u_mvp");
             uAlpha = getUniform("u_alpha");
-            aPos = getAttrib("vertex");
-            aTexCoord = getAttrib("tex_coord");
+            aPos = getAttrib("a_pos");
+            aTexCoord = getAttrib("a_tex_coord");
         }
 
         @Override

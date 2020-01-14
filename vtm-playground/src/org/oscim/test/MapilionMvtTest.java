@@ -14,6 +14,8 @@
  */
 package org.oscim.test;
 
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
@@ -28,9 +30,6 @@ import org.oscim.tiling.source.mvt.MapilionMvtTileSource;
 
 import java.io.File;
 import java.util.UUID;
-
-import okhttp3.Cache;
-import okhttp3.OkHttpClient;
 
 public class MapilionMvtTest extends GdxMapApp {
 

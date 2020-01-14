@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -19,6 +19,7 @@
  */
 package org.oscim.theme.styles;
 
+import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Color;
 import org.oscim.backend.canvas.Paint.Cap;
 import org.oscim.renderer.bucket.TextureItem;
@@ -58,15 +59,15 @@ public final class LineStyle extends RenderStyle<LineStyle> {
     public final float repeatGap;
 
     public LineStyle(int stroke, float width) {
-        this(0, "", stroke, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT, REPEAT_GAP_DEFAULT);
+        this(0, "", stroke, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
     }
 
     public LineStyle(int level, int stroke, float width) {
-        this(level, "", stroke, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT, REPEAT_GAP_DEFAULT);
+        this(level, "", stroke, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
     }
 
     public LineStyle(int stroke, float width, Cap cap) {
-        this(0, "", stroke, width, cap, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT, REPEAT_GAP_DEFAULT);
+        this(0, "", stroke, width, cap, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
     }
 
     public LineStyle(int level, String style, int color, float width,
@@ -110,7 +111,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         this.level = b.level;
         this.style = b.style;
         this.width = b.strokeWidth;
-        this.color = b.themeCallback != null ? b.themeCallback.getColor(b.fillColor) : b.fillColor;
+        this.color = b.themeCallback != null ? b.themeCallback.getColor(this, b.fillColor) : b.fillColor;
         this.cap = b.cap;
         this.outline = b.outline;
         this.fixed = b.fixed;
@@ -118,7 +119,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         this.fadeScale = b.fadeScale;
         this.blur = b.blur;
         this.stipple = b.stipple;
-        this.stippleColor = b.themeCallback != null ? b.themeCallback.getColor(b.stippleColor) : b.stippleColor;
+        this.stippleColor = b.themeCallback != null ? b.themeCallback.getColor(this, b.stippleColor) : b.stippleColor;
         this.stippleWidth = b.stippleWidth;
         this.texture = b.texture;
 
@@ -180,7 +181,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             this.level = line.level;
             this.style = line.style;
             this.strokeWidth = line.width;
-            this.fillColor = themeCallback != null ? themeCallback.getColor(line.color) : line.color;
+            this.fillColor = themeCallback != null ? themeCallback.getColor(line, line.color) : line.color;
             this.cap = line.cap;
             this.outline = line.outline;
             this.fixed = line.fixed;
@@ -188,7 +189,7 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             this.fadeScale = line.fadeScale;
             this.blur = line.blur;
             this.stipple = line.stipple;
-            this.stippleColor = themeCallback != null ? themeCallback.getColor(line.stippleColor) : line.stippleColor;
+            this.stippleColor = themeCallback != null ? themeCallback.getColor(line, line.stippleColor) : line.stippleColor;
             this.stippleWidth = line.stippleWidth;
             this.texture = line.texture;
 
@@ -328,8 +329,8 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             symbolPercent = 100;
 
             dashArray = null;
-            repeatStart = REPEAT_START_DEFAULT;
-            repeatGap = REPEAT_GAP_DEFAULT;
+            repeatStart = REPEAT_START_DEFAULT * CanvasAdapter.getScale();
+            repeatGap = REPEAT_GAP_DEFAULT * CanvasAdapter.getScale();
 
             return self();
         }

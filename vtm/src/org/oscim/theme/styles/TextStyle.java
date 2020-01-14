@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2016 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -26,6 +26,8 @@ import org.oscim.backend.canvas.Paint.FontFamily;
 import org.oscim.backend.canvas.Paint.FontStyle;
 import org.oscim.renderer.atlas.TextureRegion;
 
+import static org.oscim.backend.canvas.Color.parseColor;
+
 public final class TextStyle extends RenderStyle<TextStyle> {
 
     public static class TextBuilder<T extends TextBuilder<T>> extends StyleBuilder<T> {
@@ -45,6 +47,8 @@ public final class TextStyle extends RenderStyle<TextStyle> {
         public int symbolWidth;
         public int symbolHeight;
         public int symbolPercent;
+
+        public int bgFillColor;
 
         public T reset() {
             cat = null;
@@ -66,6 +70,8 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             symbolWidth = 0;
             symbolHeight = 0;
             symbolPercent = 100;
+
+            bgFillColor = Color.TRANSPARENT;
 
             return self();
         }
@@ -151,6 +157,16 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             return self();
         }
 
+        public T bgFillColor(int color) {
+            this.bgFillColor = color;
+            return self();
+        }
+
+        public T bgFillColor(String color) {
+            this.bgFillColor = parseColor(color);
+            return self();
+        }
+
         public T from(TextBuilder<?> other) {
             cat = other.cat;
             fontFamily = other.fontFamily;
@@ -172,6 +188,8 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             symbolHeight = other.symbolHeight;
             symbolPercent = other.symbolPercent;
 
+            bgFillColor = other.bgFillColor;
+
             return self();
         }
 
@@ -188,11 +206,11 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             this.areaSize = text.areaSize;
             this.bitmap = text.bitmap;
             this.texture = text.texture;
-            this.fillColor = themeCallback != null ? themeCallback.getColor(text.paint.getColor()) : text.paint.getColor();
+            this.fillColor = themeCallback != null ? themeCallback.getColor(text, text.paint.getColor()) : text.paint.getColor();
             this.fontFamily = text.fontFamily;
             this.fontStyle = text.fontStyle;
             if (text.stroke != null) {
-                this.strokeColor = themeCallback != null ? themeCallback.getColor(text.stroke.getColor()) : text.stroke.getColor();
+                this.strokeColor = themeCallback != null ? themeCallback.getColor(text, text.stroke.getColor()) : text.stroke.getColor();
                 this.strokeWidth = text.stroke.getStrokeWidth();
             }
             this.fontSize = text.fontSize;
@@ -200,6 +218,9 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             this.symbolWidth = text.symbolWidth;
             this.symbolHeight = text.symbolHeight;
             this.symbolPercent = text.symbolPercent;
+
+            if (text.bgFill != null)
+                this.bgFillColor = themeCallback != null ? themeCallback.getColor(text, text.bgFill.getColor()) : text.bgFill.getColor();
 
             return self();
         }
@@ -220,7 +241,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
         //paint.setTextAlign(Align.CENTER);
         paint.setTypeface(b.fontFamily, b.fontStyle);
 
-        paint.setColor(b.themeCallback != null ? b.themeCallback.getColor(b.fillColor) : b.fillColor);
+        paint.setColor(b.themeCallback != null ? b.themeCallback.getColor(this, b.fillColor) : b.fillColor);
         paint.setTextSize(b.fontSize);
 
         if (b.strokeWidth > 0) {
@@ -228,7 +249,7 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             stroke.setStyle(Paint.Style.STROKE);
             //stroke.setTextAlign(Align.CENTER);
             stroke.setTypeface(b.fontFamily, b.fontStyle);
-            stroke.setColor(b.themeCallback != null ? b.themeCallback.getColor(b.strokeColor) : b.strokeColor);
+            stroke.setColor(b.themeCallback != null ? b.themeCallback.getColor(this, b.strokeColor) : b.strokeColor);
             stroke.setStrokeWidth(b.strokeWidth);
             stroke.setTextSize(b.fontSize);
         } else
@@ -241,6 +262,12 @@ public final class TextStyle extends RenderStyle<TextStyle> {
         this.symbolWidth = b.symbolWidth;
         this.symbolHeight = b.symbolHeight;
         this.symbolPercent = b.symbolPercent;
+
+        if (b.bgFillColor != Color.TRANSPARENT) {
+            bgFill = CanvasAdapter.newPaint();
+            bgFill.setColor(b.themeCallback != null ? b.themeCallback.getColor(this, b.bgFillColor) : b.bgFillColor);
+        } else
+            bgFill = null;
     }
 
     public final String style;
@@ -266,6 +293,8 @@ public final class TextStyle extends RenderStyle<TextStyle> {
     public final int symbolWidth;
     public final int symbolHeight;
     public final int symbolPercent;
+
+    public final Paint bgFill;
 
     @Override
     public void dispose() {

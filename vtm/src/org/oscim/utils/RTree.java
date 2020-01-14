@@ -1,5 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
+ * Copyright 2019 Izumi Kawashima
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -17,6 +18,7 @@
 package org.oscim.utils;
 
 import org.oscim.core.Box;
+import org.oscim.core.Point;
 import org.oscim.utils.RTree.Branch;
 import org.oscim.utils.RTree.Node;
 import org.oscim.utils.RTree.Rect;
@@ -28,14 +30,13 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Implementation of RTree, a multidimensional bounding rectangle tree.
  *
- * @author 1983 Original algorithm and test code by Antonin Guttman and Michael
- *         Stonebraker, UC Berkely
- * @author 1994 ANCI C ported from original test code by Melinda Green -
- *         melinda@superliminal.com
+ * @author 1983 Original algorithm and test code by Antonin Guttman and Michael Stonebraker, UC Berkely
+ * @author 1994 ANCI C ported from original test code by Melinda Green - melinda@superliminal.com
  * @author 1995 Sphere volume fix for degeneracy problem submitted by Paul Brook
  * @author 2004 Templated C++ port by Greg Douglas
  * @author 2008 Portability issues fixed by Maxence Laurent
@@ -66,6 +67,17 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
         @Override
         public String toString() {
             return node.toString();
+        }
+    }
+
+    class KnnItem implements Comparable<KnnItem> {
+        Branch<?> branch;
+        boolean isLeaf;
+        double squareDistance;
+
+        @Override
+        public int compareTo(KnnItem o) {
+            return Double.compare(squareDistance, o.squareDistance);
         }
     }
 
@@ -173,6 +185,10 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
             ymax = max[1];
         }
 
+        double axisDistance(double k, double min, double max) {
+            return k < min ? min - k : k <= max ? 0 : k - max;
+        }
+
         /**
          * Calculate the n-dimensional volume of a rectangle
          */
@@ -246,6 +262,12 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
             for (int idx = 1; idx < node.count; idx++) {
                 add(node.branch[idx]);
             }
+        }
+
+        double squareDistance(Point xy) {
+            double dx = axisDistance(xy.x, xmin, xmax);
+            double dy = axisDistance(xy.y, ymin, ymax);
+            return dx * dx + dy * dy;
         }
     }
 
@@ -368,6 +390,55 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
 
         releaseRect(r);
         return results;
+    }
+
+    /**
+     * See https://github.com/mourner/rbush-knn/blob/master/index.js
+     */
+    @Override
+    public List<T> searchKNearestNeighbors(Point center, int k, double maxDistance, List<T> results) {
+        if (results == null)
+            results = new ArrayList<>(16);
+
+        PriorityQueue<KnnItem> queue = new PriorityQueue<>();
+        double maxSquareDistance = maxDistance * maxDistance;
+
+        Node node = mRoot;
+        while (node != null) {
+            for (int idx = 0; idx < node.count; idx++) {
+                Branch[] branch = node.branch;
+                double squareDistance = branch[idx].squareDistance(center);
+                if (squareDistance <= maxSquareDistance) {
+                    KnnItem knnItem = new KnnItem();
+                    knnItem.branch = branch[idx];
+                    knnItem.isLeaf = node.level == 0;
+                    knnItem.squareDistance = squareDistance;
+                    queue.add(knnItem);
+                }
+            }
+
+            while (!queue.isEmpty() && queue.peek().isLeaf) {
+                KnnItem knnItem = queue.poll();
+                results.add((T) knnItem.branch.node);
+                if (results.size() == k)
+                    return results;
+            }
+
+            KnnItem knnItem = queue.poll();
+            if (knnItem != null)
+                node = (Node) knnItem.branch.node;
+            else
+                node = null;
+        }
+
+        return results;
+    }
+
+    @Override
+    public void searchKNearestNeighbors(Point center, int k, double maxDistance, SearchCb<T> cb, Object context) {
+        List<T> results = searchKNearestNeighbors(center, k, maxDistance, null);
+        for (T result : results)
+            cb.call(result, context);
     }
 
     /**

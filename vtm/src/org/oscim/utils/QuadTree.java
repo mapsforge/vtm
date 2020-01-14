@@ -1,6 +1,7 @@
 package org.oscim.utils;
 
 import org.oscim.core.Box;
+import org.oscim.core.Point;
 import org.oscim.utils.pool.Pool;
 import org.oscim.utils.quadtree.BoxTree;
 import org.oscim.utils.quadtree.BoxTree.BoxItem;
@@ -77,5 +78,16 @@ public class QuadTree<T> extends BoxTree<BoxItem<T>, T> implements SpatialIndex<
         boolean finished = search(box, cb, context);
         boxPool.release(box);
         return finished;
+    }
+
+    @Override
+    public List<T> searchKNearestNeighbors(Point center, int k, double maxDistance, List<T> results) {
+        // TODO
+        return results;
+    }
+
+    @Override
+    public void searchKNearestNeighbors(Point center, int k, double maxDistance, SearchCb<T> cb, Object context) {
+        // TODO
     }
 }

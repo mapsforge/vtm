@@ -2,7 +2,7 @@
 
 **This article describes how to use XML-based render-themes to style maps.**
 
-If you have any questions or problems, don't hesitate to ask our public [mapsforge-dev](https://groups.google.com/group/mapsforge-dev) mailing list for help. You can also report bugs and improvement requests via our [issue tracker](https://github.com/mapsforge/vtm/issues).
+If you have any questions or problems, don't hesitate to ask our public [forum](https://groups.google.com/group/mapsforge-dev) for help. You can also report bugs and improvement requests via our [issue tracker](https://github.com/mapsforge/vtm/issues).
 
 ## Introduction
 
@@ -14,13 +14,13 @@ It is always recommended to study the [default](https://github.com/mapsforge/vtm
 
 ## Rules
 
-A rule element `<m/>` has several attributes to specify which map elements the rule matches. Non of them is required.
+A rule element `<m/>` (_match_) has several attributes to specify which map elements the rule matches. Non of them is required.
 
 |**Attribute**|**Valid values**|**Description**|**Default**|
 |-------------|----------------|---------------|------------|
 |e|<ul><li>node</li><li>way</li><li>any</li></ul>|Defines which map element type will be matched.|*any*|
-|k|[string](http://www.w3.org/TR/xmlschema-2/#string)|The key of the OpenStreetMap tag. <ul><li>A vertical bar "`\|`" can be used to specify multiple keys.</li>|any key|
-|v|[string](http://www.w3.org/TR/xmlschema-2/#string)|The value of the OpenStreetMap tag. <ul><li>A vertical bar "`\|`" can be used to specify multiple values.</li><li>A minus sign "`-`" excludes the other values after "`\|`". It never works alone.</li><li>A tilde "`~`" matches if the map element does not have a tag with the specified key.</li>|any value|
+|k|[string](http://www.w3.org/TR/xmlschema-2/#string)|The key of the tile source tag. <ul><li>A vertical bar "`\|`" can be used to specify multiple keys.</li>|any key|
+|v|[string](http://www.w3.org/TR/xmlschema-2/#string)|The value of the tile source tag. <ul><li>A vertical bar "`\|`" can be used to specify multiple values.</li><li>A minus sign "`-`" excludes the other values after "`\|`". It never works alone.</li><li>A tilde "`~`" matches if the map element does not have a tag with the specified key.</li>|any value|
 |closed|<ul><li>yes</li><li>no</li><li>any</li></ul>|Defines which ways will be matched. A way is considered as closed if its first node and its last node are equal.|*any*|
 |select|<ul><li>first</li><li>when-matched</li><li>any</li></ul>|<ul><li>Only add the first matching sub-rule in this rule section (the others are ignored)</li><li>Select all matches of the enclosing rule section</li><li>Select all (whether it was matched or not)</li></ul>|*any*|
 |zoom-min|[unsigned byte](http://www.w3.org/TR/xmlschema-2/#unsignedByte)|The minimum zoom level on which the rule will be matched.|*0*|

@@ -2,7 +2,8 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2012 Hannes Janetzek
  * Copyright 2014 Ludwig M Brinckmann
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2019 devemux86
+ * Copyright 2019 Andrea Antonello
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -98,14 +99,14 @@ public final class MercatorProjection {
     }
 
     public static Point getPixelWithScale(GeoPoint geoPoint, double scale) {
-        double pixelX = MercatorProjection.longitudeToPixelXWithScale(geoPoint.getLongitude(), scale);
-        double pixelY = MercatorProjection.latitudeToPixelYWithScale(geoPoint.getLatitude(), scale);
+        double pixelX = longitudeToPixelXWithScale(geoPoint.getLongitude(), scale);
+        double pixelY = latitudeToPixelYWithScale(geoPoint.getLatitude(), scale);
         return new Point(pixelX, pixelY);
     }
 
     public static Point getPixel(GeoPoint geoPoint, long mapSize) {
-        double pixelX = MercatorProjection.longitudeToPixelX(geoPoint.getLongitude(), mapSize);
-        double pixelY = MercatorProjection.latitudeToPixelY(geoPoint.getLatitude(), mapSize);
+        double pixelX = longitudeToPixelX(geoPoint.getLongitude(), mapSize);
+        double pixelY = latitudeToPixelY(geoPoint.getLatitude(), mapSize);
         return new Point(pixelX, pixelY);
     }
 
@@ -129,8 +130,8 @@ public final class MercatorProjection {
      * @return the relative pixel position to the origin values (e.g. for a tile)
      */
     public static Point getPixelRelative(GeoPoint geoPoint, long mapSize, double x, double y) {
-        double pixelX = MercatorProjection.longitudeToPixelX(geoPoint.getLongitude(), mapSize) - x;
-        double pixelY = MercatorProjection.latitudeToPixelY(geoPoint.getLatitude(), mapSize) - y;
+        double pixelX = longitudeToPixelX(geoPoint.getLongitude(), mapSize) - x;
+        double pixelY = latitudeToPixelY(geoPoint.getLatitude(), mapSize) - y;
         return new Point(pixelX, pixelY);
     }
 
@@ -171,11 +172,8 @@ public final class MercatorProjection {
                 / (Tile.SIZE * scale);
     }
 
-    public static float groundResolution(MapPosition pos) {
-        double lat = MercatorProjection.toLatitude(pos.y);
-        return (float) (Math.cos(lat * (Math.PI / 180))
-                * MercatorProjection.EARTH_CIRCUMFERENCE
-                / (Tile.SIZE * pos.scale));
+    public static double groundResolution(MapPosition pos) {
+        return groundResolutionWithScale(toLatitude(pos.y), pos.scale);
     }
 
     /**
@@ -359,7 +357,7 @@ public final class MercatorProjection {
      * @return pixels that represent the meters at the given zoom-level and latitude.
      */
     public static double metersToPixelsWithScale(float meters, double latitude, double scale) {
-        return meters / MercatorProjection.groundResolutionWithScale(latitude, scale);
+        return meters / groundResolutionWithScale(latitude, scale);
     }
 
     /**
@@ -371,7 +369,7 @@ public final class MercatorProjection {
      * @return pixels that represent the meters at the given zoom-level and latitude.
      */
     public static double metersToPixels(float meters, double latitude, long mapSize) {
-        return meters / MercatorProjection.groundResolution(latitude, mapSize);
+        return meters / groundResolution(latitude, mapSize);
     }
 
     /**
@@ -577,10 +575,33 @@ public final class MercatorProjection {
         return pixelYToLatitude(tileY * Tile.SIZE, getMapSize(zoomLevel));
     }
 
+    /**
+     * Converts a tile Y number at a certain zoom level to TMS notation.
+     *
+     * @param tileY     the tile Y number that should be converted.
+     * @param zoomLevel the zoom level at which the number should be converted.
+     * @return the TMS value of the tile Y number.
+     */
+    public static long tileYToTMS(long tileY, byte zoomLevel) {
+        return (long) (zoomLevelToScale(zoomLevel) - tileY - 1);
+    }
+
+    /**
+     * Converts y map position to latitude in degrees.
+     *
+     * @param y the map position {@link MapPosition#getY() y}.
+     * @return the latitude in degrees.
+     */
     public static double toLatitude(double y) {
         return 90 - 360 * Math.atan(Math.exp((y - 0.5) * (2 * Math.PI))) / Math.PI;
     }
 
+    /**
+     * Converts x map position to longitude in degrees.
+     *
+     * @param x the map position {@link MapPosition#getX() x}.
+     * @return the longitude in degrees.
+     */
     public static double toLongitude(double x) {
         return 360.0 * (x - 0.5);
     }

@@ -95,8 +95,8 @@ public class TextureBucket extends RenderBucket {
             uScale = getUniform("u_scale");
             uCoordScale = getUniform("u_coord_scale");
             uTexSize = getUniform("u_div");
-            aPos = getAttrib("vertex");
-            aTexCoord = getAttrib("tex_coord");
+            aPos = getAttrib("a_pos");
+            aTexCoord = getAttrib("a_tex_coord");
         }
 
         @Override

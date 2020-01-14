@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -17,18 +17,11 @@
  */
 package org.oscim.layers.vector;
 
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.*;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.oscim.backend.canvas.Color;
-import org.oscim.core.Box;
-import org.oscim.core.GeoPoint;
-import org.oscim.core.GeometryBuffer;
-import org.oscim.core.MapPosition;
-import org.oscim.core.Tile;
+import org.oscim.core.*;
 import org.oscim.event.Gesture;
 import org.oscim.event.GestureListener;
 import org.oscim.event.MotionEvent;
@@ -124,7 +117,7 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
      *
      * @param drawable
      */
-    public void add(Drawable drawable) {
+    public synchronized void add(Drawable drawable) {
         mDrawables.insert(bbox(drawable.getGeometry(), drawable.getStyle()), drawable);
     }
 
@@ -135,7 +128,7 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
      * @param geometry
      * @param style
      */
-    public synchronized void add(Geometry geometry, Style style) {
+    synchronized void add(Geometry geometry, Style style) {
         mDrawables.insert(bbox(geometry, style), new GeometryWithStyle(geometry, style));
     }
 

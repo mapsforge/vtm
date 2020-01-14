@@ -38,7 +38,7 @@ uniform vec4 u_color;
 uniform vec4 u_bgcolor;
 uniform float u_pwidth;
 varying vec2 v_st;
-uniform sampler2D tex;
+uniform sampler2D u_tex;
 uniform int u_mode;
 
 void main() {
@@ -50,7 +50,7 @@ void main() {
         }
         // use lineLength mod texture step (mod is always positive)
         // add 1.0 to avoid static line textures while zooming
-        vec4 c = texture2D(tex, vec2(mod(v_st.s + 1.0, step), (v_st.t + 1.0) * 0.5));
+        vec4 c = texture2D(u_tex, vec2(mod(v_st.s + 1.0, step), (v_st.t + 1.0) * 0.5));
         float fuzz = fwidth(c.a);
         gl_FragColor = (c * u_color) * smoothstep(0.5 - fuzz, 0.5 + fuzz, c.a);
     } else {

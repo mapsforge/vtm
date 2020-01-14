@@ -20,6 +20,7 @@ package org.oscim.utils;
 import org.oscim.backend.canvas.Color;
 import org.oscim.utils.math.Vec3;
 
+import static org.oscim.backend.canvas.Color.a;
 import static org.oscim.backend.canvas.Color.b;
 import static org.oscim.backend.canvas.Color.g;
 import static org.oscim.backend.canvas.Color.r;
@@ -81,11 +82,11 @@ public class ColorUtil {
             return color;
         Vec3 hsl = TMP_VEC;
         rgbToHsv(r(color), g(color), b(color), hsl);
-        return hsvToRgb(clamp((hue + hsl.x) % 1, 0, 1),
+        return Color.setA(hsvToRgb(clamp((hue + hsl.x) % 1, 0, 1),
                 clamp(relative || saturation <= 1 ? saturation * hsl.y :
                         hsl.y + (saturation - 1) * (1 - hsl.y), 0, 1),
                 clamp(relative || value <= 1 ? value * hsl.z :
-                        hsl.z + (value - 1) * (1 - hsl.z), 0, 1));
+                        hsl.z + (value - 1) * (1 - hsl.z), 0, 1)), a(color));
     }
 
     // functions ported from http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c

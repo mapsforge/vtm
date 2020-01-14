@@ -74,7 +74,7 @@ public class BucketRenderer extends LayerRenderer {
         mMapPosition = new MapPosition();
     }
 
-    protected boolean mInititialzed;
+    protected boolean mInitialized;
 
     /**
      * Default implementation:
@@ -82,9 +82,9 @@ public class BucketRenderer extends LayerRenderer {
      */
     @Override
     public void update(GLViewport v) {
-        if (!mInititialzed) {
+        if (!mInitialized) {
             mMapPosition.copy(v.pos);
-            mInititialzed = true;
+            mInitialized = true;
             compile();
         }
     }

@@ -45,6 +45,7 @@ public class GwtInput implements Input {
     boolean[] pressedKeys = new boolean[256];
     boolean keyJustPressed = false;
     boolean[] justPressedKeys = new boolean[256];
+    boolean[] justPressedButtons = new boolean[5];
     InputProcessor processor;
     char lastKeyCharPressed;
     float keyRepeatTimer;
@@ -58,7 +59,12 @@ public class GwtInput implements Input {
     }
 
     void reset() {
-        justTouched = false;
+        if (justTouched) {
+            justTouched = false;
+            for (int i = 0; i < justPressedButtons.length; i++) {
+                justPressedButtons[i] = false;
+            }
+        }
         if (keyJustPressed) {
             keyJustPressed = false;
             for (int i = 0; i < justPressedKeys.length; i++) {
@@ -98,6 +104,11 @@ public class GwtInput implements Input {
     public float getGyroscopeZ() {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    @Override
+    public int getMaxPointers() {
+        return MAX_TOUCHES;
     }
 
     @Override
@@ -173,6 +184,12 @@ public class GwtInput implements Input {
     @Override
     public boolean isButtonPressed(int button) {
         return pressedButtons.contains(button) && touched[0];
+    }
+
+    @Override
+    public boolean isButtonJustPressed(int button) {
+        if (button < 0 || button >= justPressedButtons.length) return false;
+        return justPressedButtons[button];
     }
 
     @Override
@@ -273,6 +290,15 @@ public class GwtInput implements Input {
 
     @Override
     public boolean isCatchMenuKey() {
+        return false;
+    }
+
+    @Override
+    public void setCatchKey(int keycode, boolean catchKey) {
+    }
+
+    @Override
+    public boolean isCatchKey(int keycode) {
         return false;
     }
 
@@ -542,6 +568,7 @@ public class GwtInput implements Input {
             this.justTouched = true;
             this.touched[0] = true;
             this.pressedButtons.add(getButton(e.getButton()));
+            justPressedButtons[e.getButton()] = true;
             this.deltaX[0] = 0;
             this.deltaY[0] = 0;
             if (isCursorCatched()) {

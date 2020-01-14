@@ -4,8 +4,9 @@
  * Copyright 2016-2019 devemux86
  * Copyright 2016-2017 Longri
  * Copyright 2016 Andrey Novikov
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  * Copyright 2018 Izumi Kawashima
+ * Copyright 2019 Murray Hughes
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -40,18 +41,12 @@ import org.oscim.theme.rule.Rule;
 import org.oscim.theme.rule.Rule.Closed;
 import org.oscim.theme.rule.Rule.Selector;
 import org.oscim.theme.rule.RuleBuilder;
-import org.oscim.theme.styles.AreaStyle;
+import org.oscim.theme.styles.*;
 import org.oscim.theme.styles.AreaStyle.AreaBuilder;
-import org.oscim.theme.styles.CircleStyle;
 import org.oscim.theme.styles.CircleStyle.CircleBuilder;
-import org.oscim.theme.styles.ExtrusionStyle;
 import org.oscim.theme.styles.ExtrusionStyle.ExtrusionBuilder;
-import org.oscim.theme.styles.LineStyle;
 import org.oscim.theme.styles.LineStyle.LineBuilder;
-import org.oscim.theme.styles.RenderStyle;
-import org.oscim.theme.styles.SymbolStyle;
 import org.oscim.theme.styles.SymbolStyle.SymbolBuilder;
-import org.oscim.theme.styles.TextStyle;
 import org.oscim.theme.styles.TextStyle.TextBuilder;
 import org.oscim.utils.FastMath;
 import org.oscim.utils.Utils;
@@ -63,12 +58,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Float.parseFloat;
@@ -171,7 +161,7 @@ public class XmlThemeBuilder extends DefaultHandler {
     RenderTheme mRenderTheme;
 
     final boolean mMapsforgeTheme;
-    private final float mScale, mScale2;
+    private final float mScale;
 
     private Set<String> mCategories;
     private XmlRenderThemeStyleLayer mCurrentLayer;
@@ -189,7 +179,6 @@ public class XmlThemeBuilder extends DefaultHandler {
         mThemeCallback = themeCallback;
         mMapsforgeTheme = theme.isMapsforgeTheme();
         mScale = CanvasAdapter.getScale();
-        mScale2 = CanvasAdapter.getScale() * 0.5f;
     }
 
     @Override
@@ -550,7 +539,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 b.color(value);
 
             else if ("width".equals(name) || "stroke-width".equals(name)) {
-                b.strokeWidth = parseFloat(value) * mScale2 * mStrokeScale;
+                b.strokeWidth = parseFloat(value) * mScale * mStrokeScale;
                 if (line == null) {
                     if (!isOutline)
                         validateNonNegative("width", b.strokeWidth);
@@ -567,7 +556,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 b.fixed = parseBoolean(value);
 
             else if ("stipple".equals(name))
-                b.stipple = Math.round(parseInt(value) * mScale2 * mStrokeScale);
+                b.stipple = Math.round(parseInt(value) * mScale * mStrokeScale);
 
             else if ("stipple-stroke".equals(name))
                 b.stippleColor(value);
@@ -646,15 +635,16 @@ public class XmlThemeBuilder extends DefaultHandler {
                 transparent = !transparent;
             }
             b.texture = new TextureItem(Utils.potBitmap(bitmap));
-            b.texture.mipmap = true;
+            //b.texture.mipmap = true;
             b.randomOffset = false;
             b.stipple = width;
             b.stippleWidth = 1;
             b.stippleColor = b.fillColor;
         } else {
-            b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+            if (src != null)
+                b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
 
-            if (hasSymbol) {
+            if (b.texture != null && hasSymbol) {
                 // Line symbol
                 int width = (int) (b.texture.width + b.repeatGap);
                 int height = b.texture.height;
@@ -663,7 +653,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 canvas.setBitmap(bitmap);
                 canvas.drawBitmap(b.texture.bitmap, b.repeatStart, 0);
                 b.texture = new TextureItem(Utils.potBitmap(bitmap));
-                b.texture.mipmap = true;
+                //b.texture.mipmap = true;
                 b.fixed = true;
                 b.randomOffset = false;
                 b.stipple = width;
@@ -765,7 +755,8 @@ public class XmlThemeBuilder extends DefaultHandler {
                 logUnknownAttribute(elementName, name, value, i);
         }
 
-        b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+        if (src != null)
+            b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
 
         return b.build();
     }
@@ -927,7 +918,7 @@ public class XmlThemeBuilder extends DefaultHandler {
             else if ("map-background".equals(name)) {
                 mapBackground = Color.parseColor(value);
                 if (mThemeCallback != null)
-                    mapBackground = mThemeCallback.getColor(mapBackground);
+                    mapBackground = mThemeCallback.getColor(null, mapBackground);
 
             } else if ("base-stroke-width".equals(name))
                 baseStrokeWidth = Float.parseFloat(value);
@@ -1020,6 +1011,9 @@ public class XmlThemeBuilder extends DefaultHandler {
 
             else if ("size".equals(name) || "font-size".equals(name))
                 b.fontSize = Float.parseFloat(value);
+
+            else if ("bg-fill".equals(name))
+                b.bgFillColor = Color.parseColor(value);
 
             else if ("fill".equals(name))
                 b.fillColor = Color.parseColor(value);
@@ -1169,6 +1163,9 @@ public class XmlThemeBuilder extends DefaultHandler {
             else if ("symbol-scaling".equals(name))
                 ; // no-op
 
+            else if ("billboard".equals(name))
+                b.billboard(Boolean.parseBoolean(value));
+
             else if ("repeat".equals(name))
                 b.repeat(Boolean.parseBoolean(value));
 
@@ -1177,6 +1174,9 @@ public class XmlThemeBuilder extends DefaultHandler {
 
             else if ("repeat-gap".equals(name))
                 b.repeatGap = Float.parseFloat(value) * mScale;
+
+            else if ("rotate".equals(name))
+                b.rotate(Boolean.parseBoolean(value));
 
             else
                 logUnknownAttribute(elementName, name, value, i);
@@ -1223,6 +1223,15 @@ public class XmlThemeBuilder extends DefaultHandler {
             else if ("line-color".equals(name))
                 b.colorLine(Color.parseColor(value));
 
+            else if ("hsv-h".equals(name))
+                b.hsvHue(Double.parseDouble(value));
+
+            else if ("hsv-s".equals(name))
+                b.hsvSaturation(Double.parseDouble(value));
+
+            else if ("hsv-v".equals(name))
+                b.hsvValue(Double.parseDouble(value));
+
             else if ("default-height".equals(name))
                 b.defaultHeight(Integer.parseInt(value));
 
@@ -1268,40 +1277,40 @@ public class XmlThemeBuilder extends DefaultHandler {
     }
 
     private void tagTransform(String localName, Attributes attributes) {
-        String matchKey, matchValue, outputKey, outputValue;
-        matchKey = matchValue = outputKey = outputValue = null;
+        String k, v, libK, libV;
+        k = v = libK = libV = null;
 
         for (int i = 0; i < attributes.getLength(); i++) {
             String name = attributes.getLocalName(i);
             String value = attributes.getValue(i);
 
             switch (name) {
-                case "match-k":
-                    matchKey = value;
+                case "k":
+                    k = value;
                     break;
-                case "match-v":
-                    matchValue = value;
+                case "v":
+                    v = value;
                     break;
-                case "output-k":
-                    outputKey = value;
+                case "k-lib":
+                    libK = value;
                     break;
-                case "output-v":
-                    outputValue = value;
+                case "v-lib":
+                    libV = value;
                     break;
                 default:
                     logUnknownAttribute(localName, name, value, i);
             }
         }
 
-        if (matchKey == null || matchKey.isEmpty() || outputKey == null || outputKey.isEmpty()) {
+        if (k == null || k.isEmpty() || libK == null || libK.isEmpty()) {
             log.debug("empty key in element " + localName);
             return;
         }
 
-        if (matchValue == null && outputValue == null) {
-            mTransformKeyMap.put(matchKey, outputKey);
+        if (v == null && libV == null) {
+            mTransformKeyMap.put(k, libK);
         } else {
-            mTransformTagMap.put(new Tag(matchKey, matchValue), new Tag(outputKey, outputValue));
+            mTransformTagMap.put(new Tag(k, v), new Tag(libK, libV));
         }
     }
 

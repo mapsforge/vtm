@@ -2,7 +2,7 @@
  * Copyright 2016 Andrey Novikov
  * Copyright 2016 devemux86
  * Copyright 2017 schedul-xor
- * Copyright 2018 Gustl22
+ * Copyright 2018-2019 Gustl22
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -100,6 +100,9 @@ public class CircleBucket extends RenderBucket {
 
                 String version = null;
                 if (!GLAdapter.CIRCLE_QUADS && GLAdapter.GDX_DESKTOP_QUIRKS) {
+                    // Point sprite sometimes isn't enabled by default, see #268
+                    gl.enable(0x8861); // GL.POINT_SPRITE
+
                     // OpenGL requires GLSL version 120 for gl_PointCoord
                     version = "120";
                 }

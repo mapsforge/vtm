@@ -19,7 +19,6 @@ precision mediump float;
 #endif
 varying vec2 v_tex;
 uniform float u_scale;
-uniform float u_phase;
 uniform vec2 u_dir;
 uniform int u_mode;
 uniform vec4 u_color;

@@ -30,12 +30,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.ShortBuffer;
 
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
-import static org.oscim.renderer.bucket.RenderBucket.CIRCLE;
-import static org.oscim.renderer.bucket.RenderBucket.HAIRLINE;
-import static org.oscim.renderer.bucket.RenderBucket.LINE;
-import static org.oscim.renderer.bucket.RenderBucket.MESH;
-import static org.oscim.renderer.bucket.RenderBucket.POLYGON;
-import static org.oscim.renderer.bucket.RenderBucket.TEXLINE;
+import static org.oscim.renderer.bucket.RenderBucket.*;
 
 /**
  * This class is primarily intended for rendering the vector elements of a
@@ -62,12 +57,17 @@ public class RenderBuckets extends TileData {
     public static final int SHORT_BYTES = 2;
     // public static final int INT_BYTES = 4;
 
+    /**
+     * Number of vertices to fill a tile (represented by a quad).
+     */
+    public static final int TILE_FILL_VERTICES = 4;
+
     private RenderBucket buckets;
 
     /**
      * VBO holds all vertex data to draw lines and polygons after compilation.
      * Layout:
-     * 16 bytes fill coordinates,
+     * 16 bytes fill coordinates ({@link #TILE_FILL_VERTICES} * {@link #SHORT_BYTES} * coordsPerVertex),
      * n bytes polygon vertices,
      * m bytes lines vertices
      * ...
@@ -344,6 +344,12 @@ public class RenderBuckets extends TileData {
 
     }
 
+    /**
+     * Compile different types of buckets in one {@link #vbo VBO}.
+     *
+     * @param addFill fill tile (add {@link #TILE_FILL_VERTICES 4} vertices).
+     * @return true if compilation succeeded.
+     */
     public boolean compile(boolean addFill) {
 
         int vboSize = countVboSize();
@@ -355,12 +361,12 @@ public class RenderBuckets extends TileData {
         }
 
         if (addFill)
-            vboSize += 8;
+            vboSize += TILE_FILL_VERTICES * 2;
 
         ShortBuffer vboData = MapRenderer.getShortBuffer(vboSize);
 
         if (addFill)
-            vboData.put(fillShortCoords, 0, 8);
+            vboData.put(fillShortCoords, 0, TILE_FILL_VERTICES * 2);
 
         ShortBuffer iboData = null;
 
@@ -369,7 +375,7 @@ public class RenderBuckets extends TileData {
             iboData = MapRenderer.getShortBuffer(iboSize);
         }
 
-        int pos = addFill ? 4 : 0;
+        int pos = addFill ? TILE_FILL_VERTICES : 0;
 
         for (RenderBucket l = buckets; l != null; l = l.next) {
             if (l.type == POLYGON) {

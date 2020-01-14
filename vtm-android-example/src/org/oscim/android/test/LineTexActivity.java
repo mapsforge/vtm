@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -18,7 +18,6 @@
 package org.oscim.android.test;
 
 import android.os.Bundle;
-
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.MapPosition;
@@ -38,7 +37,7 @@ import java.util.List;
  */
 public class LineTexActivity extends BitmapTileActivity {
 
-    private static final boolean ANIMATION = false;
+    private static final boolean ANIMATION = true;
 
     private List<PathLayer> mPathLayers = new ArrayList<>();
 
@@ -49,7 +48,7 @@ public class LineTexActivity extends BitmapTileActivity {
         TextureItem tex = null;
         try {
             tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png"));
-            tex.mipmap = true;
+            //tex.mipmap = true;
         } catch (IOException e) {
             e.printStackTrace();
         }

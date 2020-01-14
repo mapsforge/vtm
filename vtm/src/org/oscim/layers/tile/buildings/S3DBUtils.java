@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2017, 2018 Gustl22
+ * Copyright 2017-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -20,7 +20,6 @@ package org.oscim.layers.tile.buildings;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.core.Tag;
-import org.oscim.utils.ColorUtil;
 import org.oscim.utils.ColorsCSS;
 import org.oscim.utils.Tessellator;
 import org.oscim.utils.geom.GeometryUtils;
@@ -28,13 +27,7 @@ import org.oscim.utils.math.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Provides utils for S3DB layers.
@@ -42,13 +35,35 @@ import java.util.TreeMap;
 public final class S3DBUtils {
     private static final Logger log = LoggerFactory.getLogger(S3DBUtils.class);
 
-    /* TODO get from theme */
-    private static final double HSV_S = 0.7;
-    private static final double HSV_V = 1.2;
-
     // Toggle this to debug and improve ridge calculation, you can see the faults in map then.
     private static final boolean IMPROVE_RIDGE_CALCULATION = false;
     private static final int SNAP_THRESHOLD = 70; // Threshold for ridge snap calculation (maybe should depend on map scale)
+
+    private static final float[][] PROFILE_DOME = new float[][]{
+            {1, 0},
+            {0.825f, 0.5f},
+            {0.5f, 0.825f},
+            {0, 1}};
+    private static final float[][] PROFILE_HIPPED = new float[][]{
+            {1, 0},
+            {0, 1}};
+    private static final float[][] PROFILE_MANSARD = new float[][]{
+            {1, 0},
+            {0.75f, 0.75f},
+            {0, 1}};
+    private static final float[][] PROFILE_ONION = new float[][]{
+            {1, 0},
+            {0.2f, 0.01f},
+            {0.875f, 0.1875f},
+            {1, 0.375f},
+            {0.875f, 0.5625f},
+            {0.5f, 0.75f},
+            {0.2f, 0.8125f},
+            {0, 1}};
+    private static final float[][] PROFILE_SALTBOX = new float[][]{
+            {1, 0},
+            {0.5f, 1},
+            {0, 1}};
 
     /**
      * Adds point to ridgePoints and snaps it to a point which is in radius of SNAP_THRESHOLD.
@@ -75,7 +90,7 @@ public final class S3DBUtils {
      * @param element the GeometryBuffer which is used to write the 3D mesh
      * @return true if calculation succeeded, false otherwise
      */
-    public static boolean calcCircleMesh(GeometryBuffer element, float minHeight, float maxHeight, String type) {
+    public static boolean calcCircleMesh(GeometryBuffer element, float minHeight, float maxHeight, String roofShape) {
         float[] points = element.points;
         int[] index = element.index;
 
@@ -92,30 +107,7 @@ public final class S3DBUtils {
 
             // Init mesh
             GeometryBuffer mesh;
-            switch (type) {
-                case Tag.VALUE_ONION:
-                    float[][] onionShape = new float[][]{
-                            {1, 0, 0},
-                            {0.2f, 0, 0.01f},
-                            {0.875f, 0, 0.1875f},
-                            {1, 0, 0.375f},
-                            {0.875f, 0, 0.5625f},
-                            {0.5f, 0, 0.75f},
-                            {0.2f, 0, 0.8125f},
-                            {0, 0, 1}};
-                    mesh = initCircleMesh(onionShape, numSections);
-                    break;
-                case Tag.VALUE_DOME:
-                default:
-                    float[][] domeShape = new float[][]{
-                            {1, 0, 0},
-                            {0.825f, 0, 0.5f},
-                            {0.5f, 0, 0.825f},
-                            {0, 0, 1}};
-                    mesh = initCircleMesh(domeShape, numSections);
-                    break;
-            }
-
+            mesh = initCircleMesh(getProfile(roofShape), numSections);
 
             // Calculate center and load points
             float centerX = 0;
@@ -374,13 +366,15 @@ public final class S3DBUtils {
      * @param minHeight         the minimum height
      * @param maxHeight         the maximum height
      * @param orientationAcross indicates if ridge is parallel to short side
-     * @param isGabled          indicates if should calculate a gable
+     * @param roofShape         the roof shape
      * @param specialParts      element to add missing parts of underlying element
      * @return true if calculation succeeded, false otherwise
      */
-    public static boolean calcRidgeMesh(GeometryBuffer element, float minHeight, float maxHeight, boolean orientationAcross, boolean isGabled, GeometryBuffer specialParts) {
+    public static boolean calcRidgeMesh(GeometryBuffer element, float minHeight, float maxHeight, boolean orientationAcross, String roofShape, GeometryBuffer specialParts) {
         float[] points = element.points;
         int[] index = element.index;
+
+        boolean isGabled = isGabled(roofShape);
 
         for (int i = 0, pointPos = 0; i < index.length; i++) {
             if (index[i] < 0) {
@@ -406,9 +400,10 @@ public final class S3DBUtils {
                 point3Fs.add(new float[]{x, y, minHeight});
             }
 
-            // Calc vectors
+            // Number of ground points
             int groundSize = point3Fs.size();
 
+            // Calc vectors
             List<Float> lengths = new ArrayList<>();
             List<float[]> normVectors = GeometryUtils.normalizedVectors2D(point3Fs, lengths);
 
@@ -418,7 +413,7 @@ public final class S3DBUtils {
 
             int countConcavAngles = 0;
             for (Byte simpleAngle : simpleAngles) {
-                if (simpleAngle > 1)
+                if (simpleAngle < -1)
                     countConcavAngles++;
             }
 
@@ -452,14 +447,14 @@ public final class S3DBUtils {
                 byte direction = simpleAngles.get(shift);
                 if (direction == 0) {
                     continue; // direction is similar to last one
-                } else if (direction > 0) {
-                    // If shape turns right
+                } else if (direction < 0) {
+                    // If shape turns left (concave)
                     float[] positionRidgeA = null;
                     float[] positionRidgeB = null;
 
                     // Check two previous corners
-                    Integer indexPrevious = getIndexPreviousLeftTurn(shift, simpleAngles);
-                    Integer indexPrevious2 = getIndexPreviousLeftTurn(indexPrevious == null ? shift - 1 : indexPrevious, simpleAngles);
+                    Integer indexPrevious = getIndexPreviousConvexTurn(shift, simpleAngles);
+                    Integer indexPrevious2 = getIndexPreviousConvexTurn(indexPrevious == null ? shift - 1 : indexPrevious, simpleAngles);
 
                     if (indexPrevious != null && indexPrevious2 != null) {
                         // Write two previous
@@ -482,8 +477,8 @@ public final class S3DBUtils {
                     }
 
                     // Check two next corners
-                    Integer indexNext = getIndexNextLeftTurn(shift, simpleAngles);
-                    Integer indexNext2 = getIndexNextLeftTurn(indexNext == null ? shift + 1 : indexNext, simpleAngles);
+                    Integer indexNext = getIndexNextConvexTurn(shift, simpleAngles);
+                    Integer indexNext2 = getIndexNextConvexTurn(indexNext == null ? shift + 1 : indexNext, simpleAngles);
 
                     if (indexNext != null && indexNext2 != null) {
                         if (ridgePoints.get(indexNext) == null) {
@@ -540,7 +535,7 @@ public final class S3DBUtils {
 
                     // Set opposite ridge, if only one concave corner
                     if (countConcavAngles == 1) {
-                        Integer opposite = getIndexNextLeftTurn(indexNext2, simpleAngles);
+                        Integer opposite = getIndexNextConvexTurn(indexNext2, simpleAngles);
                         if (opposite != null) {
                             if (isGabled)
                                 gablePoints.remove(opposite);
@@ -553,12 +548,12 @@ public final class S3DBUtils {
                     isOdd = false;
                     continue;
                 }
-                // Regular right angle (left turn)
+                // Regular right angle (convex turn)
                 if (isOdd) {
                     isOdd = false;
                     continue;
                 }
-                if (simpleAngles.get(shift) < -1) {
+                if (simpleAngles.get(shift) > 1) {
                     isOdd = true;
                 }
                 if (ridgePoints.containsKey(shift) && ridgeLines.containsKey(shift)) {
@@ -568,7 +563,7 @@ public final class S3DBUtils {
                 if (currentRidgeInd != null) {
                     float[] intersection;
                     // If is gabled, then use the normal line as intersection instead of bisection, but if the angle is not right, this is usually not a gable point
-                    if (isGabled && direction < -1) {
+                    if (isGabled && direction > 1) {
                         if (ridgePoints.get(currentRidgeInd) == null) {
                             log.debug("Gabled intersection calc failed");
                             currentRidgeInd = null;
@@ -593,7 +588,7 @@ public final class S3DBUtils {
                         currentRidgeInd = shift;
                     }
                 } else {
-                    Integer indexNext = getIndexNextLeftTurn(shift, simpleAngles);
+                    Integer indexNext = getIndexNextConvexTurn(shift, simpleAngles);
                     if (indexNext == null) continue;
                     if (!ridgeLines.containsKey(shift)) {
                         ridgeLines.put(shift, normVectors.get(indexNext));
@@ -625,7 +620,7 @@ public final class S3DBUtils {
                 }
 
                 // Only remove ridgePoint at concave corners
-                if (!isGabled || simpleAngles.get(key) > 0) {
+                if (!isGabled || simpleAngles.get(key) < 0) {
                     boolean isIn = GeometryUtils.pointInPoly(ridgeEntry.getValue()[0], ridgeEntry.getValue()[1], points, points.length, 0);
                     if (!isIn) {
                         // FIXME can improve shapes with concaves that intersect each other and remove shapes which have ridgepoints outside the outline
@@ -638,9 +633,13 @@ public final class S3DBUtils {
                 }
             }
 
+            float[][] profile = getProfile(roofShape);
+            int profileSize = profile.length - 2;
+            int profileSizePlus = profile.length - 1; // profile roof shape size + ground size (+1)
+
             // Allocate the indices to the points
             int ridgePointSize = ridgePoints.size();
-            float[] meshPoints = new float[(groundSize + ridgePointSize) * 3]; //(ridgePoints * 3 = 6)
+            float[] meshPoints = new float[(groundSize * profileSizePlus + ridgePointSize) * 3]; //(ridgePoints * 3 = 6)
             List<Integer> meshVarIndex = new ArrayList<>();
 
             // Add special building parts
@@ -649,41 +648,93 @@ public final class S3DBUtils {
                 meshPartVarIndex = new ArrayList<>();
             }
 
-            for (int k = 0; k < groundSize; k++) {
+            float heightRange = maxHeight - minHeight;
+
+            // Number of 3D-points for the roof (groundSize * inner profile + groundSize)
+            int grRsSize = groundSize * profileSizePlus;
+
+            // WRITE MESH
+
+            for (int l = 0; l < groundSize; l++) {
+                // l: #ground points
+                // k: #(shape points + ground points)
+                int k = l * profileSizePlus;
+
                 // Add first face
-                float[] p = point3Fs.get(k);
-                int ridgePointIndex1 = k;
+                float[] p = point3Fs.get(l);
+                int ridgePointIndex1 = l;
                 while (!ridgePoints.containsKey(ridgePointIndex1)) {
-                    ridgePointIndex1 = (ridgePointIndex1 + groundSize - 1) % groundSize; // Decrease ridgePointIndex
+                    ridgePointIndex1 = (ridgePointIndex1 + groundSize - 1) % groundSize; // Decrease ridgePointIndex until a ridge point is found for the k point.
                 }
                 int ridgeIndex1 = ridgePoints.headMap(ridgePointIndex1).size(); // set ridgeIndex to shift in ridgePoints
-                if (meshPartVarIndex != null && gablePoints.contains(ridgePointIndex1) && getIndexNextTurn(ridgePointIndex1, simpleAngles).equals(getIndexNextTurn(k, simpleAngles))) {
-                    meshPartVarIndex.add(k);
-                    meshPartVarIndex.add((k + 1) % groundSize);
-                    meshPartVarIndex.add(ridgeIndex1 + groundSize);
+                boolean isGable = false;
+                if (meshPartVarIndex != null && gablePoints.contains(ridgePointIndex1) && getIndexNextTurn(ridgePointIndex1, simpleAngles).equals(getIndexNextTurn(l, simpleAngles))) {
+                    isGable = true;
+                    // Add missing parts to building
+                    meshPartVarIndex.add(k + profileSize);
+                    meshPartVarIndex.add((k + profileSizePlus + profileSize) % grRsSize);
+                    meshPartVarIndex.add(ridgeIndex1 + grRsSize);
                 } else {
-                    meshVarIndex.add(k);
-                    meshVarIndex.add((k + 1) % groundSize);
-                    meshVarIndex.add(ridgeIndex1 + groundSize);
+                    // Add first roof face
+                    meshVarIndex.add(k + profileSize);
+                    meshVarIndex.add((k + profileSizePlus + profileSize) % grRsSize);
+                    meshVarIndex.add(ridgeIndex1 + grRsSize);
                 }
 
                 // Add second face, if necessary
-                int ridgePointIndex2 = (k + 1) % groundSize;
+                int ridgePointIndex2 = (l + 1) % groundSize;
                 while (!ridgePoints.containsKey(ridgePointIndex2)) {
                     ridgePointIndex2 = (ridgePointIndex2 + groundSize - 1) % groundSize; // Decrease ridgePointIndex
                 }
 
                 if (ridgePointIndex2 != ridgePointIndex1) {
                     int ridgeIndex2 = ridgePoints.headMap(ridgePointIndex2).size(); // Set ridgeIndex to position in ridgePoints
-                    meshVarIndex.add(ridgeIndex1 + groundSize);
-                    meshVarIndex.add((k + 1) % groundSize);
-                    meshVarIndex.add(ridgeIndex2 + groundSize);
+                    meshVarIndex.add(ridgeIndex1 + grRsSize);
+                    meshVarIndex.add((k + profileSizePlus + profileSize) % grRsSize);
+                    meshVarIndex.add(ridgeIndex2 + grRsSize);
                 }
 
-                // Write points
-                meshPoints[3 * k + 0] = p[0];
-                meshPoints[3 * k + 1] = p[1];
-                meshPoints[3 * k + 2] = p[2];
+                // Write ground points
+                int offset = 3 * k;
+                meshPoints[offset + 0] = p[0];
+                meshPoints[offset + 1] = p[1];
+                meshPoints[offset + 2] = p[2];
+
+                // Write profile roof shape points, skip ground points and ridge points of profile
+                float[] rp1 = ridgePoints.get(ridgePointIndex1);
+                float[] dif = GeometryUtils.diffVec(p, rp1); // Vector from ridge point to ground point
+                float phi = (float) Math.atan2(dif[0], dif[1]); // direction of diff
+                float r = (float) GeometryUtils.length(dif);
+                for (int m = 1; m < profileSizePlus; m++) {
+                    offset = 3 * (k + m); // (+ 1 - 1 = 0)
+                    int o = k + m - 1; // the ground + actual point of profile (m = 0 is the ground point)
+
+                    // Add profile roof faces (2 per side and profile point)
+                    if (isGable) {
+                        // Add missing parts to building
+                        meshPartVarIndex.add(o); // ground
+                        meshPartVarIndex.add((o + profileSizePlus) % grRsSize); // ground
+                        meshPartVarIndex.add((o + 1) % grRsSize); // profile
+
+                        meshPartVarIndex.add((o + profileSizePlus) % grRsSize); // ground + 1
+                        meshPartVarIndex.add((o + 1 + profileSizePlus) % grRsSize); // profile
+                        meshPartVarIndex.add((o + 1) % grRsSize); // profile
+                    } else {
+                        meshVarIndex.add(o); // ground
+                        meshVarIndex.add((o + profileSizePlus) % grRsSize); // ground + 1
+                        meshVarIndex.add((o + 1) % grRsSize); // profile
+
+                        meshVarIndex.add((o + profileSizePlus) % grRsSize); // ground + 1
+                        meshVarIndex.add((o + 1 + profileSizePlus) % grRsSize); // profile + 1
+                        meshVarIndex.add((o + 1) % grRsSize); // profile
+                    }
+
+                    // Calculate position of profile point.
+                    // profile[m][0] is same length for x and y
+                    meshPoints[offset + 0] = rp1[0] + (float) (r * profile[m][0] * Math.sin(phi));
+                    meshPoints[offset + 1] = rp1[1] + (float) (r * profile[m][0] * Math.cos(phi));
+                    meshPoints[offset + 2] = p[2] + heightRange * profile[m][1];
+                }
             }
 
             // Tessellate top, if necessary (can be used to improve wrong rendered roofs)
@@ -705,7 +756,7 @@ public final class S3DBUtils {
                                 if (Arrays.equals(ridgePoints.get(k), ridgePoints.get(secIndex)))
                                     ridgeSkipFaceIndex.add(k);
                             }
-                            if (isClockwise < 0 && IMPROVE_RIDGE_CALCULATION) {
+                            if (isClockwise > 0 && IMPROVE_RIDGE_CALCULATION) {
                                 // TODO Improve handling of counter clockwise faces and support multiple faces
                                 isTessellateAble = false;
                                 break;
@@ -734,7 +785,7 @@ public final class S3DBUtils {
                     if (Tessellator.tessellate(buffer, buffer) != 0) {
                         for (int ind : buffer.index) {
                             // Get position in ridgePoints, considering skipped points
-                            meshVarIndex.add(ridgePoints.headMap(faceIndex.get(ind)).size() + groundSize);
+                            meshVarIndex.add(ridgePoints.headMap(faceIndex.get(ind)).size() + grRsSize);
                         }
                     } else {
                         // TODO Improve wrong or not tessellated faces
@@ -757,11 +808,10 @@ public final class S3DBUtils {
                 // Add ridge points
                 float[] tmp = ridgePoints.get(k);
                 if (tmp != null) {
-                    float[] p = new float[]{tmp[0], tmp[1], maxHeight};
-                    int ppos = 3 * (l + groundSize);
-                    meshPoints[ppos + 0] = p[0];
-                    meshPoints[ppos + 1] = p[1];
-                    meshPoints[ppos + 2] = p[2];
+                    int ppos = 3 * (l + grRsSize);
+                    meshPoints[ppos + 0] = tmp[0];
+                    meshPoints[ppos + 1] = tmp[1];
+                    meshPoints[ppos + 2] = maxHeight;
                     l++;
                 }
             }
@@ -832,7 +882,7 @@ public final class S3DBUtils {
 
             int indexStart = getIndicesLongestSide(simpleAngles, lengths, null)[0];
             if (orientationAcross) {
-                Integer tmp = getIndexPreviousLeftTurn(indexStart, simpleAngles);
+                Integer tmp = getIndexPreviousConvexTurn(indexStart, simpleAngles);
                 if (tmp == null) {
                     tmp = getIndexNextTurn(indexStart, simpleAngles);
                 }
@@ -850,7 +900,7 @@ public final class S3DBUtils {
                 }
             }
             // Scale of normal vec
-            maxDist = -Math.signum(GeometryUtils.isTrisClockwise(
+            maxDist = Math.signum(GeometryUtils.isTrisClockwise(
                     pL,
                     GeometryUtils.sumVec(pL, vL),
                     splitLinePoint)) * (maxDist / 2);
@@ -866,7 +916,7 @@ public final class S3DBUtils {
             List<float[]> elementPoints2 = new ArrayList<>();
             float[] secSplitPoint = GeometryUtils.sumVec(splitLinePoint, vL);
             float sideLastPoint = Math.signum(GeometryUtils.isTrisClockwise(splitLinePoint, secSplitPoint, point3Fs.get(groundSize - 1)));
-            degreeNormL = sideLastPoint < 0 ? degreeNormL : (degreeNormL + 180f) % 360; // Correct angle
+            degreeNormL = sideLastPoint > 0 ? degreeNormL : (degreeNormL + 180f) % 360; // Correct angle
             List<Integer> intersection1 = new ArrayList<>(), intersection2 = new ArrayList<>();
             for (int k = 0; k < groundSize; k++) {
                 // If point is not on the same side as the previous point, the split line intersect and can calc split point
@@ -1062,68 +1112,38 @@ public final class S3DBUtils {
 
     /**
      * @param color    the color as string (see http://wiki.openstreetmap.org/wiki/Key:colour)
-     * @param roof     declare if color is used for roofs
+     * @param hsv      the HSV color values to modify given color
      * @param relative declare if colors are modified relative to their values
      * @return the color as integer (8 bit each a, r, g, b)
      */
-    public static int getColor(String color, boolean roof, boolean relative) {
-
-        if (color.charAt(0) == '#') {
-            int c = Color.parseColor(color, Color.CYAN);
-            /* hardcoded colors are way too saturated for my taste */
-            return ColorUtil.modHsv(c, 1.0, 0.4, HSV_V, relative);
-        }
-
-        if (roof) {
-            if ("brown".equals(color))
-                return Color.get(120, 110, 110);
-            if ("red".equals(color))
-                return Color.get(235, 140, 130);
-            if ("green".equals(color))
-                return Color.get(150, 200, 130);
-            if ("blue".equals(color))
-                return Color.get(100, 50, 200);
-        }
-        if ("white".equals(color))
-            return Color.get(240, 240, 240);
-        if ("black".equals(color))
-            return Color.get(86, 86, 86);
-        if ("grey".equals(color) || "gray".equals(color))
-            return Color.get(120, 120, 120);
-        if ("red".equals(color))
-            return Color.get(255, 190, 190);
-        if ("green".equals(color))
-            return Color.get(190, 255, 190);
-        if ("blue".equals(color))
-            return Color.get(190, 190, 255);
-        if ("yellow".equals(color))
-            return Color.get(255, 255, 175);
-        if ("darkgray".equals(color) || "darkgrey".equals(color))
-            return Color.DKGRAY;
-        if ("lightgray".equals(color) || "lightgrey".equals(color))
-            return Color.LTGRAY;
-
+    public static int getColor(String color, Color.HSV hsv, boolean relative) {
         if ("transparent".equals(color))
             return Color.get(0, 1, 1, 1);
 
-        Integer css = ColorsCSS.get(color);
+        int c;
+        if (color.charAt(0) == '#')
+            c = Color.parseColor(color, Color.CYAN);
+        else {
+            Integer css = ColorsCSS.get(color);
+            if (css == null) {
+                log.debug("unknown color:{}", color);
+                c = Color.CYAN;
+            } else
+                c = css;
+        }
 
-        if (css != null)
-            return ColorUtil.modHsv(css, 1.0, HSV_S, HSV_V, relative);
-
-        log.debug("unknown color:{}", color);
-        return 0;
+        return hsv.mod(c, relative);
     }
 
     /**
-     * @return the index of next left turn after specified index
+     * @return the index of convex turn after specified index or null, if it's concave.
      */
-    private static Integer getIndexNextLeftTurn(int index, List<Byte> simpleAngles) {
+    private static Integer getIndexNextConvexTurn(int index, List<Byte> simpleAngles) {
         for (int i = index + 1; i < simpleAngles.size() + index; i++) {
             int iMod = i % simpleAngles.size();
-            if (simpleAngles.get(iMod) < 0) {
+            if (simpleAngles.get(iMod) > 0) {
                 return iMod;
-            } else if (simpleAngles.get(iMod) > 0) {
+            } else if (simpleAngles.get(iMod) < 0) {
                 return null;
             }
         }
@@ -1144,14 +1164,14 @@ public final class S3DBUtils {
     }
 
     /**
-     * @return the index of previous left turn at specified index
+     * @return the index of previous convex turn at specified index
      */
-    private static Integer getIndexPreviousLeftTurn(int index, List<Byte> simpleAngles) {
+    private static Integer getIndexPreviousConvexTurn(int index, List<Byte> simpleAngles) {
         for (int i = simpleAngles.size() + index - 1; i >= 0; i--) {
             int iMod = i % simpleAngles.size();
-            if (simpleAngles.get(iMod) < 0) {
+            if (simpleAngles.get(iMod) > 0) {
                 return iMod;
-            } else if (simpleAngles.get(iMod) > 0) {
+            } else if (simpleAngles.get(iMod) < 0) {
                 return null;
             }
         }
@@ -1167,10 +1187,10 @@ public final class S3DBUtils {
         Integer concaveStart = null;
         for (int i = 0; i < size; i++) {
             if (indexStart != null && concaveStart != null) break;
-            if (indexStart == null && simpleAngles.get(i) < -1) {
+            if (indexStart == null && simpleAngles.get(i) > 1) {
                 // Use first angle as start index;
                 indexStart = i;
-            } else if (concaveStart == null && simpleAngles.get(i) > 1) {
+            } else if (concaveStart == null && simpleAngles.get(i) < -1) {
                 // A real concave corner
                 concaveStart = i;
             }
@@ -1191,9 +1211,9 @@ public final class S3DBUtils {
 
         // Calculate longest side with right angle next to it.
         int[] iLongSide = getIndicesLongestSide(simpleAngles, lengths, indexStart);
-        if (simpleAngles.get(iLongSide[1]) > -2) {
+        if (simpleAngles.get(iLongSide[1]) < 2) {
             // If angle is not good to start a ridge use previous
-            indexStart = getIndexPreviousLeftTurn(iLongSide[0], simpleAngles);
+            indexStart = getIndexPreviousConvexTurn(iLongSide[0], simpleAngles);
         } else {
             indexStart = iLongSide[1]; // Get side next to longest one
         }
@@ -1215,8 +1235,8 @@ public final class S3DBUtils {
         int size = simpleAngles.size();
         if (indexStart == null) {
             for (int i = 0; i < size; i++) {
-                if (simpleAngles.get(i) < 0) {
-                    // Use first angle as start index;
+                if (simpleAngles.get(i) > 0) {
+                    // Use first convex angle as start index;
                     indexStart = i;
                     break;
                 }
@@ -1251,71 +1271,125 @@ public final class S3DBUtils {
 
     /**
      * @param material the material as string (see http://wiki.openstreetmap.org/wiki/Key:material and following pages)
-     * @param roof     declare if material is used for roofs
+     * @param hsv      the HSV color values to modify given material
      * @return the color as integer (8 bit each a, r, g, b)
      */
-    public static int getMaterialColor(String material, boolean roof) {
+    public static int getMaterialColor(String material, Color.HSV hsv, boolean relative) {
 
-        if (roof) {
-            if ("glass".equals(material))
-                return Color.fade(Color.get(130, 224, 255), 0.9f);
+        int c;
+        if (material.charAt(0) == '#') {
+            c = Color.parseColor(material, Color.CYAN);
+        } else {
+            switch (material) {
+                case "roof_tiles":
+                    c = Color.get(216, 167, 111);
+                    break;
+                case "tile":
+                    c = Color.get(216, 167, 111);
+                    break;
+                case "concrete":
+                case "cement_block":
+                    c = Color.get(210, 212, 212);
+                    break;
+                case "metal":
+                    c = 0xFFC0C0C0;
+                    break;
+                case "tar_paper":
+                    c = 0xFF969998;
+                    break;
+                case "eternit":
+                    c = Color.get(216, 167, 111);
+                    break;
+                case "tin":
+                    c = 0xFFC0C0C0;
+                    break;
+                case "asbestos":
+                    c = Color.get(160, 152, 141);
+                    break;
+                case "glass":
+                    c = Color.fade(Color.get(130, 224, 255), 0.6f);
+                    break;
+                case "slate":
+                    c = 0xFF605960;
+                    break;
+                case "zink":
+                    c = Color.get(180, 180, 180);
+                    break;
+                case "gravel":
+                    c = Color.get(170, 130, 80);
+                    break;
+                case "copper":
+                    // same as roof color:green
+                    c = Color.get(150, 200, 130);
+                    break;
+                case "wood":
+                    c = Color.get(170, 130, 80);
+                    break;
+                case "grass":
+                    c = 0xFF50AA50;
+                    break;
+                case "stone":
+                    c = Color.get(206, 207, 181);
+                    break;
+                case "plaster":
+                    c = Color.get(236, 237, 181);
+                    break;
+                case "brick":
+                    c = Color.get(255, 217, 191);
+                    break;
+                case "stainless_steel":
+                    c = Color.get(153, 157, 160);
+                    break;
+                case "gold":
+                    c = 0xFFFFD700;
+                    break;
+                default:
+                    c = Color.CYAN;
+                    log.debug("unknown material:{}", material);
+                    break;
+            }
         }
-        if ("roof_tiles".equals(material))
-            return Color.get(216, 167, 111);
-        if ("tile".equals(material))
-            return Color.get(216, 167, 111);
 
-        if ("concrete".equals(material) ||
-                "cement_block".equals(material))
-            return Color.get(210, 212, 212);
+        return hsv.mod(c, relative);
+    }
 
-        if ("metal".equals(material))
-            return 0xFFC0C0C0;
-        if ("tar_paper".equals(material))
-            return 0xFF969998;
-        if ("eternit".equals(material))
-            return Color.get(216, 167, 111);
-        if ("tin".equals(material))
-            return 0xFFC0C0C0;
-        if ("asbestos".equals(material))
-            return Color.get(160, 152, 141);
-        if ("glass".equals(material))
-            return Color.get(130, 224, 255);
-        if ("slate".equals(material))
-            return 0xFF605960;
-        if ("zink".equals(material))
-            return Color.get(180, 180, 180);
-        if ("gravel".equals(material))
-            return Color.get(170, 130, 80);
-        if ("copper".equals(material))
-            // same as roof color:green
-            return Color.get(150, 200, 130);
-        if ("wood".equals(material))
-            return Color.get(170, 130, 80);
-        if ("grass".equals(material))
-            return 0xFF50AA50;
-        if ("stone".equals(material))
-            return Color.get(206, 207, 181);
-        if ("plaster".equals(material))
-            return Color.get(236, 237, 181);
-        if ("brick".equals(material))
-            return Color.get(255, 217, 191);
-        if ("stainless_steel".equals(material))
-            return Color.get(153, 157, 160);
-        if ("gold".equals(material))
-            return 0xFFFFD700;
-
-        log.debug("unknown material:{}", material);
-
-        return 0;
+    /**
+     * Get the profile (half cross section) of roof shape.
+     * profile[i][0]: x-coordinate
+     * profile[i][1]: z-coordinate
+     *
+     * @param roofShape the roof shape value
+     * @return the profile (read-only!)
+     */
+    public static float[][] getProfile(String roofShape) {
+        switch (roofShape) {
+            case Tag.VALUE_ONION:
+                return PROFILE_ONION;
+            case Tag.VALUE_ROUND:
+            case Tag.VALUE_DOME:
+                return PROFILE_DOME;
+            case Tag.VALUE_SALTBOX:
+                return PROFILE_SALTBOX;
+            case Tag.VALUE_MANSARD:
+            case Tag.VALUE_GAMBREL:
+                return PROFILE_MANSARD;
+            case Tag.VALUE_GABLED:
+            case Tag.VALUE_HIPPED:
+            default:
+                return PROFILE_HIPPED;
+        }
     }
 
     /**
      * @param normVectors the normalized vectors
      * @return a list of simple angles:
      * 0           straight
-     * (+/-) 1     (right/left) obtuse angle
-     * (+/-) 2     (right/left) right angle (or acute angle)
+     * (+/-) 1     (convex/concave) obtuse angle
+     * (+/-) 2     (convex/concave) right angle (or acute angle)
+     * <p>
+     * Note lhs coordinate system.
+     * convex: turns right
+     * concave: turns left
      */
     private static List<Byte> getSimpleAngles(List<float[]> normVectors) {
         int size = normVectors.size();
@@ -1331,8 +1405,8 @@ public final class S3DBUtils {
             float angle = (float) Math.acos(Math.abs(val) > 1 ? Math.signum(val) : val);
             // angles.add(angle);
 
-            // Positive is turns right, negative turns left
-            byte simpAngle = (byte) Math.signum(v1[0] * (-v2[1]) + v1[1] * v2[0]);
+            // Positive turns right (convex), negative turns left (concave)
+            byte simpAngle = (byte) Math.signum(v1[0] * v2[1] - v1[1] * v2[0]);
             if (angle > (MathUtils.PI / 2) - threshold) {
                 // Right angle
                 simpAngle *= 2;
@@ -1356,38 +1430,53 @@ public final class S3DBUtils {
         return simpAngls;
     }
 
-    private static GeometryBuffer initCircleMesh(float[][] circleShape, int numSections) {
-        int indexSize = numSections * (circleShape.length - 1) * 2 * 3; // * 2 faces * 3 vertices
+    private static GeometryBuffer initCircleMesh(float[][] profile, int numSections) {
+        int indexSize = numSections * (profile.length - 1) * 2 * 3; // * 2 faces * 3 vertices
         int[] meshIndex = new int[indexSize];
 
-        int meshSize = numSections * circleShape.length;
+        int meshSize = numSections * profile.length;
         float[] meshPoints = new float[meshSize * 3];
         for (int i = 0; i < numSections; i++) {
-            for (int j = 0; j < circleShape.length; j++) {
+            for (int j = 0; j < profile.length; j++) {
                 // Write point mesh
-                int pPos = 3 * (i * circleShape.length + j);
-                meshPoints[pPos + 0] = circleShape[j][0];
-                meshPoints[pPos + 1] = circleShape[j][1];
-                meshPoints[pPos + 2] = circleShape[j][2];
+                int pPos = 3 * (i * profile.length + j);
+                meshPoints[pPos + 0] = profile[j][0];
+                meshPoints[pPos + 1] = 0f;
+                meshPoints[pPos + 2] = profile[j][1];
 
                 // Write point indices
-                if (j != circleShape.length - 1) {
-                    int iPos = 6 * (i * (circleShape.length - 1) + j); // 6 = 2 * Mesh * 3PointsPerMesh
+                if (j != profile.length - 1) {
+                    int iPos = 6 * (i * (profile.length - 1) + j); // 6 = 2 * Mesh * 3PointsPerMesh
                     pPos = pPos / 3;
                     meshIndex[iPos + 2] = pPos + 0;
                     meshIndex[iPos + 1] = pPos + 1;
-                    meshIndex[iPos + 0] = (pPos + circleShape.length) % meshSize;
+                    meshIndex[iPos + 0] = (pPos + profile.length) % meshSize;
 
                     // FIXME if is last point, only one tris is needed, if top shape is closed
                     meshIndex[iPos + 5] = pPos + 1;
-                    meshIndex[iPos + 4] = (pPos + circleShape.length + 1) % meshSize;
-                    meshIndex[iPos + 3] = (pPos + circleShape.length) % meshSize;
+                    meshIndex[iPos + 4] = (pPos + profile.length + 1) % meshSize;
+                    meshIndex[iPos + 3] = (pPos + profile.length) % meshSize;
                 }
             }
 
         }
 
         return new GeometryBuffer(meshPoints, meshIndex);
+    }
+
+    private static boolean isGabled(String roofShape) {
+        switch (roofShape) {
+            case Tag.VALUE_ROUND:
+            case Tag.VALUE_SALTBOX:
+            case Tag.VALUE_GABLED:
+            case Tag.VALUE_GAMBREL:
+                return true;
+            case Tag.VALUE_MANSARD:
+            case Tag.VALUE_HALF_HIPPED:
+            case Tag.VALUE_HIPPED:
+            default:
+                return false;
+        }
     }
 
     private static void mergeMeshGeometryBuffer(GeometryBuffer gb1, GeometryBuffer gb2, GeometryBuffer out) {

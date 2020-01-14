@@ -1,6 +1,6 @@
 /*
  * Copyright 2012-2014 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2019 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -51,7 +51,7 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
 
     static final Logger log = LoggerFactory.getLogger(VectorTileLoader.class);
 
-    protected static final double STROKE_INCREASE = Math.sqrt(2.5);
+    protected static final double STROKE_INCREASE = 1.4;
     protected static final byte LAYERS = 11;
 
     public static final byte STROKE_MIN_ZOOM = 12;

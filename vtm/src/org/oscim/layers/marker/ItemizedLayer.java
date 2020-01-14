@@ -2,9 +2,10 @@
  * Copyright 2012 osmdroid authors: Nicolas Gramlich, Theodore Hong, Fred Eisele
  *
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2016 Stephan Leuschner
  * Copyright 2016 Pedinel
+ * Copyright 2019 Carlos Alberto Martínez Gadea
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -212,8 +213,8 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
 
             mapPosition.toScreenPoint(item.getPoint(), mTmpPoint);
 
-            float dx = (float) (mTmpPoint.x - eventX);
-            float dy = (float) (mTmpPoint.y - eventY);
+            float dx = (float) (eventX - mTmpPoint.x);
+            float dy = (float) (eventY - mTmpPoint.y);
 
             MarkerSymbol it = item.getMarker();
             if (it == null)
@@ -264,6 +265,9 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
 
     @Override
     public boolean onGesture(Gesture g, MotionEvent e) {
+        if (!isEnabled())
+            return false;
+
         if (g instanceof Gesture.Tap)
             return activateSelectedItems(e, mActiveItemSingleTap);
 

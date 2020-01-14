@@ -81,10 +81,10 @@ public class BitmapTileSource extends UrlTileSource {
 
     @Override
     public ITileDataSource getDataSource() {
-        return new UrlTileDataSource(this, new BitmapTileDecoder(), getHttpEngine());
+        return new UrlTileDataSource(this, new TileDecoder(), getHttpEngine());
     }
 
-    public class BitmapTileDecoder implements ITileDecoder {
+    public static class TileDecoder implements ITileDecoder {
 
         @Override
         public boolean decode(Tile tile, ITileDataSink sink, InputStream is)

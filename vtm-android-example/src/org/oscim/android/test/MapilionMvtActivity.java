@@ -14,8 +14,11 @@
  */
 package org.oscim.android.test;
 
+import android.os.Build;
 import android.os.Bundle;
-
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
+import okhttp3.OkHttpClient;
 import org.oscim.android.cache.TileCache;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
@@ -26,6 +29,10 @@ import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.tiling.source.mvt.MapilionMvtTileSource;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MapilionMvtActivity extends MapActivity {
 
@@ -40,7 +47,23 @@ public class MapilionMvtActivity extends MapActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        OkHttpEngine.OkHttpFactory factory = new OkHttpEngine.OkHttpFactory();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        // https://github.com/square/okhttp/issues/4053
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            List<CipherSuite> cipherSuites = new ArrayList<>();
+            List<CipherSuite> modernTlsCipherSuites = ConnectionSpec.MODERN_TLS.cipherSuites();
+            if (modernTlsCipherSuites != null)
+                cipherSuites.addAll(modernTlsCipherSuites);
+            cipherSuites.add(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA);
+            cipherSuites.add(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA);
+            ConnectionSpec legacyTls = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                    .cipherSuites(cipherSuites.toArray(new CipherSuite[0]))
+                    .build();
+            builder.connectionSpecs(Arrays.asList(legacyTls, ConnectionSpec.CLEARTEXT));
+        }
+
+        OkHttpEngine.OkHttpFactory factory = new OkHttpEngine.OkHttpFactory(builder);
 
         UrlTileSource tileSource = MapilionMvtTileSource.builder()
                 .apiKey(API_KEY)

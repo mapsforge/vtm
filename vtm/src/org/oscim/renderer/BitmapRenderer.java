@@ -33,7 +33,6 @@ public class BitmapRenderer extends BucketRenderer {
     private Bitmap mBitmap;
     private int mWidth;
     private int mHeight;
-    private boolean initialized;
     private boolean mUpdateBitmap;
     private GLViewport.Position position = GLViewport.Position.TOP_LEFT;
     private float xOffset, yOffset;
@@ -47,7 +46,7 @@ public class BitmapRenderer extends BucketRenderer {
         mBitmap = bitmap;
         mWidth = width;
         mHeight = height;
-        initialized = false;
+        mInitialized = false;
     }
 
     public synchronized void setPosition(GLViewport.Position position) {
@@ -65,7 +64,7 @@ public class BitmapRenderer extends BucketRenderer {
 
     @Override
     public synchronized void update(GLViewport v) {
-        if (!initialized) {
+        if (!mInitialized) {
             buckets.clear();
 
             BitmapBucket l = new BitmapBucket(true);

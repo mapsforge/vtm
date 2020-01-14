@@ -69,10 +69,11 @@ public final class GeometryUtils {
     /**
      * Returns the unsigned area of polygon.
      *
-     * @param n number of points
+     * @param size the number of point coordinates
+     * @return unsigned polygon area
      */
-    public static float area(float[] points, int n) {
-        float area = isClockwise(points, n);
+    public static float area(float[] points, int size) {
+        float area = isClockwise(points, size);
         return area < 0 ? -area : area;
     }
 
@@ -130,18 +131,29 @@ public final class GeometryUtils {
         if (out == null)
             out = new float[2];
 
-        // Calculate center
         for (int i = 0; i < n; i += 2, pointPos += 2) {
-            float x = points[pointPos];
-            float y = points[pointPos + 1];
-
-            out[0] += x;
-            out[1] += y;
+            out[0] += points[pointPos];
+            out[1] += points[pointPos + 1];
         }
         out[0] = out[0] * 2 / n;
         out[1] = out[1] * 2 / n;
 
         return out;
+    }
+
+    /**
+     * Calculate the closest point on a line.
+     * See: https://en.wikipedia.org/wiki/Vector_projection#Vector_projection_2
+     *
+     * @param pP point
+     * @param pL point of line
+     * @param vL vector of line
+     * @return the closest point on line
+     */
+    public static float[] closestPointOnLine2D(float[] pP, float[] pL, float[] vL) {
+        float[] vPL = diffVec(pL, pP);
+        float[] vPS = diffVec(vPL, scale(vL, dotProduct(vPL, vL) / dotProduct(vL, vL)));
+        return sumVec(pP, vPS);
     }
 
     /**
@@ -221,6 +233,9 @@ public final class GeometryUtils {
     }
 
     /**
+     * Calculate the distance from a point to a line.
+     * See: https://en.wikipedia.org/wiki/Vector_projection#Vector_projection_2
+     *
      * @param pP point
      * @param pL point of line
      * @param vL vector of line
@@ -228,7 +243,7 @@ public final class GeometryUtils {
      */
     public static float distancePointLine2D(float[] pP, float[] pL, float[] vL) {
         float[] vPL = diffVec(pL, pP);
-        float[] vPS = diffVec(vPL, scale(vL, dotProduct(vPL, vL)));
+        float[] vPS = diffVec(vPL, scale(vL, dotProduct(vPL, vL) / dotProduct(vL, vL)));
         return (float) Math.sqrt(dotProduct(vPS, vPS));
     }
 
@@ -311,33 +326,35 @@ public final class GeometryUtils {
 
     /**
      * Is polygon clockwise.
+     * Note that the coordinate system is left hand side.
      *
      * @param points the points array
-     * @param n      the number of points
+     * @param size   the number of point coordinates
      * @return the signed area of the polygon
      * positive: clockwise
      * negative: counter-clockwise
      * 0: collinear
      */
-    public static float isClockwise(float[] points, int n) {
+    public static float isClockwise(float[] points, int size) {
         float area = 0f;
-        for (int i = 0; i < n - 2; i += 2) {
-            area += (points[i + 1] * points[i + 2]) - (points[i] * points[i + 3]);
+        for (int i = 0; i < size - 2; i += 2) {
+            area += (points[i] * points[i + 3]) - (points[i + 1] * points[i + 2]);
         }
-        area += (points[n - 1] * points[0]) - (points[n - 2] * points[1]);
+        area += (points[size - 2] * points[1]) - (points[size - 1] * points[0]);
 
         return 0.5f * area;
     }
 
     /**
      * Indicates the turn of tris pA-pB-pC.
+     * Note that the coordinate system is left hand side.
      *
      * @return positive: clockwise
      * negative: counter-clockwise
      * 0: collinear
      */
     public static float isTrisClockwise(float[] pA, float[] pB, float[] pC) {
-        return (pB[1] - pA[1]) * (pC[0] - pA[0]) - (pB[0] - pA[0]) * (pC[1] - pA[1]);
+        return (pB[0] - pA[0]) * (pC[1] - pA[1]) - (pB[1] - pA[1]) * (pC[0] - pA[0]);
     }
 
     /**

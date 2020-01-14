@@ -22,7 +22,7 @@ import org.oscim.core.Tile;
 import org.oscim.utils.geom.TileClipper;
 import org.oscim.utils.geom.TileSeparator;
 
-class OverzoomDataSink implements ITileDataSink {
+public class OverzoomDataSink implements ITileDataSink {
 
     private final ITileDataSink sink;
 
@@ -30,7 +30,7 @@ class OverzoomDataSink implements ITileDataSink {
     private final TileSeparator separator;
     private final float dx, dy, scale;
 
-    OverzoomDataSink(ITileDataSink sink, Tile overzoomTile, Tile tile) {
+    public OverzoomDataSink(ITileDataSink sink, Tile overzoomTile, Tile tile) {
         this.sink = sink;
 
         int diff = tile.zoomLevel - overzoomTile.zoomLevel;

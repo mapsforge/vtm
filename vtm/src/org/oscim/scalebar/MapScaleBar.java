@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2014 Ludwig M Brinckmann
- * Copyright 2014-2016 devemux86
+ * Copyright 2014-2019 devemux86
  * Copyright 2014 Erik Duisters
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -44,8 +44,9 @@ public abstract class MapScaleBar {
     protected Canvas mapScaleCanvas;
     private int marginHorizontal;
     private int marginVertical;
-    private MapPosition prevMapPosition;
+    protected final MapPosition prevMapPosition = new MapPosition();
     protected boolean redrawNeeded;
+    protected final float scale;
     protected ScaleBarPosition scaleBarPosition;
     private boolean visible;
 
@@ -62,9 +63,10 @@ public abstract class MapScaleBar {
         }
     }
 
-    public MapScaleBar(Map map, int width, int height) {
+    public MapScaleBar(Map map, int width, int height, float scale) {
         this.map = map;
         this.mapScaleBitmap = CanvasAdapter.newBitmap(width, height, 0);
+        this.scale = scale;
 
         this.scaleBarPosition = DEFAULT_SCALE_BAR_POSITION;
 
@@ -194,7 +196,7 @@ public abstract class MapScaleBar {
      * @return a {@link ScaleBarLengthAndValue} object containing the required scaleBarLength and scaleBarValue
      */
     protected ScaleBarLengthAndValue calculateScaleBarLengthAndValue(DistanceUnitAdapter unitAdapter) {
-        this.prevMapPosition = this.map.getMapPosition();
+        this.map.getMapPosition(this.prevMapPosition);
         double groundResolution = MercatorProjection.groundResolution(this.prevMapPosition);
 
         groundResolution = groundResolution / unitAdapter.getMeterRatio();
@@ -206,7 +208,7 @@ public abstract class MapScaleBar {
         for (int scaleBarValue : scaleBarValues) {
             mapScaleValue = scaleBarValue;
             scaleBarLength = (int) (mapScaleValue / groundResolution);
-            if (scaleBarLength < (this.mapScaleBitmap.getWidth() - 10)) {
+            if (scaleBarLength < (this.mapScaleBitmap.getWidth() - 10 * this.scale)) {
                 break;
             }
         }
@@ -266,7 +268,7 @@ public abstract class MapScaleBar {
      * @return true if redraw is necessary, false otherwise
      */
     protected boolean isRedrawNecessary() {
-        if (this.redrawNeeded || this.prevMapPosition == null) {
+        if (this.redrawNeeded) {
             return true;
         }
 

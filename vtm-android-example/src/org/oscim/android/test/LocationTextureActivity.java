@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2018 Longri
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -15,26 +15,26 @@
  */
 package org.oscim.android.test;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
-
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
-import org.oscim.backend.canvas.Color;
 import org.oscim.core.MapPosition;
 import org.oscim.layers.LocationTextureLayer;
-import org.oscim.renderer.atlas.TextureAtlas;
-import org.oscim.renderer.atlas.TextureRegion;
-import org.oscim.renderer.bucket.TextureItem;
+import org.oscim.renderer.LocationCallback;
 import org.oscim.utils.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public class LocationTextureActivity extends BitmapTileActivity implements LocationListener {
+    private Location location;
     private LocationTextureLayer locationLayer;
     private LocationManager locationManager;
     private final MapPosition mapPosition = new MapPosition();
@@ -45,56 +45,72 @@ public class LocationTextureActivity extends BitmapTileActivity implements Locat
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        // load a Bitmap/SVG from resources
         InputStream is = null;
-        Bitmap bmp = null;
+        Bitmap bitmapArrow = null;
         try {
             is = getResources().openRawResource(R.raw.arrow);
-            float scale = CanvasAdapter.getScale();
-            bmp = CanvasAdapter.decodeSvgBitmap(is, (int) (60 * scale), (int) (60 * scale), 100);
+            bitmapArrow = CanvasAdapter.decodeSvgBitmap(is, (int) (48 * CanvasAdapter.getScale()), (int) (48 * CanvasAdapter.getScale()), 100);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             IOUtils.closeQuietly(is);
         }
 
-        // create TextureRegion from Bitmap
-        TextureRegion textureRegion = new TextureRegion(new TextureItem(bmp), new TextureAtlas.Rect(0, 0, bmp.getWidth(), bmp.getHeight()));
+        Bitmap bitmapMarker = null;
+        try {
+            is = getResources().openRawResource(R.raw.marker);
+            bitmapMarker = CanvasAdapter.decodeSvgBitmap(is, (int) (48 * CanvasAdapter.getScale()), (int) (48 * CanvasAdapter.getScale()), 100);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(is);
+        }
 
-        // create LocationTextureLayer with created/loaded TextureRegion
-        locationLayer = new LocationTextureLayer(mMap, textureRegion);
+        locationLayer = new LocationTextureLayer(mMap);
+        locationLayer.locationRenderer.setBitmapArrow(bitmapArrow);
+        locationLayer.locationRenderer.setBitmapMarker(bitmapMarker);
+        locationLayer.locationRenderer.setCallback(new LocationCallback() {
+            @Override
+            public boolean hasRotation() {
+                return location != null && location.hasBearing();
+            }
 
-        // set color of accuracy circle (Color.BLUE is default)
-        locationLayer.locationRenderer.setAccuracyColor(Color.get(50, 50, 255));
-
-        // set color of indicator circle (Color.RED is default)
-        locationLayer.locationRenderer.setIndicatorColor(Color.MAGENTA);
-
-        // set billboard rendering for TextureRegion (false is default)
-        locationLayer.locationRenderer.setBillboard(false);
-
+            @Override
+            public float getRotation() {
+                return location != null && location.hasBearing() ? location.getBearing() : 0;
+            }
+        });
         locationLayer.setEnabled(false);
         mMap.layers().add(locationLayer);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onRequestPermissionsResult(final int requestCode, final String[] permissions, final int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                enableAvailableProviders();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         enableAvailableProviders();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
+    public void onStop() {
         locationManager.removeUpdates(this);
+
+        super.onStop();
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        this.location = location;
         locationLayer.setEnabled(true);
-        locationLayer.setPosition(location.getLatitude(), location.getLongitude(), location.getBearing(), location.getAccuracy());
+        locationLayer.setPosition(location.getLatitude(), location.getLongitude(), location.getAccuracy());
 
         // Follow location
         mMap.getMapPosition(mapPosition);
@@ -115,6 +131,13 @@ public class LocationTextureActivity extends BitmapTileActivity implements Locat
     }
 
     private void enableAvailableProviders() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                return;
+            }
+        }
+
         locationManager.removeUpdates(this);
 
         for (String provider : locationManager.getProviders(true)) {

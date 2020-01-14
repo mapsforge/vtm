@@ -32,14 +32,14 @@ public class Tessellator {
      * Special version for ExtrusionLayer to match indices with vertex positions.
      * Tessellates polygon in tris elements.
      *
-     * @param points       the {@link org.oscim.core.GeometryBuffer#points}
-     * @param ppos         the {@link org.oscim.core.GeometryBuffer#pointNextPos} (not needed)
-     * @param numPoints    equals ppos?
-     * @param index        the {@link org.oscim.core.GeometryBuffer#index}
-     * @param ipos         the {@link org.oscim.core.GeometryBuffer#indexCurrentPos}
+     * @param points       the {@link GeometryBuffer#points}
+     * @param ppos         the start point in {@link GeometryBuffer#points} (not needed)
+     * @param numPoints    the points array size {@link GeometryBuffer#pointNextPos}
+     * @param index        the {@link GeometryBuffer#index}
+     * @param ipos         the {@link GeometryBuffer#indexCurrentPos}
      * @param numRings     the number of ring polygons
      * @param vertexOffset shift outTris index with offset
-     * @param outTris      the tessellated polygon as triangular {@link org.oscim.renderer.bucket.VertexData}
+     * @param outTris      the tessellated polygon as triangular {@link VertexData}
      * @return number of indices of outTris
      */
     public static int tessellate(float[] points, int ppos, int numPoints, int[] index,

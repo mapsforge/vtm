@@ -19,9 +19,7 @@ package org.oscim.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Environment;
 import android.preference.PreferenceManager;
-
 import org.oscim.android.cache.TileCache;
 import org.oscim.layers.GenericLayer;
 import org.oscim.layers.Layer;
@@ -67,7 +65,7 @@ public class MapLayers {
         @Override
         TileSource init() {
             return new MapFileTileSource().setOption("file",
-                    new File(Environment.getExternalStorageDirectory(), "berlin.map").getAbsolutePath());
+                    new File("/sdcard/berlin.map").getAbsolutePath());
         }
     }, new Config("MAPNIK_VECTOR") {
         @Override

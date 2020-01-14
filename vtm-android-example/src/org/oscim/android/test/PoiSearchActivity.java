@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 devemux86
+ * Copyright 2017-2019 devemux86
  * Copyright 2018 Gustl22
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -17,6 +17,7 @@ package org.oscim.android.test;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -25,20 +26,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
-
+import android.widget.*;
 import org.mapsforge.core.model.Tag;
 import org.mapsforge.poi.android.storage.AndroidPoiPersistenceManagerFactory;
-import org.mapsforge.poi.storage.ExactMatchPoiCategoryFilter;
-import org.mapsforge.poi.storage.PoiCategoryFilter;
-import org.mapsforge.poi.storage.PoiCategoryManager;
-import org.mapsforge.poi.storage.PoiPersistenceManager;
-import org.mapsforge.poi.storage.PointOfInterest;
+import org.mapsforge.poi.storage.*;
+import org.oscim.android.canvas.AndroidBitmap;
 import org.oscim.android.filepicker.FilePicker;
 import org.oscim.android.filepicker.FilterByFileExtension;
 import org.oscim.backend.canvas.Bitmap;
@@ -59,8 +51,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static org.oscim.android.canvas.AndroidGraphics.drawableToBitmap;
 
 /**
  * POI search.<br/>
@@ -162,7 +152,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
             String file = intent.getStringExtra(FilePicker.SELECTED_FILE);
             mPersistenceManager = AndroidPoiPersistenceManagerFactory.getPoiPersistenceManager(file);
 
-            Bitmap bitmap = drawableToBitmap(getResources().getDrawable(R.drawable.marker_green));
+            Bitmap bitmap = new AndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.marker_green));
             MarkerSymbol symbol = new MarkerSymbol(bitmap, MarkerSymbol.HotspotPlace.BOTTOM_CENTER);
             mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
             mMap.layers().add(mMarkerLayer);

@@ -10,7 +10,7 @@ Current version is [![Maven Central](https://img.shields.io/maven-central/v/org.
 ```groovy
 implementation 'org.mapsforge:vtm:[CURRENT-VERSION]'
 implementation 'org.mapsforge:vtm-themes:[CURRENT-VERSION]'
-implementation 'org.slf4j:slf4j-api:1.7.25'
+implementation 'org.slf4j:slf4j-api:1.7.28'
 ```
 
 ### Android
@@ -20,7 +20,7 @@ implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-armeabi-v7a'
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-arm64-v8a'
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-x86'
 implementation 'org.mapsforge:vtm-android:[CURRENT-VERSION]:natives-x86_64'
-implementation 'com.caverock:androidsvg:1.3'
+implementation 'com.caverock:androidsvg:1.4'
 ```
 
 ### Android (libGDX)
@@ -36,9 +36,9 @@ implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]:natives-armeabi-
 implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]:natives-arm64-v8a'
 implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]:natives-x86'
 implementation 'org.mapsforge:vtm-android-gdx:[CURRENT-VERSION]:natives-x86_64'
-implementation 'com.badlogicgames.gdx:gdx:1.9.9'
-implementation 'com.badlogicgames.gdx:gdx-backend-android:1.9.9'
-implementation 'com.caverock:androidsvg:1.3'
+implementation 'com.badlogicgames.gdx:gdx:1.9.10'
+implementation 'com.badlogicgames.gdx:gdx-backend-android:1.9.10'
+implementation 'com.caverock:androidsvg:1.4'
 ```
 
 ### iOS
@@ -56,47 +56,75 @@ implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-linux'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-osx'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-windows'
-implementation 'com.badlogicgames.gdx:gdx:1.9.9'
-implementation 'com.badlogicgames.gdx:gdx-platform:1.9.9:natives-desktop'
-implementation 'com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.9'
+implementation 'org.mapsforge:vtm-desktop-lwjgl:[CURRENT-VERSION]'
+implementation 'com.badlogicgames.gdx:gdx:1.9.10'
+implementation 'com.badlogicgames.gdx:gdx-platform:1.9.10:natives-desktop'
+implementation 'com.github.blackears:svgSalamander:v1.1.1'
+```
+
+### Desktop (LWJGL)
+```groovy
+implementation 'com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10'
 implementation 'org.lwjgl.lwjgl:lwjgl:2.9.3'
 implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-linux'
 implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-osx'
 implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-windows'
-implementation 'com.github.blackears:svgSalamander:v1.1.1'
+```
+
+### Desktop (LWJGL 3)
+```groovy
+implementation 'com.badlogicgames.gdx:gdx-backend-lwjgl3:1.9.10'
+implementation 'org.lwjgl:lwjgl:3.2.3'
+implementation 'org.lwjgl:lwjgl:3.2.3:natives-linux'
+implementation 'org.lwjgl:lwjgl:3.2.3:natives-macos'
+implementation 'org.lwjgl:lwjgl:3.2.3:natives-windows'
 ```
 
 ### JTS geometries
 
 ```groovy
 implementation 'org.mapsforge:vtm-jts:[CURRENT-VERSION]'
-implementation 'org.locationtech.jts:jts-core:1.15.0'
+// https://github.com/locationtech/jts/issues/145
+implementation 'org.locationtech.jts:jts-core:1.15.1'
 ```
 
 ### Online tiles
 
 ```groovy
 implementation 'org.mapsforge:vtm-http:[CURRENT-VERSION]'
-implementation 'com.squareup.okhttp3:okhttp:3.8.0'
-implementation 'com.squareup.okio:okio:1.13.0'
+// https://github.com/square/okhttp/issues/4481
+implementation 'com.squareup.okhttp3:okhttp:3.12.5'
+implementation 'com.squareup.okio:okio:1.15.0'
+```
+
+### MBTiles (Android)
+
+```groovy
+implementation 'org.mapsforge:vtm-android-mvt:[CURRENT-VERSION]'
+implementation 'org.mapsforge:vtm-mvt:[CURRENT-VERSION]'
+implementation 'com.google.protobuf:protobuf-java:3.6.1'
+implementation 'com.wdtinc:mapbox-vector-tile:3.1.0'
+// https://github.com/locationtech/jts/issues/145
+implementation 'org.locationtech.jts:jts-core:1.15.1'
 ```
 
 ### Mapbox vector tiles
 
 ```groovy
 implementation 'org.mapsforge:vtm-mvt:[CURRENT-VERSION]'
-implementation 'com.google.protobuf:protobuf-java:3.5.1'
-implementation 'com.wdtinc:mapbox-vector-tile:3.0.0'
-implementation 'org.locationtech.jts:jts-core:1.15.0'
+implementation 'com.google.protobuf:protobuf-java:3.6.1'
+implementation 'com.wdtinc:mapbox-vector-tile:3.1.0'
+// https://github.com/locationtech/jts/issues/145
+implementation 'org.locationtech.jts:jts-core:1.15.1'
 ```
 
 ### GeoJSON vector tiles
 
 ```groovy
 implementation 'org.mapsforge:vtm-json:[CURRENT-VERSION]'
-implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.4'
-implementation 'com.fasterxml.jackson.core:jackson-core:2.8.4'
-implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.4'
+implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.9'
+implementation 'com.fasterxml.jackson.core:jackson-core:2.9.9'
+implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
 ```
 
 ### jeo (indoor maps)

@@ -2,7 +2,6 @@ package org.oscim.test;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.gdx.GdxMapApp;

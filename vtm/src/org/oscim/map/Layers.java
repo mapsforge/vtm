@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2019 devemux86
  * Copyright 2016 Andrey Novikov
  * Copyright 2017 Longri
  * Copyright 2018 Gustl22
@@ -251,7 +251,7 @@ public final class Layers extends AbstractList<Layer> {
         return false;
     }
 
-    private synchronized void updateLayers() {
+    public synchronized void updateLayers() {
         try {
             mLayers = new Layer[mLayerList.size()];
             int numRenderLayers = 0;

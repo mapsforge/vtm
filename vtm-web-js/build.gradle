@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.13'
         classpath 'org.akhikhl.gretty:gretty:2.0.0'
     }
 }
@@ -39,7 +39,7 @@ gwt {
         noPrecompile = true
     }
     compiler {
-        enableClosureCompiler = false // activates -XenableClosureCompiler
+        //enableClosureCompiler = false // activates -XenableClosureCompiler
         disableClassMetadata = true // activates -XdisableClassMetadata
         disableCastChecking = true // activates -XdisableCastChecking
     }

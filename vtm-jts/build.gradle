@@ -3,7 +3,8 @@ apply plugin: 'maven'
 
 dependencies {
     api project(':vtm')
-    api 'org.locationtech.jts:jts-core:1.15.0'
+    // https://github.com/locationtech/jts/issues/145
+    api 'org.locationtech.jts:jts-core:1.15.1'
 }
 
 sourceSets {
