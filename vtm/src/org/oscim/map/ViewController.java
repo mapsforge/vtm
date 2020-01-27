@@ -229,6 +229,11 @@ public class ViewController extends Viewport {
         double rsin = Math.sin(radians);
         double rcos = Math.cos(radians);
 
+        if (pivotX != 0f && pivotY != 0f) {
+            pivotX -= mWidth * mPivotX;
+            pivotY -= mHeight * mPivotY;
+        }
+
         float x = (float) (pivotX - pivotX * rcos + pivotY * rsin);
         float y = (float) (pivotY - pivotX * rsin - pivotY * rcos);
 
