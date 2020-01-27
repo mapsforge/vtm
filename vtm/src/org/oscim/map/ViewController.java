@@ -228,15 +228,14 @@ public class ViewController extends Viewport {
         double rsin = Math.sin(radians);
         double rcos = Math.cos(radians);
 
-        pivotX -= mWidth * mPivotX;
-        pivotY -= mHeight * mPivotY;
+        pivotX = mPivotX + pivotX;
+        pivotY = mPivotY + pivotY;
 
         float x = (float) (pivotX - pivotX * rcos + pivotY * rsin);
         float y = (float) (pivotY - pivotX * rsin - pivotY * rcos);
 
-        moveMap(x, y);
-
         setRotation(mPos.bearing + Math.toDegrees(radians));
+        moveMap(x, y);
     }
 
     public void setRotation(double degree) {
