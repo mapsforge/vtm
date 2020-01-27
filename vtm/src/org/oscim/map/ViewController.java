@@ -22,6 +22,7 @@ package org.oscim.map;
 
 import org.oscim.core.MapPosition;
 import org.oscim.core.Point;
+import org.oscim.core.PointF;
 import org.oscim.core.Tile;
 import org.oscim.renderer.GLMatrix;
 import org.oscim.utils.FastMath;
@@ -227,9 +228,6 @@ public class ViewController extends Viewport {
 
         double rsin = Math.sin(radians);
         double rcos = Math.cos(radians);
-
-        pivotX = mPivotX + pivotX;
-        pivotY = mPivotY + pivotY;
 
         float x = (float) (pivotX - pivotX * rcos + pivotY * rsin);
         float y = (float) (pivotY - pivotX * rsin - pivotY * rcos);
