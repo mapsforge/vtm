@@ -36,7 +36,7 @@ import java.io.InputStream;
 
 import io.jeo.carto.Carto;
 import io.jeo.data.Dataset;
-import io.jeo.data.mem.MemVector;
+import io.jeo.data.mem.MemVectorDataset;
 import io.jeo.data.mem.MemWorkspace;
 import io.jeo.geojson.GeoJSONDataset;
 import io.jeo.geojson.GeoJSONReader;
@@ -108,7 +108,7 @@ public class JeoTest {
         try {
             Schema s = new SchemaBuilder("way").schema();
 
-            MemVector memData = mem.create(s);
+            MemVectorDataset memData = mem.create(s);
 
             for (Feature f : r.features(is)) {
                 //System.out.println("loaded: " + f);
@@ -142,7 +142,7 @@ public class JeoTest {
                 Schema s = data.schema();
                 VectorQuery q = new VectorQuery();
 
-                MemVector memData = mem.create(s);
+                MemVectorDataset memData = mem.create(s);
 
                 for (Feature f : data.cursor(q)) {
                     memData.add(f);
@@ -168,7 +168,7 @@ public class JeoTest {
                 .field("name", String.class)
                 .field("cost", Double.class).schema();
 
-        MemVector data;
+        MemVectorDataset data;
         try {
             data = mem.create(schema);
         } catch (UnsupportedOperationException e) {
