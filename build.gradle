@@ -42,7 +42,7 @@ def versionName() { return version }
 subprojects {
     repositories {
         google()
-        //maven { url 'https://repo.boundlessgeo.com/main/' }
+        maven { url 'https://repo.osgeo.org/repository/release/' }
         jcenter()
         maven { url 'https://jitpack.io' }
     }
