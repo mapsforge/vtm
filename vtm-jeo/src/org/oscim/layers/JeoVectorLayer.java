@@ -78,7 +78,7 @@ public class JeoVectorLayer extends JtsLayer {
             VectorQuery q = new VectorQuery().bounds(b);
             if (dbg)
                 log.debug("query {}", b);
-            for (Feature f : mDataset.cursor(q)) {
+            for (Feature f : mDataset.read(q)) {
                 if (dbg)
                     log.debug("feature {}", f);
 

@@ -144,7 +144,7 @@ public class JeoTest {
 
                 MemVectorDataset memData = mem.create(s);
 
-                for (Feature f : data.cursor(q)) {
+                for (Feature f : data.read(q)) {
                     memData.add(f);
                 }
 
