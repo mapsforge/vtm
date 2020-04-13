@@ -22,7 +22,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
-import org.jeo.geom.CoordinatePath;
 import org.oscim.core.Box;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.core.MapPosition;
@@ -34,6 +33,8 @@ import org.oscim.renderer.bucket.LineBucket;
 import org.oscim.renderer.bucket.MeshBucket;
 import org.oscim.utils.geom.SimplifyDP;
 import org.oscim.utils.geom.SimplifyVW;
+
+import io.jeo.geom.CoordinatePath;
 
 public abstract class JtsLayer extends AbstractVectorLayer<Geometry> {
 

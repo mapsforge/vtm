@@ -16,12 +16,13 @@
  */
 package org.oscim.theme.carto;
 
-import org.jeo.vector.BasicFeature;
 import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 
 import java.util.List;
 import java.util.Map;
+
+import io.jeo.vector.BasicFeature;
 
 import static java.lang.System.out;
 

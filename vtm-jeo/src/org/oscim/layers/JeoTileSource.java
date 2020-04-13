@@ -16,8 +16,6 @@
  */
 package org.oscim.layers;
 
-import org.jeo.tile.Tile;
-import org.jeo.tile.TileDataset;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.layers.tile.MapTile;
@@ -29,6 +27,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+
+import io.jeo.tile.Tile;
+import io.jeo.tile.TileDataset;
 
 import static org.oscim.tiling.QueryResult.FAILED;
 import static org.oscim.tiling.QueryResult.SUCCESS;

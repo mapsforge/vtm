@@ -22,12 +22,6 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 
-import org.jeo.map.CartoCSS;
-import org.jeo.map.RGB;
-import org.jeo.map.Rule;
-import org.jeo.map.Style;
-import org.jeo.vector.Feature;
-import org.jeo.vector.VectorDataset;
 import org.oscim.backend.canvas.Color;
 import org.oscim.jeo.JeoUtils;
 import org.oscim.map.Map;
@@ -40,6 +34,13 @@ import org.oscim.theme.styles.LineStyle;
 import org.oscim.theme.styles.TextStyle;
 
 import java.util.HashMap;
+
+import io.jeo.map.CartoCSS;
+import io.jeo.map.RGB;
+import io.jeo.map.Rule;
+import io.jeo.map.Style;
+import io.jeo.vector.Feature;
+import io.jeo.vector.VectorDataset;
 
 public class OSMIndoorLayer extends JeoVectorLayer {
 

@@ -19,20 +19,6 @@ package org.oscim.test;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-import org.jeo.carto.Carto;
-import org.jeo.data.Dataset;
-import org.jeo.data.mem.MemVector;
-import org.jeo.data.mem.MemWorkspace;
-import org.jeo.geojson.GeoJSONDataset;
-import org.jeo.geojson.GeoJSONReader;
-import org.jeo.geom.GeomBuilder;
-import org.jeo.map.Style;
-import org.jeo.vector.Feature;
-import org.jeo.vector.Features;
-import org.jeo.vector.Schema;
-import org.jeo.vector.SchemaBuilder;
-import org.jeo.vector.VectorDataset;
-import org.jeo.vector.VectorQuery;
 import org.oscim.backend.canvas.Color;
 import org.oscim.layers.OSMIndoorLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
@@ -47,6 +33,21 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import io.jeo.carto.Carto;
+import io.jeo.data.Dataset;
+import io.jeo.data.mem.MemVector;
+import io.jeo.data.mem.MemWorkspace;
+import io.jeo.geojson.GeoJSONDataset;
+import io.jeo.geojson.GeoJSONReader;
+import io.jeo.geom.GeomBuilder;
+import io.jeo.map.Style;
+import io.jeo.vector.Feature;
+import io.jeo.vector.Features;
+import io.jeo.vector.Schema;
+import io.jeo.vector.SchemaBuilder;
+import io.jeo.vector.VectorDataset;
+import io.jeo.vector.VectorQuery;
 
 public class JeoTest {
 
