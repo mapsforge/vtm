@@ -102,7 +102,7 @@ public class JeoTest {
         GeoJSONReader r = new GeoJSONReader();
 
         @SuppressWarnings("resource")
-        MemWorkspace mem = new MemWorkspace();
+        MemWorkspace mem = new MemWorkspace("");
 
         //mem.put("layer", data);
         try {
@@ -134,7 +134,7 @@ public class JeoTest {
 
         if (memory) {
             @SuppressWarnings("resource")
-            MemWorkspace mem = new MemWorkspace();
+            MemWorkspace mem = new MemWorkspace("");
 
             //mem.put("layer", data);
             try {
@@ -161,7 +161,7 @@ public class JeoTest {
         GeomBuilder gb = new GeomBuilder(4326);
 
         @SuppressWarnings("resource")
-        MemWorkspace mem = new MemWorkspace();
+        MemWorkspace mem = new MemWorkspace("");
         Schema schema = new SchemaBuilder(layer)
                 .field("geometry", Geometry.class)
                 .field("id", Integer.class)
