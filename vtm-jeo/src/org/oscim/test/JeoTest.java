@@ -44,6 +44,7 @@ import io.jeo.geom.GeomBuilder;
 import io.jeo.map.Style;
 import io.jeo.vector.Feature;
 import io.jeo.vector.Features;
+import io.jeo.vector.ListFeature;
 import io.jeo.vector.Schema;
 import io.jeo.vector.SchemaBuilder;
 import io.jeo.vector.VectorDataset;
@@ -182,15 +183,16 @@ public class JeoTest {
         Geometry g = gb.point(0, 0).toPoint();
         //g.setSRID(4326);
 
-        data.add(Features.create(null, data.schema(),
+
+        data.add(new ListFeature(data.schema(),
                 g, 1, "anvil",
                 10.99));
 
-        data.add(Features.create(null, data.schema(),
+        data.add(new ListFeature(data.schema(),
                 gb.points(10, 10, 20, 20).toLineString(),
                 2, "bomb", 11.99));
 
-        data.add(Features.create(null, data.schema(),
+        data.add(new ListFeature(data.schema(),
                 gb.point(100, 10).toPoint().buffer(10),
                 3, "dynamite", 12.99));
 
