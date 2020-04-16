@@ -233,7 +233,10 @@
 
     <xs:complexType name="symbol">
         <xs:attribute name="cat" type="xs:string" use="optional" />
-        <xs:attribute name="src" type="tns:src" use="required" />
+        <xs:attribute name="id" default="0" type="xs:string" use="optional" />
+        <xs:attribute name="use" default="0" type="xs:string" use="optional" />
+
+        <xs:attribute name="src" type="tns:src" use="optional" />
         <xs:attribute name="symbol-width" type="xs:positiveInteger" use="optional" />
         <xs:attribute name="symbol-height" type="xs:positiveInteger" use="optional" />
         <xs:attribute name="symbol-percent" type="xs:positiveInteger" use="optional" />
@@ -332,6 +335,7 @@
             <xs:sequence maxOccurs="256" minOccurs="0">
                 <xs:choice maxOccurs="unbounded" minOccurs="0">
                     <xs:element name="style-text" type="tns:text" />
+                    <xs:element name="style-symbol" type="tns:symbol" />
                     <xs:element name="style-area" type="tns:area" />
                     <xs:element name="style-line" type="tns:line" />
                     <!-- <xs:element name="style-outline" type="tns:line" /> -->
