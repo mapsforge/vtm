@@ -201,11 +201,11 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
 
             for (Drawable d : tmpDrawables) {
                 Style style = d.getStyle();
-                draw(t, level, d, style);
 
-                if (style != lastStyle)
+                if (lastStyle != null && lastStyle != style)
                     level += 2;
 
+                draw(t, level, d, style);
                 lastStyle = style;
             }
         }
