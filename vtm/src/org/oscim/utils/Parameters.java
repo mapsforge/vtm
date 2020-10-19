@@ -44,7 +44,7 @@ public final class Parameters {
     /**
      * Maximum buffer size for map files.
      */
-    public static int MAXIMUM_BUFFER_SIZE = 8000000;
+    public static int MAXIMUM_BUFFER_SIZE = 10000000;
 
     /**
      * Calculation of centroids for all polygons.
