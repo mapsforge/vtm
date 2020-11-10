@@ -16,6 +16,8 @@ package org.oscim.utils;
 
 public final class Parameters {
 
+    public enum SymbolScaling {ALL, POI}
+
     /**
      * If true the <code>Animator2</code> will be used instead of default <code>Animator</code>.
      */
@@ -72,6 +74,11 @@ public final class Parameters {
      * e.g. 0 (no simplification), 2, 4, ...
      */
     public static int SIMPLIFICATION_TOLERANCE = 0;
+
+    /**
+     * Symbol scaling mode.
+     */
+    public static SymbolScaling SYMBOL_SCALING = SymbolScaling.POI;
 
     /**
      * Texture atlas in themes.

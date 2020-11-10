@@ -50,6 +50,7 @@ import org.oscim.theme.styles.SymbolStyle.SymbolBuilder;
 import org.oscim.theme.styles.TextStyle.TextBuilder;
 import org.oscim.utils.FastMath;
 import org.oscim.utils.IOUtils;
+import org.oscim.utils.Parameters;
 import org.oscim.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,10 +61,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Float.parseFloat;
-import static java.lang.Integer.parseInt;
 
 public class XmlThemeBuilder {
 
@@ -565,7 +562,7 @@ public class XmlThemeBuilder {
                 b.color(value);
 
             else if ("width".equals(name) || "stroke-width".equals(name)) {
-                b.strokeWidth = parseFloat(value) * mScale * mStrokeScale;
+                b.strokeWidth = Float.parseFloat(value) * mScale * mStrokeScale;
                 if (line == null) {
                     if (!isOutline)
                         validateNonNegative("width", b.strokeWidth);
@@ -579,16 +576,16 @@ public class XmlThemeBuilder {
                 b.cap = Cap.valueOf(value.toUpperCase(Locale.ENGLISH));
 
             else if ("fix".equals(name))
-                b.fixed = parseBoolean(value);
+                b.fixed = Boolean.parseBoolean(value);
 
             else if ("stipple".equals(name))
-                b.stipple = Math.round(parseInt(value) * mScale * mStrokeScale);
+                b.stipple = Math.round(Integer.parseInt(value) * mScale * mStrokeScale);
 
             else if ("stipple-stroke".equals(name))
                 b.stippleColor(value);
 
             else if ("stipple-width".equals(name))
-                b.stippleWidth = parseFloat(value);
+                b.stippleWidth = Float.parseFloat(value);
 
             else if ("fade".equals(name))
                 b.fadeScale = Integer.parseInt(value);
@@ -597,7 +594,7 @@ public class XmlThemeBuilder {
                 ; //min = Float.parseFloat(value);
 
             else if ("blur".equals(name))
-                b.blur = parseFloat(value);
+                b.blur = Float.parseFloat(value);
 
             else if ("style".equals(name))
                 ; // ignore
@@ -667,8 +664,10 @@ public class XmlThemeBuilder {
             b.stippleWidth = 1;
             b.stippleColor = b.fillColor;
         } else {
-            if (src != null)
-                b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+            if (src != null) {
+                float symbolScale = Parameters.SYMBOL_SCALING == Parameters.SymbolScaling.ALL ? CanvasAdapter.symbolScale : 1;
+                b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale));
+            }
 
             if (b.texture != null && hasSymbol) {
                 // Line symbol
@@ -1063,7 +1062,7 @@ public class XmlThemeBuilder {
 
             else if ("dy".equals(name))
                 // NB: minus..
-                b.dy = -Float.parseFloat(value) * mScale;
+                b.dy = -Float.parseFloat(value) * mScale * CanvasAdapter.symbolScale;
 
             else if ("symbol".equals(name))
                 symbol = value;
@@ -1088,7 +1087,7 @@ public class XmlThemeBuilder {
                 if (b.dy == 0) {
                     value = "above".equals(value) ? "20" : "-20";
                     // NB: minus..
-                    b.dy = -Float.parseFloat(value) * mScale;
+                    b.dy = -Float.parseFloat(value) * mScale * CanvasAdapter.symbolScale;
                 }
 
             } else
@@ -1103,7 +1102,7 @@ public class XmlThemeBuilder {
             String lowValue = symbol.toLowerCase(Locale.ENGLISH);
             if (lowValue.endsWith(".png") || lowValue.endsWith(".svg")) {
                 try {
-                    b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+                    b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * CanvasAdapter.symbolScale));
                 } catch (Exception e) {
                     log.error("{}: {}", symbol, e.getMessage());
                 }
@@ -1247,7 +1246,17 @@ public class XmlThemeBuilder {
         String lowSrc = b.src.toLowerCase(Locale.ENGLISH);
         if (lowSrc.endsWith(".png") || lowSrc.endsWith(".svg")) {
             try {
-                Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), b.src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+                float symbolScale = 1;
+                switch (Parameters.SYMBOL_SCALING) {
+                    case ALL:
+                        symbolScale = CanvasAdapter.symbolScale;
+                        break;
+                    case POI:
+                        if (!b.repeat)
+                            symbolScale = CanvasAdapter.symbolScale;
+                        break;
+                }
+                Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), b.src, b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale));
                 if (bitmap != null)
                     return buildSymbol(b, b.src, bitmap);
             } catch (Exception e) {

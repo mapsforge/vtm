@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -58,6 +58,11 @@ public abstract class CanvasAdapter {
      * The used platform.
      */
     public static Platform platform = Platform.UNKNOWN;
+
+    /**
+     * The symbol scale.
+     */
+    public static float symbolScale = 1;
 
     /**
      * The text scale.
