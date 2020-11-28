@@ -174,8 +174,7 @@ public abstract class Map implements TaskQueue {
      * set as base map (layer 1).
      */
     public VectorTileLayer setBaseMap(TileSource tileSource) {
-        VectorTileLayer l = new OsmTileLayer(this);
-        l.setTileSource(tileSource);
+        VectorTileLayer l = new OsmTileLayer(this, tileSource);
         setBaseMap(l);
         return l;
     }

@@ -21,11 +21,18 @@ import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 import org.oscim.layers.tile.TileLoader;
 import org.oscim.map.Map;
+import org.oscim.tiling.TileSource;
 import org.oscim.utils.Utils;
 
 public class OsmTileLayer extends VectorTileLayer {
 
     private static final int CACHE_LIMIT = 150;
+
+    public OsmTileLayer(Map map, TileSource tileSource) {
+        this(map, map.viewport().getMinZoomLevel(), map.viewport().getMaxZoomLevel());
+
+        setTileSource(tileSource);
+    }
 
     public OsmTileLayer(Map map) {
         this(map, map.viewport().getMinZoomLevel(), map.viewport().getMaxZoomLevel());

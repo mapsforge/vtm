@@ -48,8 +48,7 @@ class MapsforgeVectorSingleMap {
                 tileSource.setMapFile(mapFile.path());
                 tileSource.setPreferredLanguage("en");
             }
-            vectorTileLayer = new OsmTileLayer(map);
-            vectorTileLayer.setTileSource(tileSource);
+            vectorTileLayer = new OsmTileLayer(map, tileSource);
         }
         return vectorTileLayer;
     }
