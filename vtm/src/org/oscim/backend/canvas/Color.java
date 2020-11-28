@@ -254,8 +254,8 @@ public final class Color {
      * exception. Supported formats are:
      * #RRGGBB
      * #AARRGGBB
-     * 'red', 'blue', 'green', 'black', 'white', 'gray', 'cyan', 'magenta',
-     * 'yellow', 'lightgray', 'darkgray'
+     * rgb(r, g, b)
+     * rgba(r, g, b, a)
      *
      * @param colorString the color string
      * @return the int
