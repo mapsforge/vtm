@@ -18,21 +18,15 @@
 package org.oscim.test;
 
 import com.vividsolutions.jts.geom.Geometry;
-
-import org.jeo.carto.Carto;
-import org.jeo.data.Dataset;
-import org.jeo.data.mem.MemVector;
-import org.jeo.data.mem.MemWorkspace;
-import org.jeo.geojson.GeoJSONDataset;
-import org.jeo.geojson.GeoJSONReader;
-import org.jeo.geom.GeomBuilder;
-import org.jeo.map.Style;
-import org.jeo.vector.Feature;
-import org.jeo.vector.Features;
-import org.jeo.vector.Schema;
-import org.jeo.vector.SchemaBuilder;
-import org.jeo.vector.VectorDataset;
-import org.jeo.vector.VectorQuery;
+import io.jeo.carto.Carto;
+import io.jeo.data.Dataset;
+import io.jeo.data.mem.MemVectorDataset;
+import io.jeo.data.mem.MemWorkspace;
+import io.jeo.geojson.GeoJSONDataset;
+import io.jeo.geojson.GeoJSONReader;
+import io.jeo.geom.GeomBuilder;
+import io.jeo.map.Style;
+import io.jeo.vector.*;
 import org.oscim.backend.canvas.Color;
 import org.oscim.layers.OSMIndoorLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
@@ -42,11 +36,7 @@ import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.styles.TextStyle;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class JeoTest {
 
@@ -101,13 +91,13 @@ public class JeoTest {
         GeoJSONReader r = new GeoJSONReader();
 
         @SuppressWarnings("resource")
-        MemWorkspace mem = new MemWorkspace();
+        MemWorkspace mem = new MemWorkspace("");
 
         //mem.put("layer", data);
         try {
             Schema s = new SchemaBuilder("way").schema();
 
-            MemVector memData = mem.create(s);
+            MemVectorDataset memData = mem.create(s);
 
             for (Feature f : r.features(is)) {
                 //System.out.println("loaded: " + f);
@@ -133,7 +123,7 @@ public class JeoTest {
 
         if (memory) {
             @SuppressWarnings("resource")
-            MemWorkspace mem = new MemWorkspace();
+            MemWorkspace mem = new MemWorkspace("");
 
             //mem.put("layer", data);
             try {
@@ -141,9 +131,9 @@ public class JeoTest {
                 Schema s = data.schema();
                 VectorQuery q = new VectorQuery();
 
-                MemVector memData = mem.create(s);
+                MemVectorDataset memData = mem.create(s);
 
-                for (Feature f : data.cursor(q)) {
+                for (Feature f : data.read(q)) {
                     memData.add(f);
                 }
 
@@ -160,14 +150,14 @@ public class JeoTest {
         GeomBuilder gb = new GeomBuilder(4326);
 
         @SuppressWarnings("resource")
-        MemWorkspace mem = new MemWorkspace();
+        MemWorkspace mem = new MemWorkspace("");
         Schema schema = new SchemaBuilder(layer)
                 .field("geometry", Geometry.class)
                 .field("id", Integer.class)
                 .field("name", String.class)
                 .field("cost", Double.class).schema();
 
-        MemVector data;
+        MemVectorDataset data;
         try {
             data = mem.create(schema);
         } catch (UnsupportedOperationException e) {
@@ -181,15 +171,16 @@ public class JeoTest {
         Geometry g = gb.point(0, 0).toPoint();
         //g.setSRID(4326);
 
-        data.add(Features.create(null, data.schema(),
+
+        data.add(new ListFeature(data.schema(),
                 g, 1, "anvil",
                 10.99));
 
-        data.add(Features.create(null, data.schema(),
+        data.add(new ListFeature(data.schema(),
                 gb.points(10, 10, 20, 20).toLineString(),
                 2, "bomb", 11.99));
 
-        data.add(Features.create(null, data.schema(),
+        data.add(new ListFeature(data.schema(),
                 gb.point(100, 10).toPoint().buffer(10),
                 3, "dynamite", 12.99));
 

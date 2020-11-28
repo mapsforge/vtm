@@ -2,7 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Izumi Kawashima
  * Copyright 2017 Longri
- * Copyright 2017 devemux86
+ * Copyright 2017-2020 devemux86
  * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -23,14 +23,14 @@ package org.oscim.layers.marker;
 /**
  * The internal representation of a marker.
  */
-class InternalItem {
+public class InternalItem {
 
-    MarkerInterface item;
-    boolean visible;
-    boolean changes;
-    float x, y;
-    double px, py;
-    float dy;
+    public MarkerInterface item;
+    public boolean visible;
+    public boolean changes;
+    public float x, y;
+    public double px, py;
+    public float dy;
 
     @Override
     public String toString() {
@@ -43,15 +43,15 @@ class InternalItem {
      * It only adds a couple properties to InternalItem, and the semantics "InternalItem.Clustered"
      * are not bad.
      */
-    static class Clustered extends InternalItem {
+    public static class Clustered extends InternalItem {
         /**
          * If this is >0, this item will be displayed as a cluster circle, with size clusterSize+1.
          */
-        int clusterSize;
+        public int clusterSize;
 
         /**
          * If this is true, this item is hidden (because it's represented by another InternalItem acting as cluster.
          */
-        boolean clusteredOut;
+        public boolean clusteredOut;
     }
 }

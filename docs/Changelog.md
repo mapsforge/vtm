@@ -1,7 +1,23 @@
 # Changelog
 
-## New since 0.13.0
+## New since 0.14.0
 
+- Android: scoped storage example [#785](https://github.com/mapsforge/vtm/pull/785)
+- Mapsforge: map stream support [#784](https://github.com/mapsforge/vtm/pull/784)
+- Render theme from Android content providers [#783](https://github.com/mapsforge/vtm/pull/783)
+- Render theme xml pull parser [#786](https://github.com/mapsforge/vtm/pull/786)
+- Symbol scale option [#790](https://github.com/mapsforge/vtm/pull/790)
+  - `Parameters.SYMBOL_SCALING`
+- Many other minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.15.0)
+
+## Version 0.14.0 (2020-08-25)
+
+- Render themes: symbol styles [#769](https://github.com/mapsforge/vtm/pull/769)
+- More mutable itemized layer [#771](https://github.com/mapsforge/vtm/pull/771)
+- Marker renderer sort option
+  - `Parameters.MARKER_SORT`
+- Update vtm-jeo module [#770](https://github.com/mapsforge/vtm/pull/770)
 - Many other minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.14.0)
 
@@ -219,6 +235,8 @@
 - libGDX layer gestures [#151](https://github.com/mapsforge/vtm/issues/151)
 - Render theme area tessellation option [#37](https://github.com/mapsforge/vtm/issues/37)
 - Render theme resources optional location prefixes [#66](https://github.com/mapsforge/vtm/issues/66)
+- Render theme from input stream [#161](https://github.com/mapsforge/vtm/issues/161)
+- Render theme from Android assets [#162](https://github.com/mapsforge/vtm/issues/162)
 - Graphics API platform enhancements [#92](https://github.com/mapsforge/vtm/issues/92)
 - GeoPoint & BoundingBox improvements [#201](https://github.com/mapsforge/vtm/issues/201) [#200](https://github.com/mapsforge/vtm/issues/200)
 - vtm-jts module [#53](https://github.com/mapsforge/vtm/issues/53)

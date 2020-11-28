@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2017 nebular
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -22,12 +22,13 @@ import org.oscim.core.GeoPoint;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.marker.*;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
-import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
+import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ClusterMarkerLayerTest extends MarkerLayerTest {
@@ -41,9 +42,10 @@ public class ClusterMarkerLayerTest extends MarkerLayerTest {
             // Map events receiver
             mMap.layers().add(new MapEventsReceiver(mMap));
 
-            TileSource tileSource = DefaultSources.OPENSTREETMAP
+            UrlTileSource tileSource = DefaultSources.OPENSTREETMAP
                     .httpFactory(new OkHttpEngine.OkHttpFactory())
                     .build();
+            tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
             mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
             mMap.setMapPosition(53.08, 8.83, 1 << 15);
@@ -67,15 +69,15 @@ public class ClusterMarkerLayerTest extends MarkerLayerTest {
                     };
                 }
             };
-            mMarkerLayer = new ItemizedLayer<>(
+            mMarkerLayer = new ItemizedLayer(
                     mMap,
-                    new ArrayList<MarkerItem>(),
+                    new ArrayList<MarkerInterface>(),
                     markerRendererFactory,
                     this);
             mMap.layers().add(mMarkerLayer);
 
             // Create some markers spaced STEP degrees
-            List<MarkerItem> pts = new ArrayList<>();
+            List<MarkerInterface> pts = new ArrayList<>();
             GeoPoint center = mMap.getMapPosition().getGeoPoint();
             for (int x = -COUNT; x < COUNT; x++) {
                 for (int y = -COUNT; y < COUNT; y++) {

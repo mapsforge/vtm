@@ -3,6 +3,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2019 devemux86
  * Copyright 2017 Longri
+ * Copyright 2020 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -118,6 +119,7 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
         public Bitmap bitmap;
         public TextureRegion texture;
         public int hash;
+        public String src;
 
         public int symbolWidth;
         public int symbolHeight;
@@ -131,6 +133,27 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
         public boolean rotate;
 
         public SymbolBuilder() {
+        }
+
+        public T from(SymbolBuilder<?> other) {
+            this.cat = other.cat;
+
+            this.bitmap = other.bitmap;
+            this.texture = other.texture;
+            this.hash = other.hash;
+            this.src = other.src;
+
+            this.symbolWidth = other.symbolWidth;
+            this.symbolHeight = other.symbolHeight;
+            this.symbolPercent = other.symbolPercent;
+
+            this.billboard = other.billboard;
+            this.repeat = other.repeat;
+            this.repeatStart = other.repeatStart;
+            this.repeatGap = other.repeatGap;
+            this.rotate = other.rotate;
+
+            return self();
         }
 
         public T set(SymbolStyle symbol) {
@@ -168,6 +191,11 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
 
         public T hash(int hash) {
             this.hash = hash;
+            return self();
+        }
+
+        public T src(String src) {
+            this.src = src;
             return self();
         }
 
@@ -217,6 +245,7 @@ public final class SymbolStyle extends RenderStyle<SymbolStyle> {
             bitmap = null;
             texture = null;
             hash = 0;
+            src = null;
 
             symbolWidth = 0;
             symbolHeight = 0;

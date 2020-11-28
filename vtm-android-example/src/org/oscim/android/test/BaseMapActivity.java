@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2020 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -20,8 +20,8 @@ package org.oscim.android.test;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import org.oscim.android.cache.TileCache;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import org.oscim.core.MapPosition;
 import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
@@ -29,19 +29,16 @@ import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.io.File;
 
 public class BaseMapActivity extends MapActivity {
-    static final Logger log = LoggerFactory.getLogger(BaseMapActivity.class);
 
     static final boolean USE_CACHE = false;
 
     VectorTileLayer mBaseLayer;
     TileSource mTileSource;
     TileGridLayer mGridLayer;
-
-    private TileCache mCache;
 
     public BaseMapActivity(int contentView) {
         super(contentView);
@@ -54,15 +51,19 @@ public class BaseMapActivity extends MapActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (USE_CACHE) {
+            // Cache the tiles into file system
+            File cacheDirectory = new File(getExternalCacheDir(), "tiles");
+            int cacheSize = 10 * 1024 * 1024; // 10 MB
+            Cache cache = new Cache(cacheDirectory, cacheSize);
+            builder.cache(cache);
+        }
+
         mTileSource = OSciMap4TileSource.builder()
-                .httpFactory(new OkHttpEngine.OkHttpFactory())
+                .httpFactory(new OkHttpEngine.OkHttpFactory(builder))
                 .build();
 
-        if (USE_CACHE) {
-            mCache = new TileCache(this, null, "tile.db");
-            mCache.setCacheSize(512 * (1 << 10));
-            mTileSource.setCache(mCache);
-        }
         mBaseLayer = mMap.setBaseMap(mTileSource);
 
         /* set initial position on first run */
@@ -70,14 +71,6 @@ public class BaseMapActivity extends MapActivity {
         mMap.getMapPosition(pos);
         if (pos.x == 0.5 && pos.y == 0.5)
             mMap.setMapPosition(53.08, 8.83, Math.pow(2, 16));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (mCache != null)
-            mCache.dispose();
     }
 
     @Override

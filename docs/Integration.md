@@ -10,6 +10,7 @@ Current version is [![Maven Central](https://img.shields.io/maven-central/v/org.
 ```groovy
 implementation 'org.mapsforge:vtm:[CURRENT-VERSION]'
 implementation 'org.mapsforge:vtm-themes:[CURRENT-VERSION]'
+implementation 'net.sf.kxml:kxml2:2.3.0'
 implementation 'org.slf4j:slf4j-api:1.7.28'
 ```
 
@@ -56,7 +57,6 @@ implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-linux'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-osx'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-windows'
-implementation 'org.mapsforge:vtm-desktop-lwjgl:[CURRENT-VERSION]'
 implementation 'com.badlogicgames.gdx:gdx:1.9.10'
 implementation 'com.badlogicgames.gdx:gdx-platform:1.9.10:natives-desktop'
 implementation 'com.github.blackears:svgSalamander:v1.1.1'
@@ -64,6 +64,7 @@ implementation 'com.github.blackears:svgSalamander:v1.1.1'
 
 ### Desktop (LWJGL)
 ```groovy
+implementation 'org.mapsforge:vtm-desktop-lwjgl:[CURRENT-VERSION]'
 implementation 'com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10'
 implementation 'org.lwjgl.lwjgl:lwjgl:2.9.3'
 implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-linux'
@@ -73,6 +74,7 @@ implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-windows'
 
 ### Desktop (LWJGL 3)
 ```groovy
+implementation 'org.mapsforge:vtm-desktop-lwjgl3:[CURRENT-VERSION]'
 implementation 'com.badlogicgames.gdx:gdx-backend-lwjgl3:1.9.10'
 implementation 'org.lwjgl:lwjgl:3.2.3'
 implementation 'org.lwjgl:lwjgl:3.2.3:natives-linux'
@@ -129,29 +131,15 @@ implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
 
 ### jeo (indoor maps)
 
-Add _first_ the Boundless repository:
 ```groovy
 repositories {
-    maven { url 'https://repo.boundlessgeo.com/main/' }
-    jcenter()
-    ...
+    maven { url 'https://jitpack.io' }
 }
-```
 
-```groovy
 implementation 'org.mapsforge:vtm-jeo:[CURRENT-VERSION]'
-implementation('org.jeo:jeo:0-SNAPSHOT') {
+implementation('com.github.jeo.jeo:jeo-carto:master-SNAPSHOT') {
     exclude group: 'org.slf4j', module: 'slf4j-jdk14'
 }
-implementation('org.jeo:jeo-carto:0-SNAPSHOT') {
-    exclude group: 'org.slf4j', module: 'slf4j-jdk14'
-}
-implementation('org.jeo:jeo-render:0-SNAPSHOT') {
-    exclude group: 'org.slf4j', module: 'slf4j-jdk14'
-}
-implementation 'org.osgeo:proj4j:0.1.0:jeo'
-implementation 'com.metaweb:lessen:1.0'
-implementation 'com.vividsolutions:jts:1.13'
 ```
 
 ## Snapshots

@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2018 Izumi Kawashima
- * Copyright 2017-2018 devemux86
+ * Copyright 2017-2020 devemux86
  * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -23,13 +23,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtGraphics;
 import com.badlogic.gdx.graphics.glutils.GLVersion;
-
-import org.oscim.backend.AssetAdapter;
-import org.oscim.backend.CanvasAdapter;
-import org.oscim.backend.DateTimeAdapter;
-import org.oscim.backend.GL;
-import org.oscim.backend.GL30;
-import org.oscim.backend.GLAdapter;
+import org.oscim.backend.*;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
 import org.oscim.gdx.GdxAssets;
@@ -53,6 +47,8 @@ import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collections;
 
 class GwtMap extends GdxMap {
     static final Logger log = LoggerFactory.getLogger(GwtMap.class);
@@ -107,9 +103,10 @@ class GwtMap extends GdxMap {
 
             if ("toner".equals(mapName))
                 ts = DefaultSources.STAMEN_TONER.build();
-            else if ("osm".equals(mapName))
+            else if ("osm".equals(mapName)) {
                 ts = DefaultSources.OPENSTREETMAP.build();
-            else if ("watercolor".equals(mapName))
+                ts.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-web-app"));
+            } else if ("watercolor".equals(mapName))
                 ts = DefaultSources.STAMEN_WATERCOLOR.build();
             else if ("ne-landcover".equals(mapName))
                 ts = DefaultSources.NE_LANDCOVER.build();

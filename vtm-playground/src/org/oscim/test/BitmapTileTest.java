@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 devemux86
+ * Copyright 2016-2020 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -20,7 +20,10 @@ import com.badlogic.gdx.Input;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.renderer.MapRenderer;
+import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
+
+import java.util.Collections;
 
 public class BitmapTileTest extends GdxMapApp {
 
@@ -33,7 +36,9 @@ public class BitmapTileTest extends GdxMapApp {
             mMap.layers().remove(mShaded);
             mShaded = null;
             mMap.layers().remove(mLayer);
-            mLayer = new BitmapTileLayer(mMap, DefaultSources.OPENSTREETMAP.build());
+            UrlTileSource tileSource = DefaultSources.OPENSTREETMAP.build();
+            tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
+            mLayer = new BitmapTileLayer(mMap, tileSource);
             mMap.layers().add(mLayer);
             mMap.clearMap();
             return true;
@@ -64,7 +69,9 @@ public class BitmapTileTest extends GdxMapApp {
     public void createLayers() {
         MapRenderer.setBackgroundColor(0xff888888);
 
-        mLayer = new BitmapTileLayer(mMap, DefaultSources.OPENSTREETMAP.build());
+        UrlTileSource tileSource = DefaultSources.OPENSTREETMAP.build();
+        tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
+        mLayer = new BitmapTileLayer(mMap, tileSource);
         mMap.layers().add(mLayer);
 
     }

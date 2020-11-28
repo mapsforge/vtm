@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2020 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -22,18 +22,21 @@ import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.layers.vector.VectorLayer;
 import org.oscim.layers.vector.geometries.PointDrawable;
 import org.oscim.layers.vector.geometries.Style;
-import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
+import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.utils.ColorUtil;
+
+import java.util.Collections;
 
 public class VectorLayerTest extends GdxMapApp {
 
     @Override
     public void createLayers() {
-        TileSource tileSource = DefaultSources.OPENSTREETMAP
+        UrlTileSource tileSource = DefaultSources.OPENSTREETMAP
                 .httpFactory(new OkHttpEngine.OkHttpFactory())
                 .build();
+        tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
         mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
         mMap.setMapPosition(0, 0, 1 << 2);

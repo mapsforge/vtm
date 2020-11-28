@@ -16,11 +16,11 @@ dependencies {
     implementation project(':vtm-gdx')
     implementation project(':vtm-gdx-poi3d')
 
-    implementation 'org.mapsforge:mapsforge-poi-android:0.13.0'
-    implementation 'org.mapsforge:sqlite-android:0.13.0:natives-armeabi-v7a'
-    implementation 'org.mapsforge:sqlite-android:0.13.0:natives-arm64-v8a'
-    implementation 'org.mapsforge:sqlite-android:0.13.0:natives-x86'
-    implementation 'org.mapsforge:sqlite-android:0.13.0:natives-x86_64'
+    implementation 'org.mapsforge:mapsforge-poi-android:0.14.0'
+    implementation 'org.mapsforge:sqlite-android:0.14.0:natives-armeabi-v7a'
+    implementation 'org.mapsforge:sqlite-android:0.14.0:natives-arm64-v8a'
+    implementation 'org.mapsforge:sqlite-android:0.14.0:natives-x86'
+    implementation 'org.mapsforge:sqlite-android:0.14.0:natives-x86_64'
 }
 
 android {

@@ -23,19 +23,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import org.oscim.android.canvas.AndroidGraphics;
 import org.oscim.core.BoundingBox;
 import org.oscim.core.GeoPoint;
+import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 import org.oscim.map.Map;
-import org.osmdroid.location.FlickrPOIProvider;
-import org.osmdroid.location.FourSquareProvider;
-import org.osmdroid.location.GeoNamesPOIProvider;
-import org.osmdroid.location.NominatimPOIProvider;
-import org.osmdroid.location.POI;
-import org.osmdroid.location.PicasaPOIProvider;
+import org.osmdroid.location.*;
 import org.osmdroid.overlays.DefaultInfoWindow;
 import org.osmdroid.overlays.ExtendedMarkerItem;
 import org.osmdroid.overlays.ItemizedOverlayWithBubble;
@@ -45,7 +40,7 @@ import java.util.List;
 
 public class POISearch {
     private final ArrayList<POI> mPOIs;
-    ItemizedOverlayWithBubble<ExtendedMarkerItem> poiMarkers;
+    ItemizedOverlayWithBubble poiMarkers;
     MarkerSymbol[] mMarkers;
 
     private static final int MDEFAULT = 0;
@@ -57,9 +52,9 @@ public class POISearch {
     POISearch() {
         mPOIs = new ArrayList<POI>();
         //POI markers:
-        final ArrayList<ExtendedMarkerItem> poiItems = new ArrayList<ExtendedMarkerItem>();
+        final ArrayList<MarkerInterface> poiItems = new ArrayList<>();
 
-        poiMarkers = new ItemizedOverlayWithBubble<ExtendedMarkerItem>(App.map,
+        poiMarkers = new ItemizedOverlayWithBubble(App.map,
                 App.activity,
                 null,
                 poiItems,

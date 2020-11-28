@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2017 Longri
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -23,17 +23,19 @@ import org.oscim.backend.canvas.Paint;
 import org.oscim.core.GeoPoint;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.marker.ItemizedLayer;
+import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.renderer.atlas.TextureAtlas;
 import org.oscim.renderer.atlas.TextureRegion;
-import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
+import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.utils.TextureAtlasUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -46,9 +48,10 @@ public class AtlasMultiTextureTest extends MarkerLayerTest {
         // Map events receiver
         mMap.layers().add(new MapEventsReceiver(mMap));
 
-        TileSource tileSource = DefaultSources.OPENSTREETMAP
+        UrlTileSource tileSource = DefaultSources.OPENSTREETMAP
                 .httpFactory(new OkHttpEngine.OkHttpFactory())
                 .build();
+        tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
         mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
         mMap.setMapPosition(0, 0, 1 << 2);
@@ -64,7 +67,7 @@ public class AtlasMultiTextureTest extends MarkerLayerTest {
         paint.setTextSize(12);
         paint.setStrokeWidth(2);
         paint.setColor(Color.BLACK);
-        List<MarkerItem> pts = new ArrayList<>();
+        List<MarkerInterface> pts = new ArrayList<>();
         for (double lat = -90; lat <= 90; lat += 5) {
             for (double lon = -180; lon <= 180; lon += 5) {
                 String title = lat + "/" + lon;
@@ -84,29 +87,32 @@ public class AtlasMultiTextureTest extends MarkerLayerTest {
         // With iOS we must flip the Y-Axis
         TextureAtlasUtils.createTextureRegions(inputMap, regionsMap, atlasList, true, false);
 
-        mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), (MarkerSymbol) null, this);
+        mMarkerLayer = new ItemizedLayer(mMap, new ArrayList<MarkerInterface>(), (MarkerSymbol) null, this);
         mMap.layers().add(mMarkerLayer);
 
         mMarkerLayer.addItems(pts);
 
         // set all markers
-        for (MarkerItem item : pts) {
-            MarkerSymbol markerSymbol = new MarkerSymbol(regionsMap.get(item.getTitle()), HotspotPlace.BOTTOM_CENTER);
-            item.setMarker(markerSymbol);
+        for (MarkerInterface item : pts) {
+            MarkerItem markerItem = (MarkerItem) item;
+            MarkerSymbol markerSymbol = new MarkerSymbol(regionsMap.get(markerItem.getTitle()), HotspotPlace.BOTTOM_CENTER);
+            markerItem.setMarker(markerSymbol);
         }
 
         System.out.println("Atlas count: " + atlasList.size());
     }
 
     @Override
-    public boolean onItemSingleTapUp(int index, MarkerItem item) {
-        System.out.println("Marker tap " + item.getTitle());
+    public boolean onItemSingleTapUp(int index, MarkerInterface item) {
+        MarkerItem markerItem = (MarkerItem) item;
+        System.out.println("Marker tap " + markerItem.getTitle());
         return true;
     }
 
     @Override
-    public boolean onItemLongPress(int index, MarkerItem item) {
-        System.out.println("Marker long press " + item.getTitle());
+    public boolean onItemLongPress(int index, MarkerInterface item) {
+        MarkerItem markerItem = (MarkerItem) item;
+        System.out.println("Marker long press " + markerItem.getTitle());
         return true;
     }
 

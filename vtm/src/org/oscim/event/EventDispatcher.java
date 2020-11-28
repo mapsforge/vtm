@@ -66,4 +66,11 @@ public abstract class EventDispatcher<E extends EventListener, T> {
             tell(l.data, event, data);
         }
     }
+
+    /**
+     * Remove all listeners.
+     */
+    public void clear() {
+        mListeners = null;
+    }
 }

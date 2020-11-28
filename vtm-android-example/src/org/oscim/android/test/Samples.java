@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2016 mar-v-in
  * Copyright 2016 Mathieu de Brito
  * Copyright 2017-2018 Longri
@@ -99,12 +99,6 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(GdxActivity.class));
 
         linearLayout.addView(createLabel("Features"));
-        linearLayout.addView(createButton(null, "GraphHopper Routing", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/graphhopper/graphhopper/tree/master/android")));
-            }
-        }));
         linearLayout.addView(createButton(LocationActivity.class));
         linearLayout.addView(createButton(LocationTextureActivity.class));
         linearLayout.addView(createButton(PoiSearchActivity.class));

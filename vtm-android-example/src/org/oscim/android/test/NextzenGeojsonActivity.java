@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 devemux86
+ * Copyright 2018-2020 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -15,8 +15,8 @@
 package org.oscim.android.test;
 
 import android.os.Bundle;
-
-import org.oscim.android.cache.TileCache;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
@@ -25,41 +25,35 @@ import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.geojson.NextzenGeojsonTileSource;
 
+import java.io.File;
+
 public class NextzenGeojsonActivity extends MapActivity {
 
     private static final boolean USE_CACHE = false;
-
-    private TileCache mCache;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (USE_CACHE) {
+            // Cache the tiles into file system
+            File cacheDirectory = new File(getExternalCacheDir(), "tiles");
+            int cacheSize = 10 * 1024 * 1024; // 10 MB
+            Cache cache = new Cache(cacheDirectory, cacheSize);
+            builder.cache(cache);
+        }
+
         UrlTileSource tileSource = NextzenGeojsonTileSource.builder()
                 .apiKey("xxxxxxx") // Put a proper API key
-                .httpFactory(new OkHttpEngine.OkHttpFactory())
+                .httpFactory(new OkHttpEngine.OkHttpFactory(builder))
                 //.locale("en")
                 .build();
-
-        if (USE_CACHE) {
-            // Cache the tiles into a local SQLite database
-            mCache = new TileCache(this, null, "tile.db");
-            mCache.setCacheSize(512 * (1 << 10));
-            tileSource.setCache(mCache);
-        }
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);
         mMap.setTheme(VtmThemes.MAPZEN);
 
         mMap.layers().add(new BuildingLayer(mMap, l));
         mMap.layers().add(new LabelLayer(mMap, l));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (mCache != null)
-            mCache.dispose();
     }
 }

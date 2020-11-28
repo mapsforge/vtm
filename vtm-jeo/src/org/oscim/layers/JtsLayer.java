@@ -21,13 +21,8 @@ package org.oscim.layers;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-
-import org.jeo.geom.CoordinatePath;
-import org.oscim.core.Box;
-import org.oscim.core.GeometryBuffer;
-import org.oscim.core.MapPosition;
-import org.oscim.core.MercatorProjection;
-import org.oscim.core.Tile;
+import io.jeo.geom.CoordinatePath;
+import org.oscim.core.*;
 import org.oscim.layers.vector.AbstractVectorLayer;
 import org.oscim.map.Map;
 import org.oscim.renderer.bucket.LineBucket;

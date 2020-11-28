@@ -6,7 +6,7 @@
  *
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Stephan Leuschner
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -34,27 +34,26 @@ import org.oscim.map.Map;
  * gets checked for onTap first. This class is generic, because you then you get
  * your custom item-class passed back in onTap(). << TODO
  */
-public abstract class MarkerLayer<Item extends MarkerInterface> extends Layer {
+public abstract class MarkerLayer extends Layer {
 
     protected final MarkerRenderer mMarkerRenderer;
-    protected Item mFocusedItem;
+    protected MarkerInterface mFocusedItem;
 
     /**
      * Method by which subclasses create the actual Items. This will only be
      * called from populate() we'll cache them for later use.
      */
-    protected abstract Item createItem(int i);
+    protected abstract MarkerInterface createItem(int i);
 
     /**
      * The number of items in this overlay.
      */
     public abstract int size();
 
-    @SuppressWarnings("unchecked")
     public MarkerLayer(Map map, MarkerSymbol defaultSymbol) {
         super(map);
 
-        mMarkerRenderer = new MarkerRenderer((MarkerLayer<MarkerInterface>) this, defaultSymbol);
+        mMarkerRenderer = new MarkerRenderer(this, defaultSymbol);
         mRenderer = mMarkerRenderer;
     }
 
@@ -85,7 +84,7 @@ public abstract class MarkerLayer<Item extends MarkerInterface> extends Layer {
      *
      * @param item
      */
-    public synchronized void setFocus(Item item) {
+    public synchronized void setFocus(MarkerInterface item) {
         mFocusedItem = item;
     }
 
@@ -93,7 +92,7 @@ public abstract class MarkerLayer<Item extends MarkerInterface> extends Layer {
      * @return the currently-focused item, or null if no item is currently
      * focused.
      */
-    public synchronized Item getFocus() {
+    public synchronized MarkerInterface getFocus() {
         return mFocusedItem;
     }
 

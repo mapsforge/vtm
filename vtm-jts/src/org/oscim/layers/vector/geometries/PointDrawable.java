@@ -26,7 +26,7 @@ public class PointDrawable extends JtsDrawable {
     }
 
     public PointDrawable(GeoPoint point, Style style) {
-        this(point.getLongitude(), point.getLatitude(), style);
+        this(point.getLatitude(), point.getLongitude(), style);
     }
 
     public PointDrawable(double lat, double lon, Style style) {

@@ -98,7 +98,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
      * @param defaultSymbol The default symbol
      * @param style         The desired style, or NULL to disable clustering
      */
-    public ClusterMarkerRenderer(MarkerLayer<MarkerInterface> markerLayer, MarkerSymbol defaultSymbol, ClusterMarkerRenderer.ClusterStyle style) {
+    public ClusterMarkerRenderer(MarkerLayer markerLayer, MarkerSymbol defaultSymbol, ClusterMarkerRenderer.ClusterStyle style) {
         super(markerLayer, defaultSymbol);
 
         mClusteringEnabled = style != null;
@@ -141,7 +141,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
         /* the grid slot size in px. increase to group more aggressively. currently set to marker size */
         final int GRIDSIZE = ScreenUtils.getPixels(MAP_GRID_SIZE_DP);
 
-		/* the factor to map into Grid Coordinates (discrete squares of GRIDSIZE x GRIDSIZE) */
+        /* the factor to map into Grid Coordinates (discrete squares of GRIDSIZE x GRIDSIZE) */
         final double factor = (scale / GRIDSIZE);
 
         InternalItem.Clustered[] tmp = new InternalItem.Clustered[size];
@@ -154,7 +154,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
 
             it.item = mMarkerLayer.createItem(i);
 
-			/* pre-project points */
+            /* pre-project points */
             MercatorProjection.project(it.item.getPoint(), mMapPoint);
             it.px = mMapPoint.x;
             it.py = mMapPoint.y;
@@ -260,7 +260,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
         float cos = (float) Math.cos(angle);
         float sin = (float) Math.sin(angle);
 
-		/* check visibility */
+        /* check visibility */
         for (InternalItem itm : mItems) {
             InternalItem.Clustered it = (InternalItem.Clustered) itm;
 
@@ -299,7 +299,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
 
         //log.debug(numVisible + " " + changedVisible + " " + changesInvisible);
 
-		/* only update when zoomlevel changed, new items are visible
+        /* only update when zoomlevel changed, new items are visible
          * or more than 10 of the current items became invisible */
         //if ((numVisible == 0) && (changedVisible == 0 && changesInvisible < 10))
         //	return;

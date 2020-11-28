@@ -52,6 +52,11 @@
     <style-line id="secondary" stroke="#fdbf6f" width="1.4" />
     <style-line id="tertiary" stroke="#ffff90" width="1.15" />
 
+    <!--###### SYMBOL styles ######-->
+
+    <!-- oneway -->
+    <style-symbol id="oneway" repeat="true" src="assets:symbols/oneway.svg" />
+
 
     <!--###### ASSIGNMENT ######-->
 
@@ -959,7 +964,7 @@
             <m k="area" v="~|false|no">
                 <m k="highway">
                     <m k="oneway" v="yes|true" zoom-min="16">
-                        <symbol repeat="true" src="assets:symbols/oneway.svg" />
+                        <symbol use="oneway" />
                     </m>
                 </m>
             </m>

@@ -16,11 +16,9 @@
  */
 package org.oscim.theme.carto;
 
-import org.jeo.vector.BasicFeature;
 import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 
-import java.util.List;
 import java.util.Map;
 
 import static java.lang.System.out;
@@ -64,27 +62,10 @@ class MatcherFeature extends BasicFeature {
         return null;
     }
 
-    @Override
-    public List<Object> list() {
-        out.println("EEEK list()");
-        return null;
-    }
 
     @Override
     public Map<String, Object> map() {
         out.println("EEEK map()");
-        return null;
-    }
-
-    @Override
-    public Object get(int arg0) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public BasicFeature set(int arg0, Object arg1) {
-        // TODO Auto-generated method stub
         return null;
     }
 }

@@ -129,6 +129,9 @@
     <style-line fade="15" id="building" stroke="#eeb7b6b3" use="fix" />
     <style-area fade="15" fill="#f2f0eb" id="building" />
 
+    <!-- oneway -->
+    <style-symbol id="oneway" repeat="true" src="assets:symbols/oneway.svg" />
+
     <m closed="yes" e="way" k="layer" v="water">
         <area mesh="true" use="water" />
     </m>
@@ -1038,7 +1041,7 @@
             <m k="area" v="~|false|no">
                 <m k="kind_detail">
                     <m k="oneway" v="yes|true" zoom-min="16">
-                        <symbol repeat="true" src="assets:symbols/oneway.svg" />
+                        <symbol use="oneway" />
                     </m>
                 </m>
             </m>

@@ -15,6 +15,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Samples"
@@ -59,12 +60,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".MapsforgeActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".MapsforgeActivity$MapFilePicker"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".MapsforgeActivity$ThemeFilePicker"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".MapsforgeS3DBActivity"

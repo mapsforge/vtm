@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -30,8 +30,11 @@ import org.oscim.map.Viewport;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
+import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.tiling.source.overpass.OverpassTileSource;
+
+import java.util.Collections;
 
 /**
  * Use Overpass API data for vector layer.
@@ -51,7 +54,7 @@ public class OverpassTest extends GdxMapApp {
                 .build();
         VectorTileLayer l = map.setBaseMap(tileSource);
 
-        TileSource bitmapTileSource = DefaultSources.OPENSTREETMAP
+        UrlTileSource bitmapTileSource = DefaultSources.OPENSTREETMAP
                 .httpFactory(new OkHttpEngine.OkHttpFactory())
                 .zoomMax(15)
                 .fadeSteps(new BitmapTileLayer.FadeStep[]{
@@ -59,6 +62,7 @@ public class OverpassTest extends GdxMapApp {
                         new BitmapTileLayer.FadeStep(16, Viewport.MAX_ZOOM_LEVEL, 0f, 0f)
                 })
                 .build();
+        bitmapTileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
         mMap.layers().add(new BitmapTileLayer(mMap, bitmapTileSource));
 
         BuildingLayer.RAW_DATA = true;

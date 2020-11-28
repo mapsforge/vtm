@@ -118,6 +118,11 @@
     <style-line cap="butt" id="water:outline" stroke="#647b8c" width="1.0" />
     <style-line cap="butt" id="water" stroke="#cca4bbcc" width="0.6" />
 
+    <!--###### SYMBOL styles ######-->
+
+    <!-- oneway -->
+    <style-symbol id="oneway" repeat="true" src="assets:symbols/oneway.svg" />
+
 
     <!--###### ASSIGNMENT ######-->
 
@@ -1080,7 +1085,7 @@
             <m k="area" v="~|false|no">
                 <m k="highway">
                     <m k="oneway" v="yes|true" zoom-min="16">
-                        <symbol repeat="true" src="assets:symbols/oneway.svg" />
+                        <symbol use="oneway" />
                     </m>
                 </m>
             </m>

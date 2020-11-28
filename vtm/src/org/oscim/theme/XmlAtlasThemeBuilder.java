@@ -1,6 +1,6 @@
 /*
  * Copyright 2017 Longri
- * Copyright 2017-2018 devemux86
+ * Copyright 2017-2020 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -17,7 +17,6 @@ package org.oscim.theme;
 
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.Platform;
-import org.oscim.backend.XMLReaderAdapter;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.renderer.atlas.TextureAtlas;
 import org.oscim.renderer.atlas.TextureRegion;
@@ -26,8 +25,11 @@ import org.oscim.theme.rule.Rule;
 import org.oscim.theme.styles.RenderStyle;
 import org.oscim.theme.styles.SymbolStyle;
 import org.oscim.theme.styles.SymbolStyle.SymbolBuilder;
+import org.oscim.utils.IOUtils;
 import org.oscim.utils.TextureAtlasUtils;
+import org.xmlpull.v1.XmlPullParser;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,20 +53,23 @@ public class XmlAtlasThemeBuilder extends XmlThemeBuilder {
      * @throws ThemeException if an error occurs while parsing the render theme XML.
      */
     public static IRenderTheme read(ThemeFile theme, ThemeCallback themeCallback) throws ThemeException {
-        Map<Object, TextureRegion> outputMap = new HashMap<>();
-        List<TextureAtlas> atlasList = new ArrayList<>();
-        XmlAtlasThemeBuilder renderThemeHandler = new XmlAtlasThemeBuilder(theme, themeCallback, outputMap, atlasList);
-
+        InputStream inputStream = null;
         try {
-            new XMLReaderAdapter().parse(renderThemeHandler, theme.getRenderThemeAsStream());
+            XmlPullParser pullParser = getXmlPullParserFactory().newPullParser();
+            Map<Object, TextureRegion> outputMap = new HashMap<>();
+            List<TextureAtlas> atlasList = new ArrayList<>();
+            XmlAtlasThemeBuilder renderThemeHandler = new XmlAtlasThemeBuilder(theme, pullParser, themeCallback, outputMap, atlasList);
+            inputStream = theme.getRenderThemeAsStream();
+            pullParser.setInput(inputStream, null);
+            renderThemeHandler.processRenderTheme();
+            TextureAtlasUtils.createTextureRegions(renderThemeHandler.bitmapMap, outputMap, atlasList,
+                    true, CanvasAdapter.platform == Platform.IOS);
+            return replaceThemeSymbols(renderThemeHandler.mRenderTheme, outputMap);
         } catch (Exception e) {
             throw new ThemeException(e.getMessage());
+        } finally {
+            IOUtils.closeQuietly(inputStream);
         }
-
-        TextureAtlasUtils.createTextureRegions(renderThemeHandler.bitmapMap, outputMap, atlasList,
-                true, CanvasAdapter.platform == Platform.IOS);
-
-        return replaceThemeSymbols(renderThemeHandler.mRenderTheme, outputMap);
     }
 
     private static IRenderTheme replaceThemeSymbols(RenderTheme renderTheme, Map<Object, TextureRegion> regionMap) {
@@ -98,14 +103,14 @@ public class XmlAtlasThemeBuilder extends XmlThemeBuilder {
 
     private final Map<Object, Bitmap> bitmapMap = new HashMap<>();
 
-    public XmlAtlasThemeBuilder(ThemeFile theme,
+    public XmlAtlasThemeBuilder(ThemeFile theme, XmlPullParser pullParser,
                                 Map<Object, TextureRegion> regionMap, List<TextureAtlas> atlasList) {
-        this(theme, null, regionMap, atlasList);
+        this(theme, pullParser, null, regionMap, atlasList);
     }
 
-    public XmlAtlasThemeBuilder(ThemeFile theme, ThemeCallback themeCallback,
+    public XmlAtlasThemeBuilder(ThemeFile theme, XmlPullParser pullParser, ThemeCallback themeCallback,
                                 Map<Object, TextureRegion> regionMap, List<TextureAtlas> atlasList) {
-        super(theme, themeCallback);
+        super(theme, pullParser, themeCallback);
         this.regionMap = regionMap;
         this.atlasList = atlasList;
     }

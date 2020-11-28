@@ -24,10 +24,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import org.oscim.android.canvas.AndroidGraphics;
 import org.oscim.core.GeoPoint;
 import org.oscim.layers.PathLayer;
+import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 import org.osmdroid.location.GeocoderNominatim;
@@ -48,7 +48,7 @@ public class RouteSearch {
 
     private final PathLayer mRouteOverlay;
     //private final ItemizedOverlayWithBubble<ExtendedOverlayItem> mRouteMarkers;
-    private final ItemizedOverlayWithBubble<ExtendedMarkerItem> mItineraryMarkers;
+    private final ItemizedOverlayWithBubble mItineraryMarkers;
 
     private final RouteBar mRouteBar;
 
@@ -63,9 +63,9 @@ public class RouteSearch {
         mViaPoints = new ArrayList<GeoPoint>();
 
         // Itinerary markers:
-        ArrayList<ExtendedMarkerItem> waypointsItems = new ArrayList<ExtendedMarkerItem>();
+        ArrayList<MarkerInterface> waypointsItems = new ArrayList<>();
 
-        mItineraryMarkers = new ItemizedOverlayWithBubble<ExtendedMarkerItem>(App.map,
+        mItineraryMarkers = new ItemizedOverlayWithBubble(App.map,
                 App.activity,
                 null,
                 waypointsItems,

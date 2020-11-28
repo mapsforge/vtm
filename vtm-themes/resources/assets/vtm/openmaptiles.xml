@@ -162,6 +162,11 @@
     <!-- <style-line id="building" stroke="#d0cec8" width="1.0" fix="true" cap="butt" fade="15"/> -->
     <style-line fade="15" id="building" stroke="#eeb7b6b3" use="fix" />
 
+    <!--###### SYMBOL styles ######-->
+
+    <!-- oneway -->
+    <style-symbol id="oneway" repeat="true" src="assets:symbols/oneway.svg" />
+
 
     <!--###### ASSIGNMENT ######-->
 
@@ -332,7 +337,7 @@
 
         <m k="oneway" v="1" zoom-min="16">
             <m k="class" v="motorway|trunk|primary|secondary|tertiary|minor">
-                <symbol repeat="true" src="assets:symbols/oneway.svg" />
+                <symbol use="oneway" />
             </m>
         </m>
     </m>

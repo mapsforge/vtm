@@ -19,16 +19,11 @@ package org.oscim.layers;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
-
-import org.jeo.geom.Geom;
-import org.jeo.map.CartoCSS;
-import org.jeo.map.RGB;
-import org.jeo.map.Rule;
-import org.jeo.map.RuleList;
-import org.jeo.map.Style;
-import org.jeo.vector.Feature;
-import org.jeo.vector.VectorDataset;
-import org.jeo.vector.VectorQuery;
+import io.jeo.geom.Geom;
+import io.jeo.map.*;
+import io.jeo.vector.Feature;
+import io.jeo.vector.VectorDataset;
+import io.jeo.vector.VectorQuery;
 import org.oscim.jeo.JeoUtils;
 import org.oscim.map.Map;
 import org.oscim.renderer.bucket.LineBucket;
@@ -77,7 +72,7 @@ public class JeoVectorLayer extends JtsLayer {
             VectorQuery q = new VectorQuery().bounds(b);
             if (dbg)
                 log.debug("query {}", b);
-            for (Feature f : mDataset.cursor(q)) {
+            for (Feature f : mDataset.read(q)) {
                 if (dbg)
                     log.debug("feature {}", f);
 

@@ -1,6 +1,6 @@
 /*
  * Copyright 2012 Hannes Janetzek
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -112,7 +112,7 @@ public class MapView extends GLSurfaceView {
         DateTimeAdapter.init(new DateTime());
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-        CanvasAdapter.dpi = (int) (metrics.scaledDensity * CanvasAdapter.DEFAULT_DPI);
+        CanvasAdapter.dpi = (int) (metrics.density * CanvasAdapter.DEFAULT_DPI);
         if (!Parameters.CUSTOM_TILE_SIZE)
             Tile.SIZE = Tile.calculateTileSize();
 

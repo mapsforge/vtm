@@ -97,7 +97,7 @@ public class ReverseGeocodeActivity extends MapsforgeActivity {
                 int tileYMax = MercatorProjection.pixelYToTileY(pixelY + touchRadius, (byte) mMap.getMapPosition().getZoomLevel());
                 Tile upperLeft = new Tile(tileXMin, tileYMin, (byte) mMap.getMapPosition().getZoomLevel());
                 Tile lowerRight = new Tile(tileXMax, tileYMax, (byte) mMap.getMapPosition().getZoomLevel());
-                MapReadResult mapReadResult = ((MapDatabase) ((OverzoomTileDataSource) mTileSource.getDataSource()).getDataSource()).readLabels(upperLeft, lowerRight);
+                MapReadResult mapReadResult = ((MapDatabase) ((OverzoomTileDataSource) mTileLayer.getTileSource().getDataSource()).getDataSource()).readLabels(upperLeft, lowerRight);
 
                 StringBuilder sb = new StringBuilder();
 
