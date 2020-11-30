@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2020 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -33,8 +34,6 @@ public class S3DBTileLayer extends TileLayer {
 
     private static final int MIN_ZOOM = 16;
     private static final int MAX_ZOOM = 16;
-
-    private final TileSource mTileSource;
 
     public S3DBTileLayer(Map map, TileSource tileSource) {
         this(map, tileSource, true, false);

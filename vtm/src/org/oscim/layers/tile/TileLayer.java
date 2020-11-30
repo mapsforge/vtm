@@ -1,6 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Andrey Novikov
+ * Copyright 2020 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -22,15 +23,9 @@ import org.oscim.event.Event;
 import org.oscim.layers.Layer;
 import org.oscim.map.Map;
 import org.oscim.map.Map.UpdateListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.oscim.tiling.TileSource;
 
-/**
- * TODO - add a TileLayer.Builder
- */
 public abstract class TileLayer extends Layer implements UpdateListener {
-
-    static final Logger log = LoggerFactory.getLogger(TileLayer.class);
 
     private int mNumLoaders = 4;
 
@@ -41,6 +36,8 @@ public abstract class TileLayer extends Layer implements UpdateListener {
     protected final TileManager mTileManager;
 
     protected TileLoader[] mTileLoader;
+
+    protected TileSource mTileSource;
 
     public TileLayer(Map map, TileManager tileManager, TileRenderer renderer) {
         super(map);
@@ -116,6 +113,8 @@ public abstract class TileLayer extends Layer implements UpdateListener {
             loader.finish();
             loader.dispose();
         }
+        if (mTileSource != null)
+            mTileSource.close();
     }
 
     void notifyLoaders() {
@@ -147,5 +146,9 @@ public abstract class TileLayer extends Layer implements UpdateListener {
 
     public TileManager getManager() {
         return mTileManager;
+    }
+
+    public TileSource getTileSource() {
+        return mTileSource;
     }
 }

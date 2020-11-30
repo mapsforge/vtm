@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2017 Andrey Novikov
- * Copyright 2017-2018 devemux86
+ * Copyright 2017-2020 devemux86
  * Copyright 2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -37,8 +37,6 @@ public class BitmapTileLayer extends TileLayer {
     protected static final Logger log = LoggerFactory.getLogger(BitmapTileLayer.class);
 
     private static final int CACHE_LIMIT = 40;
-
-    protected final TileSource mTileSource;
 
     /**
      * Bitmap alpha in range 0 to 1.
