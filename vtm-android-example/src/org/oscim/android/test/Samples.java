@@ -126,5 +126,6 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(GdxPoi3DActivity.class));
         linearLayout.addView(createButton(OverpassActivity.class));
         linearLayout.addView(createButton(ClusterMarkerOverlayActivity.class));
+        linearLayout.addView(createButton(FragmentActivity.class));
     }
 }

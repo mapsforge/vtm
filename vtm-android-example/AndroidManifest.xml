@@ -35,6 +35,9 @@
             android:name=".ClusterMarkerOverlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".FragmentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".GettingStarted"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity

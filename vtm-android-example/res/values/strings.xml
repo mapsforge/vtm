@@ -28,5 +28,7 @@
     <string name="warning">Warning</string>
     <string name="startup_message_mbtiles">To run this sample activity, you need an MBTiles database installed on storage.\n\nadb push %s %s</string>
     <string name="exit">Exit</string>
+    <string name="add_blank_fragment">add blank fragment</string>
+    <string name="blank_fragment_text">this is a blank fragment</string>
 
 </resources>
