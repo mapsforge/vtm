@@ -6,6 +6,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/blank_fragment_text" />
+        android:text="@string/backstack_test_fragment_text" />
 
 </RelativeLayout>
