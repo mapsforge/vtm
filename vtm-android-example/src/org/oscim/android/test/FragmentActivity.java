@@ -31,7 +31,7 @@ public class FragmentActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.add_backstack_test_fragment) {
+        if (item.getItemId() == R.id.replace_fragment) {
             Fragment blankFragment = BlankFragment.newInstance();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_container, blankFragment);
