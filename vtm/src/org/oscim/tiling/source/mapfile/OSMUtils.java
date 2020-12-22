@@ -19,9 +19,16 @@ package org.oscim.tiling.source.mapfile;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tag;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
 
 public final class OSMUtils {
+
+    private static final HashSet<String> areaKeySet = new HashSet<>(Arrays.asList(
+            "area", "aeroway", "building", "landuse", "leisure", "natural", "amenity", "highway",
+            "barrier", "railway"
+    ));
 
     /**
      * Heuristic to determine from attributes if a map element is likely to be an area.
@@ -41,8 +48,12 @@ public final class OSMUtils {
         for (int i = 0; i < mapElement.tags.size(); i++) {
             Tag tag = mapElement.tags.get(i);
             String key = tag.key.toLowerCase(Locale.ENGLISH);
-            String value = tag.value.toLowerCase(Locale.ENGLISH);
+            if (!areaKeySet.contains(key)) {
+                continue;
+            }
+            // String value = tag.value.toLowerCase(Locale.ENGLISH);
             if ("area".equals(key)) {
+                String value = tag.value.toLowerCase(Locale.ENGLISH);
                 // obvious result
                 if (("yes").equals(value) || ("y").equals(value) || ("true").equals(value)) {
                     return true;
@@ -60,6 +71,7 @@ public final class OSMUtils {
                 result = false;
             }
             if ("railway".equals(key)) {
+                String value = tag.value.toLowerCase(Locale.ENGLISH);
                 // there is more to the railway tag then just rails, this excludes the
                 // most common railway lines from being detected as areas if they are closed.
                 // Since this method is only called if the first and last node are the same
