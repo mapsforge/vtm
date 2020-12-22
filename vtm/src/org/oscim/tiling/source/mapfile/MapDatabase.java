@@ -224,8 +224,6 @@ public class MapDatabase implements ITileDataSource {
     private int zoomLevelMin = 0;
     private int zoomLevelMax = Byte.MAX_VALUE;
 
-    List<Double> timeList = new ArrayList<>();
-
     public MapDatabase(MapFileTileSource tileSource) throws IOException {
         mTileSource = tileSource;
         try {
@@ -602,22 +600,6 @@ public class MapDatabase implements ITileDataSource {
                 processBlock(queryParams, subFileParameter, mapDataSink, boundingBox, selector, mapReadResult, readBuffer);
             }
         }
-
-        List<Double> sortedList = new ArrayList<>(timeList);
-        Collections.sort(sortedList);
-        double sum = 0;
-        for (Double time : sortedList) {
-            sum += time;
-        }
-        double avg = sum / sortedList.size();
-
-        log.error("number of function calls: " + sortedList.size() + "\n" +
-                "microseconds min: " + sortedList.get(0) + "\n" +
-                "microseconds max: " + sortedList.get(sortedList.size() - 1) + "\n" +
-                "microseconds median: " + sortedList.get(sortedList.size() / 2) + "\n" +
-                "microseconds avg: " + avg + "\n" +
-                "milliseconds sum: " + sum / 1000.0 + "\n"
-        );
     }
 
     /**
@@ -1009,12 +991,7 @@ public class MapDatabase implements ITileDataSource {
             }
 
             /* some guessing if feature is a line or a polygon */
-            long startTime = System.nanoTime();
-            boolean linearFeature = !OSMUtils.isArea(e);
-            long endTime = System.nanoTime();
-            long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
-            double durationMikro = duration / 1000.0;
-            timeList.add(durationMikro);
+            boolean isLine = !OSMUtils.isArea(e);
 
             for (int wayDataBlock = 0; wayDataBlock < wayDataBlocks; wayDataBlock++) {
                 e.clear();
@@ -1023,7 +1000,7 @@ public class MapDatabase implements ITileDataSource {
                 if (ways != null)
                     wayNodes = new ArrayList<>();
 
-                if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, linearFeature, wayNodes, labelPosition, readBuffer))
+                if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, isLine, wayNodes, labelPosition, readBuffer))
                     return false;
 
                 /* drop invalid outer ring */
