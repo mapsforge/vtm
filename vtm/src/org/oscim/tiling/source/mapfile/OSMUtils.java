@@ -79,21 +79,12 @@ public final class OSMUtils {
             if (!areaKeySet.contains(key)) {
                 continue;
             }
-            if ("building".equals(key)) {
+            if ("building".equals(key) || "natural".equals(key) || "landuse".equals(key) || "amenity".equals(key) || "leisure".equals(key) || "aeroway".equals(key)) {
                 // as specified by http://wiki.openstreetmap.org/wiki/Key:area
                 return true;
-            } else if ("highway".equals(key)) {
+            } else if ("highway".equals(key) || "barrier".equals(key)) {
                 // false unless something else overrides this.
                 result = false;
-            } else if ("natural".equals(key) || "landuse".equals(key) || "amenity".equals(key)) {
-                // as specified by http://wiki.openstreetmap.org/wiki/Key:area
-                return true;
-            } else if ("barrier".equals(key)) {
-                // false unless something else overrides this.
-                result = false;
-            } else if ("leisure".equals(key)) {
-                // as specified by http://wiki.openstreetmap.org/wiki/Key:area
-                return true;
             } else if ("railway".equals(key)) {
                 String value = tag.value.toLowerCase(Locale.ENGLISH);
                 // there is more to the railway tag then just rails, this excludes the
@@ -118,9 +109,6 @@ public final class OSMUtils {
                 }
                 // ~0.44% unchecked but that are 3579 different values and not worth the time
                 // because the third most used value "highway" only has 224 occurences world-wide
-            } else if ("aeroway".equals(key)) {
-                // as specified by http://wiki.openstreetmap.org/wiki/Key:area
-                return true;
             }
         }
         return result;
