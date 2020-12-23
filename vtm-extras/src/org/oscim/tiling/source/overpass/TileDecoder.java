@@ -101,8 +101,8 @@ public class TileDecoder implements ITileDecoder {
     private void parseGeometry(OsmElement element) {
         //TODO mulipolygons
         if (element instanceof OsmWay) {
-            boolean isLine = !OSMUtils.isArea(mMapElement);
-            if (isLine) {
+            boolean linearFeature = !OSMUtils.isArea(mMapElement);
+            if (linearFeature) {
                 mMapElement.type = GeometryType.LINE;
                 parseLine((OsmWay) element);
             } else {

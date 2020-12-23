@@ -991,7 +991,7 @@ public class MapDatabase implements ITileDataSource {
             }
 
             /* some guessing if feature is a line or a polygon */
-            boolean isLine = !OSMUtils.isArea(e);
+            boolean linearFeature = !OSMUtils.isArea(e);
 
             for (int wayDataBlock = 0; wayDataBlock < wayDataBlocks; wayDataBlock++) {
                 e.clear();
@@ -1000,7 +1000,7 @@ public class MapDatabase implements ITileDataSource {
                 if (ways != null)
                     wayNodes = new ArrayList<>();
 
-                if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, isLine, wayNodes, labelPosition, readBuffer))
+                if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, linearFeature, wayNodes, labelPosition, readBuffer))
                     return false;
 
                 /* drop invalid outer ring */
