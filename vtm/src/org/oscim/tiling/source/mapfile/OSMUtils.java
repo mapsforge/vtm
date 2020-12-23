@@ -43,6 +43,31 @@ public final class OSMUtils {
      * Determining what is an area is neigh impossible in OSM, this method inspects tag elements
      * to give a likely answer. See http://wiki.openstreetmap.org/wiki/The_Future_of_Areas and
      * http://wiki.openstreetmap.org/wiki/Way
+     * <p>
+     * The order in which the if-clauses are checked is determined with the help from
+     * https://taginfo.openstreetmap.org/ - last accessed 2020-12-23
+     * <p>
+     * key statistics:
+     * 429 422 565 building
+     * 188 142 457 highway
+     * 44 369 957 natural
+     * 31 354 174 landuse
+     * 17 740 976 amenity
+     * 14 581 922 barrier
+     * 6 366 976 leisure
+     * 5 361 889 railway
+     * 1 467 189 area
+     * 550 597 aeroway
+     * <p>
+     * railway statistics:
+     * 2 138 877 rail
+     * 93 926 tram
+     * 60 396 subway
+     * 45 182 narrow_gauge
+     * 30 668 light_rail
+     * 24 203 construction
+     * 8 937 preserved
+     * 3 138 monorail
      *
      * @param mapElement the map element (which is assumed to be closed and have enough nodes to be an area)
      * @return true if tags indicate this is an area, otherwise false.
@@ -55,34 +80,31 @@ public final class OSMUtils {
             if (!areaKeys.contains(key)) {
                 continue;
             }
-            if ("area".equals(key)) {
-                String value = tag.value.toLowerCase(Locale.ENGLISH);
-                // obvious result
-                if (("yes").equals(value) || ("y").equals(value) || ("true").equals(value)) {
-                    return true;
-                }
-                if (("no").equals(value) || ("n").equals(value) || ("false").equals(value)) {
-                    return false;
-                }
-            }
-            // as specified by http://wiki.openstreetmap.org/wiki/Key:area
-            if ("aeroway".equals(key) || "building".equals(key) || "landuse".equals(key) || "leisure".equals(key) || "natural".equals(key) || "amenity".equals(key)) {
+            if ("building".equals(key) || "natural".equals(key) || "landuse".equals(key) || "amenity".equals(key) || "leisure".equals(key) || "aeroway".equals(key)) {
+                // as specified by http://wiki.openstreetmap.org/wiki/Key:area
                 return true;
-            }
-            if ("highway".equals(key) || "barrier".equals(key)) {
+            } else if ("highway".equals(key) || "barrier".equals(key)) {
                 // false unless something else overrides this.
                 result = false;
-            }
-            if ("railway".equals(key)) {
+            } else if ("railway".equals(key)) {
                 String value = tag.value.toLowerCase(Locale.ENGLISH);
                 // there is more to the railway tag then just rails, this excludes the
                 // most common railway lines from being detected as areas if they are closed.
                 // Since this method is only called if the first and last node are the same
                 // this should be safe
                 if ("rail".equals(value) || "tram".equals(value) || "subway".equals(value)
-                        || "monorail".equals(value) || "narrow_gauge".equals(value) || "preserved".equals(value)
-                        || "light_rail".equals(value) || "construction".equals(value)) {
+                        || "narrow_gauge".equals(value) || "light_rail".equals(value)
+                        || "construction".equals(value) || "preserved".equals(value)
+                        || "monorail".equals(value)) {
                     result = false;
+                }
+            } else if ("area".equals(key)) {
+                String value = tag.value.toLowerCase(Locale.ENGLISH);
+                if (("yes").equals(value) || ("y").equals(value) || ("true").equals(value)) {
+                    return true;
+                }
+                if (("no").equals(value) || ("n").equals(value) || ("false").equals(value)) {
+                    return false;
                 }
             }
         }
