@@ -30,6 +30,7 @@ import org.oscim.renderer.GLViewport;
 import org.oscim.scalebar.DefaultMapScaleBar;
 import org.oscim.scalebar.MapScaleBar;
 import org.oscim.scalebar.MapScaleBarLayer;
+import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
 
@@ -42,6 +43,7 @@ import java.io.File;
 public class MapFragment extends Fragment {
 
     private MapView mapView;
+    private IRenderTheme iRenderTheme;
 
     public static MapFragment newInstance() {
         MapFragment instance = new MapFragment();
@@ -79,7 +81,7 @@ public class MapFragment extends Fragment {
         mapView.map().layers().add(new LabelLayer(mapView.map(), tileLayer));
 
         // Render theme
-        mapView.map().setTheme(VtmThemes.DEFAULT);
+        iRenderTheme = mapView.map().setTheme(VtmThemes.DEFAULT);
 
         // Scale bar
         MapScaleBar mapScaleBar = new DefaultMapScaleBar(mapView.map());
@@ -113,6 +115,10 @@ public class MapFragment extends Fragment {
         if (mapView != null) {
             mapView.onDestroy();
             mapView = null;
+        }
+        if (iRenderTheme != null) {
+            iRenderTheme.dispose();
+            iRenderTheme = null;
         }
         super.onDestroyView();
     }
