@@ -1,6 +1,5 @@
 /*
- * Copyright 2016-2021 devemux86
- * Copyright 2017 Andrey Novikov
+ * Copyright 2021 devemux86
  * Copyright 2021 eddiemuc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -19,51 +18,54 @@ package org.oscim.theme;
 import org.oscim.theme.IRenderTheme.ThemeException;
 import org.oscim.utils.Utils;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * A StreamRenderTheme allows for customizing the rendering style of the map
- * via an XML input stream.
+ * A ZipRenderTheme allows for customizing the rendering style of the map
+ * via an XML from an archive.
  */
-public class StreamRenderTheme implements ThemeFile {
+public class ZipRenderTheme implements ThemeFile {
     private static final long serialVersionUID = 1L;
 
-    private final InputStream mInputStream;
     private boolean mMapsforgeTheme;
     private XmlRenderThemeMenuCallback mMenuCallback;
     private final String mRelativePathPrefix;
     private XmlThemeResourceProvider mResourceProvider;
+    protected final String mXmlTheme;
 
     /**
-     * @param relativePathPrefix the prefix for all relative resource paths.
-     * @param inputStream        an input stream containing valid render theme XML data.
+     * @param xmlTheme         the XML theme path in the archive.
+     * @param resourceProvider the custom provider to retrieve resources internally referenced by "src" attribute (e.g. images, icons).
      * @throws ThemeException if an error occurs while reading the render theme XML.
      */
-    public StreamRenderTheme(String relativePathPrefix, InputStream inputStream) throws ThemeException {
-        this(relativePathPrefix, inputStream, null);
+    public ZipRenderTheme(String xmlTheme, XmlThemeResourceProvider resourceProvider) throws ThemeException {
+        this(xmlTheme, resourceProvider, null);
     }
 
     /**
-     * @param relativePathPrefix the prefix for all relative resource paths.
-     * @param inputStream        an input stream containing valid render theme XML data.
-     * @param menuCallback       the interface callback to create a settings menu on the fly.
+     * @param xmlTheme         the XML theme path in the archive.
+     * @param resourceProvider the custom provider to retrieve resources internally referenced by "src" attribute (e.g. images, icons).
+     * @param menuCallback     the interface callback to create a settings menu on the fly.
      * @throws ThemeException if an error occurs while reading the render theme XML.
      */
-    public StreamRenderTheme(String relativePathPrefix, InputStream inputStream, XmlRenderThemeMenuCallback menuCallback) throws ThemeException {
-        mRelativePathPrefix = relativePathPrefix;
-        mInputStream = inputStream;
+    public ZipRenderTheme(String xmlTheme, XmlThemeResourceProvider resourceProvider, XmlRenderThemeMenuCallback menuCallback) throws ThemeException {
+        mXmlTheme = xmlTheme;
+        mResourceProvider = resourceProvider;
         mMenuCallback = menuCallback;
+
+        mRelativePathPrefix = xmlTheme.substring(0, xmlTheme.lastIndexOf("/") + 1);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
-        } else if (!(obj instanceof StreamRenderTheme)) {
+        } else if (!(obj instanceof ZipRenderTheme)) {
             return false;
         }
-        StreamRenderTheme other = (StreamRenderTheme) obj;
-        if (mInputStream != other.mInputStream) {
+        ZipRenderTheme other = (ZipRenderTheme) obj;
+        if (getRenderThemeAsStream() != other.getRenderThemeAsStream()) {
             return false;
         }
         if (!Utils.equals(mRelativePathPrefix, other.mRelativePathPrefix)) {
@@ -84,7 +86,11 @@ public class StreamRenderTheme implements ThemeFile {
 
     @Override
     public InputStream getRenderThemeAsStream() throws ThemeException {
-        return mInputStream;
+        try {
+            return mResourceProvider.createInputStream(mRelativePathPrefix, mXmlTheme.substring(mXmlTheme.lastIndexOf("/") + 1));
+        } catch (IOException e) {
+            throw new ThemeException(e.getMessage());
+        }
     }
 
     @Override

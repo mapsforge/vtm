@@ -1,7 +1,8 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2020 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 Longri
+ * Copyright 2021 eddiemuc
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -21,6 +22,7 @@ package org.oscim.backend;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
+import org.oscim.theme.XmlThemeResourceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +39,7 @@ public abstract class CanvasAdapter {
     private static final Logger log = LoggerFactory.getLogger(CanvasAdapter.class);
 
     private static final String PREFIX_ASSETS = "assets:";
-    private static final String PREFIX_FILE = "file:";
+    public static final String PREFIX_FILE = "file:";
 
     /**
      * The instance provided by backend
@@ -156,34 +158,45 @@ public abstract class CanvasAdapter {
      * @param src                the resource
      * @return the bitmap
      */
-    protected abstract Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, int width, int height, int percent) throws IOException;
+    protected abstract Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) throws IOException;
 
     public static Bitmap getBitmapAsset(String relativePathPrefix, String src) throws IOException {
-        return getBitmapAsset(relativePathPrefix, src, 0, 0, 100);
+        return getBitmapAsset(relativePathPrefix, src, null, 0, 0, 100);
     }
 
-    public static Bitmap getBitmapAsset(String relativePathPrefix, String src, int width, int height, int percent) throws IOException {
-        return g.loadBitmapAssetImpl(relativePathPrefix, src, width, height, percent);
+    public static Bitmap getBitmapAsset(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) throws IOException {
+        return g.loadBitmapAssetImpl(relativePathPrefix, src, resourceProvider, width, height, percent);
     }
 
-    protected static Bitmap createBitmap(String relativePathPrefix, String src, int width, int height, int percent) throws IOException {
+    protected static Bitmap createBitmap(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) throws IOException {
         if (src == null || src.length() == 0) {
             // no image source defined
             return null;
         }
 
-        InputStream inputStream;
-        if (src.startsWith(PREFIX_ASSETS)) {
-            src = src.substring(PREFIX_ASSETS.length());
-            inputStream = inputStreamFromAssets(relativePathPrefix, src);
-        } else if (src.startsWith(PREFIX_FILE)) {
-            src = src.substring(PREFIX_FILE.length());
-            inputStream = inputStreamFromFile(relativePathPrefix, src);
-        } else {
-            inputStream = inputStreamFromFile(relativePathPrefix, src);
+        InputStream inputStream = null;
+        if (resourceProvider != null) {
+            try {
+                inputStream = resourceProvider.createInputStream(relativePathPrefix, src);
+            } catch (IOException ioe) {
+                log.debug("Exception trying to access resource: " + src + " using custom provider: " + ioe);
+                // Ignore and try to resolve input stream using the standard process
+            }
+        }
 
-            if (inputStream == null)
+        if (inputStream == null) {
+            if (src.startsWith(PREFIX_ASSETS)) {
+                src = src.substring(PREFIX_ASSETS.length());
                 inputStream = inputStreamFromAssets(relativePathPrefix, src);
+            } else if (src.startsWith(PREFIX_FILE)) {
+                src = src.substring(PREFIX_FILE.length());
+                inputStream = inputStreamFromFile(relativePathPrefix, src);
+            } else {
+                inputStream = inputStreamFromFile(relativePathPrefix, src);
+
+                if (inputStream == null)
+                    inputStream = inputStreamFromAssets(relativePathPrefix, src);
+            }
         }
 
         // Fallback to internal resources

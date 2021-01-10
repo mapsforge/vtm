@@ -3,6 +3,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2021 devemux86
  * Copyright 2017 Andrey Novikov
+ * Copyright 2021 eddiemuc
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -37,6 +38,7 @@ public class ExternalRenderTheme implements ThemeFile {
     private boolean mMapsforgeTheme;
     private XmlRenderThemeMenuCallback mMenuCallback;
     private final String mPath;
+    private XmlThemeResourceProvider mResourceProvider;
 
     /**
      * @param fileName the path to the XML render theme file.
@@ -110,6 +112,11 @@ public class ExternalRenderTheme implements ThemeFile {
     }
 
     @Override
+    public XmlThemeResourceProvider getResourceProvider() {
+        return mResourceProvider;
+    }
+
+    @Override
     public boolean isMapsforgeTheme() {
         return mMapsforgeTheme;
     }
@@ -122,5 +129,10 @@ public class ExternalRenderTheme implements ThemeFile {
     @Override
     public void setMenuCallback(XmlRenderThemeMenuCallback menuCallback) {
         mMenuCallback = menuCallback;
+    }
+
+    @Override
+    public void setResourceProvider(XmlThemeResourceProvider resourceProvider) {
+        mResourceProvider = resourceProvider;
     }
 }

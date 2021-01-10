@@ -1,5 +1,6 @@
 /*
  * Copyright 2020-2021 devemux86
+ * Copyright 2021 eddiemuc
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -19,7 +20,7 @@ import android.net.Uri;
 import org.oscim.theme.IRenderTheme.ThemeException;
 import org.oscim.theme.ThemeFile;
 import org.oscim.theme.XmlRenderThemeMenuCallback;
-import org.oscim.utils.Utils;
+import org.oscim.theme.XmlThemeResourceProvider;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,29 +35,26 @@ public class ContentRenderTheme implements ThemeFile {
     private final ContentResolver mContentResolver;
     private boolean mMapsforgeTheme;
     private XmlRenderThemeMenuCallback mMenuCallback;
-    private final String mRelativePathPrefix;
+    private XmlThemeResourceProvider mResourceProvider;
     private final Uri mUri;
 
     /**
-     * @param contentResolver    the Android content resolver.
-     * @param relativePathPrefix the prefix for all relative resource paths.
-     * @param uri                the XML render theme URI.
+     * @param contentResolver the Android content resolver.
+     * @param uri             the XML render theme URI.
      * @throws ThemeException if an error occurs while reading the render theme XML.
      */
-    public ContentRenderTheme(ContentResolver contentResolver, String relativePathPrefix, Uri uri) throws ThemeException {
-        this(contentResolver, relativePathPrefix, uri, null);
+    public ContentRenderTheme(ContentResolver contentResolver, Uri uri) throws ThemeException {
+        this(contentResolver, uri, null);
     }
 
     /**
-     * @param contentResolver    the Android content resolver.
-     * @param relativePathPrefix the prefix for all relative resource paths.
-     * @param uri                the XML render theme URI.
-     * @param menuCallback       the interface callback to create a settings menu on the fly.
+     * @param contentResolver the Android content resolver.
+     * @param uri             the XML render theme URI.
+     * @param menuCallback    the interface callback to create a settings menu on the fly.
      * @throws ThemeException if an error occurs while reading the render theme XML.
      */
-    public ContentRenderTheme(ContentResolver contentResolver, String relativePathPrefix, Uri uri, XmlRenderThemeMenuCallback menuCallback) throws ThemeException {
+    public ContentRenderTheme(ContentResolver contentResolver, Uri uri, XmlRenderThemeMenuCallback menuCallback) throws ThemeException {
         mContentResolver = contentResolver;
-        mRelativePathPrefix = relativePathPrefix;
         mUri = uri;
         mMenuCallback = menuCallback;
     }
@@ -72,9 +70,6 @@ public class ContentRenderTheme implements ThemeFile {
         if (getRenderThemeAsStream() != other.getRenderThemeAsStream()) {
             return false;
         }
-        if (!Utils.equals(mRelativePathPrefix, other.mRelativePathPrefix)) {
-            return false;
-        }
         return true;
     }
 
@@ -85,7 +80,7 @@ public class ContentRenderTheme implements ThemeFile {
 
     @Override
     public String getRelativePathPrefix() {
-        return mRelativePathPrefix;
+        return "";
     }
 
     @Override
@@ -95,6 +90,11 @@ public class ContentRenderTheme implements ThemeFile {
         } catch (IOException e) {
             throw new ThemeException(e.getMessage());
         }
+    }
+
+    @Override
+    public XmlThemeResourceProvider getResourceProvider() {
+        return mResourceProvider;
     }
 
     @Override
@@ -110,5 +110,10 @@ public class ContentRenderTheme implements ThemeFile {
     @Override
     public void setMenuCallback(XmlRenderThemeMenuCallback menuCallback) {
         mMenuCallback = menuCallback;
+    }
+
+    @Override
+    public void setResourceProvider(XmlThemeResourceProvider resourceProvider) {
+        mResourceProvider = resourceProvider;
     }
 }

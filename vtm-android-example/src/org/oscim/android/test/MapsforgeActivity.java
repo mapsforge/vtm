@@ -1,8 +1,9 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016-2020 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 Longri
  * Copyright 2018 Gustl22
+ * Copyright 2021 eddiemuc
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -20,13 +21,17 @@
 package org.oscim.android.test;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import org.oscim.android.theme.ContentRenderTheme;
+import org.oscim.android.theme.ContentResolverResourceProvider;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.core.MapElement;
 import org.oscim.core.MapPosition;
@@ -42,9 +47,7 @@ import org.oscim.renderer.BitmapRenderer;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.scalebar.*;
-import org.oscim.theme.IRenderTheme;
-import org.oscim.theme.ThemeFile;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.*;
 import org.oscim.theme.styles.AreaStyle;
 import org.oscim.theme.styles.RenderStyle;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
@@ -52,15 +55,20 @@ import org.oscim.tiling.source.mapfile.MapInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.zip.ZipInputStream;
 
 public class MapsforgeActivity extends MapActivity {
 
     private static final Logger log = LoggerFactory.getLogger(MapsforgeActivity.class);
 
     static final int SELECT_MAP_FILE = 0;
-    static final int SELECT_THEME_FILE = 1;
+    private static final int SELECT_THEME_ARCHIVE = 1;
+    private static final int SELECT_THEME_DIR = 2;
+    static final int SELECT_THEME_FILE = 3;
 
     private static final Tag ISSEA_TAG = new Tag("natural", "issea");
     private static final Tag NOSEA_TAG = new Tag("natural", "nosea");
@@ -71,6 +79,7 @@ public class MapsforgeActivity extends MapActivity {
     private final boolean mS3db;
     IRenderTheme mTheme;
     VectorTileLayer mTileLayer;
+    private Uri mThemeDirUri;
 
     public MapsforgeActivity() {
         this(false);
@@ -142,11 +151,19 @@ public class MapsforgeActivity extends MapActivity {
                 item.setChecked(true);
                 return true;
 
-            case R.id.theme_external:
+            case R.id.theme_external_archive:
                 Intent intent = new Intent(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("*/*");
-                startActivityForResult(intent, SELECT_THEME_FILE);
+                startActivityForResult(intent, SELECT_THEME_ARCHIVE);
+                return true;
+
+            case R.id.theme_external:
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                    return false;
+                intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivityForResult(intent, SELECT_THEME_DIR);
                 return true;
 
             case R.id.gridlayer:
@@ -176,75 +193,100 @@ public class MapsforgeActivity extends MapActivity {
                 return;
             }
 
-            MapFileTileSource tileSource = new MapFileTileSource();
-            //tileSource.setPreferredLanguage("en");
+            try {
+                Uri uri = data.getData();
+
+                MapFileTileSource tileSource = new MapFileTileSource();
+                //tileSource.setPreferredLanguage("en");
+                FileInputStream fis = (FileInputStream) getContentResolver().openInputStream(uri);
+                tileSource.setMapFileInputStream(fis);
+
+                mTileLayer = mMap.setBaseMap(tileSource);
+                loadTheme(null);
+
+                if (mS3db)
+                    mMap.layers().add(new S3DBLayer(mMap, mTileLayer));
+                else
+                    mMap.layers().add(new BuildingLayer(mMap, mTileLayer));
+                mMap.layers().add(new LabelLayer(mMap, mTileLayer));
+
+                DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap);
+                mapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
+                mapScaleBar.setDistanceUnitAdapter(MetricUnitAdapter.INSTANCE);
+                mapScaleBar.setSecondaryDistanceUnitAdapter(ImperialUnitAdapter.INSTANCE);
+                mapScaleBar.setScaleBarPosition(MapScaleBar.ScaleBarPosition.BOTTOM_LEFT);
+
+                MapScaleBarLayer mapScaleBarLayer = new MapScaleBarLayer(mMap, mapScaleBar);
+                BitmapRenderer renderer = mapScaleBarLayer.getRenderer();
+                renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
+                renderer.setOffset(5 * CanvasAdapter.getScale(), 0);
+                mMap.layers().add(mapScaleBarLayer);
+
+                MapInfo info = tileSource.getMapInfo();
+                if (!info.boundingBox.contains(mMap.getMapPosition().getGeoPoint())) {
+                    MapPosition pos = new MapPosition();
+                    pos.setByBoundingBox(info.boundingBox, Tile.SIZE * 4, Tile.SIZE * 4);
+                    mMap.setMapPosition(pos);
+                    mPrefs.clear();
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                finish();
+            }
+        } else if (requestCode == SELECT_THEME_ARCHIVE) {
+            if (resultCode != Activity.RESULT_OK || data == null)
+                return;
 
             try {
                 Uri uri = data.getData();
-                FileInputStream fis = (FileInputStream) getContentResolver().openInputStream(uri);
-                tileSource.setMapFileInputStream(fis);
+
+                final ZipXmlThemeResourceProvider resourceProvider = new ZipXmlThemeResourceProvider(new ZipInputStream(new BufferedInputStream(getContentResolver().openInputStream(uri))));
+                final List<String> xmlThemes = resourceProvider.getXmlThemes();
+                if (xmlThemes.isEmpty())
+                    return;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.dialog_theme_title);
+                builder.setSingleChoiceItems(xmlThemes.toArray(new String[0]), -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        ThemeFile theme = new ZipRenderTheme(xmlThemes.get(which), resourceProvider);
+                        if (mTheme != null)
+                            mTheme.dispose();
+                        mTheme = mMap.setTheme(theme);
+                        mapsforgeTheme(mTheme);
+                        mMenu.findItem(R.id.theme_external_archive).setChecked(true);
+                    }
+                });
+                builder.show();
             } catch (IOException e) {
-                log.error(e.getMessage());
-                finish();
+                e.printStackTrace();
+            }
+        } else if (requestCode == SELECT_THEME_DIR) {
+            if (resultCode != Activity.RESULT_OK || data == null)
                 return;
-            }
 
-            mTileLayer = mMap.setBaseMap(tileSource);
-            loadTheme(null);
+            mThemeDirUri = data.getData();
 
-            if (mS3db)
-                mMap.layers().add(new S3DBLayer(mMap, mTileLayer));
-            else
-                mMap.layers().add(new BuildingLayer(mMap, mTileLayer));
-            mMap.layers().add(new LabelLayer(mMap, mTileLayer));
-
-            DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap);
-            mapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
-            mapScaleBar.setDistanceUnitAdapter(MetricUnitAdapter.INSTANCE);
-            mapScaleBar.setSecondaryDistanceUnitAdapter(ImperialUnitAdapter.INSTANCE);
-            mapScaleBar.setScaleBarPosition(MapScaleBar.ScaleBarPosition.BOTTOM_LEFT);
-
-            MapScaleBarLayer mapScaleBarLayer = new MapScaleBarLayer(mMap, mapScaleBar);
-            BitmapRenderer renderer = mapScaleBarLayer.getRenderer();
-            renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
-            renderer.setOffset(5 * CanvasAdapter.getScale(), 0);
-            mMap.layers().add(mapScaleBarLayer);
-
-            MapInfo info = tileSource.getMapInfo();
-            if (!info.boundingBox.contains(mMap.getMapPosition().getGeoPoint())) {
-                MapPosition pos = new MapPosition();
-                pos.setByBoundingBox(info.boundingBox, Tile.SIZE * 4, Tile.SIZE * 4);
-                mMap.setMapPosition(pos);
-                mPrefs.clear();
-            }
+            // Now we have the directory for resources, but we need to let the user also select a theme file
+            Intent intent = new Intent(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, mThemeDirUri);
+            startActivityForResult(intent, SELECT_THEME_FILE);
         } else if (requestCode == SELECT_THEME_FILE) {
             if (resultCode != Activity.RESULT_OK || data == null)
                 return;
 
             Uri uri = data.getData();
-            ThemeFile theme = new ContentRenderTheme(getContentResolver(), "", uri);
-
-            // Use tessellation with sea and land for Mapsforge themes
-            if (theme.isMapsforgeTheme()) {
-                mTileLayer.addHook(new VectorTileLayer.TileLoaderThemeHook() {
-                    @Override
-                    public boolean process(MapTile tile, RenderBuckets buckets, MapElement element, RenderStyle style, int level) {
-                        if (element.tags.contains(ISSEA_TAG) || element.tags.contains(SEA_TAG) || element.tags.contains(NOSEA_TAG)) {
-                            if (style instanceof AreaStyle)
-                                ((AreaStyle) style).mesh = true;
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public void complete(MapTile tile, boolean success) {
-                    }
-                });
-            }
+            ThemeFile theme = new ContentRenderTheme(getContentResolver(), uri);
+            theme.setResourceProvider(new ContentResolverResourceProvider(getContentResolver(), mThemeDirUri));
 
             if (mTheme != null)
                 mTheme.dispose();
             mTheme = mMap.setTheme(theme);
+            mapsforgeTheme(mTheme);
             mMenu.findItem(R.id.theme_external).setChecked(true);
         }
     }
@@ -253,5 +295,26 @@ public class MapsforgeActivity extends MapActivity {
         if (mTheme != null)
             mTheme.dispose();
         mTheme = mMap.setTheme(VtmThemes.DEFAULT);
+    }
+
+    private void mapsforgeTheme(IRenderTheme theme) {
+        if (!theme.isMapsforgeTheme())
+            return;
+
+        // Use tessellation with sea and land for Mapsforge themes
+        mTileLayer.addHook(new VectorTileLayer.TileLoaderThemeHook() {
+            @Override
+            public boolean process(MapTile tile, RenderBuckets buckets, MapElement element, RenderStyle style, int level) {
+                if (element.tags.contains(ISSEA_TAG) || element.tags.contains(SEA_TAG) || element.tags.contains(NOSEA_TAG)) {
+                    if (style instanceof AreaStyle)
+                        ((AreaStyle) style).mesh = true;
+                }
+                return false;
+            }
+
+            @Override
+            public void complete(MapTile tile, boolean success) {
+            }
+        });
     }
 }

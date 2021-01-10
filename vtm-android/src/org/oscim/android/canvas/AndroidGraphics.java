@@ -30,6 +30,7 @@ import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
+import org.oscim.theme.XmlThemeResourceProvider;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,8 +70,8 @@ public final class AndroidGraphics extends CanvasAdapter {
     }
 
     @Override
-    public Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, int width, int height, int percent) throws IOException {
-        return createBitmap(relativePathPrefix, src, width, height, percent);
+    public Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) throws IOException {
+        return createBitmap(relativePathPrefix, src, resourceProvider, width, height, percent);
     }
 
     @Override

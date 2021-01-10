@@ -21,6 +21,7 @@ import org.oscim.backend.Platform;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
+import org.oscim.theme.XmlThemeResourceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +71,7 @@ public class IosGraphics extends CanvasAdapter {
     }
 
     @Override
-    protected Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, int width, int height, int percent) throws IOException {
-        return createBitmap(relativePathPrefix, src, width, height, percent);
+    protected Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) throws IOException {
+        return createBitmap(relativePathPrefix, src, resourceProvider, width, height, percent);
     }
 }

@@ -21,11 +21,11 @@ package org.oscim.gdx.client;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.TextMetrics;
-
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.Platform;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Paint;
+import org.oscim.theme.XmlThemeResourceProvider;
 
 import java.io.File;
 import java.io.InputStream;
@@ -68,7 +68,7 @@ public class GwtGdxGraphics extends CanvasAdapter {
     }
 
     @Override
-    public Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, int width, int height, int percent) {
+    public Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) {
         String pathName = (relativePathPrefix == null || relativePathPrefix.length() == 0 ? "" : relativePathPrefix + File.separatorChar) + src;
         return new GwtBitmap(pathName);
     }

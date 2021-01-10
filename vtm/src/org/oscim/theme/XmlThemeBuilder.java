@@ -8,6 +8,7 @@
  * Copyright 2018-2019 Gustl22
  * Copyright 2018 Izumi Kawashima
  * Copyright 2019 Murray Hughes
+ * Copyright 2021 eddiemuc
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -664,7 +665,7 @@ public class XmlThemeBuilder {
         } else {
             if (src != null) {
                 float symbolScale = Parameters.SYMBOL_SCALING == Parameters.SymbolScaling.ALL ? CanvasAdapter.symbolScale : 1;
-                b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale));
+                b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale));
             }
 
             if (b.texture != null && hasSymbol) {
@@ -777,7 +778,7 @@ public class XmlThemeBuilder {
         }
 
         if (src != null)
-            b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, b.symbolWidth, b.symbolHeight, b.symbolPercent);
+            b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, b.symbolPercent);
 
         return b.build();
     }
@@ -1103,7 +1104,7 @@ public class XmlThemeBuilder {
             String lowValue = symbol.toLowerCase(Locale.ENGLISH);
             if (lowValue.endsWith(".png") || lowValue.endsWith(".svg")) {
                 try {
-                    b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * CanvasAdapter.symbolScale));
+                    b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * CanvasAdapter.symbolScale));
                 } catch (Exception e) {
                     log.error("{}: {}", symbol, e.getMessage());
                 }
@@ -1257,7 +1258,7 @@ public class XmlThemeBuilder {
                             symbolScale = CanvasAdapter.symbolScale;
                         break;
                 }
-                Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), b.src, b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale));
+                Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), b.src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale));
                 if (bitmap != null)
                     return buildSymbol(b, b.src, bitmap);
             } catch (Exception e) {
