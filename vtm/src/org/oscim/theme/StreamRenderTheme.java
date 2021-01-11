@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 Andrey Novikov
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -18,8 +18,6 @@ package org.oscim.theme;
 import org.oscim.theme.IRenderTheme.ThemeException;
 import org.oscim.utils.Utils;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -30,6 +28,7 @@ public class StreamRenderTheme implements ThemeFile {
     private static final long serialVersionUID = 1L;
 
     private final InputStream mInputStream;
+    private boolean mMapsforgeTheme;
     private XmlRenderThemeMenuCallback mMenuCallback;
     private final String mRelativePathPrefix;
 
@@ -48,8 +47,7 @@ public class StreamRenderTheme implements ThemeFile {
      */
     public StreamRenderTheme(String relativePathPrefix, InputStream inputStream, XmlRenderThemeMenuCallback menuCallback) {
         mRelativePathPrefix = relativePathPrefix;
-        mInputStream = new BufferedInputStream(inputStream);
-        mInputStream.mark(0);
+        mInputStream = inputStream;
         mMenuCallback = menuCallback;
     }
 
@@ -82,17 +80,17 @@ public class StreamRenderTheme implements ThemeFile {
 
     @Override
     public InputStream getRenderThemeAsStream() throws ThemeException {
-        try {
-            mInputStream.reset();
-        } catch (IOException e) {
-            throw new ThemeException(e.getMessage());
-        }
         return mInputStream;
     }
 
     @Override
     public boolean isMapsforgeTheme() {
-        return ThemeUtils.isMapsforgeTheme(this);
+        return mMapsforgeTheme;
+    }
+
+    @Override
+    public void setMapsforgeTheme(boolean mapsforgeTheme) {
+        mMapsforgeTheme = mapsforgeTheme;
     }
 
     @Override

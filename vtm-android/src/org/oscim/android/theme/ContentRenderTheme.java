@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 devemux86
+ * Copyright 2020-2021 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -18,7 +18,6 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import org.oscim.theme.IRenderTheme.ThemeException;
 import org.oscim.theme.ThemeFile;
-import org.oscim.theme.ThemeUtils;
 import org.oscim.theme.XmlRenderThemeMenuCallback;
 import org.oscim.utils.Utils;
 
@@ -33,6 +32,7 @@ public class ContentRenderTheme implements ThemeFile {
     private static final long serialVersionUID = 1L;
 
     private final ContentResolver mContentResolver;
+    private boolean mMapsforgeTheme;
     private XmlRenderThemeMenuCallback mMenuCallback;
     private final String mRelativePathPrefix;
     private final Uri mUri;
@@ -99,7 +99,12 @@ public class ContentRenderTheme implements ThemeFile {
 
     @Override
     public boolean isMapsforgeTheme() {
-        return ThemeUtils.isMapsforgeTheme(this);
+        return mMapsforgeTheme;
+    }
+
+    @Override
+    public void setMapsforgeTheme(boolean mapsforgeTheme) {
+        mMapsforgeTheme = mapsforgeTheme;
     }
 
     @Override

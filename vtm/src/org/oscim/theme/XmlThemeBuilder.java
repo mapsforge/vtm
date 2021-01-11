@@ -2,7 +2,7 @@
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2013 Hannes Janetzek
  * Copyright 2014 Ludwig M Brinckmann
- * Copyright 2016-2020 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2016-2017 Longri
  * Copyright 2016-2020 Andrey Novikov
  * Copyright 2018-2019 Gustl22
@@ -175,7 +175,6 @@ public class XmlThemeBuilder {
     private final ThemeCallback mThemeCallback;
     RenderTheme mRenderTheme;
 
-    final boolean mMapsforgeTheme;
     private final float mScale;
 
     private Set<String> mCategories;
@@ -193,7 +192,6 @@ public class XmlThemeBuilder {
         mTheme = theme;
         mPullParser = pullParser;
         mThemeCallback = themeCallback;
-        mMapsforgeTheme = theme.isMapsforgeTheme();
         mScale = CanvasAdapter.getScale();
     }
 
@@ -215,14 +213,14 @@ public class XmlThemeBuilder {
     }
 
     public void endDocument() {
-        if (mMapsforgeTheme) {
+        if (mTheme.isMapsforgeTheme()) {
             // Building rule for Mapsforge themes
             mRulesList.add(buildingRule());
         }
 
         Rule[] rules = new Rule[mRulesList.size()];
         for (int i = 0, n = rules.length; i < n; i++)
-            rules[i] = mRulesList.get(i).onComplete(mMapsforgeTheme ? new int[1] : null);
+            rules[i] = mRulesList.get(i).onComplete(mTheme.isMapsforgeTheme() ? new int[1] : null);
 
         mRenderTheme = createTheme(rules);
 
@@ -237,7 +235,7 @@ public class XmlThemeBuilder {
     }
 
     RenderTheme createTheme(Rule[] rules) {
-        return new RenderTheme(mMapBackground, mTextScale, rules, mLevels, mTransformKeyMap, mTransformTagMap, mMapsforgeTheme);
+        return new RenderTheme(mMapBackground, mTextScale, rules, mLevels, mTransformKeyMap, mTransformTagMap, mTheme.isMapsforgeTheme());
     }
 
     public void endElement() {
@@ -431,13 +429,13 @@ public class XmlThemeBuilder {
                 else if ("NODE".equals(val))
                     element = Rule.Element.NODE;
             } else if ("k".equals(name)) {
-                if (mMapsforgeTheme) {
+                if (mTheme.isMapsforgeTheme()) {
                     if (!"*".equals(value))
                         keys = value;
                 } else
                     keys = value;
             } else if ("v".equals(name)) {
-                if (mMapsforgeTheme) {
+                if (mTheme.isMapsforgeTheme()) {
                     if (!"*".equals(value))
                         values = value;
                 } else
@@ -935,7 +933,10 @@ public class XmlThemeBuilder {
             if ("schemaLocation".equals(name))
                 continue;
 
-            if ("version".equals(name))
+            if ("xmlns".equals(name))
+                mTheme.setMapsforgeTheme("http://mapsforge.org/renderTheme".equals(value));
+
+            else if ("version".equals(name))
                 version = Integer.parseInt(value);
 
             else if ("map-background".equals(name)) {
@@ -956,7 +957,7 @@ public class XmlThemeBuilder {
 
         validateExists("version", version, elementName);
 
-        int renderThemeVersion = mMapsforgeTheme ? RENDER_THEME_VERSION_MAPSFORGE : RENDER_THEME_VERSION_VTM;
+        int renderThemeVersion = mTheme.isMapsforgeTheme() ? RENDER_THEME_VERSION_MAPSFORGE : RENDER_THEME_VERSION_VTM;
         if (version > renderThemeVersion)
             throw new ThemeException("invalid render theme version:" + version);
 
@@ -1006,7 +1007,7 @@ public class XmlThemeBuilder {
         b.themeCallback(mThemeCallback);
         String symbol = null;
 
-        if (mMapsforgeTheme) {
+        if (mTheme.isMapsforgeTheme()) {
             // Reset default priority
             b.priority = DEFAULT_PRIORITY;
         }
@@ -1051,7 +1052,7 @@ public class XmlThemeBuilder {
             else if ("priority".equals(name)) {
                 b.priority = Integer.parseInt(value);
 
-                if (mMapsforgeTheme) {
+                if (mTheme.isMapsforgeTheme()) {
                     // Mapsforge: higher priorities are drawn first (0 = default priority)
                     // VTM: lower priorities are drawn first (0 = highest priority)
                     b.priority = FastMath.clamp(DEFAULT_PRIORITY - b.priority, 0, Integer.MAX_VALUE);
