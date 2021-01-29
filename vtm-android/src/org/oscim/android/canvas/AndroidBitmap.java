@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Longri
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2021 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -22,7 +22,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
-
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.utils.GraphicUtils;
 import org.oscim.utils.IOUtils;
@@ -39,6 +38,7 @@ public class AndroidBitmap implements org.oscim.backend.canvas.Bitmap {
         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
         try {
             GLUtils.getType(bitmap);
+            GLUtils.getInternalFormat(bitmap);
         } catch (IllegalArgumentException e) {
             bitmap = bitmap.copy(ARGB_8888, false);
         }
@@ -95,6 +95,9 @@ public class AndroidBitmap implements org.oscim.backend.canvas.Bitmap {
 
     @Override
     public void uploadToTexture(boolean replace) {
+        if (mBitmap.isRecycled())
+            return;
+
         int format = GLUtils.getInternalFormat(mBitmap);
         int type = GLUtils.getType(mBitmap);
 
