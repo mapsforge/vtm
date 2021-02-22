@@ -238,10 +238,9 @@ public class MapsforgeActivity extends MapActivity {
                 return;
 
             try {
-                Uri uri = data.getData();
+                final Uri uri = data.getData();
 
-                final ZipXmlThemeResourceProvider resourceProvider = new ZipXmlThemeResourceProvider(new ZipInputStream(new BufferedInputStream(getContentResolver().openInputStream(uri))));
-                final List<String> xmlThemes = resourceProvider.getXmlThemes();
+                final List<String> xmlThemes = ZipXmlThemeResourceProvider.scanXmlThemes(new ZipInputStream(new BufferedInputStream(getContentResolver().openInputStream(uri))));
                 if (xmlThemes.isEmpty())
                     return;
 
@@ -250,13 +249,17 @@ public class MapsforgeActivity extends MapActivity {
                 builder.setSingleChoiceItems(xmlThemes.toArray(new String[0]), -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        ThemeFile theme = new ZipRenderTheme(xmlThemes.get(which), resourceProvider);
-                        if (mTheme != null)
-                            mTheme.dispose();
-                        mTheme = mMap.setTheme(theme);
-                        mapsforgeTheme(mTheme);
-                        mMenu.findItem(R.id.theme_external_archive).setChecked(true);
+                        try {
+                            dialog.dismiss();
+                            ThemeFile theme = new ZipRenderTheme(xmlThemes.get(which), new ZipXmlThemeResourceProvider(new ZipInputStream(new BufferedInputStream(getContentResolver().openInputStream(uri)))));
+                            if (mTheme != null)
+                                mTheme.dispose();
+                            mTheme = mMap.setTheme(theme);
+                            mapsforgeTheme(mTheme);
+                            mMenu.findItem(R.id.theme_external_archive).setChecked(true);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
                 builder.show();
