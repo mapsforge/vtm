@@ -374,6 +374,8 @@
             <m k="lock" v="yes|true">
                 <line cap="butt" stroke="#f8f8f8" width="1.5" />
             </m>
+
+            <text fill="#404000" k="name" size="14" stroke="#aaffffff" stroke-width="2.0" />
         </m>
 
         <m k="natural" v="water">

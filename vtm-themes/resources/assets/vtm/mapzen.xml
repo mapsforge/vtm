@@ -400,6 +400,8 @@
             <m k="rank" v="9" zoom-min="9">
                 <line fade="9" use="water" width="0.1" />
             </m>
+
+            <text fill="#404000" k="name" size="14" stroke="#aaffffff" stroke-width="2.0" />
         </m>
         <!-- TODO this breaks the rendering -->
         <!--<m v="riverbank|dock">

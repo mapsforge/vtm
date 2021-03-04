@@ -267,6 +267,8 @@
                 <line cap="butt" stroke="#000000" width="2.0" />
                 <line cap="butt" stroke="#f8f8f8" width="1.5" />
             </m>
+
+            <text fill="#3b3b3b" k="name" size="14" stroke="#aaffffff" stroke-width="2.0" />
         </m>
 
 

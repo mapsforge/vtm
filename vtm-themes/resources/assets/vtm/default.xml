@@ -456,6 +456,8 @@
         <m k="lock" v="yes|true">
             <line stroke="#f8f8f8" use="fix" width="0.5" />
         </m>
+
+        <text fill="#404000" k="name" size="14" stroke="#aaffffff" stroke-width="2.0" />
     </m>
 
     <m e="way">

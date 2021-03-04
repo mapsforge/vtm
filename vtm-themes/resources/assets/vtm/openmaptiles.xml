@@ -387,6 +387,8 @@
                 <line use="river" width="0.3" />
             </m>
         </m>
+
+        <text fill="#404000" k="name" size="14" stroke="#aaffffff" stroke-width="2.0" />
     </m>
 
     <!-- building -->
