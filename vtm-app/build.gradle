@@ -5,7 +5,7 @@ dependencies {
     implementation project(':vtm-extras')
     implementation project(':vtm-themes')
     // https://github.com/square/okhttp/issues/4481
-    implementation 'com.squareup.okhttp3:okhttp:3.12.5'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.13'
     implementation "org.slf4j:slf4j-android:$slf4jVersion"
 }
 

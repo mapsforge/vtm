@@ -95,7 +95,7 @@ implementation 'org.locationtech.jts:jts-core:1.15.1'
 ```groovy
 implementation 'org.mapsforge:vtm-http:[CURRENT-VERSION]'
 // https://github.com/square/okhttp/issues/4481
-implementation 'com.squareup.okhttp3:okhttp:3.12.5'
+implementation 'com.squareup.okhttp3:okhttp:3.12.13'
 implementation 'com.squareup.okio:okio:1.15.0'
 ```
 
