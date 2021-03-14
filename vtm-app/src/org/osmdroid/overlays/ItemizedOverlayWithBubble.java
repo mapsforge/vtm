@@ -2,7 +2,6 @@ package org.osmdroid.overlays;
 
 import android.content.Context;
 import android.util.Log;
-
 import org.oscim.app.App;
 import org.oscim.core.GeoPoint;
 import org.oscim.core.MapPosition;
@@ -10,6 +9,7 @@ import org.oscim.core.Point;
 import org.oscim.event.Event;
 import org.oscim.event.MotionEvent;
 import org.oscim.layers.marker.ItemizedLayer;
+import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.map.Map;
@@ -22,14 +22,12 @@ import java.util.List;
  * taps on an overlay item, and displays item attributes. <br>
  * Items must be ExtendedMarkerItem. <br>
  *
- * @param <Item> ...
  * @author M.Kergall
  * @see ExtendedMarkerItem
  * @see InfoWindow
  */
-public class ItemizedOverlayWithBubble<Item extends MarkerItem> extends
-        ItemizedLayer<Item> implements
-        ItemizedLayer.OnItemGestureListener<Item>, Map.UpdateListener {
+public class ItemizedOverlayWithBubble extends ItemizedLayer
+        implements ItemizedLayer.OnItemGestureListener<MarkerInterface>, Map.UpdateListener {
 
     /* only one for all items of this overlay => one at a time */
     protected InfoWindow mBubble;
@@ -40,7 +38,7 @@ public class ItemizedOverlayWithBubble<Item extends MarkerItem> extends
     static int layoutResId = 0;
 
     public ItemizedOverlayWithBubble(Map map, Context context,
-                                     MarkerSymbol marker, List<Item> list, InfoWindow bubble) {
+                                     MarkerSymbol marker, List<MarkerInterface> list, InfoWindow bubble) {
         super(map, list, marker, null);
 
         if (bubble != null) {
@@ -66,12 +64,12 @@ public class ItemizedOverlayWithBubble<Item extends MarkerItem> extends
     }
 
     public ItemizedOverlayWithBubble(Map map, Context context,
-                                     MarkerSymbol marker, List<Item> aList) {
+                                     MarkerSymbol marker, List<MarkerInterface> aList) {
         this(map, context, marker, aList, null);
     }
 
     @Override
-    public boolean onItemLongPress(int index, MarkerItem item) {
+    public boolean onItemLongPress(int index, MarkerInterface item) {
         if (mBubble.isOpen())
             hideBubble();
         else
@@ -80,7 +78,7 @@ public class ItemizedOverlayWithBubble<Item extends MarkerItem> extends
     }
 
     @Override
-    public boolean onItemSingleTapUp(int index, MarkerItem item) {
+    public boolean onItemSingleTapUp(int index, MarkerInterface item) {
         showBubble(index);
 
         return true;
@@ -121,7 +119,6 @@ public class ItemizedOverlayWithBubble<Item extends MarkerItem> extends
      *
      * @param index of the overlay item to show
      */
-    @SuppressWarnings("unchecked")
     public void showBubbleOnItem(int index) {
         ExtendedMarkerItem item = (ExtendedMarkerItem) (mItemList.get(index));
         mItemWithBubble = item;
@@ -131,7 +128,7 @@ public class ItemizedOverlayWithBubble<Item extends MarkerItem> extends
             mMap.animator().animateTo(item.geoPoint);
 
             mMap.updateMap(true);
-            setFocus((Item) item);
+            setFocus(item);
         }
     }
 
@@ -179,7 +176,7 @@ public class ItemizedOverlayWithBubble<Item extends MarkerItem> extends
     }
 
     @Override
-    public synchronized boolean removeItem(final Item item) {
+    public synchronized boolean removeItem(final MarkerInterface item) {
         boolean result = super.removeItem(item);
         if (mItemWithBubble == item) {
             hideBubble();

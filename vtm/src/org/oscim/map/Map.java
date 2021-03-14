@@ -2,7 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Andrey Novikov
  * Copyright 2016 Stephan Leuschner
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2016 Longri
  * Copyright 2018 Gustl22
  *
@@ -24,11 +24,7 @@ package org.oscim.map;
 import org.oscim.core.BoundingBox;
 import org.oscim.core.Box;
 import org.oscim.core.MapPosition;
-import org.oscim.event.Event;
-import org.oscim.event.EventDispatcher;
-import org.oscim.event.EventListener;
-import org.oscim.event.Gesture;
-import org.oscim.event.MotionEvent;
+import org.oscim.event.*;
 import org.oscim.layers.AbstractMapEventLayer;
 import org.oscim.layers.Layer;
 import org.oscim.layers.MapEventLayer;
@@ -189,16 +185,18 @@ public abstract class Map implements TaskQueue {
      * Utility function to set theme of base vector-layer and
      * use map background color from theme.
      */
-    public void setTheme(ThemeFile theme) {
-        setTheme(theme, false);
+    public IRenderTheme setTheme(ThemeFile theme) {
+        return setTheme(theme, false);
     }
 
     /**
      * Utility function to set theme of base vector-layer, optionally
      * to all vector layers and use map background color from theme.
      */
-    public void setTheme(ThemeFile theme, boolean allLayers) {
-        setTheme(ThemeLoader.load(theme), allLayers);
+    public IRenderTheme setTheme(ThemeFile theme, boolean allLayers) {
+        IRenderTheme renderTheme = ThemeLoader.load(theme);
+        setTheme(renderTheme, allLayers);
+        return renderTheme;
     }
 
     public void setTheme(IRenderTheme theme) {
@@ -213,7 +211,7 @@ public abstract class Map implements TaskQueue {
         boolean themeSet = false;
         for (Layer layer : mLayers) {
             if (layer instanceof VectorTileLayer) {
-                ((VectorTileLayer) layer).setRenderTheme(theme);
+                ((VectorTileLayer) layer).setTheme(theme);
                 themeSet = true;
                 if (!allLayers)
                     break;

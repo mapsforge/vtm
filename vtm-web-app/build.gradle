@@ -4,13 +4,13 @@ buildscript {
     }
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.13'
-        classpath 'org.akhikhl.gretty:gretty:2.0.0'
+        classpath 'org.gretty:gretty:3.0.3'
     }
 }
 
 apply plugin: 'gwt'
 apply plugin: 'war'
-apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'org.gretty'
 
 sourceSets {
     main.java.srcDirs = ['src']

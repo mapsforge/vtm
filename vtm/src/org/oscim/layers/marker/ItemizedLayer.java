@@ -2,7 +2,7 @@
  * Copyright 2012 osmdroid authors: Nicolas Gramlich, Theodore Hong, Fred Eisele
  *
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2016 Stephan Leuschner
  * Copyright 2016 Pedinel
  * Copyright 2019 Carlos Alberto Martínez Gadea
@@ -31,30 +31,25 @@ import org.oscim.event.GestureListener;
 import org.oscim.event.MotionEvent;
 import org.oscim.map.Map;
 import org.oscim.map.Viewport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Item>
-        implements GestureListener {
+public class ItemizedLayer extends MarkerLayer implements GestureListener {
 
-    static final Logger log = LoggerFactory.getLogger(ItemizedLayer.class);
-
-    protected final List<Item> mItemList;
+    protected final List<MarkerInterface> mItemList;
     protected final Point mTmpPoint = new Point();
-    protected OnItemGestureListener<Item> mOnItemGestureListener;
+    protected OnItemGestureListener<MarkerInterface> mOnItemGestureListener;
     protected int mDrawnItemsLimit = Integer.MAX_VALUE;
 
     public ItemizedLayer(Map map, MarkerSymbol defaultMarker) {
-        this(map, new ArrayList<Item>(), defaultMarker, null);
+        this(map, new ArrayList<MarkerInterface>(), defaultMarker, null);
     }
 
-    public ItemizedLayer(Map map, List<Item> list,
+    public ItemizedLayer(Map map, List<MarkerInterface> list,
                          MarkerSymbol defaultMarker,
-                         OnItemGestureListener<Item> listener) {
+                         OnItemGestureListener<MarkerInterface> listener) {
 
         super(map, defaultMarker);
 
@@ -64,12 +59,12 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
     }
 
     public ItemizedLayer(Map map, MarkerRendererFactory markerRendererFactory) {
-        this(map, new ArrayList<Item>(), markerRendererFactory, null);
+        this(map, new ArrayList<MarkerInterface>(), markerRendererFactory, null);
     }
 
-    public ItemizedLayer(Map map, List<Item> list,
+    public ItemizedLayer(Map map, List<MarkerInterface> list,
                          MarkerRendererFactory markerRendererFactory,
-                         OnItemGestureListener<Item> listener) {
+                         OnItemGestureListener<MarkerInterface> listener) {
 
         super(map, markerRendererFactory);
 
@@ -78,12 +73,12 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
         populate();
     }
 
-    public void setOnItemGestureListener(OnItemGestureListener<Item> listener) {
+    public void setOnItemGestureListener(OnItemGestureListener<MarkerInterface> listener) {
         mOnItemGestureListener = listener;
     }
 
     @Override
-    protected synchronized Item createItem(int index) {
+    protected synchronized MarkerInterface createItem(int index) {
         return mItemList.get(index);
     }
 
@@ -92,23 +87,24 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
         return Math.min(mItemList.size(), mDrawnItemsLimit);
     }
 
-    public synchronized boolean addItem(Item item) {
+    public synchronized boolean addItem(MarkerInterface item) {
         final boolean result = mItemList.add(item);
         populate();
         return result;
     }
 
-    public synchronized void addItem(int location, Item item) {
+    public synchronized void addItem(int location, MarkerInterface item) {
         mItemList.add(location, item);
+        populate();
     }
 
-    public synchronized boolean addItems(Collection<Item> items) {
+    public synchronized boolean addItems(Collection<MarkerInterface> items) {
         final boolean result = mItemList.addAll(items);
         populate();
         return result;
     }
 
-    public synchronized List<Item> getItemList() {
+    public synchronized List<MarkerInterface> getItemList() {
         return mItemList;
     }
 
@@ -123,14 +119,14 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
         }
     }
 
-    public synchronized boolean removeItem(Item item) {
+    public synchronized boolean removeItem(MarkerInterface item) {
         final boolean result = mItemList.remove(item);
         populate();
         return result;
     }
 
-    public synchronized Item removeItem(int position) {
-        final Item result = mItemList.remove(position);
+    public synchronized MarkerInterface removeItem(int position) {
+        final MarkerInterface result = mItemList.remove(position);
         populate();
         return result;
     }
@@ -146,33 +142,31 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
     //    public boolean onTap(MotionEvent event, MapPosition pos) {
     //        return activateSelectedItems(event, mActiveItemSingleTap);
     //    }
-    protected boolean onSingleTapUpHelper(int index, Item item) {
+    protected boolean onSingleTapUpHelper(int index, MarkerInterface item) {
         return mOnItemGestureListener.onItemSingleTapUp(index, item);
     }
 
     private final ActiveItem mActiveItemSingleTap = new ActiveItem() {
         @Override
         public boolean run(int index) {
-            final ItemizedLayer<Item> that = ItemizedLayer.this;
             if (mOnItemGestureListener == null) {
                 return false;
             }
-            return onSingleTapUpHelper(index, that.mItemList.get(index));
+            return onSingleTapUpHelper(index, mItemList.get(index));
         }
     };
 
-    protected boolean onLongPressHelper(int index, Item item) {
+    protected boolean onLongPressHelper(int index, MarkerInterface item) {
         return this.mOnItemGestureListener.onItemLongPress(index, item);
     }
 
     private final ActiveItem mActiveItemLongPress = new ActiveItem() {
         @Override
         public boolean run(final int index) {
-            final ItemizedLayer<Item> that = ItemizedLayer.this;
-            if (that.mOnItemGestureListener == null) {
+            if (mOnItemGestureListener == null) {
                 return false;
             }
-            return onLongPressHelper(index, that.mItemList.get(index));
+            return onLongPressHelper(index, mItemList.get(index));
         }
     };
 
@@ -205,7 +199,7 @@ public class ItemizedLayer<Item extends MarkerInterface> extends MarkerLayer<Ite
         double dist = (20 * CanvasAdapter.getScale()) * (20 * CanvasAdapter.getScale());
 
         for (int i = 0; i < size; i++) {
-            Item item = mItemList.get(i);
+            MarkerInterface item = mItemList.get(i);
 
             if (!box.contains(item.getPoint().longitudeE6,
                     item.getPoint().latitudeE6))

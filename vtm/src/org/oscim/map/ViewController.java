@@ -1,9 +1,10 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2017 Luca Osten
  * Copyright 2018 Izumi Kawashima
  * Copyright 2018 Mathieu De Brito
+ * Copyright 2020 Stephan Brandt
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -225,18 +226,20 @@ public class ViewController extends Viewport {
     public void rotateMap(double radians, float pivotX, float pivotY) {
         ThreadUtils.assertMainThread();
 
-        double rsin = Math.sin(radians);
-        double rcos = Math.cos(radians);
-
-        pivotX -= mWidth * mPivotX;
-        pivotY -= mHeight * mPivotY;
-
-        float x = (float) (pivotX - pivotX * rcos + pivotY * rsin);
-        float y = (float) (pivotY - pivotX * rsin - pivotY * rcos);
-
-        moveMap(x, y);
-
         setRotation(mPos.bearing + Math.toDegrees(radians));
+
+        if (pivotX != 0 && pivotY != 0) {
+            double rsin = Math.sin(radians);
+            double rcos = Math.cos(radians);
+
+            pivotX -= mWidth * mPivotX;
+            pivotY -= mHeight * mPivotY;
+
+            float x = (float) (pivotX - pivotX * rcos + pivotY * rsin);
+            float y = (float) (pivotY - pivotX * rsin - pivotY * rcos);
+
+            moveMap(x, y);
+        }
     }
 
     public void setRotation(double degree) {

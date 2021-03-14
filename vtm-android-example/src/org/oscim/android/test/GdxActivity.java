@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -71,7 +71,7 @@ public class GdxActivity extends AndroidApplication {
         DateTimeAdapter.init(new DateTime());
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-        CanvasAdapter.dpi = (int) (metrics.scaledDensity * CanvasAdapter.DEFAULT_DPI);
+        CanvasAdapter.dpi = (int) (metrics.density * CanvasAdapter.DEFAULT_DPI);
         Tile.SIZE = Tile.calculateTileSize();
 
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();

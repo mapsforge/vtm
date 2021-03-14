@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:4.0.2'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
@@ -14,7 +14,7 @@ allprojects {
     version = 'master-SNAPSHOT'
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
-    ext.androidBuildVersionTools = "29.0.2"
+    ext.androidBuildVersionTools = "30.0.3"
     ext.gdxVersion = "1.9.10"
     ext.gwtVersion = "2.8.2"
     ext.slf4jVersion = "1.7.28"
@@ -28,12 +28,12 @@ allprojects {
     }
 }
 
-static def androidCompileSdk() { return 29 }
+static def androidCompileSdk() { return 30 }
 
 // 14 for Support Library, 16 for sqlite-android
 static def androidMinSdk() { return 16 }
 
-static def androidTargetSdk() { return 29 }
+static def androidTargetSdk() { return 30 }
 
 static def versionCode() { return 1 }
 
@@ -42,7 +42,6 @@ def versionName() { return version }
 subprojects {
     repositories {
         google()
-        maven { url 'https://repo.boundlessgeo.com/main/' }
         jcenter()
         maven { url 'https://jitpack.io' }
     }
@@ -51,5 +50,10 @@ subprojects {
         sourceCompatibility = JavaVersion.VERSION_1_7
         targetCompatibility = JavaVersion.VERSION_1_7
         options.encoding = 'UTF-8'
+        if (JavaVersion.current().isJava9Compatible()) {
+            if (!project.properties.containsKey('android')) {
+                options.compilerArgs.addAll(['--release', '7'])
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2020 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -23,25 +23,27 @@ import org.oscim.event.MotionEvent;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.Layer;
 import org.oscim.layers.marker.ItemizedLayer;
+import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.map.Map;
-import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
+import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 
-public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
+public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerInterface> {
 
     static final boolean BILLBOARDS = true;
     MarkerSymbol mFocusMarker;
-    ItemizedLayer<MarkerItem> mMarkerLayer;
+    ItemizedLayer mMarkerLayer;
 
     @Override
     public void createLayers() {
@@ -49,9 +51,10 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
             // Map events receiver
             mMap.layers().add(new MapEventsReceiver(mMap));
 
-            TileSource tileSource = DefaultSources.OPENSTREETMAP
+            UrlTileSource tileSource = DefaultSources.OPENSTREETMAP
                     .httpFactory(new OkHttpEngine.OkHttpFactory())
                     .build();
+            tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
             mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
             mMap.setMapPosition(0, 0, 1 << 2);
@@ -69,10 +72,10 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
             else
                 mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.CENTER, false);
 
-            mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+            mMarkerLayer = new ItemizedLayer(mMap, new ArrayList<MarkerInterface>(), symbol, this);
             mMap.layers().add(mMarkerLayer);
 
-            List<MarkerItem> pts = new ArrayList<>();
+            List<MarkerInterface> pts = new ArrayList<>();
             for (double lat = -90; lat <= 90; lat += 5) {
                 for (double lon = -180; lon <= 180; lon += 5)
                     pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
@@ -84,24 +87,26 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
     }
 
     @Override
-    public boolean onItemSingleTapUp(int index, MarkerItem item) {
-        if (item.getMarker() == null)
-            item.setMarker(mFocusMarker);
+    public boolean onItemSingleTapUp(int index, MarkerInterface item) {
+        MarkerItem markerItem = (MarkerItem) item;
+        if (markerItem.getMarker() == null)
+            markerItem.setMarker(mFocusMarker);
         else
-            item.setMarker(null);
+            markerItem.setMarker(null);
 
-        System.out.println("Marker tap " + item.getTitle());
+        System.out.println("Marker tap " + markerItem.getTitle());
         return true;
     }
 
     @Override
-    public boolean onItemLongPress(int index, MarkerItem item) {
-        if (item.getMarker() == null)
-            item.setMarker(mFocusMarker);
+    public boolean onItemLongPress(int index, MarkerInterface item) {
+        MarkerItem markerItem = (MarkerItem) item;
+        if (markerItem.getMarker() == null)
+            markerItem.setMarker(mFocusMarker);
         else
-            item.setMarker(null);
+            markerItem.setMarker(null);
 
-        System.out.println("Marker long press " + item.getTitle());
+        System.out.println("Marker long press " + markerItem.getTitle());
         return true;
     }
 

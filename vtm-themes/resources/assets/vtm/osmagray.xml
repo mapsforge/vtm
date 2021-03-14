@@ -52,6 +52,11 @@
     <style-line id="secondary" stroke="#c6c6c6" width="1.4" />
     <style-line id="tertiary" stroke="#f7f7f7" width="1.15" />
 
+    <!--###### SYMBOL styles ######-->
+
+    <!-- oneway -->
+    <style-symbol id="oneway" repeat="true" src="assets:symbols/oneway.svg" />
+
 
     <!--###### ASSIGNMENT ######-->
 
@@ -262,6 +267,8 @@
                 <line cap="butt" stroke="#000000" width="2.0" />
                 <line cap="butt" stroke="#f8f8f8" width="1.5" />
             </m>
+
+            <text fill="#3b3b3b" k="name" size="14" stroke="#aaffffff" stroke-width="2.0" />
         </m>
 
 
@@ -301,7 +308,7 @@
 
         <m k="natural" v="water">
             <area use="water" />
-            <caption area-size="0.4" fill="#3b3b3b" k="name" size="16" stroke="#aaffffff"
+            <caption area-size="0.2" fill="#3b3b3b" k="name" size="16" stroke="#aaffffff"
                 stroke-width="2.0" />
         </m>
 
@@ -959,7 +966,7 @@
             <m k="area" v="~|false|no">
                 <m k="highway">
                     <m k="oneway" v="yes|true" zoom-min="16">
-                        <symbol repeat="true" src="assets:symbols/oneway.svg" />
+                        <symbol use="oneway" />
                     </m>
                 </m>
             </m>

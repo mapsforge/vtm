@@ -1,6 +1,6 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
- * Copyright 2017-2018 devemux86
+ * Copyright 2017-2020 devemux86
  * Copyright 2017 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -25,8 +25,11 @@ import org.oscim.utils.Parameters;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -38,16 +41,17 @@ public class ReadBuffer {
 
     private byte[] mBufferData;
     private int mBufferPosition;
-    private final RandomAccessFile mInputFile;
+    private ByteBuffer mBufferWrapper;
+    private final FileChannel mInputChannel;
 
     private final List<Integer> mTagIds = new ArrayList<>();
 
-    ReadBuffer(RandomAccessFile inputFile) {
-        mInputFile = inputFile;
+    ReadBuffer(FileChannel inputChannel) {
+        mInputChannel = inputChannel;
     }
 
     /**
-     * Returns one signed byte from the read buffer.
+     * Returns one byte from the read buffer.
      *
      * @return the byte value.
      */
@@ -84,14 +88,60 @@ public class ReadBuffer {
                 LOG.warning("invalid read length: " + length);
                 return false;
             }
-            mBufferData = new byte[length];
+            try {
+                mBufferData = new byte[length];
+            } catch (Throwable t) {
+                LOG.log(Level.SEVERE, t.getMessage(), t);
+                return false;
+            }
+            mBufferWrapper = ByteBuffer.wrap(mBufferData, 0, length);
         }
 
         mBufferPosition = 0;
+        mBufferWrapper.clear();
 
         // reset the buffer position and read the data into the buffer
         // bufferPosition = 0;
-        return mInputFile.read(mBufferData, 0, length) == length;
+        return mInputChannel.read(mBufferWrapper) == length;
+    }
+
+    /**
+     * Reads the given amount of bytes from the file into the read buffer and
+     * resets the internal buffer position. If
+     * the capacity of the read buffer is too small, a larger one is created
+     * automatically.
+     *
+     * @param offset the offset position, measured in bytes from the beginning of the file, at which to set the file pointer.
+     * @param length the amount of bytes to read from the file.
+     * @return true if the whole data was read successfully, false otherwise.
+     * @throws IOException if an error occurs while reading the file.
+     */
+    public boolean readFromFile(long offset, int length) throws IOException {
+        // ensure that the read buffer is large enough
+        if (mBufferData == null || mBufferData.length < length) {
+            // ensure that the read buffer is not too large
+            if (length > Parameters.MAXIMUM_BUFFER_SIZE) {
+                LOG.warning("invalid read length: " + length);
+                return false;
+            }
+            try {
+                mBufferData = new byte[length];
+            } catch (Throwable t) {
+                LOG.log(Level.SEVERE, t.getMessage(), t);
+                return false;
+            }
+            mBufferWrapper = ByteBuffer.wrap(mBufferData, 0, length);
+        }
+
+        mBufferPosition = 0;
+        mBufferWrapper.clear();
+
+        // reset the buffer position and read the data into the buffer
+        // bufferPosition = 0;
+        synchronized (mInputChannel) {
+            mInputChannel.position(offset);
+            return mInputChannel.read(mBufferWrapper) == length;
+        }
     }
 
     /**

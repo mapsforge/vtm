@@ -19,7 +19,6 @@
 package org.oscim.ios.test;
 
 import com.badlogic.gdx.graphics.glutils.GLVersion;
-
 import org.oscim.backend.GLAdapter;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeoPoint;
@@ -74,7 +73,7 @@ public class IOSPathLayerTest extends GdxMap {
 
         mMap.setMapPosition(0, 0, 1 << 2);
 
-        tex = Utils.loadTexture("", "patterns/pike.png", 0, 0, 100);
+        tex = Utils.loadTexture("", "patterns/pike.png", null, 0, 0, 100);
 //        tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png"));
         tex.mipmap = true;
 

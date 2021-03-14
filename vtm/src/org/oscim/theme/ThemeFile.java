@@ -1,8 +1,9 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 Andrey Novikov
+ * Copyright 2021 eddiemuc
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -45,6 +46,11 @@ public interface ThemeFile extends Serializable {
     InputStream getRenderThemeAsStream() throws ThemeException;
 
     /**
+     * @return a custom provider to retrieve resources internally referenced by "src" attribute (e.g. images, icons).
+     */
+    XmlThemeResourceProvider getResourceProvider();
+
+    /**
      * Tells ThemeLoader if theme file is in Mapsforge format
      *
      * @return true if theme file is in Mapsforge format
@@ -52,7 +58,17 @@ public interface ThemeFile extends Serializable {
     boolean isMapsforgeTheme();
 
     /**
+     * @param mapsforgeTheme true if theme file is in Mapsforge format
+     */
+    void setMapsforgeTheme(boolean mapsforgeTheme);
+
+    /**
      * @param menuCallback the interface callback to create a settings menu on the fly.
      */
     void setMenuCallback(XmlRenderThemeMenuCallback menuCallback);
+
+    /**
+     * @param resourceProvider a custom provider to retrieve resources internally referenced by "src" attribute (e.g. images, icons).
+     */
+    void setResourceProvider(XmlThemeResourceProvider resourceProvider);
 }

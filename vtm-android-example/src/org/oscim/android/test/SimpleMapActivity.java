@@ -38,7 +38,6 @@ import org.oscim.theme.ThemeLoader;
 import org.oscim.theme.VtmThemes;
 
 public class SimpleMapActivity extends BaseMapActivity {
-    private DefaultMapScaleBar mapScaleBar;
 
     BuildingLayer mBuildingLayer;
     private boolean mShadow;
@@ -71,7 +70,7 @@ public class SimpleMapActivity extends BaseMapActivity {
         groupLayer.layers.add(new LabelLayer(mMap, mBaseLayer));
         mMap.layers().add(groupLayer);
 
-        mapScaleBar = new DefaultMapScaleBar(mMap);
+        DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap);
         mapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
         mapScaleBar.setDistanceUnitAdapter(MetricUnitAdapter.INSTANCE);
         mapScaleBar.setSecondaryDistanceUnitAdapter(ImperialUnitAdapter.INSTANCE);
@@ -84,14 +83,6 @@ public class SimpleMapActivity extends BaseMapActivity {
         mMap.layers().add(mapScaleBarLayer);
 
         mMap.setTheme(VtmThemes.DEFAULT);
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (mapScaleBar != null)
-            mapScaleBar.destroy();
-
-        super.onDestroy();
     }
 
     void runTheMonkey() {

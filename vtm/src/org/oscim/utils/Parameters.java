@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 devemux86
+ * Copyright 2017-2020 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -15,6 +15,8 @@
 package org.oscim.utils;
 
 public final class Parameters {
+
+    public enum SymbolScaling {ALL, POI}
 
     /**
      * If true the <code>Animator2</code> will be used instead of default <code>Animator</code>.
@@ -37,9 +39,14 @@ public final class Parameters {
     public static boolean MAP_EVENT_LAYER2 = false;
 
     /**
+     * If true the markers are sorted in y-axis.
+     */
+    public static boolean MARKER_SORT = true;
+
+    /**
      * Maximum buffer size for map files.
      */
-    public static int MAXIMUM_BUFFER_SIZE = 8000000;
+    public static int MAXIMUM_BUFFER_SIZE = 10000000;
 
     /**
      * Calculation of centroids for all polygons.
@@ -67,6 +74,11 @@ public final class Parameters {
      * e.g. 0 (no simplification), 2, 4, ...
      */
     public static int SIMPLIFICATION_TOLERANCE = 0;
+
+    /**
+     * Symbol scaling mode.
+     */
+    public static SymbolScaling SYMBOL_SCALING = SymbolScaling.POI;
 
     /**
      * Texture atlas in themes.

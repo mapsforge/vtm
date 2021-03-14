@@ -17,8 +17,8 @@
  */
 package org.oscim.test.jeo;
 
-import org.jeo.map.Style;
-import org.jeo.vector.VectorDataset;
+import io.jeo.map.Style;
+import io.jeo.vector.VectorDataset;
 import org.oscim.backend.canvas.Color;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.JeoVectorLayer;

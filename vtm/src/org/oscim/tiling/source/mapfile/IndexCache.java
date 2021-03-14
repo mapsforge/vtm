@@ -1,5 +1,6 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
+ * Copyright 2017-2020 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -20,7 +21,8 @@ import org.oscim.tiling.source.mapfile.header.SubFileParameter;
 import org.oscim.utils.LRUCache;
 
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
@@ -44,15 +46,15 @@ class IndexCache {
             * SubFileParameter.BYTES_PER_INDEX_ENTRY;
 
     private final Map<IndexCacheEntryKey, byte[]> map;
-    private final RandomAccessFile randomAccessFile;
+    private final FileChannel fileChannel;
 
     /**
-     * @param randomAccessFile the map file from which the index should be read and cached.
-     * @param capacity         the maximum number of entries in the cache.
+     * @param inputChannel the map file from which the index should be read and cached.
+     * @param capacity     the maximum number of entries in the cache.
      * @throws IllegalArgumentException if the capacity is negative.
      */
-    IndexCache(RandomAccessFile randomAccessFile, int capacity) {
-        this.randomAccessFile = randomAccessFile;
+    IndexCache(FileChannel inputChannel, int capacity) {
+        this.fileChannel = inputChannel;
         this.map = Collections.synchronizedMap(new LRUCache<IndexCacheEntryKey, byte[]>(capacity));
     }
 
@@ -97,11 +99,14 @@ class IndexCache {
                 int remainingIndexSize = (int) (subFileParameter.indexEndAddress - indexBlockPosition);
                 int indexBlockSize = Math.min(SIZE_OF_INDEX_BLOCK, remainingIndexSize);
                 indexBlock = new byte[indexBlockSize];
+                ByteBuffer indexBlockWrapper = ByteBuffer.wrap(indexBlock, 0, indexBlockSize);
 
-                this.randomAccessFile.seek(indexBlockPosition);
-                if (this.randomAccessFile.read(indexBlock, 0, indexBlockSize) != indexBlockSize) {
-                    LOG.warning("reading the current index block has failed");
-                    return -1;
+                synchronized (this.fileChannel) {
+                    this.fileChannel.position(indexBlockPosition);
+                    if (this.fileChannel.read(indexBlockWrapper) != indexBlockSize) {
+                        LOG.warning("reading the current index block has failed");
+                        return -1;
+                    }
                 }
 
                 // put the index block in the map

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2020 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -17,7 +17,6 @@ package org.oscim.android.test;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import org.oscim.android.theme.AssetsRenderTheme;
 import org.oscim.theme.XmlRenderThemeMenuCallback;
 import org.oscim.theme.XmlRenderThemeStyleLayer;
@@ -58,7 +57,9 @@ public class MapsforgeStyleActivity extends MapsforgeActivity {
 
     @Override
     protected void loadTheme(final String styleId) {
-        mMap.setTheme(new AssetsRenderTheme(getAssets(), "", "vtm/stylemenu.xml", new XmlRenderThemeMenuCallback() {
+        if (mTheme != null)
+            mTheme.dispose();
+        mTheme = mMap.setTheme(new AssetsRenderTheme(getAssets(), "", "vtm/stylemenu.xml", new XmlRenderThemeMenuCallback() {
             @Override
             public Set<String> getCategories(XmlRenderThemeStyleMenu renderThemeStyleMenu) {
                 // Use the selected style or the default

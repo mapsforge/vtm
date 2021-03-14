@@ -129,6 +129,9 @@
     <style-line fade="15" id="building" stroke="#eeb7b6b3" use="fix" />
     <style-area fade="15" fill="#f2f0eb" id="building" />
 
+    <!-- oneway -->
+    <style-symbol id="oneway" repeat="true" src="assets:symbols/oneway.svg" />
+
     <m closed="yes" e="way" k="layer" v="water">
         <area mesh="true" use="water" />
     </m>
@@ -397,6 +400,8 @@
             <m k="rank" v="9" zoom-min="9">
                 <line fade="9" use="water" width="0.1" />
             </m>
+
+            <text fill="#404000" k="name" size="14" stroke="#aaffffff" stroke-width="2.0" />
         </m>
         <!-- TODO this breaks the rendering -->
         <!--<m v="riverbank|dock">
@@ -417,7 +422,7 @@
     <m e="way">
         <m closed="yes" k="kind" v="water">
             <area use="water" />
-            <caption area-size="0.4" fill="#404000" k="name" size="16" stroke="#aaffffff"
+            <caption area-size="0.2" fill="#404000" k="name" size="16" stroke="#aaffffff"
                 stroke-width="2.0" />
             <!--<line use="water:outline" />-->
         </m>
@@ -1038,7 +1043,7 @@
             <m k="area" v="~|false|no">
                 <m k="kind_detail">
                     <m k="oneway" v="yes|true" zoom-min="16">
-                        <symbol repeat="true" src="assets:symbols/oneway.svg" />
+                        <symbol use="oneway" />
                     </m>
                 </m>
             </m>

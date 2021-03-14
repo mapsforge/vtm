@@ -2,7 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013, 2014 Hannes Janetzek
  * Copyright 2014-2015 Ludwig M Brinckmann
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2016 Andrey Novikov
  * Copyright 2017-2018 Gustl22
  * Copyright 2018 Bezzu
@@ -38,8 +38,9 @@ import org.oscim.utils.geom.TileSeparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -202,8 +203,7 @@ public class MapDatabase implements ITileDataSource {
 
     private long mFileSize;
     private boolean mDebugFile;
-    private RandomAccessFile mInputFile;
-    private ReadBuffer mReadBuffer;
+    private FileChannel mInputChannel;
     private String mSignatureBlock;
     private String mSignaturePoi;
     private String mSignatureWay;
@@ -227,11 +227,15 @@ public class MapDatabase implements ITileDataSource {
     public MapDatabase(MapFileTileSource tileSource) throws IOException {
         mTileSource = tileSource;
         try {
-            /* open the file in read only mode */
-            mInputFile = new RandomAccessFile(tileSource.mapFile, "r");
-            mFileSize = mInputFile.length();
-            mReadBuffer = new ReadBuffer(mInputFile);
-
+            // false positive: stream gets closed when the channel is closed
+            // see e.g. http://bugs.java.com/bugdatabase/view_bug.do?bug_id=4796385
+            if (tileSource.mapFileInputStream != null)
+                mInputChannel = tileSource.mapFileInputStream.getChannel();
+            else {
+                FileInputStream fis = new FileInputStream(tileSource.mapFile);
+                mInputChannel = fis.getChannel();
+            }
+            mFileSize = mInputChannel.size();
         } catch (IOException e) {
             log.error(e.getMessage());
             /* make sure that the file is closed */
@@ -314,12 +318,10 @@ public class MapDatabase implements ITileDataSource {
 
     @Override
     public void dispose() {
-        mReadBuffer = null;
-        if (mInputFile != null) {
-
+        if (mInputChannel != null) {
             try {
-                mInputFile.close();
-                mInputFile = null;
+                mInputChannel.close();
+                mInputChannel = null;
             } catch (IOException e) {
                 log.error(e.getMessage());
             }
@@ -351,13 +353,13 @@ public class MapDatabase implements ITileDataSource {
     private void processBlock(QueryParameters queryParameters,
                               SubFileParameter subFileParameter, ITileDataSink mapDataSink,
                               BoundingBox boundingBox, Selector selector,
-                              MapReadResult mapReadResult) {
+                              MapReadResult mapReadResult, ReadBuffer readBuffer) {
 
-        if (!processBlockSignature()) {
+        if (!processBlockSignature(readBuffer)) {
             return;
         }
 
-        int[][] zoomTable = readZoomTable(subFileParameter);
+        int[][] zoomTable = readZoomTable(subFileParameter, readBuffer);
         if (zoomTable == null) {
             return;
         }
@@ -366,7 +368,7 @@ public class MapDatabase implements ITileDataSource {
         int waysOnQueryZoomLevel = zoomTable[zoomTableRow][1];
 
         /* get the relative offset to the first stored way in the block */
-        int firstWayOffset = mReadBuffer.readUnsignedInt();
+        int firstWayOffset = readBuffer.readUnsignedInt();
         if (firstWayOffset < 0) {
             log.warn(INVALID_FIRST_WAY_OFFSET + firstWayOffset);
             if (mDebugFile) {
@@ -376,8 +378,8 @@ public class MapDatabase implements ITileDataSource {
         }
 
         /* add the current buffer position to the relative first way offset */
-        firstWayOffset += mReadBuffer.getBufferPosition();
-        if (firstWayOffset > mReadBuffer.getBufferSize()) {
+        firstWayOffset += readBuffer.getBufferPosition();
+        if (firstWayOffset > readBuffer.getBufferSize()) {
             log.warn(INVALID_FIRST_WAY_OFFSET + firstWayOffset);
             if (mDebugFile) {
                 log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
@@ -391,13 +393,13 @@ public class MapDatabase implements ITileDataSource {
         if (mapReadResult != null)
             pois = new ArrayList<>();
 
-        if (!processPOIs(mapDataSink, poisOnQueryZoomLevel, boundingBox, filterRequired, pois)) {
+        if (!processPOIs(mapDataSink, poisOnQueryZoomLevel, boundingBox, filterRequired, pois, readBuffer)) {
             return;
         }
 
         /* finished reading POIs, check if the current buffer position is valid */
-        if (mReadBuffer.getBufferPosition() > firstWayOffset) {
-            log.warn("invalid buffer position: " + mReadBuffer.getBufferPosition());
+        if (readBuffer.getBufferPosition() > firstWayOffset) {
+            log.warn("invalid buffer position: " + readBuffer.getBufferPosition());
             if (mDebugFile) {
                 log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
             }
@@ -405,13 +407,13 @@ public class MapDatabase implements ITileDataSource {
         }
 
         /* move the pointer to the first way */
-        mReadBuffer.setBufferPosition(firstWayOffset);
+        readBuffer.setBufferPosition(firstWayOffset);
 
         List<Way> ways = null;
         if (mapReadResult != null && Selector.POIS != selector)
             ways = new ArrayList<>();
 
-        if (!processWays(queryParameters, mapDataSink, waysOnQueryZoomLevel, boundingBox, filterRequired, selector, ways)) {
+        if (!processWays(queryParameters, mapDataSink, waysOnQueryZoomLevel, boundingBox, filterRequired, selector, ways, readBuffer)) {
             return;
         }
 
@@ -576,10 +578,9 @@ public class MapDatabase implements ITileDataSource {
                 }
 
                 /* seek to the current block in the map file */
-                mInputFile.seek(subFileParameter.startAddress + blockPointer);
-
                 /* read the current block into the buffer */
-                if (!mReadBuffer.readFromFile(blockSize)) {
+                ReadBuffer readBuffer = new ReadBuffer(mInputChannel);
+                if (!readBuffer.readFromFile(subFileParameter.startAddress + blockPointer, blockSize)) {
                     /* skip the current block */
                     log.warn("reading current block has failed: " + blockSize);
                     return;
@@ -596,7 +597,7 @@ public class MapDatabase implements ITileDataSource {
                 mTileLatitude = (int) (tileLatitudeDeg * 1E6);
                 mTileLongitude = (int) (tileLongitudeDeg * 1E6);
 
-                processBlock(queryParams, subFileParameter, mapDataSink, boundingBox, selector, mapReadResult);
+                processBlock(queryParams, subFileParameter, mapDataSink, boundingBox, selector, mapReadResult, readBuffer);
             }
         }
     }
@@ -607,10 +608,10 @@ public class MapDatabase implements ITileDataSource {
      * @return true if the block signature could be processed successfully,
      * false otherwise.
      */
-    private boolean processBlockSignature() {
+    private boolean processBlockSignature(ReadBuffer readBuffer) {
         if (mDebugFile) {
             /* get and check the block signature */
-            mSignatureBlock = mReadBuffer.readUTF8EncodedString(SIGNATURE_LENGTH_BLOCK);
+            mSignatureBlock = readBuffer.readUTF8EncodedString(SIGNATURE_LENGTH_BLOCK);
             if (!mSignatureBlock.startsWith("###TileStart")) {
                 log.warn("invalid block signature: " + mSignatureBlock);
                 return false;
@@ -628,7 +629,7 @@ public class MapDatabase implements ITileDataSource {
      * otherwise.
      */
     private boolean processPOIs(ITileDataSink mapDataSink, int numberOfPois, BoundingBox boundingBox,
-                                boolean filterRequired, List<PointOfInterest> pois) {
+                                boolean filterRequired, List<PointOfInterest> pois, ReadBuffer readBuffer) {
         Tag[] poiTags = mTileSource.fileInfo.poiTags;
         MapElement e = mElem;
 
@@ -638,7 +639,7 @@ public class MapDatabase implements ITileDataSource {
 
             if (mDebugFile) {
                 /* get and check the POI signature */
-                mSignaturePoi = mReadBuffer.readUTF8EncodedString(SIGNATURE_LENGTH_POI);
+                mSignaturePoi = readBuffer.readUTF8EncodedString(SIGNATURE_LENGTH_POI);
                 if (!mSignaturePoi.startsWith("***POIStart")) {
                     log.warn("invalid POI signature: " + mSignaturePoi);
                     log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
@@ -647,12 +648,12 @@ public class MapDatabase implements ITileDataSource {
             }
 
             /* get the POI latitude offset (VBE-S) */
-            int latitude = mTileLatitude + mReadBuffer.readSignedInt();
+            int latitude = mTileLatitude + readBuffer.readSignedInt();
             /* get the POI longitude offset (VBE-S) */
-            int longitude = mTileLongitude + mReadBuffer.readSignedInt();
+            int longitude = mTileLongitude + readBuffer.readSignedInt();
 
             /* get the special byte which encodes multiple flags */
-            byte specialByte = mReadBuffer.readByte();
+            byte specialByte = readBuffer.readByte();
 
             /* bit 1-4 represent the layer */
             byte layer = (byte) ((specialByte & POI_LAYER_BITMASK) >>> POI_LAYER_SHIFT);
@@ -661,29 +662,29 @@ public class MapDatabase implements ITileDataSource {
             byte numberOfTags = (byte) (specialByte & POI_NUMBER_OF_TAGS_BITMASK);
 
             if (numberOfTags != 0) {
-                if (!mReadBuffer.readTags(e.tags, poiTags, numberOfTags))
+                if (!readBuffer.readTags(e.tags, poiTags, numberOfTags))
                     return false;
             }
 
             /* get the feature bitmask (1 byte) */
-            byte featureByte = mReadBuffer.readByte();
+            byte featureByte = readBuffer.readByte();
 
             /* bit 1-3 enable optional features
              * check if the POI has a name */
             if ((featureByte & POI_FEATURE_NAME) != 0) {
-                String str = mTileSource.extractLocalized(mReadBuffer.readUTF8EncodedString());
+                String str = mTileSource.extractLocalized(readBuffer.readUTF8EncodedString());
                 e.tags.add(new Tag(Tag.KEY_NAME, str, false));
             }
 
             /* check if the POI has a house number */
             if ((featureByte & POI_FEATURE_HOUSE_NUMBER) != 0) {
-                String str = mReadBuffer.readUTF8EncodedString();
+                String str = readBuffer.readUTF8EncodedString();
                 e.tags.add(new Tag(Tag.KEY_HOUSE_NUMBER, str, false));
             }
 
             /* check if the POI has an elevation */
             if ((featureByte & POI_FEATURE_ELEVATION) != 0) {
-                String str = Integer.toString(mReadBuffer.readSignedInt());
+                String str = Integer.toString(readBuffer.readSignedInt());
                 e.tags.add(new Tag(Tag.KEY_ELE, str, false));
             }
             mTileProjection.projectPoint(latitude, longitude, e);
@@ -712,9 +713,9 @@ public class MapDatabase implements ITileDataSource {
         return true;
     }
 
-    private boolean processWayDataBlock(MapElement e, boolean doubleDeltaEncoding, boolean isLine, List<GeoPoint[]> wayCoordinates, int[] labelPosition) {
+    private boolean processWayDataBlock(MapElement e, boolean doubleDeltaEncoding, boolean isLine, List<GeoPoint[]> wayCoordinates, int[] labelPosition, ReadBuffer readBuffer) {
         /* get and check the number of way coordinate blocks (VBE-U) */
-        int numBlocks = mReadBuffer.readUnsignedInt();
+        int numBlocks = readBuffer.readUnsignedInt();
         if (numBlocks < 1 || numBlocks > Short.MAX_VALUE) {
             log.warn("invalid number of way coordinate blocks: " + numBlocks);
             return false;
@@ -726,7 +727,7 @@ public class MapDatabase implements ITileDataSource {
 
         /* read the way coordinate blocks */
         for (int coordinateBlock = 0; coordinateBlock < numBlocks; ++coordinateBlock) {
-            int numWayNodes = mReadBuffer.readUnsignedInt();
+            int numWayNodes = readBuffer.readUnsignedInt();
 
             if (numWayNodes < 2 || numWayNodes > Short.MAX_VALUE) {
                 log.warn("invalid number of way nodes: " + numWayNodes);
@@ -744,7 +745,7 @@ public class MapDatabase implements ITileDataSource {
 
             // label position must be set on first coordinate block
             wayLengths[coordinateBlock] = decodeWayNodes(doubleDeltaEncoding, e, len, isLine,
-                    coordinateBlock == 0 ? labelPosition : null, waySegment);
+                    coordinateBlock == 0 ? labelPosition : null, waySegment, readBuffer);
 
             if (wayCoordinates != null)
                 wayCoordinates.add(waySegment);
@@ -753,9 +754,9 @@ public class MapDatabase implements ITileDataSource {
         return true;
     }
 
-    private int decodeWayNodes(boolean doubleDelta, MapElement e, int length, boolean isLine, int[] labelPosition, GeoPoint[] waySegment) {
+    private int decodeWayNodes(boolean doubleDelta, MapElement e, int length, boolean isLine, int[] labelPosition, GeoPoint[] waySegment, ReadBuffer readBuffer) {
         int[] buffer = mIntBuffer;
-        mReadBuffer.readSignedInt(buffer, length);
+        readBuffer.readSignedInt(buffer, length);
 
         float[] outBuffer = e.ensurePointSize(e.pointNextPos + length, true);
         int outPos = e.pointNextPos;
@@ -848,7 +849,7 @@ public class MapDatabase implements ITileDataSource {
      */
     private boolean processWays(QueryParameters queryParameters, ITileDataSink mapDataSink,
                                 int numberOfWays, BoundingBox boundingBox, boolean filterRequired,
-                                Selector selector, List<Way> ways) {
+                                Selector selector, List<Way> ways, ReadBuffer readBuffer) {
 
         Tag[] wayTags = mTileSource.fileInfo.wayTags;
         MapElement e = mElem;
@@ -860,9 +861,9 @@ public class MapDatabase implements ITileDataSource {
         stringOffset = 0;
 
         if (mTileSource.experimental) {
-            stringsSize = mReadBuffer.readUnsignedInt();
-            stringOffset = mReadBuffer.getBufferPosition();
-            mReadBuffer.skipBytes(stringsSize);
+            stringsSize = readBuffer.readUnsignedInt();
+            stringOffset = readBuffer.getBufferPosition();
+            readBuffer.skipBytes(stringsSize);
         }
 
         //setTileClipping(queryParameters);
@@ -873,7 +874,7 @@ public class MapDatabase implements ITileDataSource {
 
             if (mDebugFile) {
                 // get and check the way signature
-                mSignatureWay = mReadBuffer.readUTF8EncodedString(SIGNATURE_LENGTH_WAY);
+                mSignatureWay = readBuffer.readUTF8EncodedString(SIGNATURE_LENGTH_WAY);
                 if (!mSignatureWay.startsWith("---WayStart")) {
                     log.warn("invalid way signature: " + mSignatureWay);
                     log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
@@ -882,7 +883,7 @@ public class MapDatabase implements ITileDataSource {
             }
 
             if (queryParameters.useTileBitmask) {
-                elementCounter = mReadBuffer.skipWays(queryParameters.queryTileBitmask,
+                elementCounter = readBuffer.skipWays(queryParameters.queryTileBitmask,
                         elementCounter);
 
                 if (elementCounter == 0)
@@ -891,19 +892,19 @@ public class MapDatabase implements ITileDataSource {
                 if (elementCounter < 0)
                     return false;
 
-                if (mTileSource.experimental && mReadBuffer.lastTagPosition > 0) {
-                    int pos = mReadBuffer.getBufferPosition();
-                    mReadBuffer.setBufferPosition(mReadBuffer.lastTagPosition);
+                if (mTileSource.experimental && readBuffer.lastTagPosition > 0) {
+                    int pos = readBuffer.getBufferPosition();
+                    readBuffer.setBufferPosition(readBuffer.lastTagPosition);
 
                     byte numberOfTags =
-                            (byte) (mReadBuffer.readByte() & WAY_NUMBER_OF_TAGS_BITMASK);
-                    if (!mReadBuffer.readTags(e.tags, wayTags, numberOfTags))
+                            (byte) (readBuffer.readByte() & WAY_NUMBER_OF_TAGS_BITMASK);
+                    if (!readBuffer.readTags(e.tags, wayTags, numberOfTags))
                         return false;
 
-                    mReadBuffer.setBufferPosition(pos);
+                    readBuffer.setBufferPosition(pos);
                 }
             } else {
-                int wayDataSize = mReadBuffer.readUnsignedInt();
+                int wayDataSize = readBuffer.readUnsignedInt();
                 if (wayDataSize < 0) {
                     log.warn("invalid way data size: " + wayDataSize);
                     if (mDebugFile) {
@@ -914,11 +915,11 @@ public class MapDatabase implements ITileDataSource {
                 }
 
                 /* ignore the way tile bitmask (2 bytes) */
-                mReadBuffer.skipBytes(2);
+                readBuffer.skipBytes(2);
             }
 
             /* get the special byte which encodes multiple flags */
-            byte specialByte = mReadBuffer.readByte();
+            byte specialByte = readBuffer.readByte();
 
             /* bit 1-4 represent the layer */
             byte layer = (byte) ((specialByte & WAY_LAYER_BITMASK) >>> WAY_LAYER_SHIFT);
@@ -926,12 +927,12 @@ public class MapDatabase implements ITileDataSource {
             byte numberOfTags = (byte) (specialByte & WAY_NUMBER_OF_TAGS_BITMASK);
 
             if (numberOfTags != 0) {
-                if (!mReadBuffer.readTags(e.tags, wayTags, numberOfTags))
+                if (!readBuffer.readTags(e.tags, wayTags, numberOfTags))
                     return false;
             }
 
             /* get the feature bitmask (1 byte) */
-            byte featureByte = mReadBuffer.readByte();
+            byte featureByte = readBuffer.readByte();
 
             /* bit 1-6 enable optional features */
             boolean featureWayDoubleDeltaEncoding =
@@ -943,42 +944,42 @@ public class MapDatabase implements ITileDataSource {
 
             if (mTileSource.experimental) {
                 if (hasName) {
-                    int textPos = mReadBuffer.readUnsignedInt();
-                    String str = mTileSource.extractLocalized(mReadBuffer.readUTF8EncodedStringAt(stringOffset + textPos));
+                    int textPos = readBuffer.readUnsignedInt();
+                    String str = mTileSource.extractLocalized(readBuffer.readUTF8EncodedStringAt(stringOffset + textPos));
                     e.tags.add(new Tag(Tag.KEY_NAME, str, false));
                 }
                 if (hasHouseNr) {
-                    int textPos = mReadBuffer.readUnsignedInt();
-                    String str = mReadBuffer.readUTF8EncodedStringAt(stringOffset + textPos);
+                    int textPos = readBuffer.readUnsignedInt();
+                    String str = readBuffer.readUTF8EncodedStringAt(stringOffset + textPos);
                     e.tags.add(new Tag(Tag.KEY_HOUSE_NUMBER, str, false));
                 }
                 if (hasRef) {
-                    int textPos = mReadBuffer.readUnsignedInt();
-                    String str = mReadBuffer.readUTF8EncodedStringAt(stringOffset + textPos);
+                    int textPos = readBuffer.readUnsignedInt();
+                    String str = readBuffer.readUTF8EncodedStringAt(stringOffset + textPos);
                     e.tags.add(new Tag(Tag.KEY_REF, str, false));
                 }
             } else {
                 if (hasName) {
-                    String str = mTileSource.extractLocalized(mReadBuffer.readUTF8EncodedString());
+                    String str = mTileSource.extractLocalized(readBuffer.readUTF8EncodedString());
                     e.tags.add(new Tag(Tag.KEY_NAME, str, false));
                 }
                 if (hasHouseNr) {
-                    String str = mReadBuffer.readUTF8EncodedString();
+                    String str = readBuffer.readUTF8EncodedString();
                     e.tags.add(new Tag(Tag.KEY_HOUSE_NUMBER, str, false));
                 }
                 if (hasRef) {
-                    String str = mReadBuffer.readUTF8EncodedString();
+                    String str = readBuffer.readUTF8EncodedString();
                     e.tags.add(new Tag(Tag.KEY_REF, str, false));
                 }
             }
 
             int[] labelPosition = null;
             if ((featureByte & WAY_FEATURE_LABEL_POSITION) != 0) {
-                labelPosition = readOptionalLabelPosition();
+                labelPosition = readOptionalLabelPosition(readBuffer);
             }
 
             if ((featureByte & WAY_FEATURE_DATA_BLOCKS_BYTE) != 0) {
-                wayDataBlocks = mReadBuffer.readUnsignedInt();
+                wayDataBlocks = readBuffer.readUnsignedInt();
 
                 if (wayDataBlocks < 1) {
                     log.warn("invalid number of way data blocks: " + wayDataBlocks);
@@ -999,7 +1000,7 @@ public class MapDatabase implements ITileDataSource {
                 if (ways != null)
                     wayNodes = new ArrayList<>();
 
-                if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, linearFeature, wayNodes, labelPosition))
+                if (!processWayDataBlock(e, featureWayDoubleDeltaEncoding, linearFeature, wayNodes, labelPosition, readBuffer))
                     return false;
 
                 /* drop invalid outer ring */
@@ -1152,14 +1153,14 @@ public class MapDatabase implements ITileDataSource {
         return mapReadResult;
     }
 
-    private int[] readOptionalLabelPosition() {
+    private int[] readOptionalLabelPosition(ReadBuffer readBuffer) {
         int[] labelPosition = new int[2];
 
         /* get the label position latitude offset (VBE-S) */
-        labelPosition[1] = mReadBuffer.readSignedInt();
+        labelPosition[1] = readBuffer.readSignedInt();
 
         /* get the label position longitude offset (VBE-S) */
-        labelPosition[0] = mReadBuffer.readSignedInt();
+        labelPosition[0] = readBuffer.readSignedInt();
 
         return labelPosition;
     }
@@ -1187,7 +1188,7 @@ public class MapDatabase implements ITileDataSource {
         return readMapData(upperLeft, lowerRight, Selector.POIS);
     }
 
-    private int[][] readZoomTable(SubFileParameter subFileParameter) {
+    private int[][] readZoomTable(SubFileParameter subFileParameter, ReadBuffer readBuffer) {
         int rows = subFileParameter.zoomLevelMax - subFileParameter.zoomLevelMin + 1;
         int[][] zoomTable = new int[rows][2];
 
@@ -1195,8 +1196,8 @@ public class MapDatabase implements ITileDataSource {
         int cumulatedNumberOfWays = 0;
 
         for (int row = 0; row < rows; row++) {
-            cumulatedNumberOfPois += mReadBuffer.readUnsignedInt();
-            cumulatedNumberOfWays += mReadBuffer.readUnsignedInt();
+            cumulatedNumberOfPois += readBuffer.readUnsignedInt();
+            cumulatedNumberOfWays += readBuffer.readUnsignedInt();
 
             zoomTable[row][0] = cumulatedNumberOfPois;
             zoomTable[row][1] = cumulatedNumberOfWays;

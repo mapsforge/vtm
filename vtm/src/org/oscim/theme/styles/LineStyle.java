@@ -58,16 +58,16 @@ public final class LineStyle extends RenderStyle<LineStyle> {
     public final float repeatStart;
     public final float repeatGap;
 
-    public LineStyle(int stroke, float width) {
-        this(0, "", stroke, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
+    public LineStyle(int color, float width) {
+        this(0, "", color, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
     }
 
-    public LineStyle(int level, int stroke, float width) {
-        this(level, "", stroke, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
+    public LineStyle(int level, int color, float width) {
+        this(level, "", color, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
     }
 
-    public LineStyle(int stroke, float width, Cap cap) {
-        this(0, "", stroke, width, cap, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
+    public LineStyle(int color, float width, Cap cap) {
+        this(0, "", color, width, cap, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
     }
 
     public LineStyle(int level, String style, int color, float width,

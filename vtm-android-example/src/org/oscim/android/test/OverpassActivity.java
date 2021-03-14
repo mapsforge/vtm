@@ -1,5 +1,6 @@
 /*
  * Copyright 2019 Gustl22
+ * Copyright 2020 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -15,7 +16,6 @@
 package org.oscim.android.test;
 
 import android.os.Bundle;
-
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.buildings.S3DBLayer;
@@ -25,8 +25,11 @@ import org.oscim.map.Viewport;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
+import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.tiling.source.overpass.OverpassTileSource;
+
+import java.util.Collections;
 
 /**
  * Use Overpass API data for vector layer.
@@ -46,7 +49,7 @@ public class OverpassActivity extends MapActivity {
                 .build();
         VectorTileLayer l = mMap.setBaseMap(tileSource);
 
-        TileSource bitmapTileSource = DefaultSources.OPENSTREETMAP
+        UrlTileSource bitmapTileSource = DefaultSources.OPENSTREETMAP
                 .httpFactory(new OkHttpEngine.OkHttpFactory())
                 .zoomMax(15)
                 .fadeSteps(new BitmapTileLayer.FadeStep[]{
@@ -54,6 +57,7 @@ public class OverpassActivity extends MapActivity {
                         new BitmapTileLayer.FadeStep(16, Viewport.MAX_ZOOM_LEVEL, 0f, 0f)
                 })
                 .build();
+        bitmapTileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-android-example"));
         mMap.layers().add(new BitmapTileLayer(mMap, bitmapTileSource));
 
         BuildingLayer.RAW_DATA = true;

@@ -1,7 +1,8 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 Andrey Novikov
+ * Copyright 2021 eddiemuc
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -18,11 +19,10 @@ package org.oscim.android.theme;
 
 import android.content.res.AssetManager;
 import android.text.TextUtils;
-
 import org.oscim.theme.IRenderTheme.ThemeException;
 import org.oscim.theme.ThemeFile;
-import org.oscim.theme.ThemeUtils;
 import org.oscim.theme.XmlRenderThemeMenuCallback;
+import org.oscim.theme.XmlThemeResourceProvider;
 import org.oscim.utils.Utils;
 
 import java.io.IOException;
@@ -37,8 +37,10 @@ public class AssetsRenderTheme implements ThemeFile {
 
     private final AssetManager mAssetManager;
     private final String mFileName;
+    private boolean mMapsforgeTheme;
     private XmlRenderThemeMenuCallback mMenuCallback;
     private final String mRelativePathPrefix;
+    private XmlThemeResourceProvider mResourceProvider;
 
     /**
      * @param assetManager       the Android asset manager.
@@ -101,12 +103,27 @@ public class AssetsRenderTheme implements ThemeFile {
     }
 
     @Override
+    public XmlThemeResourceProvider getResourceProvider() {
+        return mResourceProvider;
+    }
+
+    @Override
     public boolean isMapsforgeTheme() {
-        return ThemeUtils.isMapsforgeTheme(this);
+        return mMapsforgeTheme;
+    }
+
+    @Override
+    public void setMapsforgeTheme(boolean mapsforgeTheme) {
+        mMapsforgeTheme = mapsforgeTheme;
     }
 
     @Override
     public void setMenuCallback(XmlRenderThemeMenuCallback menuCallback) {
         mMenuCallback = menuCallback;
+    }
+
+    @Override
+    public void setResourceProvider(XmlThemeResourceProvider resourceProvider) {
+        mResourceProvider = resourceProvider;
     }
 }

@@ -56,7 +56,7 @@ public class JobQueue {
             if (t.state(LOADING | CANCEL)) {
                 t.setState(NONE);
             } else {
-                log.error("Wrong tile in queue {} {}", t, t.state());
+                log.debug("Wrong tile in queue {} {}", t, t.state());
             }
             tiles[i] = null;
         }

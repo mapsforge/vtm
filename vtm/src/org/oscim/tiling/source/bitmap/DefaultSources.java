@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Andrey Novikov
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2020 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -35,6 +35,8 @@ public class DefaultSources {
             new FadeStep(8 - 1, 8 + 1, 0.7f, 0)
     };
 
+    // Requires a valid HTTP User-Agent identifying application
+    // https://operations.osmfoundation.org/policies/tiles/
     public static Builder<?> OPENSTREETMAP = BitmapTileSource.builder()
             .url("https://tile.openstreetmap.org")
             .zoomMax(18);

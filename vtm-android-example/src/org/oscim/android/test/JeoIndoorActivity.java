@@ -22,9 +22,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import org.jeo.map.Style;
-import org.jeo.vector.VectorDataset;
+import io.jeo.map.Style;
+import io.jeo.vector.VectorDataset;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Color;
 import org.oscim.layers.OSMIndoorLayer;

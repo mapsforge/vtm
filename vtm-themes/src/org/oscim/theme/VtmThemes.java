@@ -1,9 +1,10 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 nebular
  * Copyright 2017 Andrey Novikov
+ * Copyright 2021 eddiemuc
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -60,11 +61,24 @@ public enum VtmThemes implements ThemeFile {
     }
 
     @Override
+    public XmlThemeResourceProvider getResourceProvider() {
+        return null;
+    }
+
+    @Override
     public boolean isMapsforgeTheme() {
         return false;
     }
 
     @Override
+    public void setMapsforgeTheme(boolean mapsforgeTheme) {
+    }
+
+    @Override
     public void setMenuCallback(XmlRenderThemeMenuCallback menuCallback) {
+    }
+
+    @Override
+    public void setResourceProvider(XmlThemeResourceProvider resourceProvider) {
     }
 }

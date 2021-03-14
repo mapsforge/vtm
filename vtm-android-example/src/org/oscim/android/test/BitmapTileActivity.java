@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2017-2018 devemux86
+ * Copyright 2017-2020 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -16,20 +16,20 @@
 package org.oscim.android.test;
 
 import android.os.Bundle;
-
-import org.oscim.android.cache.TileCache;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import org.oscim.core.MapPosition;
 import org.oscim.core.MercatorProjection;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.renderer.MapRenderer;
+import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.bitmap.BitmapTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.Collections;
 
 public class BitmapTileActivity extends MapActivity {
-
-    static final Logger log = LoggerFactory.getLogger(BitmapTileActivity.class);
 
     private static final boolean USE_CACHE = false;
 
@@ -45,8 +45,6 @@ public class BitmapTileActivity extends MapActivity {
         mTileSource = tileSource;
     }
 
-    private TileCache mCache;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,29 +54,22 @@ public class BitmapTileActivity extends MapActivity {
         if (mTileSource == null)
             return;
 
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (USE_CACHE) {
-            String cacheFile = mTileSource.getUrl()
-                    .toString()
-                    .replaceFirst("https?://", "")
-                    .replaceAll("/", "-");
-
-            log.debug("use bitmap cache {}", cacheFile);
-            mCache = new TileCache(this, null, cacheFile);
-            mCache.setCacheSize(512 * (1 << 10));
-            mTileSource.setCache(mCache);
+            // Cache the tiles into file system
+            File cacheDirectory = new File(getExternalCacheDir(), "tiles");
+            int cacheSize = 10 * 1024 * 1024; // 10 MB
+            Cache cache = new Cache(cacheDirectory, cacheSize);
+            builder.cache(cache);
         }
+
+        mTileSource.setHttpEngine(new OkHttpEngine.OkHttpFactory(builder));
+        mTileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-android-example"));
 
         mBitmapLayer = new BitmapTileLayer(mMap, mTileSource);
         mMap.layers().add(mBitmapLayer);
 
         //loooop(1);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mCache != null)
-            mCache.dispose();
     }
 
     // Stress testing

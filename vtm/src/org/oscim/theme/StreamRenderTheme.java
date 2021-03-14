@@ -1,6 +1,7 @@
 /*
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 Andrey Novikov
+ * Copyright 2021 eddiemuc
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -18,8 +19,6 @@ package org.oscim.theme;
 import org.oscim.theme.IRenderTheme.ThemeException;
 import org.oscim.utils.Utils;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -30,14 +29,17 @@ public class StreamRenderTheme implements ThemeFile {
     private static final long serialVersionUID = 1L;
 
     private final InputStream mInputStream;
+    private boolean mMapsforgeTheme;
     private XmlRenderThemeMenuCallback mMenuCallback;
     private final String mRelativePathPrefix;
+    private XmlThemeResourceProvider mResourceProvider;
 
     /**
      * @param relativePathPrefix the prefix for all relative resource paths.
      * @param inputStream        an input stream containing valid render theme XML data.
+     * @throws ThemeException if an error occurs while reading the render theme XML.
      */
-    public StreamRenderTheme(String relativePathPrefix, InputStream inputStream) {
+    public StreamRenderTheme(String relativePathPrefix, InputStream inputStream) throws ThemeException {
         this(relativePathPrefix, inputStream, null);
     }
 
@@ -45,11 +47,11 @@ public class StreamRenderTheme implements ThemeFile {
      * @param relativePathPrefix the prefix for all relative resource paths.
      * @param inputStream        an input stream containing valid render theme XML data.
      * @param menuCallback       the interface callback to create a settings menu on the fly.
+     * @throws ThemeException if an error occurs while reading the render theme XML.
      */
-    public StreamRenderTheme(String relativePathPrefix, InputStream inputStream, XmlRenderThemeMenuCallback menuCallback) {
+    public StreamRenderTheme(String relativePathPrefix, InputStream inputStream, XmlRenderThemeMenuCallback menuCallback) throws ThemeException {
         mRelativePathPrefix = relativePathPrefix;
-        mInputStream = new BufferedInputStream(inputStream);
-        mInputStream.mark(0);
+        mInputStream = inputStream;
         mMenuCallback = menuCallback;
     }
 
@@ -82,21 +84,31 @@ public class StreamRenderTheme implements ThemeFile {
 
     @Override
     public InputStream getRenderThemeAsStream() throws ThemeException {
-        try {
-            mInputStream.reset();
-        } catch (IOException e) {
-            throw new ThemeException(e.getMessage());
-        }
         return mInputStream;
     }
 
     @Override
+    public XmlThemeResourceProvider getResourceProvider() {
+        return mResourceProvider;
+    }
+
+    @Override
     public boolean isMapsforgeTheme() {
-        return ThemeUtils.isMapsforgeTheme(this);
+        return mMapsforgeTheme;
+    }
+
+    @Override
+    public void setMapsforgeTheme(boolean mapsforgeTheme) {
+        mMapsforgeTheme = mapsforgeTheme;
     }
 
     @Override
     public void setMenuCallback(XmlRenderThemeMenuCallback menuCallback) {
         mMenuCallback = menuCallback;
+    }
+
+    @Override
+    public void setResourceProvider(XmlThemeResourceProvider resourceProvider) {
+        mResourceProvider = resourceProvider;
     }
 }

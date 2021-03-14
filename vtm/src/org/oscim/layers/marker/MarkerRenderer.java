@@ -2,7 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Izumi Kawashima
  * Copyright 2017 Longri
- * Copyright 2017-2018 devemux86
+ * Copyright 2017-2020 devemux86
  * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -27,6 +27,7 @@ import org.oscim.renderer.BucketRenderer;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.bucket.SymbolBucket;
 import org.oscim.renderer.bucket.SymbolItem;
+import org.oscim.utils.Parameters;
 import org.oscim.utils.TimSort;
 import org.oscim.utils.geom.GeometryUtils;
 
@@ -38,7 +39,7 @@ public class MarkerRenderer extends BucketRenderer {
 
     protected final SymbolBucket mSymbolLayer;
     protected final float[] mBox = new float[8];
-    protected final MarkerLayer<MarkerInterface> mMarkerLayer;
+    protected final MarkerLayer mMarkerLayer;
     protected final Point mMapPoint = new Point();
 
     /**
@@ -48,7 +49,7 @@ public class MarkerRenderer extends BucketRenderer {
 
     protected InternalItem[] mItems;
 
-    public MarkerRenderer(MarkerLayer<MarkerInterface> markerLayer, MarkerSymbol defaultSymbol) {
+    public MarkerRenderer(MarkerLayer markerLayer, MarkerSymbol defaultSymbol) {
         mSymbolLayer = new SymbolBucket();
         mMarkerLayer = markerLayer;
         mDefaultMarker = defaultSymbol;
@@ -187,13 +188,14 @@ public class MarkerRenderer extends BucketRenderer {
 
     static TimSort<InternalItem> ZSORT = new TimSort<InternalItem>();
 
-    public static void sort(InternalItem[] a, int lo, int hi) {
+    protected void sort(InternalItem[] a, int lo, int hi) {
         int nRemaining = hi - lo;
         if (nRemaining < 2) {
             return;
         }
 
-        ZSORT.doSort(a, zComparator, lo, hi);
+        if (Parameters.MARKER_SORT)
+            ZSORT.doSort(a, zComparator, lo, hi);
     }
 
     static final Comparator<InternalItem> zComparator = new Comparator<InternalItem>() {

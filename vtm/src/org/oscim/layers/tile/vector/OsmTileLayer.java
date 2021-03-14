@@ -21,6 +21,7 @@ import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 import org.oscim.layers.tile.TileLoader;
 import org.oscim.map.Map;
+import org.oscim.tiling.TileSource;
 import org.oscim.utils.Utils;
 
 public class OsmTileLayer extends VectorTileLayer {
@@ -34,6 +35,12 @@ public class OsmTileLayer extends VectorTileLayer {
     public OsmTileLayer(Map map, int zoomMin, int zoomMax) {
         super(map, CACHE_LIMIT);
         mTileManager.setZoomLevel(zoomMin, zoomMax);
+    }
+
+    public OsmTileLayer(Map map, TileSource tileSource) {
+        this(map);
+
+        setTileSource(tileSource);
     }
 
     @Override

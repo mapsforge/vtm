@@ -1,6 +1,6 @@
 /*
  * Copyright 2010, 2011, 2012 mapsforge.org
- * Copyright 2016 devemux86
+ * Copyright 2016-2020 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -15,40 +15,30 @@
  */
 package org.oscim.app.filefilter;
 
-import org.oscim.theme.ExternalRenderTheme;
-import org.oscim.theme.ThemeFile;
-import org.oscim.theme.XmlThemeBuilder;
+import org.oscim.theme.ThemeLoader;
 import org.oscim.tiling.TileSource.OpenResult;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 
 import java.io.File;
-
-import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Accepts all valid render theme XML files.
  */
 public final class ValidRenderTheme implements ValidFileFilter {
-    private OpenResult openResult;
+    private OpenResult mOpenResult;
 
     @Override
     public boolean accept(File file) {
         try {
-            ThemeFile theme = new ExternalRenderTheme(file.getAbsolutePath());
-            XmlThemeBuilder renderThemeHandler = new XmlThemeBuilder(theme);
-            XMLReader xmlReader = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
-            xmlReader.setContentHandler(renderThemeHandler);
-            xmlReader.parse(new InputSource(theme.getRenderThemeAsStream()));
-            this.openResult = OpenResult.SUCCESS;
+            ThemeLoader.load(file.getAbsolutePath());
+            mOpenResult = OpenResult.SUCCESS;
         } catch (Exception e) {
-            this.openResult = new OpenResult(e.getMessage());
+            mOpenResult = new OpenResult(e.getMessage());
         }
-        return this.openResult.isSuccess();
+        return mOpenResult.isSuccess();
     }
 
     @Override
     public OpenResult getFileOpenResult() {
-        return this.openResult;
+        return mOpenResult;
     }
 }

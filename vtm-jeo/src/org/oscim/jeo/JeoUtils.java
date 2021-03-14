@@ -1,6 +1,6 @@
 package org.oscim.jeo;
 
-import org.jeo.map.RGB;
+import io.jeo.map.RGB;
 
 public class JeoUtils {
     public static int color(RGB rgb) {

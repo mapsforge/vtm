@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 devemux86
+ * Copyright 2017-2020 devemux86
  * Copyright 2018 Gustl22
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -41,6 +41,7 @@ import org.oscim.event.GestureListener;
 import org.oscim.event.MotionEvent;
 import org.oscim.layers.Layer;
 import org.oscim.layers.marker.ItemizedLayer;
+import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.map.Map;
@@ -57,14 +58,14 @@ import java.util.List;
  * Long press on map to search inside visible bounding box.<br/>
  * Tap on POIs to show their name (in default locale).
  */
-public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
+public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLayer.OnItemGestureListener<MarkerInterface> {
 
     private static final Logger log = LoggerFactory.getLogger(PoiSearchActivity.class);
 
     private static final String POI_CATEGORY = "Restaurants";
     private static final int SELECT_POI_FILE = MapsforgeActivity.SELECT_THEME_FILE + 1;
 
-    private ItemizedLayer<MarkerItem> mMarkerLayer;
+    private ItemizedLayer mMarkerLayer;
     private PoiPersistenceManager mPersistenceManager;
 
     public static class PoiFilePicker extends FilePicker {
@@ -138,7 +139,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (requestCode == SELECT_MAP_FILE) {
-            if (mTileSource != null)
+            if (mTileLayer.getTileSource() != null)
                 startActivityForResult(new Intent(this, PoiFilePicker.class),
                         SELECT_POI_FILE);
             else
@@ -154,19 +155,20 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
 
             Bitmap bitmap = new AndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.marker_green));
             MarkerSymbol symbol = new MarkerSymbol(bitmap, MarkerSymbol.HotspotPlace.BOTTOM_CENTER);
-            mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
+            mMarkerLayer = new ItemizedLayer(mMap, new ArrayList<MarkerInterface>(), symbol, this);
             mMap.layers().add(mMarkerLayer);
         }
     }
 
     @Override
-    public boolean onItemSingleTapUp(int index, MarkerItem item) {
-        Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+    public boolean onItemSingleTapUp(int index, MarkerInterface item) {
+        MarkerItem markerItem = (MarkerItem) item;
+        Toast.makeText(this, markerItem.getTitle(), Toast.LENGTH_SHORT).show();
         return true;
     }
 
     @Override
-    public boolean onItemLongPress(int index, MarkerItem item) {
+    public boolean onItemLongPress(int index, MarkerInterface item) {
         return false;
     }
 
@@ -315,7 +317,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
             }
 
             // Overlay POI
-            List<MarkerItem> pts = new ArrayList<>();
+            List<MarkerInterface> pts = new ArrayList<>();
             for (PointOfInterest pointOfInterest : pointOfInterests)
                 pts.add(new MarkerItem(pointOfInterest.getName(), "", new GeoPoint(pointOfInterest.getLatitude(), pointOfInterest.getLongitude())));
             mMarkerLayer.addItems(pts);

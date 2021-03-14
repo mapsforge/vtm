@@ -62,4 +62,10 @@ public class MapScaleBarLayer extends Layer implements Map.UpdateListener {
 
         mapScaleBar.redrawNeeded = false;
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mapScaleBar.destroy();
+    }
 }

@@ -39,7 +39,7 @@ public class ThemeTest extends GdxMapApp {
 
         VectorTileLayer l = mMap.setBaseMap(ts);
 
-        l.setRenderTheme(new RenderTheme());
+        l.setTheme(new RenderTheme());
 
         MapRenderer.setBackgroundColor(0xffcccccc);
 

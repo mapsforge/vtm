@@ -1,6 +1,7 @@
 /*
  * Copyright 2014 Hannes Janetzek
  * Copyright 2016-2019 devemux86
+ * Copyright 2020 marq24
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -201,11 +202,11 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
 
             for (Drawable d : tmpDrawables) {
                 Style style = d.getStyle();
-                draw(t, level, d, style);
 
-                if (style != lastStyle)
+                if (lastStyle != null && lastStyle != style)
                     level += 2;
 
+                draw(t, level, d, style);
                 lastStyle = style;
             }
         }

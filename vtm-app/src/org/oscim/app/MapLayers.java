@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2020 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -41,6 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Collections;
 
 public class MapLayers {
 
@@ -183,7 +184,9 @@ public class MapLayers {
 
         switch (id) {
             case R.id.menu_layer_openstreetmap:
-                mBackgroundLayer = new BitmapTileLayer(App.map, DefaultSources.OPENSTREETMAP.build());
+                UrlTileSource tileSource = DefaultSources.OPENSTREETMAP.build();
+                tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
+                mBackgroundLayer = new BitmapTileLayer(App.map, tileSource);
                 break;
 
             case R.id.menu_layer_naturalearth:
