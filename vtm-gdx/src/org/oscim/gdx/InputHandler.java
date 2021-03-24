@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -22,7 +22,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
-
 import org.oscim.layers.GenericLayer;
 import org.oscim.layers.GroupLayer;
 import org.oscim.layers.Layer;
@@ -79,19 +78,19 @@ public class InputHandler implements InputProcessor {
                 break;
 
             case Input.Keys.UP:
-                mViewport.moveMap(0, -50);
-                mMap.updateMap(true);
-                break;
-            case Input.Keys.DOWN:
                 mViewport.moveMap(0, 50);
                 mMap.updateMap(true);
                 break;
+            case Input.Keys.DOWN:
+                mViewport.moveMap(0, -50);
+                mMap.updateMap(true);
+                break;
             case Input.Keys.LEFT:
-                mViewport.moveMap(-50, 0);
+                mViewport.moveMap(50, 0);
                 mMap.updateMap(true);
                 break;
             case Input.Keys.RIGHT:
-                mViewport.moveMap(50, 0);
+                mViewport.moveMap(-50, 0);
                 mMap.updateMap(true);
                 break;
             case Input.Keys.D:
@@ -109,6 +108,14 @@ public class InputHandler implements InputProcessor {
             case Input.Keys.W:
                 mMap.animator().animateZoom(500, 2, 0, 0);
                 mMap.updateMap(false);
+                break;
+            case Input.Keys.MINUS:
+                mMap.animator().animateZoom(500, 0.5, 0, 0);
+                mMap.updateMap(true);
+                break;
+            case Input.Keys.PLUS:
+                mMap.animator().animateZoom(500, 2, 0, 0);
+                mMap.updateMap(true);
                 break;
 
             case Input.Keys.NUM_1:
