@@ -48,10 +48,6 @@ Detailed iOS instructions can be found [here](ios.md).
 
 ### Desktop
 ```groovy
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-
 implementation 'org.mapsforge:vtm-gdx:[CURRENT-VERSION]'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-linux'
@@ -59,7 +55,7 @@ implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-osx'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-windows'
 implementation 'com.badlogicgames.gdx:gdx:1.9.10'
 implementation 'com.badlogicgames.gdx:gdx-platform:1.9.10:natives-desktop'
-implementation 'com.github.blackears:svgSalamander:v1.1.1'
+implementation 'com.formdev:svgSalamander:1.1.2.4'
 ```
 
 ### Desktop (LWJGL)
