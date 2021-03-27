@@ -1,7 +1,12 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        jcenter {
+            content {
+                // https://youtrack.jetbrains.com/issue/IDEA-261387
+                includeModule("org.jetbrains.trove4j", "trove4j")
+            }
+        }
         mavenCentral()
     }
     dependencies {
@@ -43,9 +48,15 @@ def versionName() { return version }
 subprojects {
     repositories {
         google()
-        jcenter()
+        jcenter {
+            content {
+                // https://youtrack.jetbrains.com/issue/IDEA-261387
+                includeModule("org.jetbrains.trove4j", "trove4j")
+            }
+        }
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
 
     tasks.withType(JavaCompile) {
