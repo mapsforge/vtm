@@ -227,7 +227,7 @@
 - Many other minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.7.0)
 
-## Version 0.6.0 (2016-10-28) - VTM revive
+## Version 0.6.0 (2016-10-28) - VTM revival
 
 - Mapsforge maps **v4** support [#34](https://github.com/mapsforge/vtm/issues/34)
 - Render theme SVG resources [#60](https://github.com/mapsforge/vtm/issues/60)

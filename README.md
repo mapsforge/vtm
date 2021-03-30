@@ -12,7 +12,7 @@ VTM (Vector Tile Map) was developed within the [OpenScienceMap](https://github.c
 
 See the **[integration guide](docs/Integration.md)** and [changelog](docs/Changelog.md). And read through [how to contribute](docs/CONTRIBUTING.md) guidelines.
 
-If you have any questions or problems, don't hesitate to ask our public [forum](https://groups.google.com/group/mapsforge-dev) for help.
+If you have any questions or problems, don't hesitate to ask the Discussions for help.
 
 ## Features
 - Java map library
