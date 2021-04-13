@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2014 Ludwig M Brinckmann
- * Copyright 2014-2019 devemux86
+ * Copyright 2014-2021 devemux86
  * Copyright 2014 Erik Duisters
  * Copyright 2014 Christian Pesch
  *
@@ -66,6 +66,11 @@ public class DefaultMapScaleBar extends MapScaleBar {
         this.paintScaleTextStroke = createTextPaint(Color.WHITE, 2, Paint.Style.STROKE);
     }
 
+    public void setColor(int color) {
+        this.paintScaleBar.setColor(color);
+        this.paintScaleText.setColor(color);
+    }
+
     /**
      * @return the secondary {@link DistanceUnitAdapter} in use by this MapScaleBar
      */
@@ -100,7 +105,7 @@ public class DefaultMapScaleBar extends MapScaleBar {
         paint.setColor(color);
         paint.setStrokeWidth(strokeWidth * this.scale);
         paint.setStyle(style);
-        paint.setStrokeCap(Paint.Cap.SQUARE);
+        paint.setStrokeCap(Paint.Cap.ROUND);
         return paint;
     }
 
