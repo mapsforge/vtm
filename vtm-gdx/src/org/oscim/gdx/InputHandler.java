@@ -114,6 +114,7 @@ public class InputHandler implements InputProcessor {
                 mMap.updateMap(true);
                 break;
             case Input.Keys.PLUS:
+            case Input.Keys.EQUALS:
                 mMap.animator().animateZoom(500, 2, 0, 0);
                 mMap.updateMap(true);
                 break;
