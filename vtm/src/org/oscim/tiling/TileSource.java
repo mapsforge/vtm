@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 Andrey Novikov
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -204,11 +204,11 @@ public abstract class TileSource {
         private final boolean success;
 
         /**
-         * @param errorMessage a textual message describing the error, must not be null.
+         * @param errorMessage a textual message describing the error.
          */
         public OpenResult(String errorMessage) {
             if (errorMessage == null) {
-                throw new IllegalArgumentException("error message must not be null");
+                errorMessage = "error";
             }
 
             this.success = false;

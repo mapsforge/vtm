@@ -10,11 +10,11 @@ dependencies {
     implementation 'com.fifesoft:rsyntaxtextarea:2.6.1'
     implementation 'com.jtattoo:JTattoo:1.6.11'
 
-    implementation 'org.mapsforge:mapsforge-core:0.15.0'
-    implementation 'org.mapsforge:mapsforge-map:0.15.0'
-    implementation 'org.mapsforge:mapsforge-map-awt:0.15.0'
-    implementation 'org.mapsforge:mapsforge-map-reader:0.15.0'
-    implementation 'org.mapsforge:mapsforge-themes:0.15.0'
+    implementation 'org.mapsforge:mapsforge-core:0.16.0'
+    implementation 'org.mapsforge:mapsforge-map:0.16.0'
+    implementation 'org.mapsforge:mapsforge-map-awt:0.16.0'
+    implementation 'org.mapsforge:mapsforge-map-reader:0.16.0'
+    implementation 'org.mapsforge:mapsforge-themes:0.16.0'
     implementation 'net.sf.kxml:kxml2:2.3.0'
 }
 

@@ -34,6 +34,11 @@ public final class Parameters {
     public static boolean CUSTOM_TILE_SIZE = false;
 
     /**
+     * Rendering of distant labels.
+     */
+    public static boolean DISTANT_LABELS = false;
+
+    /**
      * If true the <code>MapEventLayer2</code> will be used instead of default <code>MapEventLayer</code>.
      */
     public static boolean MAP_EVENT_LAYER2 = false;

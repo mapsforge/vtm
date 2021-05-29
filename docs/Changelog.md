@@ -1,11 +1,18 @@
 # Changelog
 
-## New since 0.15.0
+## New since 0.16.0
+
+- Many other minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.17.0)
+
+## Version 0.16.0 (2021-05-27)
 
 - Android: scoped storage map / theme example [#804](https://github.com/mapsforge/vtm/pull/804)
 - Render theme from zip archive [#804](https://github.com/mapsforge/vtm/pull/804)
 - Render themes: custom resource providers [#804](https://github.com/mapsforge/vtm/pull/804)
 - Nautical unit adapter with feet [#803](https://github.com/mapsforge/vtm/pull/803)
+- Distant labels rendering option [#844](https://github.com/mapsforge/vtm/pull/844)
+  - `Parameters.DISTANT_LABELS`
 - Many other minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.16.0)
 

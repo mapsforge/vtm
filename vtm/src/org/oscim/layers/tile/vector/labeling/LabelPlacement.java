@@ -2,6 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016-2019 devemux86
  * Copyright 2018 Gustl22
+ * Copyright 2021 blakfast
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -31,6 +32,7 @@ import org.oscim.renderer.bucket.SymbolItem;
 import org.oscim.renderer.bucket.TextItem;
 import org.oscim.theme.styles.TextStyle;
 import org.oscim.utils.FastMath;
+import org.oscim.utils.Parameters;
 import org.oscim.utils.geom.OBB2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +51,7 @@ public class LabelPlacement {
         return (LabelTileData) tile.getData(LabelLayer.LABEL_DATA);
     }
 
+    private static final float DISTANCE_COEFFICIENT = 3;
     private static final float MIN_CAPTION_DIST = 5;
     private static final float MIN_WAY_DIST = 3;
 
@@ -352,9 +355,18 @@ public class LabelPlacement {
         }
 
         /* estimation for visible area to be labeled */
-        int mw = (mMap.getWidth() + Tile.SIZE) / 2;
-        int mh = (mMap.getHeight() + Tile.SIZE) / 2;
-        mSquareRadius = mw * mw + mh * mh;
+        if (Parameters.DISTANT_LABELS) {
+            int mw = mMap.getWidth();
+            int mh = mMap.getHeight();
+            float k = pos.tilt / mMap.viewport().getMaxTilt() * DISTANCE_COEFFICIENT;
+            if (k < 0.5)
+                k = 0.5f;
+            mSquareRadius = (mw * mw + mh * mh) * k;
+        } else {
+            int mw = (mMap.getWidth() + Tile.SIZE) / 2;
+            int mh = (mMap.getHeight() + Tile.SIZE) / 2;
+            mSquareRadius = mw * mw + mh * mh;
+        }
 
         /* scale of tiles zoom-level relative to current position */
         double scale = pos.scale / (1 << zoom);

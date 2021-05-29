@@ -9,7 +9,7 @@
 | [GPSLogger II](https://play.google.com/store/apps/details?id=com.emacberry.gpslogger) | Map and navigation, Fitness & Cycling application | Proprietary/Free | Android | Closed |
 | [HabanaTrans](https://play.google.com/store/apps/details?id=cu.pabloapk.habanatrans&hl=es_419) | Public transport, map offline, gps, routing | Proprietary/Free | Android | Closed |
 | [Hunt Cyprus](https://play.google.com/store/apps/developer?id=Talent+S.A.) | Map and navigation application for hunters | Proprietary/Free and Commercial | Android | Closed |
-| [Kurviger](https://kurviger.de/en) | Route planner specialized on motorcyclists | Proprietary/Free and Commercial | Android | Closed |
+| [Kurviger](https://kurviger.de/en) | Route planner specialized on motorcyclists | Proprietary/Free (in-app purchases) | Android | Closed |
 | [MapTrek](http://maptrek.mobi) | Application for outdoor activities | GPL3/Free and Commercial | Android | Open |
 | [MyRunningApp](https://play.google.com/store/apps/details?id=it.nimarsolutions.rungpstracker) | Fitness app | Proprietary/Free | Android | Closed |
 | [MyTourbook](http://mytourbook.sourceforge.net/mytourbook/) | Visualize and analyze tours | GPL2/Free | Desktop | Open |
