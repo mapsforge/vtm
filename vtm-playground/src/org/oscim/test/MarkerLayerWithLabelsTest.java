@@ -28,7 +28,6 @@ import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
-import org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.map.Map;
 import org.oscim.tiling.source.OkHttpEngine;
@@ -42,9 +41,6 @@ import java.util.List;
 
 import static org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
 public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerInterface> {
-	
-   private BitmapTileLayer mLayer = null;
-   private BitmapTileLayer mShaded = null;
 		
    ItemizedLayer mMarkerLayer;
    private int _fgColor = 0xFF000000; // 100 percent black. AARRGGBB
