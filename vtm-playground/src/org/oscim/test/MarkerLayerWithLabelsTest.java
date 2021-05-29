@@ -1,6 +1,6 @@
 /*
  * Copyright 2016-2018 devemux86
- * Copyright 2019 telemaxx
+ * Copyright 2019-2021 telemaxx
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
