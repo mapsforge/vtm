@@ -28,16 +28,20 @@ import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
+import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.map.Map;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
+import org.oscim.tiling.source.UrlTileSource;
+import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
@@ -53,14 +57,11 @@ public class MarkerLayerLabelsTest extends GdxMapApp implements ItemizedLayer.On
             // Map events receiver
             mMap.layers().add(new MapEventsReceiver(mMap));
 
-            TileSource tileSource = OSciMap4TileSource.builder()
+            UrlTileSource tileSource = DefaultSources.OPENSTREETMAP
                     .httpFactory(new OkHttpEngine.OkHttpFactory())
                     .build();
-            VectorTileLayer l = mMap.setBaseMap(tileSource);
-
-            mMap.layers().add(new LabelLayer(mMap, l));
-
-            mMap.setTheme(VtmThemes.DEFAULT);
+            tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
+            mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
             // goto berlin
             mMap.setMapPosition(52.513452, 13.363791, 1 << 13);
