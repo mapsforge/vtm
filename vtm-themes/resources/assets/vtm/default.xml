@@ -1276,11 +1276,15 @@
         <!-- place -->
         <m k="place">
             <m v="locality" zoom-min="13">
-                <caption style="bold" fill="#606060" k="name" priority="5" size="14"
+                <caption style="bold" fill="#606060" k="name" priority="7" size="14"
+                    stroke="#ffffff" stroke-width="2.0" />
+            </m>
+            <m v="neighbourhood" zoom-min="13">
+                <caption style="bold" fill="#404040" k="name" priority="6" size="14"
                     stroke="#ffffff" stroke-width="2.0" />
             </m>
             <m v="hamlet" zoom-min="13">
-                <caption style="bold" fill="#606060" k="name" priority="5" size="14"
+                <caption style="bold" fill="#404040" k="name" priority="5" size="14"
                     stroke="#ffffff" stroke-width="2.0" />
             </m>
             <m v="suburb" zoom-max="14">

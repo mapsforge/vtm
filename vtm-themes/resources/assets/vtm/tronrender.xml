@@ -1276,7 +1276,11 @@
 
         <m k="place" select="first">
             <m v="locality" zoom-min="13">
-                <caption style="bold" fill="#606060" k="name" size="14" stroke="#ffffff"
+                <caption style="bold" fill="#606060" k="name" size="12" stroke="#ffffff"
+                    stroke-width="2.0" />
+            </m>
+            <m v="neighbourhood" zoom-min="13">
+                <caption style="bold" fill="#000000" k="name" size="13" stroke="#ffffff"
                     stroke-width="2.0" />
             </m>
             <m v="hamlet" zoom-min="13">
