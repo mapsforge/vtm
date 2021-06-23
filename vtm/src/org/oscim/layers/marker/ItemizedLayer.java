@@ -24,7 +24,6 @@ package org.oscim.layers.marker;
 
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.core.Box;
-import org.oscim.core.GeoPoint;
 import org.oscim.core.Point;
 import org.oscim.core.Tile;
 import org.oscim.event.Gesture;
@@ -43,7 +42,7 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
     protected final Point mTmpPoint = new Point();
     protected OnItemGestureListener<MarkerInterface> mOnItemGestureListener;
     protected int mDrawnItemsLimit = Integer.MAX_VALUE;
-    private MarkerItem dragItem;
+    private final ItemDragger itemDragger = new ItemDragger(this);
 
     public ItemizedLayer(Map map, MarkerSymbol defaultMarker) {
         this(map, new ArrayList<MarkerInterface>(), defaultMarker, null);
@@ -265,11 +264,11 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
             return false;
 
         if (g == Gesture.START_DRAG) {
-            return findDraggableItem(e);
+            return itemDragger.startDrag(e);
         } else if (g == Gesture.ONGOING_DRAG) {
-            return dragItemTo(map().viewport().fromScreenPoint(e.getX(), e.getY()));
+            return itemDragger.dragItemTo(map().viewport().fromScreenPoint(e.getX(), e.getY()));
         } else {
-            dragItem = null;
+            itemDragger.noDrag();
         }
 
         if (g instanceof Gesture.Tap)
@@ -279,30 +278,5 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
             return activateSelectedItems(e, mActiveItemLongPress);
 
         return false;
-    }
-
-    private boolean findDraggableItem(final MotionEvent e) {
-        dragItem = null;
-        return activateSelectedItems(
-                e,
-                new ActiveItem() {
-                    @Override
-                    public boolean run(final int index) {
-                        final MarkerItem markerItem = (MarkerItem) mItemList.get(index);
-                        dragItem = markerItem.isDraggable() ? markerItem : null;
-                        return dragItem != null;
-                    }
-                });
-    }
-
-    private boolean dragItemTo(final GeoPoint geoPoint) {
-        if (dragItem == null) {
-            return false;
-        }
-        dragItem.geoPoint = geoPoint;
-        populate();
-        mMarkerRenderer.update();
-        mMap.render();
-        return true;
     }
 }
