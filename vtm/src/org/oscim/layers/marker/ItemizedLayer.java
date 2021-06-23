@@ -271,7 +271,7 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
             return activateSelectedItems(e, mActiveItemLongPress);
 
         if (g == Gesture.START_DRAG) {
-            return findDragItem(e);
+            return findDraggableItem(e);
         }
 
         if (g == Gesture.ONGOING_DRAG) {
@@ -281,15 +281,16 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
         return false;
     }
 
-    private boolean findDragItem(final MotionEvent e) {
+    private boolean findDraggableItem(final MotionEvent e) {
         dragItem = null;
         return activateSelectedItems(
                 e,
                 new ActiveItem() {
                     @Override
                     public boolean run(final int index) {
-                        dragItem = (MarkerItem) mItemList.get(index);
-                        return true;
+                        final MarkerItem markerItem = (MarkerItem) mItemList.get(index);
+                        dragItem = markerItem.isDraggable() ? markerItem : null;
+                        return dragItem != null;
                     }
                 });
     }

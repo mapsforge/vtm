@@ -20,6 +20,7 @@ package org.oscim.android.test;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Toast;
+
 import org.oscim.android.canvas.AndroidBitmap;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.GeoPoint;
@@ -85,7 +86,7 @@ public class MarkerOverlayActivity extends MapActivity implements ItemizedLayer.
 
         for (double lat = -90; lat <= 90; lat += 5) {
             for (double lon = -180; lon <= 180; lon += 5)
-                pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon)));
+                pts.add(new MarkerItem(lat + "/" + lon, "", new GeoPoint(lat, lon), true));
         }
 
         mMarkerLayer.addItems(pts);

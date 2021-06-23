@@ -36,20 +36,34 @@ public class MarkerItem implements MarkerInterface {
     public String description;
     public GeoPoint geoPoint;
     protected MarkerSymbol mMarker;
+    private final boolean draggable;
 
     /**
      * @param title       this should be <b>singleLine</b> (no <code>'\n'</code> )
      * @param description a <b>multiLine</b> description ( <code>'\n'</code> possible)
      */
     public MarkerItem(String title, String description, GeoPoint geoPoint) {
-        this(null, title, description, geoPoint);
+        this(title, description, geoPoint, false);
+    }
+
+    public MarkerItem(String title, String description, GeoPoint geoPoint, boolean draggable) {
+        this(null, title, description, geoPoint, draggable);
     }
 
     public MarkerItem(Object uid, String title, String description, GeoPoint geoPoint) {
+        this(uid, title, description, geoPoint, false);
+    }
+
+    public MarkerItem(Object uid, String title, String description, GeoPoint geoPoint, boolean draggable) {
         this.title = title;
         this.description = description;
         this.geoPoint = geoPoint;
         this.uid = uid;
+        this.draggable = draggable;
+    }
+
+    public boolean isDraggable() {
+        return draggable;
     }
 
     public Object getUid() {
