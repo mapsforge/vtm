@@ -24,6 +24,7 @@ package org.oscim.layers.marker;
 
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.core.Box;
+import org.oscim.core.GeoPoint;
 import org.oscim.core.Point;
 import org.oscim.core.Tile;
 import org.oscim.event.Gesture;
@@ -42,6 +43,7 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
     protected final Point mTmpPoint = new Point();
     protected OnItemGestureListener<MarkerInterface> mOnItemGestureListener;
     protected int mDrawnItemsLimit = Integer.MAX_VALUE;
+    private MarkerItem dragItem;
 
     public ItemizedLayer(Map map, MarkerSymbol defaultMarker) {
         this(map, new ArrayList<MarkerInterface>(), defaultMarker, null);
@@ -247,14 +249,14 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
      * the type of touch. Each of them returns true if the event was completely
      * handled.
      */
-    public static interface OnItemGestureListener<T> {
-        public boolean onItemSingleTapUp(int index, T item);
+    public interface OnItemGestureListener<T> {
+        boolean onItemSingleTapUp(int index, T item);
 
-        public boolean onItemLongPress(int index, T item);
+        boolean onItemLongPress(int index, T item);
     }
 
-    public static interface ActiveItem {
-        public boolean run(int aIndex);
+    public interface ActiveItem {
+        boolean run(int aIndex);
     }
 
     @Override
@@ -268,6 +270,38 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
         if (g instanceof Gesture.LongPress)
             return activateSelectedItems(e, mActiveItemLongPress);
 
+        if (g == Gesture.START_DRAG) {
+            return findDragItem(e);
+        }
+
+        if (g == Gesture.ONGOING_DRAG) {
+            return dragItemTo(map().viewport().fromScreenPoint(e.getX(), e.getY()));
+        }
+
         return false;
+    }
+
+    private boolean findDragItem(final MotionEvent e) {
+        dragItem = null;
+        return activateSelectedItems(
+                e,
+                new ActiveItem() {
+                    @Override
+                    public boolean run(final int index) {
+                        dragItem = (MarkerItem) mItemList.get(index);
+                        return true;
+                    }
+                });
+    }
+
+    private boolean dragItemTo(final GeoPoint geoPoint) {
+        if (dragItem == null) {
+            return false;
+        }
+        dragItem.geoPoint = geoPoint;
+        populate();
+        mMarkerRenderer.update();
+        mMap.render();
+        return true;
     }
 }

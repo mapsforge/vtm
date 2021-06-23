@@ -43,4 +43,8 @@ public interface Gesture {
     Gesture DOUBLE_TAP = new DoubleTap();
     Gesture TRIPLE_TAP = new TripleTap();
     Gesture TWO_FINGER_TAP = new TwoFingerTap();
+    Gesture START_DRAG = new Gesture() {
+    };
+    Gesture ONGOING_DRAG = new Gesture() {
+    };
 }

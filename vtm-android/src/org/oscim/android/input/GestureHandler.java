@@ -45,11 +45,12 @@ public class GestureHandler implements OnGestureListener, OnDoubleTapListener {
 
     @Override
     public void onShowPress(MotionEvent e) {
+        mMap.handleGesture(Gesture.START_DRAG, mMotionEvent.wrap(e));
     }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
+        return mMap.handleGesture(Gesture.ONGOING_DRAG, mMotionEvent.wrap(e2));
     }
 
     @Override
