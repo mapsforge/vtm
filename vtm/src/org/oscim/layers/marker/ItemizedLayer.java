@@ -264,19 +264,19 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
         if (!isEnabled())
             return false;
 
+        if (g == Gesture.START_DRAG) {
+            return findDraggableItem(e);
+        } else if (g == Gesture.ONGOING_DRAG) {
+            return dragItemTo(map().viewport().fromScreenPoint(e.getX(), e.getY()));
+        } else {
+            dragItem = null;
+        }
+
         if (g instanceof Gesture.Tap)
             return activateSelectedItems(e, mActiveItemSingleTap);
 
         if (g instanceof Gesture.LongPress)
             return activateSelectedItems(e, mActiveItemLongPress);
-
-        if (g == Gesture.START_DRAG) {
-            return findDraggableItem(e);
-        }
-
-        if (g == Gesture.ONGOING_DRAG) {
-            return dragItemTo(map().viewport().fromScreenPoint(e.getX(), e.getY()));
-        }
 
         return false;
     }
