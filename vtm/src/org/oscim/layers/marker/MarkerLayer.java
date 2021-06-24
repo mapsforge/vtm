@@ -6,7 +6,7 @@
  *
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Stephan Leuschner
- * Copyright 2016-2020 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 Longri
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -43,7 +43,7 @@ public abstract class MarkerLayer extends Layer {
      * Method by which subclasses create the actual Items. This will only be
      * called from populate() we'll cache them for later use.
      */
-    protected abstract MarkerInterface createItem(int i);
+    public abstract MarkerInterface createItem(int i);
 
     /**
      * The number of items in this overlay.

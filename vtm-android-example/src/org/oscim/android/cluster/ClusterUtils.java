@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.layers.marker.utils;
+package org.oscim.android.cluster;
 
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
@@ -25,7 +25,7 @@ import org.oscim.backend.canvas.Paint;
  * A simple utility class to make clustered markers functionality self-contained.
  * Includes a method to translate between DPs and PXs and a circular icon generator.
  */
-public class ScreenUtils {
+public class ClusterUtils {
 
     /**
      * Get pixels from DPs
@@ -38,8 +38,9 @@ public class ScreenUtils {
     }
 
     public static class ClusterDrawable {
-        private Paint mPaintText = CanvasAdapter.newPaint();
-        private Paint mPaintCircle = CanvasAdapter.newPaint(), mPaintBorder = CanvasAdapter.newPaint();
+        private final Paint mPaintText = CanvasAdapter.newPaint();
+        private final Paint mPaintCircle = CanvasAdapter.newPaint();
+        private final Paint mPaintBorder = CanvasAdapter.newPaint();
         private int mSize;
         private String mText;
 
@@ -57,8 +58,8 @@ public class ScreenUtils {
         }
 
         private void setup(int sizedp, int foregroundColor, int backgroundColor) {
-            mSize = ScreenUtils.getPixels(sizedp);
-            mPaintText.setTextSize(ScreenUtils.getPixels((int) (sizedp * 0.6666666)));
+            mSize = ClusterUtils.getPixels(sizedp);
+            mPaintText.setTextSize(ClusterUtils.getPixels((int) (sizedp * 0.6666666)));
             mPaintText.setColor(foregroundColor);
 
             mPaintCircle.setColor(backgroundColor);

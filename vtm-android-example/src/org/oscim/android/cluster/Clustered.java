@@ -1,10 +1,6 @@
 /*
- * Copyright 2013 Hannes Janetzek
- * Copyright 2016 Izumi Kawashima
- * Copyright 2017 Longri
- * Copyright 2017-2020 devemux86
- *
- * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
+ * Copyright 2017 nebular
+ * Copyright 2017 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -17,22 +13,21 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.layers.marker;
+package org.oscim.android.cluster;
+
+import org.oscim.layers.marker.InternalItem;
 
 /**
- * The internal representation of a marker.
+ * Extension for clustered items.
  */
-public class InternalItem {
+public class Clustered extends InternalItem {
+    /**
+     * If this is >0, this item will be displayed as a cluster circle, with size clusterSize+1.
+     */
+    public int clusterSize;
 
-    public MarkerInterface item;
-    public boolean visible;
-    public boolean changes;
-    public float x, y;
-    public double px, py;
-    public float dy;
-
-    @Override
-    public String toString() {
-        return "\n" + x + ":" + y + " / " + dy + " " + visible;
-    }
+    /**
+     * If this is true, this item is hidden (because it's represented by another InternalItem acting as cluster.
+     */
+    public boolean clusteredOut;
 }

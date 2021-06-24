@@ -19,13 +19,13 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.layers.marker;
+package org.oscim.android.cluster;
 
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.MercatorProjection;
 import org.oscim.core.PointF;
 import org.oscim.core.Tile;
-import org.oscim.layers.marker.utils.ScreenUtils;
+import org.oscim.layers.marker.*;
 import org.oscim.layers.marker.utils.SparseIntArray;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.bucket.SymbolItem;
@@ -45,7 +45,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
     /**
      * default color of number inside the icon. Would be super-cool to cook this into the map theme
      */
-    private static int CLUSTER_COLORTEXT = 0xff8000c0;
+    private static final int CLUSTER_COLORTEXT = 0xff8000c0;
 
     /**
      * default color of circle background
@@ -84,12 +84,12 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
      * We use a flat Sparse array to calculate the clusters. The sparse array models a 2D map where every (x,y) denotes
      * a grid slot, ie. 64x64dp. For efficiency I use a linear sparsearray with ARRindex = SLOTypos * max_x + SLOTxpos"
      */
-    private SparseIntArray mGridMap = new SparseIntArray(200); // initial space for 200 markers, that's not a lot of memory, and in most cases will avoid resizing the array
+    private final SparseIntArray mGridMap = new SparseIntArray(200); // initial space for 200 markers, that's not a lot of memory, and in most cases will avoid resizing the array
 
     /**
      * Whether to enable clustering or disable the functionality
      */
-    private boolean mClusteringEnabled = false;
+    private final boolean mClusteringEnabled;
 
     /**
      * Constructs a clustered marker renderer
@@ -139,18 +139,18 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
      */
     private void repopulateCluster(int size, double scale) {
         /* the grid slot size in px. increase to group more aggressively. currently set to marker size */
-        final int GRIDSIZE = ScreenUtils.getPixels(MAP_GRID_SIZE_DP);
+        final int GRIDSIZE = ClusterUtils.getPixels(MAP_GRID_SIZE_DP);
 
         /* the factor to map into Grid Coordinates (discrete squares of GRIDSIZE x GRIDSIZE) */
         final double factor = (scale / GRIDSIZE);
 
-        InternalItem.Clustered[] tmp = new InternalItem.Clustered[size];
+        Clustered[] tmp = new Clustered[size];
 
         // clear grid map to count items that share the same "grid slot"
         mGridMap.clear();
 
         for (int i = 0; i < size; i++) {
-            InternalItem.Clustered it = tmp[i] = new InternalItem.Clustered();
+            Clustered it = tmp[i] = new Clustered();
 
             it.item = mMarkerLayer.createItem(i);
 
@@ -160,7 +160,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
             it.py = mMapPoint.y;
 
             // items can be declared non-clusterable
-            if (!(it.item instanceof MarkerItem.NonClusterable)) {
+            if (!(it.item instanceof NonClusterable)) {
 
                 final int
                         absposx = (int) (it.px * factor),             // absolute item X position in the grid
@@ -244,7 +244,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
         int numVisible = 0;
 
         // Increase view to show items that are partially visible
-        mMarkerLayer.map().viewport().getMapExtents(mBox, Tile.SIZE / 2);
+        mMarkerLayer.map().viewport().getMapExtents(mBox, Tile.SIZE >> 1);
 
         long flip = (long) (Tile.SIZE * v.pos.scale) >> 1;
 
@@ -262,7 +262,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
 
         /* check visibility */
         for (InternalItem itm : mItems) {
-            InternalItem.Clustered it = (InternalItem.Clustered) itm;
+            Clustered it = (Clustered) itm;
 
             it.changes = false;
             it.x = (float) ((it.px - mx) * scale);
@@ -318,7 +318,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
         //log.debug(Arrays.toString(mItems));
 
         for (InternalItem itm : mItems) {
-            InternalItem.Clustered it = (InternalItem.Clustered) itm;
+            Clustered it = (Clustered) itm;
 
             // skip invisible AND clustered-out
             if ((!it.visible) || (it.clusteredOut))
@@ -387,7 +387,7 @@ public class ClusterMarkerRenderer extends MarkerRenderer {
         // create and cache bitmap. This is unacceptable inside the GL thread,
         // so we'll call this routine at the beginning to pre-cache all bitmaps
 
-        ScreenUtils.ClusterDrawable drawable = new ScreenUtils.ClusterDrawable(
+        ClusterUtils.ClusterDrawable drawable = new ClusterUtils.ClusterDrawable(
                 MAP_MARKER_CLUSTER_SIZE_DP - CLUSTER_MAXSIZE + size, // make size dependent on cluster size
                 mStyleForeground,
                 mStyleBackground,

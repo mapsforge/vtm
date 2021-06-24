@@ -17,6 +17,7 @@ package org.oscim.android.test;
 
 import android.graphics.BitmapFactory;
 import org.oscim.android.canvas.AndroidBitmap;
+import org.oscim.android.cluster.ClusterMarkerRenderer;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Color;
 import org.oscim.core.GeoPoint;

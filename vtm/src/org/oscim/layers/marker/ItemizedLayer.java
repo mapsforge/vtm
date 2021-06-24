@@ -2,7 +2,7 @@
  * Copyright 2012 osmdroid authors: Nicolas Gramlich, Theodore Hong, Fred Eisele
  *
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2020 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2016 Stephan Leuschner
  * Copyright 2016 Pedinel
  * Copyright 2019 Carlos Alberto Martínez Gadea
@@ -78,7 +78,7 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
     }
 
     @Override
-    protected synchronized MarkerInterface createItem(int index) {
+    public synchronized MarkerInterface createItem(int index) {
         return mItemList.get(index);
     }
 
