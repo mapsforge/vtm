@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2020 marq24
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -32,6 +32,7 @@ import org.oscim.layers.vector.geometries.PointDrawable;
 import org.oscim.layers.vector.geometries.Style;
 import org.oscim.map.Map;
 import org.oscim.renderer.bucket.LineBucket;
+import org.oscim.renderer.bucket.LineTexBucket;
 import org.oscim.renderer.bucket.MeshBucket;
 import org.oscim.theme.styles.AreaStyle;
 import org.oscim.theme.styles.LineStyle;
@@ -235,6 +236,7 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
         LineBucket ll = t.buckets.getLineBucket(level + 1);
         if (ll.line == null) {
             ll.line = new LineStyle(2, style.strokeColor, style.strokeWidth);
+            ll.setDropDistance(style.pointReduction ? LineBucket.MIN_DIST : 0);
         }
 
         for (int i = 0; i < points.getNumGeometries(); i++) {
@@ -273,6 +275,9 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
                     .strokeWidth(style.strokeWidth)
                     .texture(style.texture)
                     .build();
+            ll.setDropDistance(style.pointReduction ? LineBucket.MIN_DIST : 0);
+            if (ll instanceof LineTexBucket)
+                ((LineTexBucket) ll).setTexRepeat(style.textureRepeat);
         }
 
         if (!style.fixed && style.strokeIncrease > 1)
@@ -304,6 +309,7 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
         LineBucket ll = t.buckets.getLineBucket(level + 1);
         if (ll.line == null) {
             ll.line = new LineStyle(2, style.strokeColor, style.strokeWidth);
+            ll.setDropDistance(style.pointReduction ? LineBucket.MIN_DIST : 0);
         }
 
         if (style.generalization != Style.GENERALIZATION_NONE) {

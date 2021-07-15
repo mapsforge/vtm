@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2021 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -52,6 +52,8 @@ public class Style {
     public final int stippleColor;
     public final float stippleWidth;
     public final TextureItem texture;
+    public final boolean pointReduction;
+    public final boolean textureRepeat;
 
     public final float heightOffset;
     public final boolean randomOffset;
@@ -76,6 +78,8 @@ public class Style {
         stippleColor = builder.stippleColor;
         stippleWidth = builder.stippleWidth;
         texture = builder.texture;
+        pointReduction = builder.pointReduction;
+        textureRepeat = builder.textureRepeat;
 
         heightOffset = builder.heightOffset;
         randomOffset = builder.randomOffset;
@@ -111,6 +115,8 @@ public class Style {
         public int stippleColor = Color.GRAY;
         public float stippleWidth = 1;
         public TextureItem texture = null;
+        public boolean pointReduction = true;
+        public boolean textureRepeat = true;
 
         public float heightOffset = 0;
         public boolean randomOffset = true;
@@ -245,6 +251,16 @@ public class Style {
 
         public Builder texture(TextureItem texture) {
             this.texture = texture;
+            return this;
+        }
+
+        public Builder pointReduction(boolean pointReduction) {
+            this.pointReduction = pointReduction;
+            return this;
+        }
+
+        public Builder textureRepeat(boolean textureRepeat) {
+            this.textureRepeat = textureRepeat;
             return this;
         }
 

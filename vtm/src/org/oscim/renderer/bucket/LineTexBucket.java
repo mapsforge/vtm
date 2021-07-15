@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 Longri
  * Copyright 2018 Gustl22
  *
@@ -21,11 +21,7 @@ package org.oscim.renderer.bucket;
 
 import org.oscim.backend.GL;
 import org.oscim.core.GeometryBuffer;
-import org.oscim.renderer.GLShader;
-import org.oscim.renderer.GLState;
-import org.oscim.renderer.GLUtils;
-import org.oscim.renderer.GLViewport;
-import org.oscim.renderer.MapRenderer;
+import org.oscim.renderer.*;
 import org.oscim.theme.styles.LineStyle;
 import org.oscim.utils.FastMath;
 import org.slf4j.Logger;
@@ -36,9 +32,7 @@ import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
 
 import static org.oscim.backend.GLAdapter.gl;
-import static org.oscim.renderer.MapRenderer.COORD_SCALE;
-import static org.oscim.renderer.MapRenderer.MAX_INDICES;
-import static org.oscim.renderer.MapRenderer.bindQuadIndicesVBO;
+import static org.oscim.renderer.MapRenderer.*;
 
 /**
  * RenderElement for textured or stippled lines
@@ -93,12 +87,17 @@ public final class LineTexBucket extends LineBucket {
     public int oddQuads;
 
     private boolean evenSegment = true;
+    private boolean mTexRepeat = true;
 
     LineTexBucket(int level) {
         super(TEXLINE, false, true);
 
         this.level = level;
         this.evenSegment = true;
+    }
+
+    public void setTexRepeat(boolean texRepeat) {
+        mTexRepeat = texRepeat;
     }
 
     @Override
@@ -185,7 +184,8 @@ public final class LineTexBucket extends LineBucket {
                 } else {
                     addShortVertex(vi, (short) x, (short) y, (short) nx, (short) ny,
                             dx, dy, (short) lineLength, (int) dist);
-                    lineLength += dist;
+                    if (mTexRepeat)
+                        lineLength += dist;
                 }
                 x = nx;
                 y = ny;

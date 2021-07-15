@@ -2,6 +2,8 @@
 
 ## New since 0.16.0
 
+- Drawable style point reduction option [#862](https://github.com/mapsforge/vtm/pull/862)
+- Drawable style texture repeat option [#862](https://github.com/mapsforge/vtm/pull/862)
 - Move cluster experiment in samples [#858](https://github.com/mapsforge/vtm/pull/858)
 - Many other minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.17.0)

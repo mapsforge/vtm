@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2021 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -50,13 +50,13 @@ public class LineBucket extends RenderBucket {
     /**
      * maximal resolution
      */
-    private static final float MIN_DIST = 1 / 8f;
+    public static final float MIN_DIST = 1 / 8f;
 
     /**
      * not quite right.. need to go back so that additional
      * bevel vertices are at least MIN_DIST apart
      */
-    private static final float BEVEL_MIN = MIN_DIST * 4;
+    private static final float MIN_BEVEL = MIN_DIST * 4;
 
     /**
      * mask for packing last two bits of extrusion vector with texture
@@ -71,6 +71,7 @@ public class LineBucket extends RenderBucket {
 
     public boolean roundCap;
     private float mMinDist = MIN_DIST;
+    private float mMinBevel = MIN_BEVEL;
 
     public float heightOffset;
 
@@ -103,7 +104,14 @@ public class LineBucket extends RenderBucket {
      * For point reduction by minimal distance. Default is 1/8.
      */
     public void setDropDistance(float minDist) {
-        mMinDist = Math.max(minDist, MIN_DIST);
+        mMinDist = minDist;
+    }
+
+    /**
+     * Default is MIN_DIST * 4 = 1/8 * 4.
+     */
+    public void setBevelDistance(float minBevel) {
+        mMinBevel = minBevel;
     }
 
     public void addLine(GeometryBuffer geom) {
@@ -395,18 +403,18 @@ public class LineBucket extends RenderBucket {
                         uy /= a;
                     }
                     //log.debug("aside " + a + " " + ux + " " + uy);
-                    px = curX - ux * BEVEL_MIN;
-                    py = curY - uy * BEVEL_MIN;
-                    curX = curX + ux * BEVEL_MIN;
-                    curY = curY + uy * BEVEL_MIN;
+                    px = curX - ux * mMinBevel;
+                    py = curY - uy * mMinBevel;
+                    curX = curX + ux * mMinBevel;
+                    curY = curY + uy * mMinBevel;
                 } else {
                     //log.debug("back");
                     /* go back by min dist */
-                    px = curX + vPrevX * BEVEL_MIN;
-                    py = curY + vPrevY * BEVEL_MIN;
+                    px = curX + vPrevX * mMinBevel;
+                    py = curY + vPrevY * mMinBevel;
                     /* go forward by min dist */
-                    curX = curX + vNextX * BEVEL_MIN;
-                    curY = curY + vNextY * BEVEL_MIN;
+                    curX = curX + vNextX * mMinBevel;
+                    curY = curY + vNextY * mMinBevel;
                 }
 
                 /* unit vector pointing forward to next node */
