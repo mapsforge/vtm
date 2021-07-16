@@ -1,6 +1,7 @@
 /*
  * Copyright 2014 Hannes Janetzek
  * Copyright 2018 Gustl22
+ * Copyright 2021 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -107,12 +108,12 @@ public abstract class AbstractVectorLayer<T> extends Layer implements UpdateList
         public boolean doWork(Task t) {
 
             Box bbox;
-            float[] box = new float[8];
+            //float[] box = new float[8];
 
             Viewport v = mMap.viewport().getSyncViewport();
             synchronized (v) {
                 bbox = v.getBBox(null, 0);
-                v.getMapExtents(box, 0);
+                //v.getMapExtents(box, 0);
                 v.getMapPosition(t.position);
             }
 
