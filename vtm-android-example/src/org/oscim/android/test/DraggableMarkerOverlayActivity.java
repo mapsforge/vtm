@@ -91,8 +91,8 @@ public class DraggableMarkerOverlayActivity extends MapActivity {
 
         List<MarkerInterface> pts = new ArrayList<>();
 
-        for (double lat = -90; lat <= 90; lat += 25) {
-            for (double lon = -180; lon <= 180; lon += 25)
+        for (double lat = -90; lat <= 90; lat += 45) {
+            for (double lon = -180; lon <= 180; lon += 45)
                 pts.add(
                         new DraggableMarkerItem(
                                 null,
