@@ -41,8 +41,6 @@ import java.util.List;
 
 public class DraggableMarkerOverlayActivity extends MapActivity {
 
-    static final boolean BILLBOARDS = true;
-
     public DraggableMarkerOverlayActivity() {
         super(R.layout.activity_map_draggable);
     }
@@ -55,9 +53,11 @@ public class DraggableMarkerOverlayActivity extends MapActivity {
     }
 
     void createLayers() {
-        UrlTileSource tileSource = DefaultSources.OPENSTREETMAP
-                .httpFactory(new OkHttpEngine.OkHttpFactory())
-                .build();
+        final UrlTileSource tileSource =
+                DefaultSources
+                        .OPENSTREETMAP
+                        .httpFactory(new OkHttpEngine.OkHttpFactory())
+                        .build();
         tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-android-example"));
         mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
