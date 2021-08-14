@@ -1,23 +1,19 @@
 package org.oscim.android.drag;
 
 import org.oscim.core.GeoPoint;
-import org.oscim.layers.marker.MarkerSymbol;
+import org.oscim.layers.marker.MarkerItem;
 
-public class DraggableMarkerItem extends DisableableMarkerItem implements Draggable, DisableableAndDraggable {
+public class DraggableMarkerItem extends MarkerItem implements Draggable {
 
     private boolean draggable;
     private final DragAndDropListener dragAndDropListener;
 
-    public DraggableMarkerItem(final Object uid,
-                               final String title,
+    public DraggableMarkerItem(final String title,
                                final String description,
                                final GeoPoint geoPoint,
-                               // FK-TODO: enabledMarker und disabledMarker in einer neuen Klasse zusammenfassen
-                               final MarkerSymbol enabledMarker,
-                               final MarkerSymbol disabledMarker,
                                final boolean draggable,
                                final DragAndDropListener dragAndDropListener) {
-        super(uid, title, description, geoPoint, enabledMarker, disabledMarker);
+        super(title, description, geoPoint);
         this.draggable = draggable;
         this.dragAndDropListener = dragAndDropListener;
     }
