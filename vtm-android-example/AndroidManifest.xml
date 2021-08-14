@@ -80,6 +80,9 @@
             android:name=".MarkerOverlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name=".DraggableMarkerOverlayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".MBTilesBitmapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
