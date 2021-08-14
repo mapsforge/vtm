@@ -4,6 +4,7 @@ import org.oscim.core.GeoPoint;
 import org.oscim.event.MotionEvent;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
+import org.oscim.layers.marker.MarkerLayer;
 import org.oscim.map.Map;
 
 class ItemDragger {
@@ -51,7 +52,7 @@ class ItemDragger {
         dragItem = null;
     }
 
-    private DragAndDropListener createDragItemAndRedrawListener(final DraggableItemizedLayer draggableItemizedLayer,
+    private DragAndDropListener createDragItemAndRedrawListener(final MarkerLayer markerLayer,
                                                                 final Map map) {
         return new DragAndDropListener() {
 
@@ -75,7 +76,7 @@ class ItemDragger {
 
             private void updateLocationOfMarkerItemAndRedraw(final MarkerItem markerItem, final GeoPoint location) {
                 markerItem.geoPoint = location;
-                draggableItemizedLayer.populate();
+                markerLayer.populate();
                 map.render();
             }
         };
