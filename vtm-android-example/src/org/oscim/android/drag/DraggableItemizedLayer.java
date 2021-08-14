@@ -24,10 +24,7 @@ public class DraggableItemizedLayer extends ItemizedLayer implements GestureList
                                   final MarkerSymbol defaultMarker,
                                   final OnItemGestureListener<MarkerInterface> listener) {
         super(map, markerItems, defaultMarker, listener);
-        itemDragger =
-                new ItemDragger(
-                        this,
-                        new LocationUIUpdater(this, mMap));
+        itemDragger = new ItemDragger(this, map);
     }
 
     @Override

@@ -3,17 +3,18 @@ package org.oscim.android.drag;
 import org.oscim.core.GeoPoint;
 import org.oscim.event.MotionEvent;
 import org.oscim.layers.marker.ItemizedLayer;
+import org.oscim.layers.marker.MarkerItem;
+import org.oscim.map.Map;
 
 class ItemDragger {
 
     private final DraggableItemizedLayer draggableItemizedLayer;
-    private final LocationUIUpdater locationUIUpdater;
+    private final DragAndDropListener dragItemAndRedrawListener;
     private DraggableMarkerItem dragItem;
 
-    public ItemDragger(final DraggableItemizedLayer draggableItemizedLayer,
-                       final LocationUIUpdater locationUIUpdater) {
+    public ItemDragger(final DraggableItemizedLayer draggableItemizedLayer, final Map map) {
         this.draggableItemizedLayer = draggableItemizedLayer;
-        this.locationUIUpdater = locationUIUpdater;
+        dragItemAndRedrawListener = createDragItemAndRedrawListener(draggableItemizedLayer, map);
     }
 
     public boolean startDragItem(final MotionEvent event, final GeoPoint geoPoint) {
@@ -24,12 +25,7 @@ class ItemDragger {
                     @Override
                     public boolean run(final int index) {
                         dragItem = (DraggableMarkerItem) draggableItemizedLayer.getMarkerItems().get(index);
-                        if (!dragItem.isDraggable()) {
-                            dragItem = null;
-                            return false;
-                        }
-                        dragItem.getDragAndDropListener().startDragItemAtGeoPoint(dragItem, geoPoint);
-                        locationUIUpdater.update(dragItem, geoPoint);
+                        dragItemAndRedrawListener.startDragItemAtGeoPoint(dragItem, geoPoint);
                         return true;
                     }
                 });
@@ -39,8 +35,7 @@ class ItemDragger {
         if (dragItem == null) {
             return false;
         }
-        dragItem.getDragAndDropListener().ongoingDragItemToGeoPoint(dragItem, geoPoint);
-        locationUIUpdater.update(dragItem, geoPoint);
+        dragItemAndRedrawListener.ongoingDragItemToGeoPoint(dragItem, geoPoint);
         return true;
     }
 
@@ -48,12 +43,41 @@ class ItemDragger {
         if (dragItem == null) {
             return false;
         }
-        dragItem.getDragAndDropListener().dropItemAtGeoPoint(dragItem, geoPoint);
-        locationUIUpdater.update(dragItem, geoPoint);
+        dragItemAndRedrawListener.dropItemAtGeoPoint(dragItem, geoPoint);
         return true;
     }
 
     public void noDrag() {
         dragItem = null;
+    }
+
+    private DragAndDropListener createDragItemAndRedrawListener(final DraggableItemizedLayer draggableItemizedLayer,
+                                                                final Map map) {
+        return new DragAndDropListener() {
+
+            @Override
+            public void startDragItemAtGeoPoint(final DraggableMarkerItem item, final GeoPoint geoPoint) {
+                item.getDragAndDropListener().startDragItemAtGeoPoint(item, geoPoint);
+                updateLocationOfMarkerItemAndRedraw(item, geoPoint);
+            }
+
+            @Override
+            public void ongoingDragItemToGeoPoint(final DraggableMarkerItem item, final GeoPoint geoPoint) {
+                item.getDragAndDropListener().ongoingDragItemToGeoPoint(item, geoPoint);
+                updateLocationOfMarkerItemAndRedraw(item, geoPoint);
+            }
+
+            @Override
+            public void dropItemAtGeoPoint(final DraggableMarkerItem item, final GeoPoint geoPoint) {
+                item.getDragAndDropListener().dropItemAtGeoPoint(item, geoPoint);
+                updateLocationOfMarkerItemAndRedraw(item, geoPoint);
+            }
+
+            private void updateLocationOfMarkerItemAndRedraw(final MarkerItem markerItem, final GeoPoint location) {
+                markerItem.geoPoint = location;
+                draggableItemizedLayer.populate();
+                map.render();
+            }
+        };
     }
 }

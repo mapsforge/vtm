@@ -97,7 +97,6 @@ public class DraggableMarkerOverlayActivity extends MapActivity {
                                 lat + "/" + lon,
                                 "",
                                 new GeoPoint(lat, lon),
-                                true,
                                 dragAndDropListener));
             }
         }
