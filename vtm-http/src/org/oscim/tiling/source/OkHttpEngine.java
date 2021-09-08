@@ -1,7 +1,7 @@
 /*
  * Copyright 2014 Charles Greb
  * Copyright 2014 Hannes Janetzek
- * Copyright 2017 devemux86
+ * Copyright 2017-2021 devemux86
  * Copyright 2017 Mathieu De Brito
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -19,8 +19,10 @@
  */
 package org.oscim.tiling.source;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.oscim.core.Tile;
-import org.oscim.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +32,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Map.Entry;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class OkHttpEngine implements HttpEngine {
 
@@ -100,7 +98,11 @@ public class OkHttpEngine implements HttpEngine {
         if (mInputStream == null)
             return;
 
-        IOUtils.closeQuietly(mInputStream);
+        try {
+            mInputStream.close();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
         mInputStream = null;
     }
 
@@ -117,9 +119,7 @@ public class OkHttpEngine implements HttpEngine {
 
     @Override
     public boolean requestCompleted(boolean success) {
-        IOUtils.closeQuietly(mInputStream);
-        mInputStream = null;
-
+        close();
         return success;
     }
 }
