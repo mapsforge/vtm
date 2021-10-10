@@ -92,6 +92,7 @@ public class MapView extends GLSurfaceView {
         this(context, null);
     }
 
+    @SuppressWarnings("deprecation")
     public MapView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 

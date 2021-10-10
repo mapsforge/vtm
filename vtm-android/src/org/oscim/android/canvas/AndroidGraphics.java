@@ -107,6 +107,9 @@ public final class AndroidGraphics extends CanvasAdapter {
         return new AndroidBitmap(bitmap);
     }
 
+    /**
+     * @deprecated
+     */
     public static Bitmap drawableToBitmap(Resources res, int resId) {
         return drawableToBitmap(res.getDrawable(resId));
     }

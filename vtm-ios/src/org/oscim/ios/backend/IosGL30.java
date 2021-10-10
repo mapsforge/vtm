@@ -15,7 +15,6 @@
 package org.oscim.ios.backend;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSGLES30;
-
 import org.oscim.backend.GL30;
 
 import java.nio.Buffer;
@@ -26,6 +25,7 @@ import java.nio.LongBuffer;
 /**
  * iOS specific implementation of {@link GL30}.
  */
+@SuppressWarnings("deprecation")
 public class IosGL30 extends IosGL implements GL30 {
 
     private static final IOSGLES30 iOSGL = new IOSGLES30();

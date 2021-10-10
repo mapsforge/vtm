@@ -395,6 +395,7 @@ public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
     /**
      * See https://github.com/mourner/rbush-knn/blob/master/index.js
      */
+    @SuppressWarnings("unchecked")
     @Override
     public List<T> searchKNearestNeighbors(Point center, int k, double maxDistance, List<T> results) {
         if (results == null)

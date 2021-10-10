@@ -24,6 +24,7 @@ import java.nio.*;
 /**
  * See https://github.com/libgdx/libgdx/blob/master/backends/gdx-backend-lwjgl3/src/com/badlogic/gdx/backends/lwjgl3/Lwjgl3GL30.java
  */
+@SuppressWarnings("deprecation")
 public class Lwjgl3GL30 extends Lwjgl3GL20 implements org.oscim.backend.GL30 {
     @Override
     public void readBuffer(int mode) {

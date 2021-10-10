@@ -23,8 +23,7 @@ public class SVGParser extends NSObject {
     public SVGParser() {
     }
 
-    ;
-
+    @SuppressWarnings("deprecation")
     protected SVGParser(long handle) {
         super(handle);
     }

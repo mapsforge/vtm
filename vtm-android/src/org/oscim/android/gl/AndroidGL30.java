@@ -35,12 +35,12 @@ package org.oscim.android.gl;
 
 import android.annotation.SuppressLint;
 import android.opengl.GLES30;
-
 import org.oscim.backend.GL30;
 
 /**
  * See https://github.com/libgdx/libgdx/blob/master/backends/gdx-backend-android/src/com/badlogic/gdx/backends/android/AndroidGL30.java
  */
+@SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
 public class AndroidGL30 extends AndroidGL implements GL30 {
     @Override

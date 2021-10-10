@@ -31,6 +31,7 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.KeyCodes;
 
+@SuppressWarnings("deprecation")
 public class GwtInput implements Input {
     static final int MAX_TOUCHES = 20;
     boolean justTouched = false;
