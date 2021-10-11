@@ -1,5 +1,5 @@
 apply plugin: 'java-library'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 dependencies {
     api project(':vtm-gdx')
@@ -7,19 +7,24 @@ dependencies {
 }
 
 sourceSets {
-    main {
-        java.srcDirs = ['src']
-    }
+    main.java.srcDirs = ['src']
 }
 
 file('natives').eachDir() { dir ->
     task("nativesJar-${dir.name}", type: Jar) {
-        classifier = "natives-${dir.name}"
+        classifier "natives-${dir.name}"
         from(dir.path)
     }
+}
 
-    artifacts {
-        archives tasks["nativesJar-${dir.name}"]
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            file('natives').eachDir() { dir ->
+                artifact tasks["nativesJar-${dir.name}"]
+            }
+        }
     }
 }
 

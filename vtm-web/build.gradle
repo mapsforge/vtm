@@ -3,12 +3,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.13'
+        classpath 'org.wisepersist:gwt-gradle-plugin:1.1.15'
     }
 }
 
 apply plugin: 'java-library'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'gwt-base'
 
 sourceSets {
@@ -79,6 +79,14 @@ javadoc {
         options.addStringOption("-release", "8")
     }
     options.addStringOption("sourcepath", "")
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
 }
 
 if (project.hasProperty("SONATYPE_USERNAME")) {

@@ -5,16 +5,13 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
 
 allprojects {
     group = 'org.mapsforge'
     version = 'master-SNAPSHOT'
-    ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
-    ext.androidBuildVersionTools = "31.0.0"
     ext.gdxVersion = "1.9.10"
     ext.gwtVersion = "2.8.2"
     ext.slf4jVersion = "1.7.28"
@@ -31,7 +28,7 @@ allprojects {
 static def androidCompileSdk() { return 31 }
 
 // 14 for Support Library, 16 for sqlite-android
-static def androidMinSdk() { return 16 }
+static def androidMinSdk() { return 21 }
 
 static def androidTargetSdk() { return 30 }
 

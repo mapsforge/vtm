@@ -1,84 +1,63 @@
 apply plugin: 'signing'
 
-if (project.hasProperty("android")) {
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.srcDirs
-    }
-
-    task javadoc(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-        classpath += project.android.libraryVariants.toList().first().javaCompileProvider.get().classpath
-    }
-} else {
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-signing {
-    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: SONATYPE_USERNAME, password: SONATYPE_PASSWORD)
-            }
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: SONATYPE_USERNAME, password: SONATYPE_PASSWORD)
-            }
-
-            pom.project {
-                packaging 'jar'
-
-                name 'vtm'
-                description 'OpenGL vector map library written in Java - running on Android, iOS, Desktop and within the browser.'
-                url 'https://github.com/mapsforge/vtm'
-
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom {
+                name = 'VTM'
+                description = 'OpenGL vector map library - running on Android, iOS, Desktop and browser.'
+                url = 'https://github.com/mapsforge/vtm'
                 licenses {
                     license {
-                        name 'GNU Lesser GPL'
-                        url 'http://www.gnu.org/licenses/lgpl.html'
-                        distribution 'repo'
+                        name = 'GNU Lesser GPL'
+                        url = 'https://www.gnu.org/licenses/lgpl.html'
                     }
                 }
-
-                scm {
-                    connection 'scm:git:https://github.com/mapsforge/vtm'
-                    developerConnection 'scm:git:https://github.com/mapsforge/vtm'
-                    url 'https://github.com/mapsforge/vtm'
-                }
-
                 developers {
                     developer {
-                        id 'hannes.janetzek'
-                        name 'Hannes Janetzek'
-                        email 'hannes.janetzek@gmail.com'
+                        id = 'hannes.janetzek'
+                        name = 'Hannes Janetzek'
+                        email = 'hannes.janetzek@gmail.com'
                     }
                     developer {
-                        id 'devemux86'
-                        name 'Emux'
-                        email 'devemux86@gmail.com'
+                        id = 'devemux86'
+                        name = 'Emux'
+                        email = 'devemux86@gmail.com'
                     }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/mapsforge/vtm'
+                    developerConnection = 'scm:git:https://github.com/mapsforge/vtm'
+                    url = 'https://github.com/mapsforge/vtm'
                 }
             }
         }
+    }
+    repositories {
+        maven {
+            def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = SONATYPE_USERNAME
+                password = SONATYPE_PASSWORD
+            }
+        }
+    }
+}
+
+signing {
+    required { !version.endsWith('SNAPSHOT') }
+    sign publishing.publications.maven
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
     }
 }

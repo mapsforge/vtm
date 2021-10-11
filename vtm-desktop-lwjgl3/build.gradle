@@ -1,5 +1,5 @@
 apply plugin: 'java-library'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 dependencies {
     api project(':vtm-desktop')
@@ -7,8 +7,14 @@ dependencies {
 }
 
 sourceSets {
-    main {
-        java.srcDirs = ['src']
+    main.java.srcDirs = ['src']
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
     }
 }
 

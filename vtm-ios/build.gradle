@@ -8,7 +8,7 @@ buildscript {
 }
 
 apply plugin: 'java-library'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'robovm'
 
 sourceSets.main.java.srcDirs = ["src/"]
@@ -42,7 +42,6 @@ task copyVtmThemesResources(type: Copy) {
     into("${buildDir}")
 }
 
-
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn copyVtmResources
 }
@@ -52,7 +51,8 @@ tasks.withType(JavaCompile) {
 }
 
 task nativesJar(type: Jar) {
-    classifier = 'natives'
+    dependsOn copyVtmResources, copyVtmThemesResources
+    classifier 'natives'
     from('natives')
 }
 
@@ -60,8 +60,20 @@ artifacts {
     archives nativesJar
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact nativesJar
+        }
+    }
+}
+
 if (project.hasProperty("SONATYPE_USERNAME")) {
     afterEvaluate {
         project.apply from: "${rootProject.projectDir}/deploy.gradle"
+        tasks.named("sourcesJar") {
+            dependsOn copyVtmResources, copyVtmThemesResources
+        }
     }
 }

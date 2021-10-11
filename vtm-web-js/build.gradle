@@ -4,8 +4,8 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.13'
-        classpath 'gradle.plugin.org.gretty:gretty:3.0.3'
+        classpath 'org.wisepersist:gwt-gradle-plugin:1.1.15'
+        classpath 'org.gretty:gretty:4.0.0'
     }
 }
 
