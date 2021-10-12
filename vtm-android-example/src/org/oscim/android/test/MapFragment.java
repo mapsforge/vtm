@@ -15,7 +15,6 @@
  */
 package org.oscim.android.test;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +39,7 @@ import java.io.File;
  * You'll need a map with filename berlin.map from download.mapsforge.org in device storage.
  */
 @SuppressWarnings("deprecation")
-public class MapFragment extends Fragment {
+public class MapFragment extends android.app.Fragment {
 
     private MapView mapView;
     private IRenderTheme theme;

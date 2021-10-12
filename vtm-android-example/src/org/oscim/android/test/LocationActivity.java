@@ -96,6 +96,7 @@ public class LocationActivity extends BitmapTileActivity implements LocationList
     public void onProviderEnabled(String provider) {
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
     }

@@ -14,14 +14,13 @@
  */
 package org.oscim.android.test;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 @SuppressWarnings("deprecation")
-public class BlankFragment extends Fragment {
+public class BlankFragment extends android.app.Fragment {
 
     static BlankFragment newInstance() {
         BlankFragment instance = new BlankFragment();

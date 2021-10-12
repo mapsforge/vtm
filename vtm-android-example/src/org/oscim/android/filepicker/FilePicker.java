@@ -192,6 +192,7 @@ public class FilePicker extends Activity implements AdapterView.OnItemClickListe
         // }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected Dialog onCreateDialog(int id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

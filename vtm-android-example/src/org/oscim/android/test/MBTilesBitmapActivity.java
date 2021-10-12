@@ -41,7 +41,7 @@ public class MBTilesBitmapActivity extends BitmapTileActivity {
         if (!file.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setTitle(R.string.warning)
-                    .setMessage(getResources().getString(R.string.startup_message_mbtiles, file.getName(), file.getAbsolutePath()))
+                    .setMessage(getResources().getString(R.string.startup_message_mbtiles))
                     .setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

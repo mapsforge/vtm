@@ -18,7 +18,6 @@ package org.oscim.android.test;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -58,6 +57,7 @@ import java.util.List;
  * Long press on map to search inside visible bounding box.<br/>
  * Tap on POIs to show their name (in default locale).
  */
+@SuppressWarnings("deprecation")
 public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLayer.OnItemGestureListener<MarkerInterface> {
 
     private static final Logger log = LoggerFactory.getLogger(PoiSearchActivity.class);
@@ -275,7 +275,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
         }
     }
 
-    private class PoiSearchTask extends AsyncTask<BoundingBox, Void, Collection<PointOfInterest>> {
+    private class PoiSearchTask extends android.os.AsyncTask<BoundingBox, Void, Collection<PointOfInterest>> {
         private final WeakReference<PoiSearchActivity> weakActivity;
         private final String category;
         private final List<Tag> patterns;

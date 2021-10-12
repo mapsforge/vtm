@@ -28,7 +28,7 @@
     <string name="search_value">void or value</string>
     <string name="now">Now</string>
     <string name="warning">Warning</string>
-    <string name="startup_message_mbtiles">To run this sample activity, you need an MBTiles database installed on storage.\n\nadb push %s %s</string>
+    <string name="startup_message_mbtiles">To run this sample activity, you need an MBTiles database installed on storage.</string>
     <string name="exit">Exit</string>
     <string name="replace_fragment">Replace fragment</string>
     <string name="empty_fragment_text">This is a fragment to test the back stack behaviour of the map fragment.</string>

@@ -126,6 +126,7 @@ public class LocationTextureActivity extends BitmapTileActivity implements Locat
     public void onProviderEnabled(String provider) {
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
     }

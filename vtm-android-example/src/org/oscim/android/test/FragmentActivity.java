@@ -15,15 +15,13 @@
 package org.oscim.android.test;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+@SuppressWarnings("deprecation")
 public class FragmentActivity extends Activity {
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +30,8 @@ public class FragmentActivity extends Activity {
         setTitle(getClass().getSimpleName());
 
         if (savedInstanceState == null) {
-            Fragment mapFragment = MapFragment.newInstance();
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            android.app.Fragment mapFragment = MapFragment.newInstance();
+            android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.add(R.id.fragment_container, mapFragment).commit();
         }
     }
@@ -44,12 +42,11 @@ public class FragmentActivity extends Activity {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.replace_fragment) {
-            Fragment blankFragment = BlankFragment.newInstance();
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            android.app.Fragment blankFragment = BlankFragment.newInstance();
+            android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_container, blankFragment);
             ft.addToBackStack(null);
             ft.commit();
