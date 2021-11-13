@@ -400,6 +400,10 @@ public class XmlThemeBuilder {
                 checkState(qName, Element.TAG_TRANSFORM);
                 tagTransform(qName);
 
+            } else if ("hillshading".equals(qName)) {
+                checkState(qName, Element.RULE);
+                // no-op
+
             } else {
                 log.error("unknown element: {}", qName);
                 throw new XmlPullParserException("unknown element: " + qName);
