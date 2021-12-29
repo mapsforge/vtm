@@ -1,7 +1,7 @@
 /*
  * Copyright 2010, 2011, 2012, 2013 mapsforge.org
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2017 devemux86
+ * Copyright 2016-2021 devemux86
  * Copyright 2017 nebular
  * Copyright 2017 Longri
  *
@@ -25,12 +25,7 @@ import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Color;
 import org.oscim.backend.canvas.Paint;
 
-import java.awt.AlphaComposite;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -188,7 +183,7 @@ public class AwtCanvas implements Canvas {
 
     @Override
     public void fillRectangle(float x, float y, float width, float height, int color) {
-        java.awt.Color awtColor = color == Color.TRANSPARENT ? TRANSPARENT : new java.awt.Color(color);
+        java.awt.Color awtColor = color == Color.TRANSPARENT ? TRANSPARENT : new java.awt.Color(color, true);
         Composite originalComposite = this.canvas.getComposite();
         this.canvas.setComposite(AlphaComposite.getInstance(color == Color.TRANSPARENT ? AlphaComposite.CLEAR : AlphaComposite.SRC_OVER));
         this.canvas.setColor(awtColor);
