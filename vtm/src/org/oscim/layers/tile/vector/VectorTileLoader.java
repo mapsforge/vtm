@@ -1,6 +1,6 @@
 /*
  * Copyright 2012-2014 Hannes Janetzek
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2022 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -18,28 +18,13 @@
 package org.oscim.layers.tile.vector;
 
 import org.oscim.core.GeometryBuffer.GeometryType;
-import org.oscim.core.MapElement;
-import org.oscim.core.MercatorProjection;
-import org.oscim.core.Tag;
-import org.oscim.core.TagSet;
-import org.oscim.core.Tile;
+import org.oscim.core.*;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.TileLoader;
-import org.oscim.renderer.bucket.CircleBucket;
-import org.oscim.renderer.bucket.LineBucket;
-import org.oscim.renderer.bucket.LineTexBucket;
-import org.oscim.renderer.bucket.MeshBucket;
-import org.oscim.renderer.bucket.PolygonBucket;
-import org.oscim.renderer.bucket.RenderBuckets;
+import org.oscim.renderer.bucket.*;
 import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.RenderTheme;
-import org.oscim.theme.styles.AreaStyle;
-import org.oscim.theme.styles.CircleStyle;
-import org.oscim.theme.styles.ExtrusionStyle;
-import org.oscim.theme.styles.LineStyle;
-import org.oscim.theme.styles.RenderStyle;
-import org.oscim.theme.styles.SymbolStyle;
-import org.oscim.theme.styles.TextStyle;
+import org.oscim.theme.styles.*;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
 import org.slf4j.Logger;
@@ -209,7 +194,7 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
         if (element.type == GeometryType.POINT) {
             renderNode(renderTheme.matchElement(element.type, tags, mTile.zoomLevel));
         } else {
-            mCurBucket = getValidLayer(element.layer) * renderTheme.getLevels();
+            mCurBucket = getValidLayer(element.layer - (element.isPoly() ? element.level : 0)) * renderTheme.getLevels();
             renderWay(renderTheme.matchElement(element.type, tags, mTile.zoomLevel));
         }
         clearState();

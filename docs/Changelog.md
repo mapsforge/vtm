@@ -2,6 +2,8 @@
 
 ## New since 0.17.0
 
+- Mapsforge: deduplicate maps [#903](https://github.com/mapsforge/vtm/pull/903)
+- Fix overlapping map regions [#903](https://github.com/mapsforge/vtm/pull/903)
 - Minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.18.0)
 

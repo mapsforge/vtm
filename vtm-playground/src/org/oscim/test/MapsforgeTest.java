@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2019 devemux86
+ * Copyright 2016-2022 devemux86
  * Copyright 2018-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -67,6 +67,7 @@ public class MapsforgeTest extends GdxMapApp {
             mapFileTileSource.setMapFile(mapFile.getAbsolutePath());
             tileSource.add(mapFileTileSource);
         }
+        tileSource.setDeduplicate(true);
         //tileSource.setPreferredLanguage("en");
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);
@@ -139,13 +140,13 @@ public class MapsforgeTest extends GdxMapApp {
         for (String arg : args) {
             File mapFile = new File(arg);
             if (!mapFile.exists()) {
-                throw new IllegalArgumentException("file does not exist: " + mapFile);
+                System.err.println("file does not exist: " + mapFile);
             } else if (!mapFile.isFile()) {
-                throw new IllegalArgumentException("not a file: " + mapFile);
+                System.err.println("not a file: " + mapFile);
             } else if (!mapFile.canRead()) {
-                throw new IllegalArgumentException("cannot read file: " + mapFile);
-            }
-            result.add(mapFile);
+                System.err.println("cannot read file: " + mapFile);
+            } else
+                result.add(mapFile);
         }
         return result;
     }

@@ -2,7 +2,7 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013, 2014 Hannes Janetzek
  * Copyright 2014-2015 Ludwig M Brinckmann
- * Copyright 2016-2020 devemux86
+ * Copyright 2016-2022 devemux86
  * Copyright 2016 Andrey Novikov
  * Copyright 2017-2018 Gustl22
  * Copyright 2018 Bezzu
@@ -31,6 +31,7 @@ import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
+import org.oscim.tiling.TileDataSink;
 import org.oscim.tiling.source.mapfile.header.SubFileParameter;
 import org.oscim.utils.Parameters;
 import org.oscim.utils.geom.TileClipper;
@@ -224,6 +225,9 @@ public class MapDatabase implements ITileDataSource {
     private int zoomLevelMin = 0;
     private int zoomLevelMax = Byte.MAX_VALUE;
 
+    private boolean deduplicate;
+    private int level;
+
     public MapDatabase(MapFileTileSource tileSource) throws IOException {
         mTileSource = tileSource;
         try {
@@ -306,7 +310,10 @@ public class MapDatabase implements ITileDataSource {
 
             QueryCalculations.calculateBaseTiles(queryParameters, tile, subFileParameter);
             QueryCalculations.calculateBlocks(queryParameters, subFileParameter);
-            processBlocks(sink, queryParameters, subFileParameter);
+            if (deduplicate)
+                processBlocks(sink, queryParameters, subFileParameter, tile.getBoundingBox(), Selector.ALL, new MapReadResult());
+            else
+                processBlocks(sink, queryParameters, subFileParameter);
         } catch (IOException e) {
             log.error(e.getMessage());
             sink.completed(FAILED);
@@ -422,6 +429,14 @@ public class MapDatabase implements ITileDataSource {
                 ways = Collections.emptyList();
             mapReadResult.add(new PoiWayBundle(pois, ways));
         }
+    }
+
+    void setDeduplicate(boolean deduplicate) {
+        this.deduplicate = deduplicate;
+    }
+
+    void setLevel(int level) {
+        this.level = level;
     }
 
     private void setTileClipping(QueryParameters queryParameters, SubFileParameter subFileParameter,
@@ -693,7 +708,9 @@ public class MapDatabase implements ITileDataSource {
                 continue;
 
             e.setLayer(layer);
+            e.level = level;
 
+            PointOfInterest poi = null;
             if (pois != null) {
                 List<Tag> tags = new ArrayList<>();
                 for (int i = 0; i < e.tags.size(); i++)
@@ -702,12 +719,15 @@ public class MapDatabase implements ITileDataSource {
                 // depending on the zoom level configuration the poi can lie outside
                 // the tile requested, we filter them out here
                 if (!filterRequired || boundingBox.contains(position)) {
-                    pois.add(new PointOfInterest(layer, tags, position));
+                    poi = new PointOfInterest(layer, tags, position);
+                    pois.add(poi);
                 }
             }
 
-            if (mapDataSink != null)
-                mapDataSink.process(e);
+            if (mapDataSink != null) {
+                if (!deduplicate || poi == null || ((TileDataSink) mapDataSink).hashPois.add(poi.hashCode()))
+                    mapDataSink.process(e);
+            }
         }
 
         return true;
@@ -1046,7 +1066,9 @@ public class MapDatabase implements ITileDataSource {
                 e.simplify(1, true);
 
                 e.setLayer(layer);
+                e.level = level;
 
+                Way way = null;
                 if (ways != null) {
                     BoundingBox wayFilterBbox = boundingBox.extendMeters(wayFilterDistance);
                     GeoPoint[][] wayNodesArray = wayNodes.toArray(new GeoPoint[wayNodes.size()][]);
@@ -1056,13 +1078,16 @@ public class MapDatabase implements ITileDataSource {
                             tags.add(e.tags.get(i));
                         if (Selector.ALL == selector || hasName || hasHouseNr || hasRef || wayAsLabelTagFilter(tags)) {
                             GeoPoint labelPos = labelPosition != null ? new GeoPoint(labelPosition[1] / 1E6, labelPosition[0] / 1E6) : null;
-                            ways.add(new Way(layer, tags, wayNodesArray, labelPos, e.type));
+                            way = new Way(layer, tags, wayNodesArray, labelPos, e.type);
+                            ways.add(way);
                         }
                     }
                 }
 
-                if (mapDataSink != null)
-                    mapDataSink.process(e);
+                if (mapDataSink != null) {
+                    if (!deduplicate || way == null || ((TileDataSink) mapDataSink).hashWays.add(way.hashCode()))
+                        mapDataSink.process(e);
+                }
             }
         }
 

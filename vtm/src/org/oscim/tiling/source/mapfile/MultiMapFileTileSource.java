@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2022 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -33,6 +33,7 @@ public class MultiMapFileTileSource extends TileSource implements IMapFileTileSo
 
     private static final Logger log = LoggerFactory.getLogger(MultiMapFileTileSource.class);
 
+    private boolean deduplicate;
     private final List<MapFileTileSource> mapFileTileSources = new ArrayList<>();
     private final Map<MapFileTileSource, int[]> zoomsByTileSource = new HashMap<>();
 
@@ -72,7 +73,7 @@ public class MultiMapFileTileSource extends TileSource implements IMapFileTileSo
 
     @Override
     public ITileDataSource getDataSource() {
-        MultiMapDatabase multiMapDatabase = new MultiMapDatabase();
+        MultiMapDatabase multiMapDatabase = new MultiMapDatabase(deduplicate);
         for (MapFileTileSource mapFileTileSource : mapFileTileSources) {
             try {
                 MapDatabase mapDatabase = new MapDatabase(mapFileTileSource);
@@ -110,6 +111,10 @@ public class MultiMapFileTileSource extends TileSource implements IMapFileTileSo
         for (MapFileTileSource mapFileTileSource : mapFileTileSources) {
             mapFileTileSource.setCallback(callback);
         }
+    }
+
+    public void setDeduplicate(boolean deduplicate) {
+        this.deduplicate = deduplicate;
     }
 
     @Override

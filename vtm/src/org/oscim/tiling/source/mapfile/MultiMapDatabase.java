@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2022 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -18,6 +18,7 @@ import org.oscim.core.Tile;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
+import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.TileDataSink;
 
 import java.util.ArrayList;
@@ -25,9 +26,15 @@ import java.util.List;
 
 public class MultiMapDatabase implements ITileDataSource {
 
+    private final boolean deduplicate;
     private final List<MapDatabase> mapDatabases = new ArrayList<>();
 
     public MultiMapDatabase() {
+        this(false);
+    }
+
+    public MultiMapDatabase(boolean deduplicate) {
+        this.deduplicate = deduplicate;
     }
 
     public boolean add(MapDatabase mapDatabase) {
@@ -39,12 +46,29 @@ public class MultiMapDatabase implements ITileDataSource {
 
     @Override
     public void query(MapTile tile, ITileDataSink sink) {
-        TileDataSink dataSink = new TileDataSink(sink);
-        for (MapDatabase mapDatabase : mapDatabases) {
-            if (mapDatabase.supportsTile(tile))
-                mapDatabase.query(tile, dataSink);
+        boolean deduplicate = this.deduplicate;
+        if (deduplicate) {
+            int n = 0;
+            for (MapDatabase mapDatabase : mapDatabases) {
+                if (mapDatabase.supportsTile(tile)) {
+                    if (++n > 1) {
+                        break;
+                    }
+                }
+            }
+            deduplicate = n > 1;
         }
-        sink.completed(dataSink.getResult());
+
+        TileDataSink dataSink = new TileDataSink(sink);
+        for (int i = 0; i < mapDatabases.size(); i++) {
+            MapDatabase mapDatabase = mapDatabases.get(i);
+            if (mapDatabase.supportsTile(tile)) {
+                mapDatabase.setDeduplicate(deduplicate);
+                mapDatabase.setLevel(i);
+                mapDatabase.query(tile, dataSink);
+            }
+        }
+        sink.completed(QueryResult.SUCCESS);
     }
 
     @Override
@@ -61,7 +85,7 @@ public class MultiMapDatabase implements ITileDataSource {
         }
     }
 
-    public MapReadResult readLabels(Tile tile) {
+    public MapReadResult readLabels(Tile tile, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         for (MapDatabase mdb : mapDatabases) {
             if (mdb.supportsTile(tile)) {
@@ -71,13 +95,13 @@ public class MultiMapDatabase implements ITileDataSource {
                 }
                 boolean isWater = mapReadResult.isWater & result.isWater;
                 mapReadResult.isWater = isWater;
-                mapReadResult.add(result, false);
+                mapReadResult.add(result, deduplicate);
             }
         }
         return mapReadResult;
     }
 
-    public MapReadResult readLabels(Tile upperLeft, Tile lowerRight) {
+    public MapReadResult readLabels(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         for (MapDatabase mdb : mapDatabases) {
             if (mdb.supportsTile(upperLeft)) {
@@ -87,13 +111,13 @@ public class MultiMapDatabase implements ITileDataSource {
                 }
                 boolean isWater = mapReadResult.isWater & result.isWater;
                 mapReadResult.isWater = isWater;
-                mapReadResult.add(result, false);
+                mapReadResult.add(result, deduplicate);
             }
         }
         return mapReadResult;
     }
 
-    public MapReadResult readMapData(Tile tile) {
+    public MapReadResult readMapData(Tile tile, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         for (MapDatabase mdb : mapDatabases) {
             if (mdb.supportsTile(tile)) {
@@ -103,13 +127,13 @@ public class MultiMapDatabase implements ITileDataSource {
                 }
                 boolean isWater = mapReadResult.isWater & result.isWater;
                 mapReadResult.isWater = isWater;
-                mapReadResult.add(result, false);
+                mapReadResult.add(result, deduplicate);
             }
         }
         return mapReadResult;
     }
 
-    public MapReadResult readMapData(Tile upperLeft, Tile lowerRight) {
+    public MapReadResult readMapData(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         for (MapDatabase mdb : mapDatabases) {
             if (mdb.supportsTile(upperLeft)) {
@@ -119,13 +143,13 @@ public class MultiMapDatabase implements ITileDataSource {
                 }
                 boolean isWater = mapReadResult.isWater & result.isWater;
                 mapReadResult.isWater = isWater;
-                mapReadResult.add(result, false);
+                mapReadResult.add(result, deduplicate);
             }
         }
         return mapReadResult;
     }
 
-    public MapReadResult readPoiData(Tile tile) {
+    public MapReadResult readPoiData(Tile tile, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         for (MapDatabase mdb : mapDatabases) {
             if (mdb.supportsTile(tile)) {
@@ -135,13 +159,13 @@ public class MultiMapDatabase implements ITileDataSource {
                 }
                 boolean isWater = mapReadResult.isWater & result.isWater;
                 mapReadResult.isWater = isWater;
-                mapReadResult.add(result, false);
+                mapReadResult.add(result, deduplicate);
             }
         }
         return mapReadResult;
     }
 
-    public MapReadResult readPoiData(Tile upperLeft, Tile lowerRight) {
+    public MapReadResult readPoiData(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         for (MapDatabase mdb : mapDatabases) {
             if (mdb.supportsTile(upperLeft)) {
@@ -151,7 +175,7 @@ public class MultiMapDatabase implements ITileDataSource {
                 }
                 boolean isWater = mapReadResult.isWater & result.isWater;
                 mapReadResult.isWater = isWater;
-                mapReadResult.add(result, false);
+                mapReadResult.add(result, deduplicate);
             }
         }
         return mapReadResult;

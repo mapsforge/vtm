@@ -2,7 +2,7 @@
  * Copyright 2012 Hannes Janetzek
  * Copyright 2016 Andrey Novikov
  * Copyright 2017-2019 Gustl22
- * Copyright 2018-2019 devemux86
+ * Copyright 2018-2022 devemux86
  * Copyright 2019 marq24
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -38,6 +38,8 @@ public class MapElement extends GeometryBuffer {
      */
     public int layer;
 
+    public int level;
+
     public final TagSet tags = new TagSet();
 
     public MapElement() {
@@ -61,6 +63,7 @@ public class MapElement extends GeometryBuffer {
         this.centroidPosition = element.centroidPosition;
         this.labelPosition = element.labelPosition;
         this.setLayer(element.layer);
+        this.level = element.level;
     }
 
     /**
@@ -121,6 +124,7 @@ public class MapElement extends GeometryBuffer {
     @Override
     public MapElement clear() {
         layer = 5;
+        level = 0;
         super.clear();
         return this;
     }

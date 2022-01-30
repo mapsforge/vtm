@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2022 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -17,7 +17,13 @@ package org.oscim.tiling;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.MapElement;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class TileDataSink implements ITileDataSink {
+
+    public final Set<Integer> hashPois = new HashSet<>();
+    public final Set<Integer> hashWays = new HashSet<>();
 
     private QueryResult result;
     private final ITileDataSink sink;
