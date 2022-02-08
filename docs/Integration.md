@@ -55,7 +55,7 @@ implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-osx'
 implementation 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-windows'
 implementation 'com.badlogicgames.gdx:gdx:1.9.10'
 implementation 'com.badlogicgames.gdx:gdx-platform:1.9.10:natives-desktop'
-implementation 'com.formdev:svgSalamander:1.1.2.4'
+implementation 'com.formdev:svgSalamander:1.1.3'
 ```
 
 ### Desktop (LWJGL)
