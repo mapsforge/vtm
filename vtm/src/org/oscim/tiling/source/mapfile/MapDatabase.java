@@ -226,7 +226,6 @@ public class MapDatabase implements ITileDataSource {
     private int zoomLevelMax = Byte.MAX_VALUE;
 
     private boolean deduplicate;
-    private int level;
 
     public MapDatabase(MapFileTileSource tileSource) throws IOException {
         mTileSource = tileSource;
@@ -433,10 +432,6 @@ public class MapDatabase implements ITileDataSource {
 
     void setDeduplicate(boolean deduplicate) {
         this.deduplicate = deduplicate;
-    }
-
-    void setLevel(int level) {
-        this.level = level;
     }
 
     private void setTileClipping(QueryParameters queryParameters, SubFileParameter subFileParameter,
@@ -708,7 +703,6 @@ public class MapDatabase implements ITileDataSource {
                 continue;
 
             e.setLayer(layer);
-            e.level = level;
 
             PointOfInterest poi = null;
             if (pois != null) {
@@ -1066,7 +1060,6 @@ public class MapDatabase implements ITileDataSource {
                 e.simplify(1, true);
 
                 e.setLayer(layer);
-                e.level = level;
 
                 Way way = null;
                 if (ways != null) {
@@ -1085,8 +1078,11 @@ public class MapDatabase implements ITileDataSource {
                 }
 
                 if (mapDataSink != null) {
-                    if (!deduplicate || way == null || ((TileDataSink) mapDataSink).hashWays.add(way.hashCode()))
+                    TileDataSink tileDataSink = (TileDataSink) mapDataSink;
+                    if (!deduplicate || way == null || tileDataSink.hashWays.add(way.hashCode())) {
+                        e.level = e.isLine() ? tileDataSink.levels : tileDataSink.level;
                         mapDataSink.process(e);
+                    }
                 }
             }
         }

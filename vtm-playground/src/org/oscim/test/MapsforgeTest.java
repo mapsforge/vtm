@@ -67,7 +67,7 @@ public class MapsforgeTest extends GdxMapApp {
             mapFileTileSource.setMapFile(mapFile.getAbsolutePath());
             tileSource.add(mapFileTileSource);
         }
-        tileSource.setDeduplicate(true);
+        //tileSource.setDeduplicate(true);
         //tileSource.setPreferredLanguage("en");
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);

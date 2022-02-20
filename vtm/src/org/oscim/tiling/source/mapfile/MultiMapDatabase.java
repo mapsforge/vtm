@@ -60,11 +60,12 @@ public class MultiMapDatabase implements ITileDataSource {
         }
 
         TileDataSink dataSink = new TileDataSink(sink);
-        for (int i = 0; i < mapDatabases.size(); i++) {
+        for (int i = 0, n = mapDatabases.size(); i < n; i++) {
             MapDatabase mapDatabase = mapDatabases.get(i);
             if (mapDatabase.supportsTile(tile)) {
                 mapDatabase.setDeduplicate(deduplicate);
-                mapDatabase.setLevel(i);
+                dataSink.level = i + 1;
+                dataSink.levels = n;
                 mapDatabase.query(tile, dataSink);
             }
         }

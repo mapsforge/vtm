@@ -25,6 +25,7 @@ public class TileDataSink implements ITileDataSink {
     public final Set<Integer> hashPois = new HashSet<>();
     public final Set<Integer> hashWays = new HashSet<>();
 
+    public int level, levels;
     private QueryResult result;
     private final ITileDataSink sink;
 

@@ -194,7 +194,7 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
         if (element.type == GeometryType.POINT) {
             renderNode(renderTheme.matchElement(element.type, tags, mTile.zoomLevel));
         } else {
-            mCurBucket = getValidLayer(element.layer - (element.isPoly() ? element.level : 0)) * renderTheme.getLevels();
+            mCurBucket = getValidLayer(element.layer) * renderTheme.getLevels() * (element.level > 0 ? element.level : 1);
             renderWay(renderTheme.matchElement(element.type, tags, mTile.zoomLevel));
         }
         clearState();
