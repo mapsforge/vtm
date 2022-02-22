@@ -719,7 +719,7 @@ public class MapDatabase implements ITileDataSource {
             }
 
             if (mapDataSink != null) {
-                if (!deduplicate || poi == null || ((TileDataSink) mapDataSink).hashPois.add(poi.hashCode()))
+                if (!deduplicate || poi == null || (mapDataSink instanceof TileDataSink && ((TileDataSink) mapDataSink).hashPois.add(poi.hashCode())))
                     mapDataSink.process(e);
             }
         }
@@ -1079,9 +1079,9 @@ public class MapDatabase implements ITileDataSource {
                 }
 
                 if (mapDataSink != null) {
-                    TileDataSink tileDataSink = (TileDataSink) mapDataSink;
-                    if (!deduplicate || way == null || tileDataSink.hashWays.add(way.hashCode())) {
-                        e.level = e.isLine() ? tileDataSink.levels : tileDataSink.level;
+                    if (!deduplicate || way == null || (mapDataSink instanceof TileDataSink && ((TileDataSink) mapDataSink).hashWays.add(way.hashCode()))) {
+                        if (mapDataSink instanceof TileDataSink)
+                            e.level = e.isLine() ? ((TileDataSink) mapDataSink).levels : ((TileDataSink) mapDataSink).level;
                         mapDataSink.process(e);
                     }
                 }
