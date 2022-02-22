@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 devemux86
+ * Copyright 2017-2022 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -13,6 +13,11 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.oscim.utils;
+
+import org.oscim.core.Tag;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public final class Parameters {
 
@@ -73,6 +78,11 @@ public final class Parameters {
      * POT textures in themes.
      */
     public static boolean POT_TEXTURES = false;
+
+    /**
+     * Simplification exceptions.
+     */
+    public static final Set<Tag> SIMPLIFICATION_EXCEPTIONS = new HashSet<>();
 
     /**
      * Reduce points on-the-fly while reading from map files.

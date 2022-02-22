@@ -836,6 +836,7 @@ public class MapDatabase implements ITileDataSource {
                     || e.tags.contains(TAG_ISSEA)
                     || e.tags.contains(TAG_SEA)
                     || e.tags.contains(TAG_NOSEA)
+                    || e.tags.contains(Parameters.SIMPLIFICATION_EXCEPTIONS)
                     || deltaLon > minDeltaLon || deltaLon < -minDeltaLon
                     || deltaLat > minDeltaLat || deltaLat < -minDeltaLat)) {
                 // Point reduction except lines and land/sea polygons

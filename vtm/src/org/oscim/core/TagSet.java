@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Andrey Novikov
- * Copyright 2016 devemux86
+ * Copyright 2016-2022 devemux86
  * Copyright 2017-2019 Gustl22
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -22,6 +22,7 @@ package org.oscim.core;
 import org.oscim.utils.Utils;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * The Class TagSet holds a set of Tags.
@@ -215,6 +216,20 @@ public class TagSet {
         for (int i = 0; i < numTags; i++) {
             if (Utils.equals(tags[i].key, key))
                 return Utils.equals(tags[i].value, value);
+        }
+        return false;
+    }
+
+    /**
+     * Checks if any tag is contained in TagSet.
+     *
+     * @param tags the tags
+     * @return true, iff any tag is in TagSet
+     */
+    public boolean contains(Collection<Tag> tags) {
+        for (Tag tag : tags) {
+            if (contains(tag))
+                return true;
         }
         return false;
     }
