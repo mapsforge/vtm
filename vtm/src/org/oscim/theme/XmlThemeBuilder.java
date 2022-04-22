@@ -626,6 +626,13 @@ public class XmlThemeBuilder {
             else if ("repeat-gap".equals(name))
                 b.repeatGap = Float.parseFloat(value) * mScale;
 
+            else if("dy".equals(name) || "stroke-linejoin".equals(name))
+                ; // line: not implemented
+
+            else if("display".equals(name) || "position".equals(name) || "priority".equals(name)
+                    || "rotate".equals(name) || "repeat".equals(name))
+                ; // lineSymbol: not implemented
+
             else
                 logUnknownAttribute(elementName, name, value, i);
         }
@@ -935,11 +942,15 @@ public class XmlThemeBuilder {
             String name = mPullParser.getAttributeName(i);
             String value = mPullParser.getAttributeValue(i);
 
-            if ("schemaLocation".equals(name))
+            if ("schemaLocation".equals(name) || "xsi:schemaLocation".equals(name))
                 continue;
+
 
             if ("xmlns".equals(name))
                 mTheme.setMapsforgeTheme("http://mapsforge.org/renderTheme".equals(value));
+
+            else if ("xmlns:xsi".equals(name) )
+                ; // no-op
 
             else if ("version".equals(name))
                 version = Integer.parseInt(value);
@@ -954,6 +965,9 @@ public class XmlThemeBuilder {
 
             else if ("base-text-scale".equals(name) || "base-text-size".equals(name))
                 baseTextScale = Float.parseFloat(value);
+
+            else if ("map-background-outside".equals(name) )
+                ; // not implemented
 
             else
                 logUnknownAttribute(elementName, name, value, i);
@@ -1096,7 +1110,13 @@ public class XmlThemeBuilder {
                     b.dy = -Float.parseFloat(value) * mScale * CanvasAdapter.symbolScale;
                 }
 
-            } else
+            } else if("display".equals(name) || "repeat-start".equals(name) || "repeat-gap".equals(name) )
+                ; // pathText: not implemented
+
+            else if("symbol-id".equals(name))
+                ; // caption: not implemented
+
+            else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
@@ -1238,6 +1258,9 @@ public class XmlThemeBuilder {
 
             else if ("rotate".equals(name))
                 b.rotate(Boolean.parseBoolean(value));
+
+            else if ("priority".equals(name) || "display".equals(name))
+                ; // symbol: not implemented
 
             else
                 logUnknownAttribute(elementName, name, value, i);
