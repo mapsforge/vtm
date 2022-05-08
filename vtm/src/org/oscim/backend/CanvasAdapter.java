@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
- * Copyright 2016-2021 devemux86
+ * Copyright 2016-2022 devemux86
  * Copyright 2017 Longri
  * Copyright 2021 eddiemuc
  *
@@ -250,8 +250,12 @@ public abstract class CanvasAdapter {
         return new File(parentPath, pathName);
     }
 
+    public static float getDeviceScale() {
+        return CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI;
+    }
+
     public static float getScale() {
-        return (CanvasAdapter.dpi / CanvasAdapter.DEFAULT_DPI) * userScale;
+        return getDeviceScale() * userScale;
     }
 
     protected static void init(CanvasAdapter adapter) {
