@@ -1,6 +1,6 @@
 /*
  * Copyright 2012 Hannes Janetzek
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2022 devemux86
  * Copyright 2018 Izumi Kawashima
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -140,8 +140,9 @@ public class MapPosition {
     /**
      * Sets the fractional zoom.
      */
-    public void setZoom(double zoom) {
+    public MapPosition setZoom(double zoom) {
         setScale(Math.pow(2, zoom));
+        return this;
     }
 
     public int getZoomLevel() {
