@@ -155,15 +155,17 @@ public class MapPosition {
         return this;
     }
 
-    public void setPosition(GeoPoint geoPoint) {
+    public MapPosition setPosition(GeoPoint geoPoint) {
         setPosition(geoPoint.getLatitude(), geoPoint.getLongitude());
+        return this;
     }
 
-    public void setPosition(double latitude, double longitude) {
+    public MapPosition setPosition(double latitude, double longitude) {
         latitude = MercatorProjection.limitLatitude(latitude);
         longitude = MercatorProjection.limitLongitude(longitude);
         this.x = MercatorProjection.longitudeToX(longitude);
         this.y = MercatorProjection.latitudeToY(latitude);
+        return this;
     }
 
     public void copy(MapPosition other) {
@@ -177,7 +179,7 @@ public class MapPosition {
         this.roll = other.roll;
     }
 
-    public void set(double x, double y, double scale, float bearing, float tilt) {
+    public MapPosition set(double x, double y, double scale, float bearing, float tilt) {
         this.x = x;
         this.y = y;
         this.scale = scale;
@@ -185,11 +187,13 @@ public class MapPosition {
         this.bearing = (float) FastMath.clampDegree(bearing);
         this.tilt = tilt;
         this.zoomLevel = FastMath.log2((int) scale);
+        return this;
     }
 
-    public void set(double x, double y, double scale, float bearing, float tilt, float roll) {
+    public MapPosition set(double x, double y, double scale, float bearing, float tilt, float roll) {
         set(x, y, scale, bearing, tilt);
         this.roll = (float) FastMath.clampDegree(roll);
+        return this;
     }
 
     /**
