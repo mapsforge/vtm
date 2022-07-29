@@ -20,11 +20,15 @@ import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.TileDataSink;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MultiMapDatabase implements ITileDataSource {
+
+    private static final Logger log = LoggerFactory.getLogger(MultiMapDatabase.class);
 
     private final boolean deduplicate;
     private final List<MapDatabase> mapDatabases = new ArrayList<>();
@@ -46,28 +50,34 @@ public class MultiMapDatabase implements ITileDataSource {
 
     @Override
     public void query(MapTile tile, ITileDataSink sink) {
-        boolean deduplicate = this.deduplicate;
-        if (deduplicate) {
-            int n = 0;
-            for (MapDatabase mapDatabase : mapDatabases) {
-                if (mapDatabase.supportsTile(tile)) {
-                    if (++n > 1) {
-                        break;
+        try {
+            boolean deduplicate = this.deduplicate;
+            if (deduplicate) {
+                int n = 0;
+                for (MapDatabase mapDatabase : mapDatabases) {
+                    if (mapDatabase.supportsTile(tile)) {
+                        if (++n > 1) {
+                            break;
+                        }
                     }
                 }
+                deduplicate = n > 1;
             }
-            deduplicate = n > 1;
-        }
 
-        TileDataSink dataSink = new TileDataSink(sink);
-        for (int i = 0, n = mapDatabases.size(); i < n; i++) {
-            MapDatabase mapDatabase = mapDatabases.get(i);
-            if (mapDatabase.supportsTile(tile)) {
-                mapDatabase.setDeduplicate(deduplicate);
-                dataSink.level = i + 1;
-                dataSink.levels = n;
-                mapDatabase.query(tile, dataSink);
+            TileDataSink dataSink = new TileDataSink(sink);
+            for (int i = 0, n = mapDatabases.size(); i < n; i++) {
+                MapDatabase mapDatabase = mapDatabases.get(i);
+                if (mapDatabase.supportsTile(tile)) {
+                    mapDatabase.setDeduplicate(deduplicate);
+                    dataSink.level = i + 1;
+                    dataSink.levels = n;
+                    mapDatabase.query(tile, dataSink);
+                }
             }
+        } catch (Throwable t) {
+            log.error(t.getMessage(), t);
+            sink.completed(QueryResult.FAILED);
+            return;
         }
         sink.completed(QueryResult.SUCCESS);
     }

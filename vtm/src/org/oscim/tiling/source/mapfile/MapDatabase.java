@@ -31,6 +31,7 @@ import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
+import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.TileDataSink;
 import org.oscim.tiling.source.mapfile.header.SubFileParameter;
 import org.oscim.utils.Parameters;
@@ -45,11 +46,6 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static org.oscim.core.GeometryBuffer.GeometryType.LINE;
-import static org.oscim.core.GeometryBuffer.GeometryType.POLY;
-import static org.oscim.tiling.QueryResult.FAILED;
-import static org.oscim.tiling.QueryResult.SUCCESS;
 
 /**
  * A class for reading binary map files.
@@ -85,7 +81,7 @@ public class MapDatabase implements ITileDataSource {
      */
     private static final String INVALID_FIRST_WAY_OFFSET = "invalid first way offset: ";
 
-    static final Logger log = LoggerFactory.getLogger(MapDatabase.class);
+    private static final Logger log = LoggerFactory.getLogger(MapDatabase.class);
 
     /**
      * Bitmask for the optional POI feature "elevation".
@@ -257,16 +253,15 @@ public class MapDatabase implements ITileDataSource {
 
     @Override
     public void query(MapTile tile, ITileDataSink sink) {
-
-        if (mTileSource.fileHeader == null) {
-            sink.completed(FAILED);
-            return;
-        }
-
-        if (mIntBuffer == null)
-            mIntBuffer = new int[Short.MAX_VALUE * 2];
-
         try {
+            if (mTileSource.fileHeader == null) {
+                sink.completed(QueryResult.FAILED);
+                return;
+            }
+
+            if (mIntBuffer == null)
+                mIntBuffer = new int[Short.MAX_VALUE * 2];
+
             mTileProjection.setTile(tile);
             //mTile = tile;
 
@@ -303,7 +298,7 @@ public class MapDatabase implements ITileDataSource {
                 log.warn("no sub-file for zoom level: "
                         + queryParameters.queryZoomLevel);
 
-                sink.completed(FAILED);
+                sink.completed(QueryResult.FAILED);
                 return;
             }
 
@@ -313,13 +308,13 @@ public class MapDatabase implements ITileDataSource {
                 processBlocks(sink, queryParameters, subFileParameter, tile.getBoundingBox(), Selector.ALL, new MapReadResult());
             else
                 processBlocks(sink, queryParameters, subFileParameter);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            sink.completed(FAILED);
+        } catch (Throwable t) {
+            log.error(t.getMessage(), t);
+            sink.completed(QueryResult.FAILED);
             return;
         }
 
-        sink.completed(SUCCESS);
+        sink.completed(QueryResult.SUCCESS);
     }
 
     @Override
@@ -826,7 +821,7 @@ public class MapDatabase implements ITileDataSource {
                 }
 
                 if (e.type == GeometryType.NONE)
-                    e.type = line ? LINE : POLY;
+                    e.type = line ? GeometryType.LINE : GeometryType.POLY;
 
             } else if (lat == pLat && lon == pLon) {
                 /* drop small distance intermediate nodes */
