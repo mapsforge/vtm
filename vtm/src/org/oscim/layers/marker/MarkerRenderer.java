@@ -2,7 +2,7 @@
  * Copyright 2013 Hannes Janetzek
  * Copyright 2016 Izumi Kawashima
  * Copyright 2017 Longri
- * Copyright 2017-2020 devemux86
+ * Copyright 2017-2022 devemux86
  * Copyright 2017 nebular
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -170,6 +170,8 @@ public class MarkerRenderer extends BucketRenderer {
             InternalItem it = new InternalItem();
             tmp[i] = it;
             it.item = mMarkerLayer.createItem(i);
+            if (it.item == null)
+                continue;
 
             /* pre-project points */
             MercatorProjection.project(it.item.getPoint(), mMapPoint);
