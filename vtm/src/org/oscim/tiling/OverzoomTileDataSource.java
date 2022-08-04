@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 devemux86
+ * Copyright 2018-2022 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -15,8 +15,12 @@
 package org.oscim.tiling;
 
 import org.oscim.layers.tile.MapTile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OverzoomTileDataSource implements ITileDataSource {
+
+    private static final Logger log = LoggerFactory.getLogger(OverzoomTileDataSource.class);
 
     private final ITileDataSource tileDataSource;
     private final int overZoom;
@@ -32,14 +36,18 @@ public class OverzoomTileDataSource implements ITileDataSource {
 
     @Override
     public void query(MapTile tile, ITileDataSink sink) {
-        MapTile mapTile = tile;
-        ITileDataSink dataSink = sink;
-        int diff = tile.zoomLevel - overZoom;
-        if (diff > 0) {
-            mapTile = new MapTile(tile.node, tile.tileX >> diff, tile.tileY >> diff, overZoom);
-            dataSink = new OverzoomDataSink(sink, mapTile, tile);
+        try {
+            MapTile mapTile = tile;
+            ITileDataSink dataSink = sink;
+            int diff = tile.zoomLevel - overZoom;
+            if (diff > 0) {
+                mapTile = new MapTile(tile.node, tile.tileX >> diff, tile.tileY >> diff, overZoom);
+                dataSink = new OverzoomDataSink(sink, mapTile, tile);
+            }
+            tileDataSource.query(mapTile, dataSink);
+        } catch (Throwable t) {
+            log.error(t.getMessage(), t);
         }
-        tileDataSource.query(mapTile, dataSink);
     }
 
     @Override

@@ -121,9 +121,9 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
         } catch (NullPointerException e) {
             log.debug("NPE {} {}", tile, e.getMessage());
             e.printStackTrace();
-        } catch (Exception e) {
-            log.debug("{} {}", tile, e.getMessage());
-            e.printStackTrace();
+        } catch (Throwable t) {
+            log.debug("{} {}", tile, t.getMessage());
+            t.printStackTrace();
             return false;
         }
         return true;

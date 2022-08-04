@@ -1,6 +1,6 @@
 /*
  * Copyright 2019 Andrea Antonello
- * Copyright 2019 devemux86
+ * Copyright 2019-2022 devemux86
  * Copyright 2019 Kostas Tzounopoulos
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -124,8 +124,8 @@ public class MBTilesBitmapTileDataSource extends MBTilesTileDataSource {
             Bitmap bitmap = CanvasAdapter.decodeBitmap(new ByteArrayInputStream(bytes));
             sink.setTileImage(bitmap);
             res = QueryResult.SUCCESS;
-        } catch (Exception e) {
-            log.debug("{} invalid bitmap", tile);
+        } catch (Throwable t) {
+            log.error(t.getMessage(), t);
         } finally {
             sink.completed(res);
         }

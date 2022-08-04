@@ -1,5 +1,6 @@
 /*
  * Copyright 2019 Kostas Tzounopoulos
+ * Copyright 2022 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -27,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -134,7 +134,8 @@ public class MBTilesMvtTileDataSource extends MBTilesTileDataSource {
                 responseDataSink.completed(success ? QueryResult.SUCCESS : QueryResult.FAILED);
             } else
                 responseDataSink.completed(QueryResult.TILE_NOT_FOUND);
-        } catch (IOException e) {
+        } catch (Throwable t) {
+            log.error(t.getMessage(), t);
             responseDataSink.completed(QueryResult.FAILED);
         } finally {
             if (cursor != null)

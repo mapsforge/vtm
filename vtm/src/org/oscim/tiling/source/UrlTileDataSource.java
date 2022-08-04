@@ -1,6 +1,6 @@
 /*
  * Copyright 2012 Hannes Janetzek
- * Copyright 2017 devemux86
+ * Copyright 2017-2022 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -34,12 +34,9 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-import static org.oscim.tiling.QueryResult.DELAYED;
-import static org.oscim.tiling.QueryResult.FAILED;
-import static org.oscim.tiling.QueryResult.SUCCESS;
-
 public class UrlTileDataSource implements ITileDataSource {
-    static final Logger log = LoggerFactory.getLogger(UrlTileDataSource.class);
+
+    private static final Logger log = LoggerFactory.getLogger(UrlTileDataSource.class);
 
     protected final HttpEngine mConn;
     protected final ITileDecoder mTileDecoder;
@@ -57,27 +54,27 @@ public class UrlTileDataSource implements ITileDataSource {
     public void query(MapTile tile, ITileDataSink sink) {
         ITileCache cache = mTileSource.tileCache;
 
-        if (mUseCache) {
-            TileReader c = cache.getTile(tile);
-            if (c != null) {
-                InputStream is = c.getInputStream();
-                try {
-                    if (mTileDecoder.decode(tile, sink, is)) {
-                        sink.completed(SUCCESS);
-                        return;
-                    }
-                } catch (IOException e) {
-                    log.debug("{} Cache read: {}", tile, e);
-                } finally {
-                    IOUtils.closeQuietly(is);
-                }
-            }
-        }
-
-        QueryResult res = FAILED;
+        QueryResult res = QueryResult.FAILED;
 
         TileWriter cacheWriter = null;
         try {
+            if (mUseCache) {
+                TileReader c = cache.getTile(tile);
+                if (c != null) {
+                    InputStream is = c.getInputStream();
+                    try {
+                        if (mTileDecoder.decode(tile, sink, is)) {
+                            sink.completed(QueryResult.SUCCESS);
+                            return;
+                        }
+                    } catch (IOException e) {
+                        log.debug("{} Cache read: {}", tile, e);
+                    } finally {
+                        IOUtils.closeQuietly(is);
+                    }
+                }
+            }
+
             mConn.sendRequest(tile);
             InputStream is = mConn.read();
             if (mUseCache) {
@@ -85,23 +82,25 @@ public class UrlTileDataSource implements ITileDataSource {
                 mConn.setCache(cacheWriter.getOutputStream());
             }
             if (mTileDecoder.decode(tile, sink, is))
-                res = SUCCESS;
+                res = QueryResult.SUCCESS;
         } catch (SocketException e) {
             log.debug("{} Socket Error: {}", tile, e.getMessage());
         } catch (SocketTimeoutException e) {
             log.debug("{} Socket Timeout", tile);
-            res = DELAYED;
+            res = QueryResult.DELAYED;
         } catch (UnknownHostException e) {
             log.debug("{} Unknown host: {}", tile, e.getMessage());
         } catch (IOException e) {
             log.debug("{} Network Error: {}", tile, e.getMessage());
         } catch (Exception e) {
             log.debug("{} Error: {}", tile, e.getMessage());
+        } catch (Throwable t) {
+            log.error(t.getMessage(), t);
         } finally {
-            boolean ok = (res == SUCCESS);
+            boolean ok = (res == QueryResult.SUCCESS);
 
             if (!mConn.requestCompleted(ok) && ok)
-                res = FAILED;
+                res = QueryResult.FAILED;
 
             if (cacheWriter != null)
                 cacheWriter.complete(ok);

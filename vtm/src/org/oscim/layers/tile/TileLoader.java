@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Hannes Janetzek
+ * Copyright 2022 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -64,8 +65,8 @@ public abstract class TileLoader extends PausableThread implements ITileDataSink
 
         try {
             loadTile(mTile);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+            t.printStackTrace();
             completed(FAILED);
         }
     }
