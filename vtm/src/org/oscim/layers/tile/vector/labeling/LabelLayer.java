@@ -1,7 +1,7 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
  * Copyright 2017 Wolfgang Schramm
- * Copyright 2017-2018 devemux86
+ * Copyright 2017-2022 devemux86
  * Copyright 2017 Andrey Novikov
  * Copyright 2018 Gustl22
  *
@@ -30,13 +30,11 @@ import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.map.Map;
 import org.oscim.map.Viewport;
 import org.oscim.utils.async.SimpleWorker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class LabelLayer extends Layer implements Map.UpdateListener, TileManager.Listener,
         ZoomLimiter.IZoomLimiter {
 
-    static final Logger log = LoggerFactory.getLogger(LabelLayer.class);
+    //private static final Logger log = LoggerFactory.getLogger(LabelLayer.class);
 
     static final String LABEL_DATA = LabelLayer.class.getName();
 
@@ -60,8 +58,6 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
     public LabelLayer(Map map, VectorTileLayer l, VectorTileLayer.TileLoaderThemeHook h,
                       int zoomLimit) {
         super(map);
-        l.getManager().events.bind(this);
-        l.addHook(h);
 
         mZoomLimiter = new ZoomLimiter(l.getManager(), map.viewport().getMinZoomLevel(),
                 map.viewport().getMaxZoomLevel(), zoomLimit);
@@ -69,6 +65,9 @@ public class LabelLayer extends Layer implements Map.UpdateListener, TileManager
         mLabelPlacer = new LabelPlacement(map, l.tileRenderer(), mZoomLimiter);
         mWorker = new Worker(map);
         mRenderer = new TextRenderer(mWorker);
+
+        l.getManager().events.bind(this);
+        l.addHook(h);
     }
 
     class Worker extends SimpleWorker<LabelTask> {
