@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Hannes Janetzek
- * Copyright 2017 devemux86
+ * Copyright 2017-2022 devemux86
  * Copyright 2018 boldtrn
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
@@ -23,17 +23,26 @@ import com.wdtinc.mapbox_vector_tile.adapt.jts.TagKeyValueMapConverter;
 import com.wdtinc.mapbox_vector_tile.adapt.jts.model.JtsLayer;
 import com.wdtinc.mapbox_vector_tile.adapt.jts.model.JtsMvt;
 import org.locationtech.jts.geom.*;
+import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tag;
 import org.oscim.core.Tile;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.source.ITileDecoder;
+import org.oscim.utils.Parameters;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
 public class TileDecoder implements ITileDecoder {
+
+    /**
+     * Reduce points on-the-fly while reading from vector maps.
+     */
+    public static int SIMPLIFICATION_MIN_ZOOM = 8;
+    public static int SIMPLIFICATION_MAX_ZOOM = 11;
+
     private final String mLocale;
 
     private static final float REF_TILE_SIZE = 4096.0f;
@@ -71,14 +80,14 @@ public class TileDecoder implements ITileDecoder {
 
         for (JtsLayer layer : jtsMvt.getLayers()) {
             for (Geometry geometry : layer.getGeometries()) {
-                parseGeometry(layer.getName(), geometry, (Map<String, Object>) geometry.getUserData());
+                parseGeometry(layer.getName(), geometry, (Map<String, Object>) geometry.getUserData(), tile.zoomLevel);
             }
         }
 
         return true;
     }
 
-    private void parseGeometry(String layerName, Geometry geometry, Map<String, Object> tags) {
+    private void parseGeometry(String layerName, Geometry geometry, Map<String, Object> tags, int zoomLevel) {
         mMapElement.clear();
         mMapElement.tags.clear();
 
@@ -105,12 +114,11 @@ public class TileDecoder implements ITileDecoder {
                 processLineString((LineString) multiLineString.getGeometryN(i));
             }
         } else if (geometry instanceof Polygon) {
-            Polygon polygon = (Polygon) geometry;
-            processPolygon(polygon);
+            processPolygon((Polygon) simplify(geometry, zoomLevel));
         } else if (geometry instanceof MultiPolygon) {
             MultiPolygon multiPolygon = (MultiPolygon) geometry;
             for (int i = 0; i < multiPolygon.getNumGeometries(); i++) {
-                processPolygon((Polygon) multiPolygon.getGeometryN(i));
+                processPolygon((Polygon) simplify(multiPolygon.getGeometryN(i), zoomLevel));
             }
         } else {
             err = true;
@@ -169,5 +177,13 @@ public class TileDecoder implements ITileDecoder {
         if (!hasName && fallbackName != null)
             mMapElement.tags.add(new Tag(Tag.KEY_NAME, fallbackName, false));
     }
-}
 
+    private Geometry simplify(Geometry geometry, int zoomLevel) {
+        if (Parameters.SIMPLIFICATION_TOLERANCE > 0
+                && zoomLevel >= SIMPLIFICATION_MIN_ZOOM && zoomLevel <= SIMPLIFICATION_MAX_ZOOM) {
+            if (!mMapElement.tags.contains(Parameters.SIMPLIFICATION_EXCEPTIONS))
+                return TopologyPreservingSimplifier.simplify(geometry, Parameters.SIMPLIFICATION_TOLERANCE * 10);
+        }
+        return geometry;
+    }
+}

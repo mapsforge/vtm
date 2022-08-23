@@ -85,7 +85,7 @@ public final class Parameters {
     public static final Set<Tag> SIMPLIFICATION_EXCEPTIONS = new HashSet<>();
 
     /**
-     * Reduce points on-the-fly while reading from map files.
+     * Reduce points on-the-fly while reading from vector maps.
      * e.g. 0 (no simplification), 2, 4, ...
      */
     public static int SIMPLIFICATION_TOLERANCE = 0;
