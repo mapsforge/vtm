@@ -1,7 +1,7 @@
 /*
  * Copyright 2012, 2013 Hannes Janetzek
  * Copyright 2016 Longri
- * Copyright 2018 devemux86
+ * Copyright 2018-2022 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
  *
@@ -34,7 +34,7 @@ import java.nio.ShortBuffer;
 import static org.oscim.backend.GLAdapter.gl;
 
 public class MapRenderer {
-    static final Logger log = LoggerFactory.getLogger(MapRenderer.class);
+    private static final Logger log = LoggerFactory.getLogger(MapRenderer.class);
 
     /**
      * scale factor used for short vertices
@@ -93,7 +93,11 @@ public class MapRenderer {
 
         mMap.beginFrame();
 
-        draw();
+        try {
+            draw();
+        } catch (Throwable t) {
+            log.error(t.getMessage(), t);
+        }
 
         mMap.doneFrame(rerender);
 
