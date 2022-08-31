@@ -308,13 +308,11 @@ public class MapDatabase implements ITileDataSource {
                 processBlocks(sink, queryParameters, subFileParameter, tile.getBoundingBox(), Selector.ALL, new MapReadResult());
             else
                 processBlocks(sink, queryParameters, subFileParameter);
+            sink.completed(QueryResult.SUCCESS);
         } catch (Throwable t) {
             log.error(t.getMessage(), t);
             sink.completed(QueryResult.FAILED);
-            return;
         }
-
-        sink.completed(QueryResult.SUCCESS);
     }
 
     @Override

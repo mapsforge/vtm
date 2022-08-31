@@ -74,12 +74,11 @@ public class MultiMapDatabase implements ITileDataSource {
                     mapDatabase.query(tile, dataSink);
                 }
             }
+            sink.completed(QueryResult.SUCCESS);
         } catch (Throwable t) {
             log.error(t.getMessage(), t);
             sink.completed(QueryResult.FAILED);
-            return;
         }
-        sink.completed(QueryResult.SUCCESS);
     }
 
     @Override
