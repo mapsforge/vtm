@@ -211,7 +211,7 @@ public class MotionHandler extends MotionEvent implements InputProcessor {
     }
 
     @Override
-    public boolean scrolled(int amount) {
+    public boolean scrolled(float amountX, float amountY) {
         mTime = Gdx.input.getCurrentEventTime();
 
         return false;

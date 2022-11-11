@@ -135,10 +135,10 @@ public class MapApplicationAdapter extends ApplicationAdapter {
         InputMultiplexer mux = new InputMultiplexer();
         mux.addProcessor(new MotionHandler(map) {
             @Override
-            public boolean scrolled(int amount) {
-                super.scrolled(amount);
+            public boolean scrolled(float amountX, float amountY) {
+                super.scrolled(amountX, amountY);
                 MapPosition mapPosition = map.getMapPosition();
-                int zoomLevel = mapPosition.getZoomLevel() - amount;
+                int zoomLevel = (int) (mapPosition.getZoomLevel() - amountY);
                 mapPosition.setZoomLevel(zoomLevel);
                 map.setMapPosition(mapPosition);
                 bothMapPositionHandler.mapPositionChangedFromVtmMap(mapPosition);

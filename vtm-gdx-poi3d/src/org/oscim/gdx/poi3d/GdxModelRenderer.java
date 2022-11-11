@@ -60,7 +60,7 @@ public class GdxModelRenderer extends LayerRenderer {
         cam = new MapCamera(mMap);
 
         renderContext =
-                new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
+                new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.LRU, 1));
 
         // shader = new DefaultShader(renderable.material,
         // renderable.mesh.getVertexAttributes(), true, false, 1, 0, 0, 0);
