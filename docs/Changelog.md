@@ -4,6 +4,7 @@
 
 - MVT simplification [#956](https://github.com/mapsforge/vtm/pull/956)
   - `Parameters.SIMPLIFICATION_TOLERANCE`, `Parameters.SIMPLIFICATION_EXCEPTIONS`
+- Disable `vtm-web` [#973](https://github.com/mapsforge/vtm/pull/973)
 - Minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.19.0)
 

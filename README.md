@@ -46,10 +46,6 @@ If you have any questions or problems, don't hesitate to ask the Discussions for
 - **vtm-web** HTML5/GWT libGDX backend
 - **vtm-web-app** HTML5/GWT application
 
-## WebGL Demo
-[OpenScienceMap](http://opensciencemap.org/s3db/#scale=17,rot=61,tilt=51,lat=53.075,lon=8.807) view of Bremen.
-- Hold right mouse button to change view direction.
-
 ## Applications
 - VTM is used by many [applications](docs/Applications.md).
 
