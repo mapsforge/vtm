@@ -580,7 +580,7 @@ public class GdxGL extends GwtGL20 implements GL {
         return glGetActiveAttrib(program,
                 index,
                 size,
-                type);
+                (IntBuffer)type);
     }
 
     @Override
@@ -588,7 +588,7 @@ public class GdxGL extends GwtGL20 implements GL {
         return glGetActiveUniform(program,
                 index,
                 size,
-                type);
+                (IntBuffer)type);
     }
 
     @Override
