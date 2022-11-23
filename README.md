@@ -46,6 +46,9 @@ If you have any questions or problems, don't hesitate to ask the Discussions for
 - **vtm-web** HTML5/GWT libGDX backend
 - **vtm-web-app** HTML5/GWT application
 
+## WebGL Demo
+[OpenScienceMap](https://oscim.ogiqvo.com/vtm/#scale=17,rot=61,tilt=51,lat=53.075,lon=8.807) view of Bremen. Running [nextzen2oscimv4](https://github.com/schedul-xor/nextzen2oscimv4) server which contains OSM data in Germany. Notice: nextzen2oscimv4 server is still unstable.
+
 ## Applications
 - VTM is used by many [applications](docs/Applications.md).
 
