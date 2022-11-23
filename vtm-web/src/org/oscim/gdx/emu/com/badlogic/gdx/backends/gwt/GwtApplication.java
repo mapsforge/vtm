@@ -179,12 +179,12 @@ public abstract class GwtApplication implements EntryPoint, Application {
         lastWidth = graphics.getWidth();
         lastHeight = graphics.getHeight();
         Gdx.app = this;
-        Gdx.audio = new DefaultGwtAudio();
+        Gdx.audio = createAudio();
         Gdx.graphics = graphics;
         Gdx.gl20 = graphics.getGL20();
         Gdx.gl = Gdx.gl20;
         Gdx.files = new GwtFiles(preloader);
-        this.input = new DefaultGwtInput(graphics.canvas);
+        this.input = createInput(graphics.canvas, this.config);
         Gdx.input = this.input;
         this.net = new GwtNet(config);
         Gdx.net = this.net;
@@ -595,6 +595,14 @@ public abstract class GwtApplication implements EntryPoint, Application {
             }
             listener.pause();
         }
+    }
+
+    protected GwtAudio createAudio() {
+        return new DefaultGwtAudio();
+    }
+
+    protected DefaultGwtInput createInput(CanvasElement canvas, GwtApplicationConfiguration config) {
+        return new DefaultGwtInput(canvas, config);
     }
 
     /**
