@@ -1,4 +1,4 @@
-var TESSELLATION_LIMIT = 4096;
+var TESSELLATION_LIMIT = 8128;
 
 function j(a) {
     throw a;

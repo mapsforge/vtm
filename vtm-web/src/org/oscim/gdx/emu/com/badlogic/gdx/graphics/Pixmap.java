@@ -27,6 +27,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.Context2d.Composite;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.dom.client.VideoElement;
 
 import java.nio.Buffer;
 import java.nio.IntBuffer;
@@ -233,6 +234,10 @@ public class Pixmap implements Disposable {
     public ImageElement getImageElement() {
         return imageElement;
     }
+
+    public boolean canUseVideoElement(){return false;}
+
+    public VideoElement getVideoElement(){return null;}
 
     /**
      * Sets the color for the following drawing operations

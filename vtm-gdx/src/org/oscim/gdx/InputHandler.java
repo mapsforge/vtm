@@ -255,10 +255,10 @@ public class InputHandler implements InputProcessor {
     }
 
     @Override
-    public boolean scrolled(int amount) {
+    public boolean scrolled(float amountX, float amountY) {
         float fx = mPosX - mMap.getWidth() / 2;
         float fy = mPosY - mMap.getHeight() / 2;
-        mMap.animator().animateZoom(250, amount > 0 ? 0.75f : 1.333f, fx, fy, Easing.Type.LINEAR);
+        mMap.animator().animateZoom(250, amountY > 0 ? 0.75f : 1.333f, fx, fy, Easing.Type.LINEAR);
         mMap.updateMap(false);
         return true;
     }
