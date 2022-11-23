@@ -53,10 +53,73 @@ public class DefaultGwtInput implements Input {
     long currentEventTimeStamp;
     final CanvasElement canvas;
     boolean hasFocus = true;
+    final GwtApplicationConfiguration config;
+    GwtAccelerometer accelerometer;
+    GwtGyroscope gyroscope;
 
-    public DefaultGwtInput(CanvasElement canvas) {
+    public DefaultGwtInput(CanvasElement canvas, GwtApplicationConfiguration config) {
         this.canvas = canvas;
+        this.config = config;
+
+        if (config.useAccelerometer && GwtFeaturePolicy.allowsFeature(GwtAccelerometer.PERMISSION)) {
+            if (GwtApplication.agentInfo().isFirefox()) {
+                setupAccelerometer();
+            } else {
+                GwtPermissions.queryPermission(GwtAccelerometer.PERMISSION, new GwtPermissions.GwtPermissionResult() {
+                    @Override
+                    public void granted() {
+                        setupAccelerometer();
+                    }
+
+                    @Override
+                    public void denied() {
+                    }
+
+                    @Override
+                    public void prompt() {
+                        setupAccelerometer();
+                    }
+                });
+            }
+        }
+        if (config.useGyroscope) {
+            if (GwtApplication.agentInfo().isFirefox()) {
+                setupGyroscope();
+            } else {
+                GwtPermissions.queryPermission(GwtGyroscope.PERMISSION, new GwtPermissions.GwtPermissionResult() {
+                    @Override
+                    public void granted() {
+                        setupGyroscope();
+                    }
+
+                    @Override
+                    public void denied() {
+                    }
+
+                    @Override
+                    public void prompt() {
+                        setupGyroscope();
+                    }
+                });
+            }
+        }
         hookEvents();
+
+        // backwards compatibility: backspace was caught in older versions
+        setCatchKey(Keys.BACKSPACE, true);
+    }
+    void setupAccelerometer () {
+        if (GwtAccelerometer.isSupported() && GwtFeaturePolicy.allowsFeature(GwtAccelerometer.PERMISSION)) {
+            if (accelerometer == null) accelerometer = GwtAccelerometer.getInstance();
+            if (!accelerometer.activated()) accelerometer.start();
+        }
+    }
+
+    void setupGyroscope () {
+        if (GwtGyroscope.isSupported() && GwtFeaturePolicy.allowsFeature(GwtGyroscope.PERMISSION)) {
+            if (gyroscope == null) gyroscope = GwtGyroscope.getInstance();
+            if (!gyroscope.activated()) gyroscope.start();
+        }
     }
 
     public void reset() {

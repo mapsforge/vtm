@@ -185,6 +185,11 @@ public class GwtGraphics implements Graphics {
     }
 
     @Override
+    public float getBackBufferScale() {
+        return 0;
+    }
+
+    @Override
     public int getSafeInsetLeft() {
         return 0;
     }
@@ -535,6 +540,11 @@ public class GwtGraphics implements Graphics {
 
     @Override
     public void setVSync(boolean vsync) {
+    }
+
+    @Override
+    public void setForegroundFPS(int fps) {
+
     }
 
     @Override
