@@ -179,7 +179,7 @@ public abstract class GwtApplication implements EntryPoint, Application {
         lastWidth = graphics.getWidth();
         lastHeight = graphics.getHeight();
         Gdx.app = this;
-        Gdx.audio = new GwtAudio();
+        Gdx.audio = new DefaultGwtAudio();
         Gdx.graphics = graphics;
         Gdx.gl20 = graphics.getGL20();
         Gdx.gl = Gdx.gl20;

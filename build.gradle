@@ -6,7 +6,7 @@ allprojects {
     group = 'org.mapsforge'
     version = 'master-SNAPSHOT'
 
-    ext.gdxVersion = "1.9.10"
+    ext.gdxVersion = "1.9.11"
     ext.gwtVersion = "2.8.2"
     ext.slf4jVersion = "1.7.28"
 
