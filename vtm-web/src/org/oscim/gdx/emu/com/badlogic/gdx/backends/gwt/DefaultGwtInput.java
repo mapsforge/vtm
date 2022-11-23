@@ -32,7 +32,7 @@ import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.KeyCodes;
 
 @SuppressWarnings("deprecation")
-public class GwtInput implements Input {
+public class DefaultGwtInput implements Input {
     static final int MAX_TOUCHES = 20;
     boolean justTouched = false;
     private IntMap<Integer> touchMap = new IntMap<Integer>(20);
@@ -54,12 +54,12 @@ public class GwtInput implements Input {
     final CanvasElement canvas;
     boolean hasFocus = true;
 
-    public GwtInput(CanvasElement canvas) {
+    public DefaultGwtInput(CanvasElement canvas) {
         this.canvas = canvas;
         hookEvents();
     }
 
-    void reset() {
+    public void reset() {
         if (justTouched) {
             justTouched = false;
             for (int i = 0; i < justPressedButtons.length; i++) {
@@ -237,7 +237,17 @@ public class GwtInput implements Input {
     }
 
     @Override
+    public void getTextInput(TextInputListener listener, String title, String text, String hint, OnscreenKeyboardType type) {
+
+    }
+
+    @Override
     public void setOnscreenKeyboardVisible(boolean visible) {
+    }
+
+    @Override
+    public void setOnscreenKeyboardVisible(boolean visible, OnscreenKeyboardType type) {
+
     }
 
     @Override
@@ -447,12 +457,12 @@ public class GwtInput implements Input {
     }
 
     // kindly borrowed from our dear playn friends...
-    static native void addEventListener(JavaScriptObject target, String name, GwtInput handler, boolean capture) /*-{
+    static native void addEventListener(JavaScriptObject target, String name, DefaultGwtInput handler, boolean capture) /*-{
         target
                 .addEventListener(
                         name,
                         function(e) {
-                            handler.@com.badlogic.gdx.backends.gwt.GwtInput::handleEvent(Lcom/google/gwt/dom/client/NativeEvent;)(e);
+                            handler.@com.badlogic.gdx.backends.gwt.DefaultGwtInput::handleEvent(Lcom/google/gwt/dom/client/NativeEvent;)(e);
                         }, capture);
     }-*/;
 
@@ -627,7 +637,7 @@ public class GwtInput implements Input {
         }
         if (e.getType().equals(getMouseWheelEvent())) {
             if (processor != null) {
-                processor.scrolled((int) getMouseWheelVelocity(e));
+                processor.scrolled(0, (int) getMouseWheelVelocity(e));
             }
             this.currentEventTimeStamp = TimeUtils.nanoTime();
             e.preventDefault();

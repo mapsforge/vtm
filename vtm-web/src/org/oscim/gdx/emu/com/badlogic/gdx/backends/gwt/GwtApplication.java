@@ -67,7 +67,7 @@ public abstract class GwtApplication implements EntryPoint, Application {
     private ApplicationListener listener;
     GwtApplicationConfiguration config;
     GwtGraphics graphics;
-    private GwtInput input;
+    private DefaultGwtInput input;
     private GwtNet net;
     private Panel root = null;
     private TextArea log = null;
@@ -184,7 +184,7 @@ public abstract class GwtApplication implements EntryPoint, Application {
         Gdx.gl20 = graphics.getGL20();
         Gdx.gl = Gdx.gl20;
         Gdx.files = new GwtFiles(preloader);
-        this.input = new GwtInput(graphics.canvas);
+        this.input = new DefaultGwtInput(graphics.canvas);
         Gdx.input = this.input;
         this.net = new GwtNet(config);
         Gdx.net = this.net;
