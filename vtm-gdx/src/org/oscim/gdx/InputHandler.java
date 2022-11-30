@@ -36,7 +36,7 @@ import java.util.List;
 
 public class InputHandler implements InputProcessor {
 
-    private ViewController mViewport;
+    private final ViewController mViewport;
     private final Map mMap;
     private GenericLayer mGridLayer;
     private final GdxMap mGdxApp;
@@ -102,19 +102,15 @@ public class InputHandler implements InputProcessor {
                 mMap.updateMap(true);
                 break;
             case Input.Keys.S:
-                mMap.animator().animateZoom(500, 0.5, 0, 0);
-                mMap.updateMap(false);
-                break;
-            case Input.Keys.W:
-                mMap.animator().animateZoom(500, 2, 0, 0);
-                mMap.updateMap(false);
-                break;
             case Input.Keys.MINUS:
+            case Input.Keys.NUMPAD_SUBTRACT:
                 mMap.animator().animateZoom(500, 0.5, 0, 0);
                 mMap.updateMap(true);
                 break;
+            case Input.Keys.W:
             case Input.Keys.PLUS:
             case Input.Keys.EQUALS:
+            case Input.Keys.NUMPAD_ADD:
                 mMap.animator().animateZoom(500, 2, 0, 0);
                 mMap.updateMap(true);
                 break;
@@ -256,8 +252,8 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        float fx = mPosX - mMap.getWidth() / 2;
-        float fy = mPosY - mMap.getHeight() / 2;
+        float fx = mPosX - (mMap.getWidth() >> 1);
+        float fy = mPosY - (mMap.getHeight() >> 1);
         mMap.animator().animateZoom(250, amountY > 0 ? 0.75f : 1.333f, fx, fy, Easing.Type.LINEAR);
         mMap.updateMap(false);
         return true;
