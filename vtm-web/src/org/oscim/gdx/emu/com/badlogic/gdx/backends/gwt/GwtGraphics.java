@@ -33,7 +33,6 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.webgl.client.WebGLContextAttributes;
 import com.google.gwt.webgl.client.WebGLRenderingContext;
-
 import org.oscim.gdx.client.GdxGL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -565,6 +564,7 @@ public class GwtGraphics implements Graphics {
     public void requestRendering() {
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public float getRawDeltaTime() {
         return getDeltaTime();
