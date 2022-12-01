@@ -55,12 +55,14 @@ android {
         release.setRoot('build-types/release')
     }
 
-    lintOptions { abortOnError false }
+    lint {
+        abortOnError false
+    }
 
     packagingOptions {
-        exclude 'META-INF/services/io.jeo.data.Driver'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
+        resources {
+            excludes += ['META-INF/services/io.jeo.data.Driver', 'META-INF/LICENSE', 'META-INF/NOTICE']
+        }
     }
 
     /*buildTypes {

@@ -38,10 +38,13 @@ android {
         release.setRoot('build-types/release')
     }
 
-    lintOptions { abortOnError false }
+    lint {
+        abortOnError false
+    }
 
     packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
+        resources {
+            excludes += ['META-INF/LICENSE', 'META-INF/NOTICE']
+        }
     }
 }
