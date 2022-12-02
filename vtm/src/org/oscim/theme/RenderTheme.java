@@ -39,7 +39,7 @@ import java.util.Map;
 public class RenderTheme implements IRenderTheme {
     static final Logger log = LoggerFactory.getLogger(RenderTheme.class);
 
-    private static final int MATCHING_CACHE_SIZE = 512;
+    private static final int MATCHING_CACHE_SIZE = 8192;
 
     private final float mBaseTextSize;
     private final int mMapBackground;
@@ -51,19 +51,19 @@ public class RenderTheme implements IRenderTheme {
     private final Map<String, String> mTransformBackwardKeyMap, mTransformForwardKeyMap;
     private final Map<Tag, Tag> mTransformBackwardTagMap, mTransformForwardTagMap;
 
-    class RenderStyleCache {
+    static class RenderStyleCache {
         final int matchType;
         final LRUCache<MatchingCacheKey, RenderStyleItem> cache;
         final MatchingCacheKey cacheKey;
 
         /* temporary matching instructions list */
-        final ArrayList<RenderStyle> instructionList;
+        final List<RenderStyle> instructionList;
 
         RenderStyleItem prevItem;
 
         public RenderStyleCache(int type) {
-            cache = new LRUCache<MatchingCacheKey, RenderStyleItem>(MATCHING_CACHE_SIZE);
-            instructionList = new ArrayList<RenderStyle>(4);
+            cache = new LRUCache<>(MATCHING_CACHE_SIZE);
+            instructionList = new ArrayList<>(4);
             cacheKey = new MatchingCacheKey();
             matchType = type;
         }
@@ -73,7 +73,7 @@ public class RenderTheme implements IRenderTheme {
         }
     }
 
-    class RenderStyleItem {
+    static class RenderStyleItem {
         RenderStyleItem next;
         int zoom;
         RenderStyle[] list;
