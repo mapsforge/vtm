@@ -1139,7 +1139,7 @@
                 <m v="bank" zoom-min="17">
                     <!--<symbol src="bank" />-->
                 </m>
-                <m v="fuel" zoom-min="17">
+                <m v="fuel" zoom-min="15">
                     <!--<symbol src="fuel" />-->
                 </m>
                 <m v="post_office" zoom-min="17">
