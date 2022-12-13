@@ -385,7 +385,12 @@ public final class LineTexBucket extends LineBucket {
                 LineTexBucket lb = (LineTexBucket) b;
                 LineStyle line = lb.line.current();
 
-                gl.uniform1i(shader.uMode, line.dashArray != null ? 2 : (line.texture != null ? 1 : 0));
+                if (line.dashArray != null || (line.texture != null && !line.fixed))
+                    gl.uniform1i(shader.uMode, 2);
+                else if (line.texture != null)
+                    gl.uniform1i(shader.uMode, 1);
+                else
+                    gl.uniform1i(shader.uMode, 0);
 
                 if (line.texture != null)
                     line.texture.bind();

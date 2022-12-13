@@ -632,61 +632,75 @@ public class XmlThemeBuilder {
 
         if (b.dashArray != null) {
             // Stroke dash array
-            if (b.dashArray.length % 2 != 0) {
+            if (b.dashArray.length == 2) {
+                b.randomOffset = false;
+                b.stipple = b.dashArray[0] < 1 ? 1 : (int) b.dashArray[0];
+                if (mTheme.isMapsforgeTheme())
+                    b.stipple *= 8;
+                b.stippleWidth = 1;
+                b.stippleColor = Color.TRANSPARENT;
+                b.dashArray = null;
+            } else {
                 // Odd number of entries is duplicated
-                float[] newDashArray = new float[b.dashArray.length * 2];
-                System.arraycopy(b.dashArray, 0, newDashArray, 0, b.dashArray.length);
-                System.arraycopy(b.dashArray, 0, newDashArray, b.dashArray.length, b.dashArray.length);
-                b.dashArray = newDashArray;
+                if (b.dashArray.length % 2 != 0) {
+                    float[] newDashArray = new float[b.dashArray.length * 2];
+                    System.arraycopy(b.dashArray, 0, newDashArray, 0, b.dashArray.length);
+                    System.arraycopy(b.dashArray, 0, newDashArray, b.dashArray.length, b.dashArray.length);
+                    b.dashArray = newDashArray;
+                }
+                int width = 0;
+                int height = b.strokeWidth < 1 ? 1 : (int) b.strokeWidth;
+                for (float f : b.dashArray) {
+                    if (f < 1)
+                        f = 1;
+                    if (mTheme.isMapsforgeTheme())
+                        f *= 8;
+                    width += f;
+                }
+                Bitmap bitmap = CanvasAdapter.newBitmap(width, height, 0);
+                Canvas canvas = CanvasAdapter.newCanvas();
+                canvas.setBitmap(bitmap);
+                int x = 0;
+                boolean transparent = false;
+                for (float f : b.dashArray) {
+                    if (f < 1)
+                        f = 1;
+                    if (mTheme.isMapsforgeTheme())
+                        f *= 8;
+                    canvas.fillRectangle(x, 0, f, height, transparent ? Color.TRANSPARENT : Color.WHITE);
+                    x += f;
+                    transparent = !transparent;
+                }
+                b.texture = new TextureItem(Utils.potBitmap(bitmap));
+                b.texture.mipmap = true;
+                b.randomOffset = false;
+                b.stipple = width;
+                b.stippleWidth = 1;
+                b.stippleColor = b.fillColor;
             }
-            int width = 0;
-            int height = (int) (b.strokeWidth);
-            if (height < 1)
-                height = 1;
-            for (float f : b.dashArray) {
-                if (f < 1)
-                    f = 1;
-                width += f;
-            }
-            Bitmap bitmap = CanvasAdapter.newBitmap(width, height, 0);
-            Canvas canvas = CanvasAdapter.newCanvas();
-            canvas.setBitmap(bitmap);
-            int x = 0;
-            boolean transparent = false;
-            for (float f : b.dashArray) {
-                if (f < 1)
-                    f = 1;
-                canvas.fillRectangle(x, 0, f, height, transparent ? Color.TRANSPARENT : Color.WHITE);
-                x += f;
-                transparent = !transparent;
-            }
-            b.texture = new TextureItem(Utils.potBitmap(bitmap));
-            //b.texture.mipmap = true;
-            b.randomOffset = false;
-            b.stipple = width;
-            b.stippleWidth = 1;
-            b.stippleColor = b.fillColor;
         } else {
+            // Line symbol or pattern
             if (src != null) {
-                float symbolScale = Parameters.SYMBOL_SCALING == Parameters.SymbolScaling.ALL ? CanvasAdapter.symbolScale : 1;
+                b.symbolPercent *= 2;
+                float symbolScale = hasSymbol && Parameters.SYMBOL_SCALING == Parameters.SymbolScaling.ALL ? CanvasAdapter.symbolScale : 1;
                 b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale));
             }
-
-            if (b.texture != null && hasSymbol) {
-                // Line symbol
-                int width = (int) (b.texture.width + b.repeatGap);
+            if (b.texture != null) {
+                int width = (int) (b.texture.width + (hasSymbol ? b.repeatGap : 0));
                 int height = b.texture.height;
                 Bitmap bitmap = CanvasAdapter.newBitmap(width, height, 0);
                 Canvas canvas = CanvasAdapter.newCanvas();
                 canvas.setBitmap(bitmap);
-                canvas.drawBitmap(b.texture.bitmap, b.repeatStart, 0);
+                canvas.drawBitmap(b.texture.bitmap, (hasSymbol ? b.repeatStart : 0), 0);
                 b.texture = new TextureItem(Utils.potBitmap(bitmap));
-                //b.texture.mipmap = true;
-                b.fixed = true;
+                b.texture.mipmap = true;
+                if (hasSymbol) {
+                    b.fixed = true;
+                    b.strokeWidth = height * 0.25f;
+                }
                 b.randomOffset = false;
                 b.stipple = width;
                 b.stippleWidth = 1;
-                b.strokeWidth = height * 0.5f;
                 b.stippleColor = Color.WHITE;
             }
         }
