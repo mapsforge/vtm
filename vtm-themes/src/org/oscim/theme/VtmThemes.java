@@ -39,6 +39,7 @@ public enum VtmThemes implements ThemeFile {
     OSMARENDER("vtm/osmarender.xml"),
     TRONRENDER("vtm/tronrender.xml");
 
+    private XmlRenderThemeMenuCallback mMenuCallback;
     private final String mPath;
 
     VtmThemes(String path) {
@@ -47,7 +48,7 @@ public enum VtmThemes implements ThemeFile {
 
     @Override
     public XmlRenderThemeMenuCallback getMenuCallback() {
-        return null;
+        return mMenuCallback;
     }
 
     @Override
@@ -76,6 +77,7 @@ public enum VtmThemes implements ThemeFile {
 
     @Override
     public void setMenuCallback(XmlRenderThemeMenuCallback menuCallback) {
+        mMenuCallback = menuCallback;
     }
 
     @Override
