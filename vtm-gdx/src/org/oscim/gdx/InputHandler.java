@@ -126,16 +126,21 @@ public class InputHandler implements InputProcessor {
                 break;
 
             case Input.Keys.NUM_3:
-                mMap.setTheme(VtmThemes.OSMAGRAY);
+                mMap.setTheme(VtmThemes.BIKER);
                 mMap.updateMap(false);
                 break;
 
             case Input.Keys.NUM_4:
-                mMap.setTheme(VtmThemes.TRONRENDER);
+                mMap.setTheme(VtmThemes.OSMAGRAY);
                 mMap.updateMap(false);
                 break;
 
             case Input.Keys.NUM_5:
+                mMap.setTheme(VtmThemes.TRONRENDER);
+                mMap.updateMap(false);
+                break;
+
+            case Input.Keys.NUM_6:
                 mMap.setTheme(VtmThemes.NEWTRON);
                 mMap.updateMap(false);
                 break;
