@@ -121,7 +121,7 @@ public class Samples extends Activity {
         linearLayout.addView(createLabel("Experiments"));
         linearLayout.addView(createButton(ReverseGeocodeActivity.class));
         linearLayout.addView(createButton(ThemeStylerActivity.class));
-        linearLayout.addView(createButton(JeoIndoorActivity.class));
+        //linearLayout.addView(createButton(JeoIndoorActivity.class));
         linearLayout.addView(createButton(GdxPoi3DActivity.class));
         linearLayout.addView(createButton(OverpassActivity.class));
         linearLayout.addView(createButton(DraggableMarkerOverlayActivity.class));

@@ -8,7 +8,7 @@ dependencies {
     implementation project(':vtm-extras')
     implementation project(':vtm-gdx-poi3d')
     implementation project(':vtm-http')
-    implementation project(':vtm-jeo')
+    //implementation project(':vtm-jeo')
     implementation project(':vtm-json')
     implementation project(':vtm-jts')
     implementation project(':vtm-models')
