@@ -26,7 +26,6 @@ import com.badlogic.gdx.graphics.glutils.GLVersion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
-
 import org.oscim.layers.TileGridLayer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
@@ -147,6 +146,10 @@ public abstract class GdxMap implements ApplicationListener {
     }
 
     protected boolean onKeyDown(int keycode) {
+        return false;
+    }
+
+    protected boolean onKeyUp(int keycode) {
         return false;
     }
 

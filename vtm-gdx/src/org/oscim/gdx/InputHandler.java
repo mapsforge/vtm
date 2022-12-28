@@ -172,6 +172,9 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+        if (mGdxApp.onKeyUp(keycode))
+            return true;
+
         switch (keycode) {
             case Input.Keys.SHIFT_LEFT:
             case Input.Keys.SHIFT_RIGHT:
