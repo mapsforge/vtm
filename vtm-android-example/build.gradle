@@ -85,3 +85,7 @@ task run(dependsOn: 'installDebug') {
         proc.waitFor()
     }
 }
+
+if (System.getenv('ANDROID_HOME') == null) {
+    throw new GradleException("Environment variable ANDROID_HOME needs to be set to SDK folder")
+}
