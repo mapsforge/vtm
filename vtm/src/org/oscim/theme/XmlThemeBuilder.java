@@ -632,11 +632,11 @@ public class XmlThemeBuilder {
 
         if (b.dashArray != null) {
             // Stroke dash array
-            if (b.dashArray.length == 2) {
+            if (b.dashArray.length == 1) {
                 b.randomOffset = false;
                 b.stipple = b.dashArray[0] < 1 ? 1 : (int) b.dashArray[0];
                 if (mTheme.isMapsforgeTheme())
-                    b.stipple *= 8;
+                    b.stipple *= Parameters.MAPSFORGE_DASH_FACTOR;
                 b.stippleWidth = 1;
                 b.stippleColor = Color.TRANSPARENT;
                 b.dashArray = null;
@@ -654,7 +654,7 @@ public class XmlThemeBuilder {
                     if (f < 1)
                         f = 1;
                     if (mTheme.isMapsforgeTheme())
-                        f *= 8;
+                        f *= Parameters.MAPSFORGE_DASH_FACTOR;
                     width += f;
                 }
                 Bitmap bitmap = CanvasAdapter.newBitmap(width, height, 0);
@@ -666,7 +666,7 @@ public class XmlThemeBuilder {
                     if (f < 1)
                         f = 1;
                     if (mTheme.isMapsforgeTheme())
-                        f *= 8;
+                        f *= Parameters.MAPSFORGE_DASH_FACTOR;
                     canvas.fillRectangle(x, 0, f, height, transparent ? Color.TRANSPARENT : Color.WHITE);
                     x += f;
                     transparent = !transparent;

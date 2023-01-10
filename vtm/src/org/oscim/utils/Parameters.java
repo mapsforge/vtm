@@ -49,6 +49,11 @@ public final class Parameters {
     public static boolean MAP_EVENT_LAYER2 = false;
 
     /**
+     * Dash factor for Mapsforge themes.
+     */
+    public static float MAPSFORGE_DASH_FACTOR = 1;
+
+    /**
      * If true the markers are sorted in y-axis.
      */
     public static boolean MARKER_SORT = true;
