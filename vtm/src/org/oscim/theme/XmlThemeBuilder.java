@@ -582,7 +582,7 @@ public class XmlThemeBuilder {
                 b.fixed = Boolean.parseBoolean(value);
 
             else if ("stipple".equals(name))
-                b.stipple = Math.round(Integer.parseInt(value) * mScale * mStrokeScale);
+                b.stipple = (int) (Integer.parseInt(value) * mScale * mStrokeScale);
 
             else if ("stipple-stroke".equals(name))
                 b.stippleColor(value);
@@ -635,12 +635,16 @@ public class XmlThemeBuilder {
             if (b.dashArray.length == 1) {
                 b.randomOffset = false;
                 b.stipple = b.dashArray[0] < 1 ? 1 : (int) b.dashArray[0];
-                if (mTheme.isMapsforgeTheme())
-                    b.stipple *= Parameters.MAPSFORGE_DASH_FACTOR;
                 b.stippleWidth = 1;
                 b.stippleColor = Color.TRANSPARENT;
                 b.dashArray = null;
             } else {
+                // Min dash is 1
+                float factor = 1;
+                for (float f : b.dashArray) {
+                    if (0 < f && f < 1)
+                        factor = Math.max(factor, 1 / f);
+                }
                 // Odd number of entries is duplicated
                 if (b.dashArray.length % 2 != 0) {
                     float[] newDashArray = new float[b.dashArray.length * 2];
@@ -651,10 +655,7 @@ public class XmlThemeBuilder {
                 int width = 0;
                 int height = b.strokeWidth < 1 ? 1 : (int) b.strokeWidth;
                 for (float f : b.dashArray) {
-                    if (f < 1)
-                        f = 1;
-                    if (mTheme.isMapsforgeTheme())
-                        f *= Parameters.MAPSFORGE_DASH_FACTOR;
+                    f *= factor;
                     width += f;
                 }
                 Bitmap bitmap = CanvasAdapter.newBitmap(width, height, 0);
@@ -663,10 +664,7 @@ public class XmlThemeBuilder {
                 int x = 0;
                 boolean transparent = false;
                 for (float f : b.dashArray) {
-                    if (f < 1)
-                        f = 1;
-                    if (mTheme.isMapsforgeTheme())
-                        f *= Parameters.MAPSFORGE_DASH_FACTOR;
+                    f *= factor;
                     canvas.fillRectangle(x, 0, f, height, transparent ? Color.TRANSPARENT : Color.WHITE);
                     x += f;
                     transparent = !transparent;

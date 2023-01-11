@@ -398,20 +398,8 @@ public final class LineTexBucket extends LineBucket {
                 GLUtils.setColor(shader.uColor, line.stippleColor, 1);
                 GLUtils.setColor(shader.uBgColor, line.color, 1);
 
-                float pScale;
-                if (s >= 1) {
-                    pScale = line.stipple * s;
-                    float cnt = pScale / line.stipple;
-                    pScale = line.stipple / (cnt + 1);
-                } else {
-                    pScale = line.stipple / s;
-                    float cnt = pScale / line.stipple;
-                    pScale = line.stipple * cnt;
-                }
-
-                //log.debug("pScale {} {}", pScale, s);
-
-                gl.uniform1f(shader.uPatternScale, COORD_SCALE * pScale);
+                /* keep line stipple fixed */
+                gl.uniform1f(shader.uPatternScale, (lb.scale * line.stipple) / (s + 1) * COORD_SCALE);
 
                 gl.uniform1f(shader.uPatternWidth, line.stippleWidth);
 
