@@ -6,6 +6,7 @@
     <!-- Styles -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
         <layer id="accommodation">
+            <name lang="ar" value="أماكن إقامة" />
             <name lang="de" value="Unterkunft" />
             <name lang="el" value="Διαμονή" />
             <name lang="en" value="Accommodation" />
@@ -16,16 +17,18 @@
             <cat id="accommodation" />
         </layer>
         <layer id="food">
-            <name lang="de" value="Gastronomie" />
-            <name lang="el" value="Γαστρονομία" />
-            <name lang="en" value="Gastronomy" />
-            <name lang="es" value="Gastronomía" />
-            <name lang="fr" value="Gastronomie" />
-            <name lang="it" value="Gastronomia" />
-            <name lang="nl" value="Gastronomie" />
+            <name lang="ar" value="طعام" />
+            <name lang="de" value="Lebensmittel" />
+            <name lang="el" value="Φαγητό" />
+            <name lang="en" value="Food" />
+            <name lang="es" value="Alimentación" />
+            <name lang="fr" value="Alimentation" />
+            <name lang="it" value="Alimentari" />
+            <name lang="nl" value="Eten" />
             <cat id="food" />
         </layer>
         <layer id="health">
+            <name lang="ar" value="رعاية صحية" />
             <name lang="de" value="Gesundheit" />
             <name lang="el" value="Υγεία" />
             <name lang="en" value="Health" />
@@ -36,6 +39,7 @@
             <cat id="health" />
         </layer>
         <layer enabled="true" id="fuel">
+            <name lang="ar" value="محطات وقود" />
             <name lang="de" value="Tankstellen" />
             <name lang="el" value="Πρατήρια καυσίμων" />
             <name lang="en" value="Fuel stations" />
@@ -46,6 +50,7 @@
             <cat id="fuel" />
         </layer>
         <layer id="charging_station">
+            <name lang="ar" value="محطات شحن" />
             <name lang="de" value="Ladestationen" />
             <name lang="el" value="Πρατήρια φόρτισης" />
             <name lang="en" value="Charging stations" />
@@ -56,6 +61,7 @@
             <cat id="charging_station" />
         </layer>
         <layer id="parking">
+            <name lang="ar" value="مواقف" />
             <name lang="de" value="Parkplätze" />
             <name lang="el" value="Χώροι στάθμευσης" />
             <name lang="en" value="Parking areas" />
@@ -66,6 +72,7 @@
             <cat id="parking" />
         </layer>
         <layer id="mountain_pass">
+            <name lang="ar" value="معابر جبلية" />
             <name lang="de" value="Bergpässe" />
             <name lang="el" value="Ορεινά περάσματα" />
             <name lang="en" value="Mountain passes" />
@@ -76,6 +83,7 @@
             <cat id="mountain_pass" />
         </layer>
         <layer id="mountain_peak">
+            <name lang="ar" value="قمم الجبال" />
             <name lang="de" value="Bergspitzen" />
             <name lang="el" value="Ορεινές κορυφές" />
             <name lang="en" value="Mountain peaks" />
@@ -86,6 +94,7 @@
             <cat id="mountain_peak" />
         </layer>
         <layer id="motorcycle_shop">
+            <name lang="ar" value="متاجر الدراجات النارية" />
             <name lang="de" value="Motorradwerkstätten" />
             <name lang="el" value="Καταστήματα μοτοσικλετών" />
             <name lang="en" value="Motorcycle shops" />
@@ -96,6 +105,7 @@
             <cat id="motorcycle_shop" />
         </layer>
         <layer id="attraction">
+            <name lang="ar" value="أماكن جذب سياحي" />
             <name lang="de" value="Touristenattraktionen" />
             <name lang="el" value="Τουριστικά αξιοθέατα" />
             <name lang="en" value="Tourist attractions" />
@@ -106,6 +116,7 @@
             <cat id="attraction" />
         </layer>
         <layer id="view">
+            <name lang="ar" value="مطلات" />
             <name lang="de" value="Aussichtspunkte" />
             <name lang="el" value="Σημεία θέασης" />
             <name lang="en" value="Viewpoints" />
@@ -116,6 +127,7 @@
             <cat id="view" />
         </layer>
         <layer id="housenumber">
+            <name lang="ar" value="أرقام المنازل" />
             <name lang="de" value="Hausnummern" />
             <name lang="el" value="Αριθμοί κατοικιών" />
             <name lang="en" value="House numbers" />
@@ -126,6 +138,7 @@
             <cat id="housenumber" />
         </layer>
         <layer enabled="true" id="nature">
+            <name lang="ar" value="الغطاء النباتي" />
             <name lang="de" value="Vegetation" />
             <name lang="el" value="Βλάστηση" />
             <name lang="en" value="Vegetation" />
