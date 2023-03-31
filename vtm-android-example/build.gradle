@@ -17,10 +17,6 @@ dependencies {
     implementation project(':vtm-gdx-poi3d')
 
     implementation 'org.mapsforge:mapsforge-poi-android:master-SNAPSHOT'
-    runtimeOnly 'org.mapsforge:sqlite-android:master-SNAPSHOT:natives-armeabi-v7a'
-    runtimeOnly 'org.mapsforge:sqlite-android:master-SNAPSHOT:natives-arm64-v8a'
-    runtimeOnly 'org.mapsforge:sqlite-android:master-SNAPSHOT:natives-x86'
-    runtimeOnly 'org.mapsforge:sqlite-android:master-SNAPSHOT:natives-x86_64'
 }
 
 android {
