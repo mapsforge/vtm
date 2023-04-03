@@ -5,7 +5,7 @@
 
     <!-- Styles -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
-        <layer id="accommodation">
+        <layer enabled="true" id="accommodation">
             <name lang="ar" value="أماكن إقامة" />
             <name lang="de" value="Unterkunft" />
             <name lang="el" value="Διαμονή" />
@@ -16,7 +16,7 @@
             <name lang="nl" value="Onderkomen" />
             <cat id="accommodation" />
         </layer>
-        <layer id="food">
+        <layer enabled="true" id="food">
             <name lang="ar" value="طعام" />
             <name lang="de" value="Lebensmittel" />
             <name lang="el" value="Φαγητό" />
@@ -71,7 +71,7 @@
             <name lang="nl" value="Parkeerplaatsen" />
             <cat id="parking" />
         </layer>
-        <layer id="mountain_pass">
+        <layer enabled="true" id="mountain_pass">
             <name lang="ar" value="معابر جبلية" />
             <name lang="de" value="Bergpässe" />
             <name lang="el" value="Ορεινά περάσματα" />
@@ -82,7 +82,7 @@
             <name lang="nl" value="Bergpassen" />
             <cat id="mountain_pass" />
         </layer>
-        <layer id="mountain_peak">
+        <layer enabled="true" id="mountain_peak">
             <name lang="ar" value="قمم الجبال" />
             <name lang="de" value="Bergspitzen" />
             <name lang="el" value="Ορεινές κορυφές" />
@@ -416,7 +416,7 @@
                 </m>
             </m>
             <m cat="mountain_pass" k="mountain_pass" v="yes" zoom-min="10">
-                <symbol src="assets:symbols/poi/mountain_pass.svg" />
+                <symbol src="assets:symbols/poi/mountain_pass.svg" symbol-percent="60" />
             </m>
             <m select="when-matched">
                 <text use="poi" />
@@ -1051,7 +1051,7 @@
                 </m>
             </m>
             <m cat="mountain_pass" k="mountain_pass" v="yes" zoom-min="10">
-                <symbol src="assets:symbols/poi/mountain_pass.svg" />
+                <symbol src="assets:symbols/poi/mountain_pass.svg" symbol-percent="60" />
             </m>
             <m select="when-matched">
                 <text use="poi" />
