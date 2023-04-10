@@ -210,6 +210,20 @@ public final class Layers extends AbstractList<Layer> {
     }
 
     /**
+     * @see List#contains(Object)
+     */
+    public synchronized boolean contains(Layer layer) {
+        return mLayerList.contains(layer);
+    }
+
+    /**
+     * @see List#contains(Object)
+     */
+    public synchronized boolean containsGroup(int group) {
+        return mGroupList.contains(group);
+    }
+
+    /**
      * Should only be used by MapRenderer.
      *
      * @return the current LayerRenderer as array.
