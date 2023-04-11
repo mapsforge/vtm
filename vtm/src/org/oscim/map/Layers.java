@@ -69,6 +69,10 @@ public final class Layers extends AbstractList<Layer> {
         return mLayerList.get(index);
     }
 
+    public synchronized List<Integer> getGroups() {
+        return mGroupList;
+    }
+
     @Override
     public synchronized int size() {
         return mLayerList.size();
@@ -76,8 +80,10 @@ public final class Layers extends AbstractList<Layer> {
 
     @Override
     public synchronized void add(int index, Layer layer) {
-        if (mLayerList.contains(layer))
-            throw new IllegalArgumentException("layer added twice");
+        if (mLayerList.contains(layer)) {
+            log.warn("layer already exists");
+            return;
+        }
 
         // bind added layer
         if (layer instanceof UpdateListener)
@@ -110,11 +116,15 @@ public final class Layers extends AbstractList<Layer> {
      * Add using layer groups.
      */
     public synchronized void add(Layer layer, int group) {
+        if (mLayerList.contains(layer)) {
+            log.warn("layer already exists");
+            return;
+        }
         int index = mGroupList.indexOf(group);
-        if (index < 0)
-            throw new IllegalArgumentException("unknown layer group");
-        if (mLayerList.contains(layer))
-            throw new IllegalArgumentException("layer added twice");
+        if (index < 0) {
+            log.warn("unknown / adding layer group" + group);
+            addGroup(group);
+        }
 
         index++;
         if (index == mGroupList.size())
@@ -169,8 +179,10 @@ public final class Layers extends AbstractList<Layer> {
 
     @Override
     public synchronized Layer set(int index, Layer layer) {
-        if (mLayerList.contains(layer))
-            throw new IllegalArgumentException("layer added twice");
+        if (mLayerList.contains(layer)) {
+            log.warn("layer already exists");
+            return layer;
+        }
 
         mDirtyLayers = true;
         Layer remove = mLayerList.set(index, layer);
@@ -202,8 +214,10 @@ public final class Layers extends AbstractList<Layer> {
     }
 
     public synchronized void addGroup(int group) {
-        if (mGroupList.contains(group))
-            throw new IllegalArgumentException("group added twice");
+        if (mGroupList.contains(group)) {
+            log.warn("group " + group + " already exists");
+            return;
+        }
 
         mGroupList.add(group);
         mGroupIndex.put(group, mLayerList.size());
