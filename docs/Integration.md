@@ -10,7 +10,6 @@ Current version is [![Maven Central](https://img.shields.io/maven-central/v/org.
 ```groovy
 implementation 'org.mapsforge:vtm:[CURRENT-VERSION]'
 implementation 'org.mapsforge:vtm-themes:[CURRENT-VERSION]'
-implementation 'net.sf.kxml:kxml2:2.3.0'
 implementation 'org.slf4j:slf4j-api:1.7.28'
 ```
 
@@ -55,7 +54,8 @@ runtimeOnly 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-osx'
 runtimeOnly 'org.mapsforge:vtm-desktop:[CURRENT-VERSION]:natives-windows'
 implementation 'com.badlogicgames.gdx:gdx:1.11.0'
 runtimeOnly 'com.badlogicgames.gdx:gdx-platform:1.11.0:natives-desktop'
-implementation 'com.formdev:svgSalamander:1.1.3'
+implementation 'guru.nidi.com.kitfox:svgSalamander:1.1.3'
+implementation 'net.sf.kxml:kxml2:2.3.0'
 ```
 
 ### Desktop (LWJGL)

@@ -293,23 +293,20 @@ public class POISearch {
     }
 
     public boolean onContextItemSelected(MenuItem item, GeoPoint geoPoint) {
-        switch (item.getItemId()) {
-            case R.id.menu_poi_nearby:
-                Intent intent = new Intent(App.activity, POIActivity.class);
-                intent.putExtra("ID", poiMarkers.getBubbledItemId());
-                App.activity.startActivityForResult(intent, TileMap.POIS_REQUEST);
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_poi_nearby) {
+            Intent intent = new Intent(App.activity, POIActivity.class);
+            intent.putExtra("ID", poiMarkers.getBubbledItemId());
+            App.activity.startActivityForResult(intent, TileMap.POIS_REQUEST);
+            return true;
+        } else if (itemId == R.id.menu_poi_clear) {
+            poiMarkers.removeAllItems();
+            mPOIs.clear();
+            App.map.updateMap(true);
 
-            case R.id.menu_poi_clear:
-                poiMarkers.removeAllItems();
-                mPOIs.clear();
-                App.map.updateMap(true);
-
-                return true;
-            default:
+            return true;
         }
+
         return false;
-
     }
-
 }

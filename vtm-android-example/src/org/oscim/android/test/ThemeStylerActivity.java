@@ -163,16 +163,13 @@ public class ThemeStylerActivity extends BaseMapActivity implements OnSeekBarCha
             return;
 
         HSV c = null;
-        switch (view.getId()) {
-            case R.id.checkBoxArea:
-                c = areaColor;
-                break;
-            case R.id.checkBoxLine:
-                c = lineColor;
-                break;
-            case R.id.checkBoxOutline:
-                c = outlineColor;
-                break;
+        int id = view.getId();
+        if (id == R.id.checkBoxArea) {
+            c = areaColor;
+        } else if (id == R.id.checkBoxLine) {
+            c = lineColor;
+        } else if (id == R.id.checkBoxOutline) {
+            c = outlineColor;
         }
         if (c == null)
             return;

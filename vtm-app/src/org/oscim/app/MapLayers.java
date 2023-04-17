@@ -182,19 +182,15 @@ public class MapLayers {
         App.map.layers().remove(mBackgroundLayer);
         mBackgroundLayer = null;
 
-        switch (id) {
-            case R.id.menu_layer_openstreetmap:
-                UrlTileSource tileSource = DefaultSources.OPENSTREETMAP.build();
-                tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
-                mBackgroundLayer = new BitmapTileLayer(App.map, tileSource);
-                break;
-
-            case R.id.menu_layer_naturalearth:
-                mBackgroundLayer = new BitmapTileLayer(App.map, DefaultSources.NE_LANDCOVER.build());
-                break;
-            default:
-                mBackgroundLayer = mBackroundPlaceholder;
-                id = -1;
+        if (id == R.id.menu_layer_openstreetmap) {
+            UrlTileSource tileSource = DefaultSources.OPENSTREETMAP.build();
+            tileSource.setHttpRequestHeaders(Collections.singletonMap("User-Agent", "vtm-playground"));
+            mBackgroundLayer = new BitmapTileLayer(App.map, tileSource);
+        } else if (id == R.id.menu_layer_naturalearth) {
+            mBackgroundLayer = new BitmapTileLayer(App.map, DefaultSources.NE_LANDCOVER.build());
+        } else {
+            mBackgroundLayer = mBackroundPlaceholder;
+            id = -1;
         }
 
         if (mBackgroundLayer instanceof BitmapTileLayer)

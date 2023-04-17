@@ -37,22 +37,22 @@ public class MapsforgeStyleActivity extends MapsforgeActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.style_1:
-                item.setChecked(true);
-                loadTheme("1");
-                mMap.clearMap();
-                Toast.makeText(this, "Show nature layers", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.style_2:
-                item.setChecked(true);
-                loadTheme("2");
-                mMap.clearMap();
-                Toast.makeText(this, "Hide nature layers", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return false;
+        int itemId = item.getItemId();
+        if (itemId == R.id.style_1) {
+            item.setChecked(true);
+            loadTheme("1");
+            mMap.clearMap();
+            Toast.makeText(this, "Show nature layers", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (itemId == R.id.style_2) {
+            item.setChecked(true);
+            loadTheme("2");
+            mMap.clearMap();
+            Toast.makeText(this, "Hide nature layers", Toast.LENGTH_SHORT).show();
+            return true;
         }
+
+        return false;
     }
 
     @Override

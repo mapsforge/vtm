@@ -321,39 +321,35 @@ public class RouteSearch {
     }
 
     boolean onContextItemSelected(MenuItem item, GeoPoint geoPoint) {
-        switch (item.getItemId()) {
-            case R.id.menu_route_departure:
-                mStartPoint = geoPoint;
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_route_departure) {
+            mStartPoint = geoPoint;
 
-                markerStart = putMarkerItem(markerStart, mStartPoint, START_INDEX,
-                        R.string.departure, R.drawable.marker_departure, -1);
+            markerStart = putMarkerItem(markerStart, mStartPoint, START_INDEX,
+                    R.string.departure, R.drawable.marker_departure, -1);
 
-                getRouteAsync();
-                return true;
+            getRouteAsync();
+            return true;
+        } else if (itemId == R.id.menu_route_destination) {
+            mDestinationPoint = geoPoint;
 
-            case R.id.menu_route_destination:
-                mDestinationPoint = geoPoint;
+            markerDestination = putMarkerItem(markerDestination, mDestinationPoint, DEST_INDEX,
+                    R.string.destination,
+                    R.drawable.marker_destination, -1);
 
-                markerDestination = putMarkerItem(markerDestination, mDestinationPoint, DEST_INDEX,
-                        R.string.destination,
-                        R.drawable.marker_destination, -1);
+            getRouteAsync();
+            return true;
+        } else if (itemId == R.id.menu_route_viapoint) {
+            GeoPoint viaPoint = geoPoint;
+            addViaPoint(viaPoint);
 
-                getRouteAsync();
-                return true;
-
-            case R.id.menu_route_viapoint:
-                GeoPoint viaPoint = geoPoint;
-                addViaPoint(viaPoint);
-
-                getRouteAsync();
-                return true;
-
-            case R.id.menu_route_clear:
-                clearOverlays();
-                return true;
-
-            default:
+            getRouteAsync();
+            return true;
+        } else if (itemId == R.id.menu_route_clear) {
+            clearOverlays();
+            return true;
         }
+
         return false;
     }
 

@@ -75,46 +75,40 @@ public class BaseMapActivity extends MapActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.theme_default:
-                mMap.setTheme(VtmThemes.DEFAULT);
+        int itemId = item.getItemId();
+        if (itemId == R.id.theme_default) {
+            mMap.setTheme(VtmThemes.DEFAULT);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_osmarender) {
+            mMap.setTheme(VtmThemes.OSMARENDER);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_osmagray) {
+            mMap.setTheme(VtmThemes.OSMAGRAY);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_tubes) {
+            mMap.setTheme(VtmThemes.TRONRENDER);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_newtron) {
+            mMap.setTheme(VtmThemes.NEWTRON);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.gridlayer) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+                mMap.layers().remove(mGridLayer);
+            } else {
                 item.setChecked(true);
-                return true;
+                if (mGridLayer == null)
+                    mGridLayer = new TileGridLayer(mMap);
 
-            case R.id.theme_osmarender:
-                mMap.setTheme(VtmThemes.OSMARENDER);
-                item.setChecked(true);
-                return true;
-
-            case R.id.theme_osmagray:
-                mMap.setTheme(VtmThemes.OSMAGRAY);
-                item.setChecked(true);
-                return true;
-
-            case R.id.theme_tubes:
-                mMap.setTheme(VtmThemes.TRONRENDER);
-                item.setChecked(true);
-                return true;
-
-            case R.id.theme_newtron:
-                mMap.setTheme(VtmThemes.NEWTRON);
-                item.setChecked(true);
-                return true;
-
-            case R.id.gridlayer:
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    mMap.layers().remove(mGridLayer);
-                } else {
-                    item.setChecked(true);
-                    if (mGridLayer == null)
-                        mGridLayer = new TileGridLayer(mMap);
-
-                    mMap.layers().add(mGridLayer);
-                }
-                mMap.updateMap(true);
-                return true;
+                mMap.layers().add(mGridLayer);
+            }
+            mMap.updateMap(true);
+            return true;
         }
 
         return false;

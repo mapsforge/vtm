@@ -149,88 +149,62 @@ public class TileMap extends MapActivity implements MapEventsReceiver {
     @SuppressWarnings("deprecation")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_info_about) {
+            startActivity(new Intent(this, InfoView.class));
+        } else if (itemId == R.id.menu_position) {
+        } else if (itemId == R.id.menu_poi_nearby) {
+            Intent intent = new Intent(this, POIActivity.class);
+            startActivityForResult(intent, TileMap.POIS_REQUEST);
+        } else if (itemId == R.id.menu_compass_2d) {
+            if (!item.isChecked()) {
+                // FIXME
+                //mMapView.getMapViewPosition().setTilt(0);
+                mCompass.setMode(Compass.Mode.C2D);
+            } else {
+                mCompass.setMode(Compass.Mode.OFF);
+            }
+        } else if (itemId == R.id.menu_compass_3d) {
+            if (!item.isChecked()) {
+                mCompass.setMode(Compass.Mode.C3D);
+            } else {
+                mCompass.setMode(Compass.Mode.OFF);
+            }
+        } else if (itemId == R.id.menu_position_my_location_enable) {
+            if (!item.isChecked()) {
+                mLocation.setMode(LocationHandler.Mode.SHOW);
+                mLocation.setCenterOnFirstFix();
+            } else {
+                mLocation.setMode(LocationHandler.Mode.OFF);
+            }
+        } else if (itemId == R.id.menu_position_follow_location) {
+            if (!item.isChecked()) {
+                mLocation.setMode(LocationHandler.Mode.SNAP);
+            } else {
+                mLocation.setMode(LocationHandler.Mode.OFF);
+            }
+        } else if (itemId == R.id.menu_layer_openstreetmap || itemId == R.id.menu_layer_naturalearth) {
+            int bgId = item.getItemId();
+            // toggle if already enabled
+            if (bgId == mMapLayers.getBackgroundId())
+                bgId = -1;
 
-        switch (item.getItemId()) {
-            case R.id.menu_info_about:
-                startActivity(new Intent(this, InfoView.class));
-                break;
-
-            case R.id.menu_position:
-                break;
-
-            case R.id.menu_poi_nearby:
-                Intent intent = new Intent(this, POIActivity.class);
-                startActivityForResult(intent, TileMap.POIS_REQUEST);
-                break;
-
-            case R.id.menu_compass_2d:
-                if (!item.isChecked()) {
-                    // FIXME
-                    //mMapView.getMapViewPosition().setTilt(0);
-                    mCompass.setMode(Compass.Mode.C2D);
-                } else {
-                    mCompass.setMode(Compass.Mode.OFF);
-                }
-                break;
-
-            case R.id.menu_compass_3d:
-                if (!item.isChecked()) {
-                    mCompass.setMode(Compass.Mode.C3D);
-                } else {
-                    mCompass.setMode(Compass.Mode.OFF);
-                }
-                break;
-
-            case R.id.menu_position_my_location_enable:
-                if (!item.isChecked()) {
-                    mLocation.setMode(LocationHandler.Mode.SHOW);
-                    mLocation.setCenterOnFirstFix();
-                } else {
-                    mLocation.setMode(LocationHandler.Mode.OFF);
-                }
-                break;
-
-            case R.id.menu_position_follow_location:
-                if (!item.isChecked()) {
-                    mLocation.setMode(LocationHandler.Mode.SNAP);
-                } else {
-                    mLocation.setMode(LocationHandler.Mode.OFF);
-                }
-                break;
-
-            case R.id.menu_layer_openstreetmap:
-            case R.id.menu_layer_naturalearth:
-                int bgId = item.getItemId();
-                // toggle if already enabled
-                if (bgId == mMapLayers.getBackgroundId())
-                    bgId = -1;
-
-                mMapLayers.setBackgroundMap(bgId);
-                mMap.updateMap(true);
-                break;
-
-            case R.id.menu_layer_grid:
-                mMapLayers.enableGridOverlay(this, !mMapLayers.isGridEnabled());
-                mMap.updateMap(true);
-                break;
-
-            case R.id.menu_position_enter_coordinates:
-                showDialog(DIALOG_ENTER_COORDINATES);
-                break;
-
-            //case R.id.menu_position_map_center:
-            //    MapPosition mapCenter = mBaseLayer.getMapFileCenter();
-            //    if (mapCenter != null)
-            //        mMap.setCenter(mapCenter.getGeoPoint());
-            //    break;
-
-            case R.id.menu_preferences:
-                startActivity(new Intent(this, EditPreferences.class));
-                overridePendingTransition(R.anim.slide_right, R.anim.slide_left2);
-                break;
-
-            default:
-                return false;
+            mMapLayers.setBackgroundMap(bgId);
+            mMap.updateMap(true);
+        } else if (itemId == R.id.menu_layer_grid) {
+            mMapLayers.enableGridOverlay(this, !mMapLayers.isGridEnabled());
+            mMap.updateMap(true);
+        } else if (itemId == R.id.menu_position_enter_coordinates) {
+            showDialog(DIALOG_ENTER_COORDINATES);
+        /*} else if (itemId == R.id.menu_position_map_center) {
+            MapPosition mapCenter = mBaseLayer.getMapFileCenter();
+            if (mapCenter != null)
+                mMap.setCenter(mapCenter.getGeoPoint());*/
+        } else if (itemId == R.id.menu_preferences) {
+            startActivity(new Intent(this, EditPreferences.class));
+            overridePendingTransition(R.anim.slide_right, R.anim.slide_left2);
+        } else {
+            return false;
         }
 
         toggleMenuCheck();

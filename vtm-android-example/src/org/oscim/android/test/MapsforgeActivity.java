@@ -114,71 +114,64 @@ public class MapsforgeActivity extends MapActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.theme_default:
-                if (mTheme != null)
-                    mTheme.dispose();
-                mTheme = mMap.setTheme(VtmThemes.DEFAULT);
+        int itemId = item.getItemId();
+        if (itemId == R.id.theme_default) {
+            if (mTheme != null)
+                mTheme.dispose();
+            mTheme = mMap.setTheme(VtmThemes.DEFAULT);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_osmarender) {
+            if (mTheme != null)
+                mTheme.dispose();
+            mTheme = mMap.setTheme(VtmThemes.OSMARENDER);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_osmagray) {
+            if (mTheme != null)
+                mTheme.dispose();
+            mTheme = mMap.setTheme(VtmThemes.OSMAGRAY);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_tubes) {
+            if (mTheme != null)
+                mTheme.dispose();
+            mTheme = mMap.setTheme(VtmThemes.TRONRENDER);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_newtron) {
+            if (mTheme != null)
+                mTheme.dispose();
+            mTheme = mMap.setTheme(VtmThemes.NEWTRON);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_external_archive) {
+            Intent intent = new Intent(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            startActivityForResult(intent, SELECT_THEME_ARCHIVE);
+            return true;
+        } else if (itemId == R.id.theme_external) {
+            Intent intent;
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                return false;
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(intent, SELECT_THEME_DIR);
+            return true;
+        } else if (itemId == R.id.gridlayer) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+                mMap.layers().remove(mGridLayer);
+            } else {
                 item.setChecked(true);
-                return true;
+                if (mGridLayer == null)
+                    mGridLayer = new TileGridLayer(mMap);
 
-            case R.id.theme_osmarender:
-                if (mTheme != null)
-                    mTheme.dispose();
-                mTheme = mMap.setTheme(VtmThemes.OSMARENDER);
-                item.setChecked(true);
-                return true;
-
-            case R.id.theme_osmagray:
-                if (mTheme != null)
-                    mTheme.dispose();
-                mTheme = mMap.setTheme(VtmThemes.OSMAGRAY);
-                item.setChecked(true);
-                return true;
-
-            case R.id.theme_tubes:
-                if (mTheme != null)
-                    mTheme.dispose();
-                mTheme = mMap.setTheme(VtmThemes.TRONRENDER);
-                item.setChecked(true);
-                return true;
-
-            case R.id.theme_newtron:
-                if (mTheme != null)
-                    mTheme.dispose();
-                mTheme = mMap.setTheme(VtmThemes.NEWTRON);
-                item.setChecked(true);
-                return true;
-
-            case R.id.theme_external_archive:
-                Intent intent = new Intent(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("*/*");
-                startActivityForResult(intent, SELECT_THEME_ARCHIVE);
-                return true;
-
-            case R.id.theme_external:
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-                    return false;
-                intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivityForResult(intent, SELECT_THEME_DIR);
-                return true;
-
-            case R.id.gridlayer:
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    mMap.layers().remove(mGridLayer);
-                } else {
-                    item.setChecked(true);
-                    if (mGridLayer == null)
-                        mGridLayer = new TileGridLayer(mMap);
-
-                    mMap.layers().add(mGridLayer);
-                }
-                mMap.updateMap(true);
-                return true;
+                mMap.layers().add(mGridLayer);
+            }
+            mMap.updateMap(true);
+            return true;
         }
 
         return false;
