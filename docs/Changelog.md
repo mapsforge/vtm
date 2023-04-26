@@ -1,6 +1,11 @@
 # Changelog
 
-## New since 0.18.0
+## New since 0.19.0
+
+- Minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.20.0)
+
+## Version 0.19.0 (2023-04-26)
 
 - Render themes: line texture improvements [#1008](https://github.com/mapsforge/vtm/pull/1008)
 - Biker map theme [#995](https://github.com/mapsforge/vtm/pull/995)
