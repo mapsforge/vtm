@@ -18,11 +18,21 @@
  */
 package org.oscim.layers.vector;
 
+import static org.oscim.core.MercatorProjection.latitudeToY;
+import static org.oscim.core.MercatorProjection.longitudeToX;
+
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.oscim.backend.canvas.Color;
-import org.oscim.core.*;
+import org.oscim.core.Box;
+import org.oscim.core.GeoPoint;
+import org.oscim.core.GeometryBuffer;
+import org.oscim.core.MapPosition;
+import org.oscim.core.Tile;
 import org.oscim.event.Gesture;
 import org.oscim.event.GestureListener;
 import org.oscim.event.MotionEvent;
@@ -44,10 +54,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
-import static org.oscim.core.MercatorProjection.latitudeToY;
-import static org.oscim.core.MercatorProjection.longitudeToX;
 
 /* TODO keep bounding box of geometries - only try to render when bbox intersects viewport */
 
@@ -75,9 +84,15 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
         final Geometry geometry;
         final Style style;
 
+        final int priority;
         GeometryWithStyle(Geometry g, Style s) {
+            this(g, s, 0);
+        }
+
+        GeometryWithStyle(Geometry g, Style s, int p) {
             geometry = g;
             style = s;
+            priority = p;
         }
 
         @Override
@@ -88,6 +103,11 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
         @Override
         public Geometry getGeometry() {
             return geometry;
+        }
+
+        @Override
+        public int getPriority() {
+            return 0;
         }
     }
 
@@ -199,7 +219,18 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
         synchronized (this) {
             tmpDrawables.clear();
             mDrawables.search(bbox, tmpDrawables);
-            // TODO sort by some order...
+            // sort by some order...
+            Collections.sort(tmpDrawables, new Comparator<Drawable>() {
+                @Override
+                public int compare(Drawable o1, Drawable o2) {
+                    if (o1.getPriority()<o2.getPriority()) {
+                        return -1;
+                    } else if (o1.getPriority()>o2.getPriority()) {
+                        return 1;
+                    }
+                    return 0;
+                }
+            });
 
             for (Drawable d : tmpDrawables) {
                 Style style = d.getStyle();

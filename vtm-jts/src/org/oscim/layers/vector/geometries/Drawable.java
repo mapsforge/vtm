@@ -13,4 +13,10 @@ public interface Drawable {
      * @return
      */
     public Geometry getGeometry();
+
+    /**
+     * priority for drawable, The larger the value, the higher it will appear when drawn in the Vectorlayer
+     * @see org.oscim.layers.vector.VectorLayer draw() method
+     * */
+    public int getPriority();
 }
