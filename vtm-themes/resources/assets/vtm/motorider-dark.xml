@@ -3,6 +3,9 @@
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
+    <!-- This is the DARK/NIGHT theme from MotoUKRider/MotoRiderUK based on the Biker map theme -->
+    <!-- Version 1g 11th May 2023 -->
+
     <!-- Styles -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
         <layer id="accommodation">
@@ -16,6 +19,17 @@
             <name lang="nl" value="Onderkomen" />
             <cat id="accommodation" />
         </layer>
+        <layer id="charging_station">
+            <name lang="ar" value="محطات شحن" />
+            <name lang="de" value="Ladestationen" />
+            <name lang="el" value="Πρατήρια φόρτισης" />
+            <name lang="en" value="Charging stations" />
+            <name lang="es" value="Estaciones de carga" />
+            <name lang="fr" value="Stations de charge" />
+            <name lang="it" value="Stazioni di carica" />
+            <name lang="nl" value="Laadstations" />
+            <cat id="charging_station" />
+        </layer>
         <layer id="food">
             <name lang="ar" value="طعام" />
             <name lang="de" value="Lebensmittel" />
@@ -26,17 +40,6 @@
             <name lang="it" value="Alimentari" />
             <name lang="nl" value="Eten" />
             <cat id="food" />
-        </layer>
-        <layer id="health">
-            <name lang="ar" value="رعاية صحية" />
-            <name lang="de" value="Gesundheit" />
-            <name lang="el" value="Υγεία" />
-            <name lang="en" value="Health" />
-            <name lang="es" value="Salud" />
-            <name lang="fr" value="Santé" />
-            <name lang="it" value="Sanità" />
-            <name lang="nl" value="Gezondheid" />
-            <cat id="health" />
         </layer>
         <layer enabled="true" id="fuel">
             <name lang="ar" value="محطات وقود" />
@@ -49,27 +52,38 @@
             <name lang="nl" value="Tankstations" />
             <cat id="fuel" />
         </layer>
-        <layer id="charging_station">
-            <name lang="ar" value="محطات شحن" />
-            <name lang="de" value="Ladestationen" />
-            <name lang="el" value="Πρατήρια φόρτισης" />
-            <name lang="en" value="Charging stations" />
-            <name lang="es" value="Estaciones de carga" />
-            <name lang="fr" value="Stations de charge" />
-            <name lang="it" value="Stazioni di carica" />
-            <name lang="nl" value="Laadstations" />
-            <cat id="charging_station" />
+        <layer id="health">
+            <name lang="ar" value="رعاية صحية" />
+            <name lang="de" value="Gesundheit" />
+            <name lang="el" value="Υγεία" />
+            <name lang="en" value="Health" />
+            <name lang="es" value="Salud" />
+            <name lang="fr" value="Santé" />
+            <name lang="it" value="Sanità" />
+            <name lang="nl" value="Gezondheid" />
+            <cat id="health" />
         </layer>
-        <layer id="parking">
-            <name lang="ar" value="مواقف" />
-            <name lang="de" value="Parkplätze" />
-            <name lang="el" value="Χώροι στάθμευσης" />
-            <name lang="en" value="Parking areas" />
-            <name lang="es" value="Estacionamientos" />
-            <name lang="fr" value="Aires de stationnement" />
-            <name lang="it" value="Aree di parcheggio" />
-            <name lang="nl" value="Parkeerplaatsen" />
-            <cat id="parking" />
+        <layer id="housenumber">
+            <name lang="ar" value="أرقام المنازل" />
+            <name lang="de" value="Hausnummern" />
+            <name lang="el" value="Αριθμοί κατοικιών" />
+            <name lang="en" value="House numbers" />
+            <name lang="es" value="Números de casa" />
+            <name lang="fr" value="Numéros de maison" />
+            <name lang="it" value="Numeri civici" />
+            <name lang="nl" value="Huis nummers" />
+            <cat id="housenumber" />
+        </layer>
+        <layer id="motorcycle_shop">
+            <name lang="ar" value="متاجر الدراجات النارية" />
+            <name lang="de" value="Motorradwerkstätten" />
+            <name lang="el" value="Καταστήματα μοτοσικλετών" />
+            <name lang="en" value="Motorcycle shops" />
+            <name lang="es" value="Tiendas de motos" />
+            <name lang="fr" value="Magasins de motos" />
+            <name lang="it" value="Negozi di moto" />
+            <name lang="nl" value="Motorwinkels" />
+            <cat id="motorcycle_shop" />
         </layer>
         <layer id="mountain_pass">
             <name lang="ar" value="معابر جبلية" />
@@ -93,16 +107,16 @@
             <name lang="nl" value="Bergpieken" />
             <cat id="mountain_peak" />
         </layer>
-        <layer id="motorcycle_shop">
-            <name lang="ar" value="متاجر الدراجات النارية" />
-            <name lang="de" value="Motorradwerkstätten" />
-            <name lang="el" value="Καταστήματα μοτοσικλετών" />
-            <name lang="en" value="Motorcycle shops" />
-            <name lang="es" value="Tiendas de motos" />
-            <name lang="fr" value="Magasins de motos" />
-            <name lang="it" value="Negozi di moto" />
-            <name lang="nl" value="Motorwinkels" />
-            <cat id="motorcycle_shop" />
+        <layer id="parking">
+            <name lang="ar" value="مواقف" />
+            <name lang="de" value="Parkplätze" />
+            <name lang="el" value="Χώροι στάθμευσης" />
+            <name lang="en" value="Parking areas" />
+            <name lang="es" value="Estacionamientos" />
+            <name lang="fr" value="Aires de stationnement" />
+            <name lang="it" value="Aree di parcheggio" />
+            <name lang="nl" value="Parkeerplaatsen" />
+            <cat id="parking" />
         </layer>
         <layer id="attraction">
             <name lang="ar" value="أماكن جذب سياحي" />
@@ -115,28 +129,6 @@
             <name lang="nl" value="Touristische attracties" />
             <cat id="attraction" />
         </layer>
-        <layer id="view">
-            <name lang="ar" value="مطلات" />
-            <name lang="de" value="Aussichtspunkte" />
-            <name lang="el" value="Σημεία θέασης" />
-            <name lang="en" value="Viewpoints" />
-            <name lang="es" value="Miradores" />
-            <name lang="fr" value="Points de vue" />
-            <name lang="it" value="Punti di vista" />
-            <name lang="nl" value="Uitzichtspunten" />
-            <cat id="view" />
-        </layer>
-        <layer id="housenumber">
-            <name lang="ar" value="أرقام المنازل" />
-            <name lang="de" value="Hausnummern" />
-            <name lang="el" value="Αριθμοί κατοικιών" />
-            <name lang="en" value="House numbers" />
-            <name lang="es" value="Números de casa" />
-            <name lang="fr" value="Numéros de maison" />
-            <name lang="it" value="Numeri civici" />
-            <name lang="nl" value="Huis nummers" />
-            <cat id="housenumber" />
-        </layer>
         <layer enabled="true" id="nature">
             <name lang="ar" value="الغطاء النباتي" />
             <name lang="de" value="Vegetation" />
@@ -148,20 +140,31 @@
             <name lang="nl" value="Vegetatie" />
             <cat id="nature" />
         </layer>
+        <layer id="view">
+            <name lang="ar" value="مطلات" />
+            <name lang="de" value="Aussichtspunkte" />
+            <name lang="el" value="Σημεία θέασης" />
+            <name lang="en" value="Viewpoints" />
+            <name lang="es" value="Miradores" />
+            <name lang="fr" value="Points de vue" />
+            <name lang="it" value="Punti di vista" />
+            <name lang="nl" value="Uitzichtspunten" />
+            <cat id="view" />
+        </layer>
         <layer id="normal" visible="true">
             <overlay id="accommodation" />
-            <overlay id="food" />
-            <overlay id="health" />
-            <overlay id="fuel" />
             <overlay id="charging_station" />
-            <overlay id="parking" />
+            <overlay id="food" />
+            <overlay id="fuel" />
+            <overlay id="health" />
+            <overlay id="housenumber" />
+            <overlay id="motorcycle_shop" />
             <overlay id="mountain_pass" />
             <overlay id="mountain_peak" />
-            <overlay id="motorcycle_shop" />
+            <overlay id="parking" />
             <overlay id="attraction" />
-            <overlay id="view" />
-            <overlay id="housenumber" />
             <overlay id="nature" />
+            <overlay id="view" />
         </layer>
     </stylemenu>
 
@@ -169,15 +172,15 @@
     <style-line cap="butt" fix="true" id="fix" width="1.0" />
 
     <!-- Road Text -->
-    <style-text fill="#606060" font-family="medium" id="road" k="name" priority="9" size="14"
-        stroke="#ffffff" stroke-width="2.0" />
+    <style-text fill="#ffffff" font-family="medium" id="road" k="name" priority="8" size="14"
+        stroke="#000000" stroke-width="2.0" />
     <style-text caption="true" id="road-caption" use="road" />
-    <style-text style="bold" fill="#606060" id="major-road" k="name" priority="7" size="16"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" fill="#606060" id="road-ref" k="ref" priority="8" size="14"
-        stroke="#ffffff" stroke-width="2.0" />
+    <style-text font-family="medium" fill="#ffffff" id="major-road" k="name" priority="5" size="14"
+        stroke="#000000" stroke-width="2.0" />
+    <style-text style="bold" fill="#ffffff" id="road-ref" k="ref" priority="8" size="14"
+        stroke="#000000" stroke-width="2.0" />
     <style-text caption="true" style="bold" fill="#ffffff" id="road-ref-caption" k="ref"
-        priority="8" size="12" bg-fill="#6c9f43" />
+        priority="8" size="14" bg-fill="#6c9f43" />
 
     <!-- Water -->
     <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-major-water-name"
@@ -189,20 +192,20 @@
     <style-text fill="#2d51bc" font-family="light" id="river" k="name" size="12" />
 
     <!-- Places -->
-    <style-text style="bold" caption="true" fill="#000000" id="country-caption" k="name"
-        priority="0" size="20" stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="city-lz-caption" k="name" priority="3" size="18"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" caption="true" fill="#000000" id="city-caption" k="name" priority="1"
-        size="18" stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="town-caption" k="name" priority="4" size="18"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="village-caption" k="name" priority="5" size="16"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="suburb-caption" k="name" priority="5" size="16"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="hamlet-caption" k="name" priority="6" size="14"
-        stroke="#ffffff" stroke-width="2.0" />
+    <style-text style="bold" caption="true" fill="#ffffff" id="country-caption" k="name"
+        priority="0" size="20" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#ffffff" id="city-lz-caption" k="name" priority="3" size="18"
+        stroke="#000000" stroke-width="2.0" />
+    <style-text style="bold" caption="true" fill="#ffffff" id="city-caption" k="name" priority="1"
+        size="18" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#ffffff" id="town-caption" k="name" priority="4" size="14"
+        stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#ffffff" id="village-caption" k="name" priority="4" size="14"
+        stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#ffffff" id="suburb-caption" k="name" priority="5" size="16"
+        stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#ffffff" id="hamlet-caption" k="name" priority="6" size="14"
+        stroke="#000000" stroke-width="2.0" />
 
     <!-- Pois -->
     <style-text caption="true" dy="20" fill="#606060" font-family="medium" id="poi" k="name"
@@ -213,44 +216,48 @@
         size="12" stroke="#ffffff" stroke-width="2.0" />
     <style-text style="bold" caption="true" cat="housenumber" fill="#606060" font-family="condensed"
         id="housenumber-caption" k="addr:housenumber" priority="12" size="12" />
-    <style-text style="bold" caption="true" fill="#606060" font-family="condensed"
-        id="house-name-caption" k="name" priority="11" size="12" stroke="#ffffff"
+    <style-text style="bold" caption="true" fill="#ffffff" font-family="condensed"
+        id="house-name-caption" k="name" priority="11" size="12" stroke="#000000"
         stroke-width="2.0" />
 
     <!-- De Area Styles -->
-    <style-area fade="10" fill="#c5c6be" id="de-residential" />
-    <style-area fade="13" fill="#b8b8c1" id="de-pedestrian" />
-    <style-area fade="10" fill="#ebdbe8" id="de-industrial" />
-    <style-area fade="6" fill="#e0e0b8" id="de-school" />
-    <style-area fade="6" fill="#ace0b0" id="de-park" />
-    <style-area fade="6" fill="#add19e" id="de-forest" />
-    <style-area fade="6" fill="#c3dbad" id="de-grass" />
-    <style-area fade="6" fill="#def6c0" id="de-campsite" />
-    <style-area fade="6" fill="#aacbaf" id="de-cemetery" />
-    <style-area fade="6" fill="#d6aa95" id="de-military" />
-    <style-area fade="6" fill="#e6dcd1" id="de-mud" />
-    <style-area fade="6" fill="#e8eff2" id="de-ice" />
-    <style-area fade="6" fill="#c5c3c3" id="de-quarry" />
-    <style-area fade="6" fill="#f5e9c6" id="de-sand" />
+    <style-area fade="10" fill="#0D0D0D" id="de-residential" />
+    <style-area fade="13" fill="#47473e" id="de-pedestrian" />
+    <style-area fade="10" fill="#1a0d00" id="de-industrial" />
+    <style-area fade="6" fill="#003300" id="de-school" />
+    <style-area fade="6" fill="#1a0d00" id="de-hospital" />
+    <style-area fade="6" fill="#0d1a00" id="de-park" />
+    <style-area fade="6" fill="#0d1a00" id="de-forest" />
+    <style-area fade="6" fill="#0d1a00" id="de-grass" />
+    <style-area fade="6" fill="#0D0D0D" id="de-campsite" />
+    <style-area fade="6" fill="#0D0D0D" id="de-cemetery" />
+    <style-area fade="6" fill="#332200" id="de-military" />
+    <style-area fade="6" fill="#0D0D0D" id="de-mud" />
+    <style-area fade="6" fill="#0D0D0D" id="de-ice" />
+    <style-area fade="6" fill="#0D0D0D" id="de-quarry" />
+    <style-area fade="6" fill="#332200" id="de-sand" />
+    <style-area fade="6" fill="#666666" id="de-rail" />
+    <style-area fade="6" fill="#4d4d33" id="de-station" />
 
     <!-- Avoid patterns and textures because of old GPU issues -->
     <!--<style-area id="tex1" src="assets:textures/rough.png" />-->
 
     <!-- Colors from OSM-DE Style -->
-    <style-line cap="butt" id="de-motorway" stroke="#e892a2" width="2.1" />
-    <style-line cap="butt" id="de-trunk" stroke="#f9b29c" width="2.1" />
-    <style-line id="de-primary" stroke="#ffc982" width="2.1" />
-    <style-line id="de-secondary" stroke="#fffa9b" width="2.1" />
-    <style-line id="de-tertiary" stroke="#fdffd1" width="2.1" />
-    <style-line id="de-unclassified" stroke="#ffffff" width="1.1" />
-    <style-line id="de-residential" stroke="#ffffff" width="1.1" />
+    <style-line cap="butt" id="de-motorway" stroke="#000033" width="3.0" />
+    <style-line cap="butt" id="de-trunk" stroke="#003300" width="3.0" />
+    <style-line id="de-primary" stroke="#332100" width="2.8" />
+    <style-line id="de-secondary" stroke="#4d4d4d" width="2.5" />
+    <style-line id="de-tertiary" stroke="#293d3d" width="2.2" />
+    <style-line id="de-unclassified" stroke="#4d4d4d" width="1.5" />
+    <style-line id="de-residential" stroke="#595959" width="1.5" />
     <style-line id="de-service" stroke="#ffffff" width="0.5" />
     <style-line cap="butt" id="de-motorway-link" use="de-motorway" width="-0.8" />
     <style-line cap="butt" id="de-trunk-link" use="de-trunk" width="-0.8" />
     <style-line cap="butt" fix="true" id="de-steps" stipple="2" stipple-stroke="#be6253"
         stipple-width="1.0" stroke="#aaffffff" width="4.2" />
-    <style-line id="de-pedestrian" stroke="#b8b8c1" width="0.5" />
-    <style-line cap="butt" fix="true" id="de-rail" stroke="#999999" width="0.9" />
+    <style-line id="de-pedestrian" stroke="#47473e" width="0.5" />
+    <style-line cap="butt" fix="true" id="de-rail" stroke="#666666" width="1.2" />
+    <style-line cap="butt" id="de-station" stroke="#000000" width="0.3" />
 
     <!-- Tunnels -->
     <style-line cap="butt" id="de-motorway-tunnel" stipple="10" stipple-stroke="#c5c6be"
@@ -292,18 +299,20 @@
     <style-line cap="butt" fix="true" id="water:outline" stroke="#a4bbcc" width="1.0" />
     <style-line cap="butt" fix="true" id="water" stroke="#a4bbcc" width="1.0" />
     <style-line fix="false" id="river" stroke="#a4bbcc" use="water" />
-    <style-area fade="-1" fill="#99badf" id="water" />
+    <!-- set mesh=true to display some water features correctly, but does lead to java console errors -->
+    <style-area fade="-1" fill="#003366" id="water" mesh="false" />
 
     <!-- Building -->
     <style-line fade="15" id="building" stroke="#eeb7b6b3" use="fix" />
-    <style-area fade="15" fill="#e2e1dc" id="building" />
+    <style-area fade="15" fill="#38362e" id="building" />
 
     <m e="way" k="natural" v="issea|sea">
         <area mesh="true" use="water" />
     </m>
 
+    <!-- main background colour -->
     <m e="way" k="natural" v="nosea">
-        <area fill="#d8dbcb" mesh="true" />
+        <area fill="#000000" mesh="true" />
     </m>
 
     <!-- all closed ways that are not 'highway' or 'building' -->
@@ -370,8 +379,11 @@
 
         <!-- amenity -->
         <m k="amenity" zoom-min="14">
-            <m v="kindergarten|school|college|university|hospital">
+            <m v="kindergarten|school|college|university">
                 <area use="de-school" />
+            </m>
+            <m v="hospital">
+                <area use="de-hospital" />
             </m>
             <m v="public_bath">
                 <area use="water" />
@@ -534,6 +546,21 @@
 
     <!-- roads -->
     <m e="way">
+        <!-- Airport/Airfield -->
+        <m e="way" k="aeroway" v="runway|apron|helipad" closed="yes" zoom-min="11">
+            <area fill="#4d4d4d" />
+        </m>
+        <m e="way" k="aeroway" v="runway" closed="no" zoom-min="11">
+            <line cap="square" stroke="#c5c1aB" width="5" />
+            <line cap="square" stroke="#000000" width="0.8" />
+        </m>
+        <m e="way" k="aeroway" v="taxiway" closed="no" zoom-min="13">
+            <line cap="butt" stroke="#c5c1aB" width="0.8" />
+        </m>
+        <m e="way" k="aeroway" v="taxiway" closed="yes" zoom-min="15">
+            <line stroke="#c5c1aB" width="1.6" />
+        </m>
+
         <m closed="yes" k="natural" v="water">
             <area use="water" />
             <!--caption-water-name"-->
@@ -565,7 +592,8 @@
                 </m>
             </m>
             <m zoom-min="17">
-                <extrusion line-color="#ffd9d8d6" side-color="#eaecebe9" top-color="#eaf9f8f6" />
+                <extrusion hsv-s="0.1" hsv-v="0.5" line-color="#50606060" side-color="#ea404040"
+                    top-color="#ea404040" />
             </m>
 
             <m select="first">
@@ -660,12 +688,13 @@
         <outline-layer id="1" stroke="#aa807040" width="0.1" />
 
         <!-- Outlines for DE-Style -->
-        <outline-layer id="de-motorway-outline" stroke="#dc2a67" width=".5" />
-        <outline-layer id="de-trunk-outline" stroke="#c84e2f" width=".5" />
-        <outline-layer id="de-primary-outline" stroke="#c49a64" width=".5" />
-        <outline-layer id="de-secondary-outline" stroke="#a09c60" width=".5" />
-        <outline-layer id="de-tertiary-outline" stroke="#95995a" width=".5" />
-        <outline-layer id="de-unclassified-outline" stroke="#868e8b" width=".5" />
+        <outline-layer id="de-motorway-outline" stroke="#ffff00" width=".4" />
+        <outline-layer id="de-trunk-outline" stroke="#ffff00" width=".4" />
+        <outline-layer id="de-primary-outline" stroke="#ffff00" width=".3" />
+        <outline-layer id="de-secondary-outline" stroke="#ffff00" width=".3" />
+        <outline-layer id="de-tertiary-outline" stroke="#ffff00" width=".3" />
+        <outline-layer id="de-unclassified-outline" stroke="#ffff00" width=".3" />
+        <outline-layer id="de-residential-outline" stroke="#ffff00" width=".3" />
 
         <!-- match tunnel-tag (to ensure tunnel key is present) -->
         <m k="tunnel" zoom-min="8">
@@ -755,6 +784,11 @@
             v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|disused|abandoned">
             <line use="de-rail" />
         </m>
+        <m k="railway"
+            v="station|platform">
+            <area use="de-station" />
+            <line use="de-station" />
+        </m>
 
         <!-- highway -->
         <m k="highway">
@@ -834,7 +868,7 @@
                             </m>
                         </m>
                         <m v="residential|road">
-                            <line outline="0" use="de-residential" />
+                            <line outline="de-residential-outline" use="de-residential" />
                         </m>
                         <m v="unclassified">
                             <line outline="de-unclassified-outline" use="de-unclassified" />
@@ -1134,7 +1168,7 @@
             <m v="suburb" zoom-max="15" zoom-min="13">
                 <text use="suburb-caption" />
             </m>
-            <m v="village|island" zoom-max="15" zoom-min="12">
+            <m v="village|island" zoom-max="15" zoom-min="11">
                 <text use="village-caption" />
             </m>
             <m v="town" zoom-max="15">
