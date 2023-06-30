@@ -144,7 +144,7 @@ public class XmlThemeBuilder {
      * @param attributeIndex the XML attribute index position.
      */
     private static void logUnknownAttribute(String element, String name, String value, int attributeIndex) {
-        log.debug("unknown attribute in element {} {} : {} = {}", element, attributeIndex, name, value);
+        log.warn("unknown attribute in element {} {} : {} = {}", element, attributeIndex, name, value);
     }
 
     private final ArrayList<RuleBuilder> mRulesList = new ArrayList<>();
@@ -947,7 +947,9 @@ public class XmlThemeBuilder {
             String name = mPullParser.getAttributeName(i);
             String value = mPullParser.getAttributeValue(i);
 
-            if ("schemaLocation".equals(name))
+            if ("xmlns:xsi".equals(name))
+                continue;
+            if ("xsi:schemaLocation".equals(name))
                 continue;
 
             if ("xmlns".equals(name))
