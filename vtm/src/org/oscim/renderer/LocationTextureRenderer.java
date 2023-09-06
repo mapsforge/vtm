@@ -39,6 +39,7 @@ public class LocationTextureRenderer extends BucketRenderer {
     private static final long ANIM_RATE = 50;
     private static final long INTERVAL = 2000;
 
+    public static float ACCURACY_CIRCLE_SIZE = 30;
     public static float CIRCLE_SIZE = /*30*/0;
     private static final int COLOR = 0xff3333cc;
     private static final int SHOW_ACCURACY_ZOOM = 16;
@@ -291,12 +292,13 @@ public class LocationTextureRenderer extends BucketRenderer {
         GLState.enableVertexArrays(hVertexPosition, GLState.DISABLED);
         MapRenderer.bindQuadVertexVBO(hVertexPosition/*, true*/);
 
-        float radius = CIRCLE_SIZE * mScale;
-
+        float radius;
         boolean viewShed = false;
         if (!mLocationIsVisible /* || pos.zoomLevel < SHOW_ACCURACY_ZOOM */) {
+            radius = ACCURACY_CIRCLE_SIZE * mScale;
             animate(true);
         } else {
+            radius = CIRCLE_SIZE * mScale;
             if (v.pos.zoomLevel >= mShowAccuracyZoom)
                 radius = (float) (mRadius * v.pos.scale);
             radius = Math.max(CIRCLE_SIZE * mScale, radius);
