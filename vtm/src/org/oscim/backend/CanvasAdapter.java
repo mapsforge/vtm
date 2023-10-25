@@ -62,6 +62,11 @@ public abstract class CanvasAdapter {
     public static Platform platform = Platform.UNKNOWN;
 
     /**
+     * The line scale.
+     */
+    public static float lineScale = 1;
+
+    /**
      * The symbol scale.
      */
     public static float symbolScale = 1;
