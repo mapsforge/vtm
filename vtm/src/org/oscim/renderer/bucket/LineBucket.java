@@ -19,6 +19,7 @@ package org.oscim.renderer.bucket;
 
 import org.oscim.backend.GL;
 import org.oscim.backend.GLAdapter;
+import org.oscim.backend.canvas.Color;
 import org.oscim.backend.canvas.Paint.Cap;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.core.MercatorProjection;
@@ -27,6 +28,7 @@ import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLUtils;
 import org.oscim.renderer.GLViewport;
 import org.oscim.theme.styles.LineStyle;
+import org.oscim.utils.Parameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -663,6 +665,12 @@ public class LineBucket extends RenderBucket {
                     blur = false;
                 }
 
+                if (Parameters.TRANSPARENT_LINES && !Color.isOpaque(line.color)) {
+                    gl.depthMask(true);
+                    gl.clear(GL.DEPTH_BUFFER_BIT);
+                    GLState.test(true, false);
+                }
+
                 /* draw LineLayer */
                 if (!line.outline) {
                     /* invert scaling of extrusion vectors so that line
@@ -703,6 +711,10 @@ public class LineBucket extends RenderBucket {
 
                     gl.drawArrays(GL.TRIANGLE_STRIP,
                             b.vertexOffset, b.numVertices);
+
+                    if (Parameters.TRANSPARENT_LINES && !Color.isOpaque(line.color)) {
+                        gl.depthMask(false);
+                    }
 
                     continue;
                 }
@@ -749,6 +761,10 @@ public class LineBucket extends RenderBucket {
 
                     gl.drawArrays(GL.TRIANGLE_STRIP,
                             ref.vertexOffset, ref.numVertices);
+                }
+
+                if (Parameters.TRANSPARENT_LINES && !Color.isOpaque(line.color)) {
+                    gl.depthMask(false);
                 }
             }
 
