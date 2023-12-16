@@ -88,7 +88,7 @@ public class ContentRenderTheme implements ThemeFile {
         try {
             return mContentResolver.openInputStream(mUri);
         } catch (IOException e) {
-            throw new ThemeException(e.getMessage());
+            throw new ThemeException(e.getMessage(), e);
         }
     }
 

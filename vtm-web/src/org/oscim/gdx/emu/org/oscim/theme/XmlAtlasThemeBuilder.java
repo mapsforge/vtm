@@ -58,7 +58,7 @@ public class XmlAtlasThemeBuilder extends XmlThemeBuilder {
         try {
             new XMLReaderAdapter().parse(renderThemeHandler, theme.getRenderThemeAsStream());
         } catch (Exception e) {
-            throw new ThemeException(e.getMessage());
+            throw new ThemeException(e.getMessage(), e);
         }
 
         TextureAtlasUtils.createTextureRegions(renderThemeHandler.bitmapMap, outputMap, atlasList,

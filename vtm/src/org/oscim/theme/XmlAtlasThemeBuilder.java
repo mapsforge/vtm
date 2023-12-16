@@ -66,7 +66,7 @@ public class XmlAtlasThemeBuilder extends XmlThemeBuilder {
                     true, CanvasAdapter.platform == Platform.IOS);
             return replaceThemeSymbols(renderThemeHandler.mRenderTheme, outputMap);
         } catch (Exception e) {
-            throw new ThemeException(e.getMessage());
+            throw new ThemeException(e.getMessage(), e);
         } finally {
             IOUtils.closeQuietly(inputStream);
         }

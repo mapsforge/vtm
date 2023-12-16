@@ -97,8 +97,12 @@ public interface IRenderTheme {
     Tag transformForwardTag(Tag tag);
 
     class ThemeException extends IllegalArgumentException {
-        public ThemeException(String string) {
-            super(string);
+        public ThemeException(String message) {
+            super(message);
+        }
+
+        public ThemeException(String message, Throwable cause) {
+            super(message, cause);
         }
 
         private static final long serialVersionUID = 1L;

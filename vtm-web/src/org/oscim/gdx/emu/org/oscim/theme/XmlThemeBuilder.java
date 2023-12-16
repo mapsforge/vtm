@@ -115,7 +115,7 @@ public class XmlThemeBuilder extends DefaultHandler {
         try {
             new XMLReaderAdapter().parse(renderThemeHandler, theme.getRenderThemeAsStream());
         } catch (Exception e) {
-            throw new ThemeException(e.getMessage());
+            throw new ThemeException(e.getMessage(), e);
         }
 
         return renderThemeHandler.mRenderTheme;
@@ -385,9 +385,9 @@ public class XmlThemeBuilder extends DefaultHandler {
                 throw new SAXException("unknown element: " + localName);
             }
         } catch (SAXException e) {
-            throw new ThemeException(e.getMessage());
+            throw new ThemeException(e.getMessage(), e);
         } catch (IOException e) {
-            throw new ThemeException(e.getMessage());
+            throw new ThemeException(e.getMessage(), e);
         }
     }
 

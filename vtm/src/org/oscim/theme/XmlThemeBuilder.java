@@ -118,7 +118,7 @@ public class XmlThemeBuilder {
             renderThemeHandler.processRenderTheme();
             return renderThemeHandler.mRenderTheme;
         } catch (Exception e) {
-            throw new ThemeException(e.getMessage());
+            throw new ThemeException(e.getMessage(), e);
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
@@ -409,7 +409,7 @@ public class XmlThemeBuilder {
                 throw new XmlPullParserException("unknown element: " + qName);
             }
         } catch (XmlPullParserException | IOException e) {
-            throw new ThemeException(e.getMessage());
+            throw new ThemeException(e.getMessage(), e);
         }
     }
 
