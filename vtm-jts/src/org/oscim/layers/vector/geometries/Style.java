@@ -53,6 +53,7 @@ public class Style {
     public final float stippleWidth;
     public final TextureItem texture;
     public final boolean pointReduction;
+    public final float dropDistance;
     public final boolean textureRepeat;
 
     public final float heightOffset;
@@ -79,6 +80,7 @@ public class Style {
         stippleWidth = builder.stippleWidth;
         texture = builder.texture;
         pointReduction = builder.pointReduction;
+        dropDistance = builder.dropDistance;
         textureRepeat = builder.textureRepeat;
 
         heightOffset = builder.heightOffset;
@@ -116,6 +118,7 @@ public class Style {
         public float stippleWidth = 1;
         public TextureItem texture = null;
         public boolean pointReduction = true;
+        public float dropDistance = 0f;
         public boolean textureRepeat = true;
 
         public float heightOffset = 0;
@@ -256,6 +259,12 @@ public class Style {
 
         public Builder pointReduction(boolean pointReduction) {
             this.pointReduction = pointReduction;
+            return this;
+        }
+
+        public Builder pointReduction(float dropDistance) {
+            this.pointReduction = false;
+            this.dropDistance = dropDistance;
             return this;
         }
 

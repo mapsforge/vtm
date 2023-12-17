@@ -257,7 +257,7 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
         LineBucket ll = t.buckets.getLineBucket(level + 1);
         if (ll.line == null) {
             ll.line = new LineStyle(2, style.strokeColor, style.strokeWidth);
-            ll.setDropDistance(style.pointReduction ? LineBucket.MIN_DIST : 0);
+            ll.setDropDistance(style.pointReduction ? LineBucket.MIN_DIST : style.dropDistance);
         }
 
         for (int i = 0; i < points.getNumGeometries(); i++) {
@@ -296,7 +296,7 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
                     .strokeWidth(style.strokeWidth)
                     .texture(style.texture)
                     .build();
-            ll.setDropDistance(style.pointReduction ? LineBucket.MIN_DIST : 0);
+            ll.setDropDistance(style.pointReduction ? LineBucket.MIN_DIST : style.dropDistance);
             if (ll instanceof LineTexBucket)
                 ((LineTexBucket) ll).setTexRepeat(style.textureRepeat);
         }
@@ -330,7 +330,7 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
         LineBucket ll = t.buckets.getLineBucket(level + 1);
         if (ll.line == null) {
             ll.line = new LineStyle(2, style.strokeColor, style.strokeWidth);
-            ll.setDropDistance(style.pointReduction ? LineBucket.MIN_DIST : 0);
+            ll.setDropDistance(style.pointReduction ? LineBucket.MIN_DIST : style.dropDistance);
         }
 
         if (style.generalization != Style.GENERALIZATION_NONE) {

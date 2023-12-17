@@ -19,8 +19,14 @@ package org.oscim.android.test;
 
 import android.os.Bundle;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.oscim.backend.canvas.Color;
+import org.oscim.backend.canvas.Paint;
+import org.oscim.core.GeoPoint;
 import org.oscim.layers.vector.VectorLayer;
+import org.oscim.layers.vector.geometries.LineDrawable;
 import org.oscim.layers.vector.geometries.PointDrawable;
 import org.oscim.layers.vector.geometries.Style;
 import org.oscim.utils.ColorUtil;
@@ -67,26 +73,52 @@ public class VectorLayerActivity extends BitmapTileActivity {
         //        }
         //    }
 
-        Style.Builder sb = Style.builder()
-                .buffer(0.5)
-                .fillColor(Color.RED)
-                .fillAlpha(0.2f);
+        addRandomCircles(vectorLayer);
+        addThickSemitransparentPolyline(vectorLayer);
 
-        for (int i = 0; i < 2000; i++) {
-            Style style = sb.buffer(Math.random() + 0.2)
-                    .fillColor(ColorUtil.setHue(Color.RED,
-                            (int) (Math.random() * 50) / 50.0))
-                    .fillAlpha(0.5f)
-                    .build();
-
-            vectorLayer.add(new PointDrawable(Math.random() * 180 - 90,
-                    Math.random() * 360 - 180,
-                    style));
-
-        }
         vectorLayer.update();
 
         mMap.layers().add(vectorLayer);
+    }
+
+    private void addRandomCircles(VectorLayer vectorLayer) {
+        Style.Builder sb = Style.builder()
+            .buffer(0.5)
+            .fillColor(Color.RED)
+            .fillAlpha(0.2f);
+
+        for (int i = 0; i < 2000; i++) {
+            Style style = sb.buffer(Math.random() + 0.2)
+                .fillColor(ColorUtil.setHue(Color.RED,
+                    (int) (Math.random() * 50) / 50.0))
+                .fillAlpha(0.5f)
+                .build();
+
+            vectorLayer.add(new PointDrawable(Math.random() * 180 - 90,
+                Math.random() * 360 - 180,
+                style));
+
+        }
+    }
+
+    private void addThickSemitransparentPolyline(VectorLayer vectorLayer) {
+        final Style style = Style.builder()
+            .strokeWidth(20f)
+            .strokeColor(Color.setA(Color.BLUE, 127))
+            .cap(Paint.Cap.BUTT)
+            .pointReduction(10f)
+            .fixed(true)
+            .build();
+
+        //create a polyline in Hamburg, Germany
+        final List<GeoPoint> points = Arrays.asList(
+            new GeoPoint(53.5334, 10.069833),new GeoPoint(53.5419, 10.09075),new GeoPoint(53.53745, 10.091017),new GeoPoint(53.54105, 10.0928),new GeoPoint(53.536721, 10.09416),
+            new GeoPoint(53.5406, 10.08365), new GeoPoint(53.5406, 11.0)
+        );
+
+        final LineDrawable line = new LineDrawable(points, style);
+
+        vectorLayer.add(line);
     }
 
     @Override
