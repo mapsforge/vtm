@@ -83,32 +83,32 @@ public class VectorLayerActivity extends BitmapTileActivity {
 
     private void addRandomCircles(VectorLayer vectorLayer) {
         Style.Builder sb = Style.builder()
-            .buffer(0.5)
-            .fillColor(Color.RED)
-            .fillAlpha(0.2f);
+                .buffer(0.5)
+                .fillColor(Color.RED)
+                .fillAlpha(0.2f);
 
         for (int i = 0; i < 2000; i++) {
             Style style = sb.buffer(Math.random() + 0.2)
-                .fillColor(ColorUtil.setHue(Color.RED,
-                    (int) (Math.random() * 50) / 50.0))
-                .fillAlpha(0.5f)
-                .build();
+                    .fillColor(ColorUtil.setHue(Color.RED,
+                            (int) (Math.random() * 50) / 50.0))
+                    .fillAlpha(0.5f)
+                    .build();
 
             vectorLayer.add(new PointDrawable(Math.random() * 180 - 90,
-                Math.random() * 360 - 180,
-                style));
+                    Math.random() * 360 - 180,
+                    style));
 
         }
     }
 
     private void addThickSemitransparentPolyline(VectorLayer vectorLayer) {
         final Style style = Style.builder()
-            .strokeWidth(20f)
-            .strokeColor(Color.setA(Color.BLUE, 127))
-            .cap(Paint.Cap.BUTT)
-            .pointReduction(10f)
-            .fixed(true)
-            .build();
+                .strokeWidth(20f)
+                .strokeColor(Color.setA(Color.BLUE, 127))
+                .cap(Paint.Cap.BUTT)
+                .dropDistance(10f)
+                .fixed(true)
+                .build();
 
         //create a polyline in Hamburg, Germany
         final List<GeoPoint> points = Arrays.asList(
