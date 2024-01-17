@@ -24,6 +24,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import org.oscim.android.MapView;
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.core.MapPosition;
@@ -55,7 +57,6 @@ public class MapFragment extends android.app.Fragment implements XmlRenderThemeM
 
     private MapView mapView;
     private IRenderTheme theme;
-    private Uri tempMapUri;
 
     public static MapFragment newInstance() {
         MapFragment instance = new MapFragment();
@@ -79,6 +80,7 @@ public class MapFragment extends android.app.Fragment implements XmlRenderThemeM
         relativeLayout.addView(mapView);
 
         // Open map
+        Toast.makeText(getActivity(), "Select a map file", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
@@ -89,9 +91,11 @@ public class MapFragment extends android.app.Fragment implements XmlRenderThemeM
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SELECT_MAP_FILE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-                tempMapUri = data.getData();
+                Uri uri = data.getData();
+                loadMap(uri);
 
-                // Open map
+                // Open theme
+                Toast.makeText(getActivity(), "Map file selected. Now, optionally select a theme.", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("*/*");
@@ -99,12 +103,11 @@ public class MapFragment extends android.app.Fragment implements XmlRenderThemeM
             }
         } else if (requestCode == SELECT_THEME_FILE && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
-            openMap(tempMapUri, uri);
+            loadTheme(uri);
         }
     }
 
-    // themeUri may be null, using default theme then
-    private void openMap(Uri mapUri, Uri themeUri) {
+    private void loadMap(Uri mapUri) {
         try {
             // Tile source
             MapFileTileSource tileSource = new MapFileTileSource();
@@ -120,15 +123,7 @@ public class MapFragment extends android.app.Fragment implements XmlRenderThemeM
             // Label layer
             mapView.map().layers().add(new LabelLayer(mapView.map(), tileLayer));
 
-            // Render theme
-            if (themeUri != null) {
-                final List<String> xmlThemes = ZipXmlThemeResourceProvider.scanXmlThemes(new ZipInputStream(new BufferedInputStream(getActivity().getContentResolver().openInputStream(themeUri))));
-                if (xmlThemes.isEmpty()) {
-                    return;
-                }
-                ThemeFile theme = new ZipRenderTheme(xmlThemes.get(0), new ZipXmlThemeResourceProvider(new ZipInputStream(new BufferedInputStream(getActivity().getContentResolver().openInputStream(themeUri)))));
-                mapView.map().setTheme(theme);
-            } else {
+            if (theme == null) {
                 theme = mapView.map().setTheme(VtmThemes.DEFAULT);
             }
 
@@ -139,12 +134,40 @@ public class MapFragment extends android.app.Fragment implements XmlRenderThemeM
             mapScaleBarLayer.getRenderer().setOffset(5 * CanvasAdapter.getScale(), 0);
             mapView.map().layers().add(mapScaleBarLayer);
 
+            // initial position
             MapInfo info = tileSource.getMapInfo();
             if (!info.boundingBox.contains(mapView.map().getMapPosition().getGeoPoint())) {
                 MapPosition pos = new MapPosition();
                 pos.setByBoundingBox(info.boundingBox, Tile.SIZE * 4, Tile.SIZE * 4);
                 mapView.map().setMapPosition(pos);
             }
+
+        } catch (Exception e) {
+            /*
+             * In case of map file errors avoid crash, but developers should handle these cases!
+             */
+            e.printStackTrace();
+        }
+    }
+
+    private void loadTheme(Uri themeUri) {
+        try {
+            if (theme != null) {
+                theme.dispose();
+            }
+
+            // Render theme (themeUri may be null, using default theme then)
+            if (themeUri != null) {
+                final List<String> xmlThemes = ZipXmlThemeResourceProvider.scanXmlThemes(new ZipInputStream(new BufferedInputStream(getActivity().getContentResolver().openInputStream(themeUri))));
+                if (xmlThemes.isEmpty()) {
+                    return;
+                }
+                ThemeFile themeFile = new ZipRenderTheme(xmlThemes.get(0), new ZipXmlThemeResourceProvider(new ZipInputStream(new BufferedInputStream(getActivity().getContentResolver().openInputStream(themeUri)))));
+                theme = mapView.map().setTheme(themeFile);
+            } else {
+                theme = mapView.map().setTheme(VtmThemes.DEFAULT);
+            }
+
         } catch (Exception e) {
             /*
              * In case of map file errors avoid crash, but developers should handle these cases!
