@@ -271,6 +271,8 @@
     <style-area fade="6" fill="#e8eff2" id="de-ice" />
     <style-area fade="6" fill="#c5c3c3" id="de-quarry" />
     <style-area fade="6" fill="#f5e9c6" id="de-sand" />
+    <style-area fade="6" fill="#f5e9c6" id="de-rail" />
+    <style-area fade="6" fill="#ccccb3" id="de-station" />
 
     <!-- Avoid patterns and textures because of old GPU issues -->
     <!--<style-area id="tex1" src="assets:textures/rough.png" />-->
@@ -289,7 +291,8 @@
     <style-line cap="butt" fix="true" id="de-steps" stipple="2" stipple-stroke="#be6253"
         stipple-width="1.0" stroke="#aaffffff" width="4.2" />
     <style-line id="de-pedestrian" stroke="#b8b8c1" width="0.5" />
-    <style-line cap="butt" fix="true" id="de-rail" stroke="#999999" width="0.9" />
+    <style-line cap="butt" fix="true" id="de-rail" stroke="#4d4d4d" width="1.2" />
+    <style-line cap="butt" id="de-station" stroke="#000000" width="0.3" />
 
     <!-- Tunnels -->
     <style-line cap="butt" id="de-motorway-tunnel" stipple="10" stipple-stroke="#c5c6be"
@@ -807,7 +810,13 @@
         <!-- railway -->
         <m k="railway"
             v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|disused|abandoned">
-            <line use="de-rail" />
+            <line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6"
+                stipple-width="0.8" stroke="#333333" width="1.6" />
+        </m>
+        <m k="railway"
+            v="station|platform">
+            <area use="de-station" />
+            <line use="de-station" />
         </m>
 
         <!-- highway -->

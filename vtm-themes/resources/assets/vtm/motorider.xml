@@ -4,10 +4,11 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
     <!-- This is the DEFAULT theme from MotoUKRider/MotoRiderUK based on the Biker map theme -->
-    <!-- Version 1c 7th June 2023 -->
-    <!-- Tweaked "road-ref-caption" for better contrast -->
-    <!-- Added "motorway-road-ref-caption" -->
-    <!-- Tweaked Railway Tracks (dot-dash effect) -->
+    <!-- Version 1d 28th January 2024 -->
+    <!-- Added comments for easier editing -->
+    <!-- Colour changes for Roads to resemble Ordnance Survey (road atlas) -->
+    <!-- Added Primary Road "ref caption" (overlay box, eg: "A123") -->
+    <!-- Tweaked Road Font Sizes and Priority levels -->
 
     <!-- Styles -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -214,15 +215,17 @@
     <style-line cap="butt" fix="true" id="fix" width="1.0" />
 
     <!-- Road Text -->
-    <style-text fill="#000000" font-family="medium" id="road" k="name" priority="9" size="14"
+    <style-text fill="#000000" font-family="medium" id="road" k="name" priority="10" size="12"
         stroke="#ffffff" stroke-width="2.0" />
     <style-text caption="true" id="road-caption" use="road" />
-    <style-text font-family="medium" fill="#000000" id="major-road" k="name" priority="5" size="14"
+    <style-text font-family="medium" fill="#000000" id="major-road" k="name" priority="6" size="12"
         stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" fill="#000000" id="road-ref" k="ref" priority="8" size="14"
+    <style-text style="bold" fill="#000000" id="road-ref" k="ref" priority="8" size="12"
         stroke="#ffffff" stroke-width="2.0" />
     <style-text caption="true" style="bold" fill="#ffffff" id="road-ref-caption" k="ref"
         priority="8" size="14" bg-fill="#006600" />
+    <style-text caption="true" style="bold" fill="#ffffff" id="primary-road-ref-caption" k="ref"
+        priority="6" size="14" bg-fill="#ff704d" />
     <style-text caption="true" style="bold" fill="#ffffff" id="motorway-road-ref-caption" k="ref"
         priority="8" size="14" bg-fill="#000066" />
 
@@ -244,14 +247,14 @@
         size="18" stroke="#ffffff" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="town-caption" k="name" priority="4" size="14"
         stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="village-caption" k="name" priority="6" size="14"
+    <style-text caption="true" fill="#000000" id="village-caption" k="name" priority="6" size="13"
         stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="suburb-caption" k="name" priority="5" size="16"
+    <style-text caption="true" fill="#000000" id="suburb-caption" k="name" priority="5" size="12"
         stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="hamlet-caption" k="name" priority="6" size="14"
+    <style-text caption="true" fill="#000000" id="hamlet-caption" k="name" priority="6" size="12"
         stroke="#ffffff" stroke-width="2.0" />
 
-    <!-- Pois -->
+    <!-- POIs -->
     <style-text caption="true" dy="20" fill="#606060" font-family="medium" id="poi" k="name"
         size="14" stroke="#ffffff" stroke-width="2.0" />
     <style-text style="bold" caption="true" dy="12" fill="#4D2F08" id="peak-name-caption" k="name"
@@ -264,7 +267,7 @@
         id="house-name-caption" k="name" priority="8" size="12" stroke="#ffffff"
         stroke-width="2.0" />
 
-    <!-- De Area Styles -->
+    <!-- Area Fill Colors -->
     <style-area fade="10" fill="#e6e6e6" id="de-residential" />
     <style-area fade="13" fill="#b8b8c1" id="de-pedestrian" />
     <style-area fade="10" fill="#ebdbe8" id="de-industrial" />
@@ -283,18 +286,15 @@
     <style-area fade="6" fill="#f5e9c6" id="de-rail" />
     <style-area fade="6" fill="#ccccb3" id="de-station" />
 
-    <!-- Avoid patterns and textures because of old GPU issues -->
-    <!--<style-area id="tex1" src="assets:textures/rough.png" />-->
-
-    <!-- Colors from OSM-DE Style -->
+    <!-- Road and Rail Colors -->
     <style-line cap="butt" id="de-motorway" stroke="#98afcd" width="3.0" />
     <style-line cap="butt" id="de-trunk" stroke="#00CC66" width="3.0" />
-    <style-line id="de-primary" stroke="#ffff99" width="2.8" />
-    <style-line id="de-secondary" stroke="#ffce99" width="2.5" />
-    <style-line id="de-tertiary" stroke="#ffecb3" width="2.2" />
-    <style-line id="de-unclassified" stroke="#EFE4B0" width="1.5" />
+    <style-line id="de-primary" stroke="#ff9999" width="2.2" />
+    <style-line id="de-secondary" stroke="#ffbf80" width="2.5" />
+    <style-line id="de-tertiary" stroke="#ffff80" width="2.2" />
+    <style-line id="de-unclassified" stroke="#ffffff" width="1.5" />
     <style-line id="de-residential" stroke="#ffffff" width="1.5" />
-    <style-line id="de-service" stroke="#a99323" width="0.5" />
+    <style-line id="de-service" stroke="#a99323" width="0.3" />
     <style-line cap="butt" id="de-motorway-link" use="de-motorway" width="-0.8" />
     <style-line cap="butt" id="de-trunk-link" use="de-trunk" width="-0.8" />
     <style-line cap="butt" fix="true" id="de-steps" stipple="2" stipple-stroke="#be6253"
@@ -941,7 +941,7 @@
 
                 <!-- Bridge casings should be above other roads -->
                 <outline-layer id="bridge" stroke="#000000" width="0.08" />
-                <outline-layer id="de-bridge" stroke="#000000" width="0.2" />
+                <outline-layer id="de-bridge" stroke="#000000" width="1.0" />
 
                 <!-- must contain bridge -->
                 <m k="bridge">
@@ -1058,10 +1058,19 @@
                                 <text use="road-ref" />
                             </m>
                         </m>
-                        <m v="trunk|primary">
+                        <m v="trunk">
                             <text use="major-road" />
                             <m zoom-max="12">
                                 <text use="road-ref-caption" />
+                            </m>
+                            <m zoom-min="13">
+                                <text use="road-ref" />
+                            </m>
+                        </m>
+                        <m v="primary">
+                            <text use="major-road" />
+                            <m zoom-max="12">
+                                <text use="primary-road-ref-caption" />
                             </m>
                             <m zoom-min="13">
                                 <text use="road-ref" />

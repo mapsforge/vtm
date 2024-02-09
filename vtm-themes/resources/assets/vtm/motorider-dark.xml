@@ -3,11 +3,12 @@
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
-    <!-- This is the DARK/NIGHT theme from MotoUKRider/MotoRiderUK based on the Biker map theme -->
-    <!-- Version 1c 7th June 2023 -->
-    <!-- Tweaked "road-ref-caption" for better contrast -->
-    <!-- Added "motorway-road-ref-caption" -->
-    <!-- Tweaked Railway Tracks (dot-dash effect) -->
+    <!-- This is the NIGHT theme from MotoUKRider/MotoRiderUK based on the Biker map theme -->
+    <!-- Version 1a 28th January 2024 -->
+    <!-- This theme is suited to night-time navigation -->
+
+
+
 
     <!-- Styles -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -222,18 +223,20 @@
     <style-text style="bold" fill="#ffffff" id="road-ref" k="ref" priority="8" size="14"
         stroke="#000000" stroke-width="2.0" />
     <style-text caption="true" style="bold" fill="#ffffff" id="road-ref-caption" k="ref"
-        priority="8" size="14" bg-fill="#006600" />
+        priority="8" size="14" bg-fill="#000000" />
+    <style-text caption="true" style="bold" fill="#ffffff" id="primary-road-ref-caption" k="ref"
+        priority="6" size="14" bg-fill="#000000" />
     <style-text caption="true" style="bold" fill="#ffffff" id="motorway-road-ref-caption" k="ref"
-        priority="8" size="14" bg-fill="#000066" />
+        priority="8" size="14" bg-fill="#000000" />
 
     <!-- Water -->
-    <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-major-water-name"
+    <style-text caption="true" fill="#ffffff" font-family="light" id="caption-major-water-name"
         k="name" size="16" />
-    <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-water-name" k="name"
+    <style-text caption="true" fill="#ffffff" font-family="light" id="caption-water-name" k="name"
         size="14" />
-    <style-text style="bold" fill="#606060" id="ferry" k="name" size="12" stroke="#ffffff"
+    <style-text style="bold" fill="#ffffff" id="ferry" k="name" size="12" stroke="#000000"
         stroke-width="2.0" />
-    <style-text fill="#2d51bc" font-family="light" id="river" k="name" size="12" />
+    <style-text fill="#ffffff" font-family="light" id="river" k="name" size="12" />
 
     <!-- Places -->
     <style-text style="bold" caption="true" fill="#ffffff" id="country-caption" k="name"
@@ -251,28 +254,28 @@
     <style-text caption="true" fill="#ffffff" id="hamlet-caption" k="name" priority="6" size="14"
         stroke="#000000" stroke-width="2.0" />
 
-    <!-- Pois -->
-    <style-text caption="true" dy="20" fill="#606060" font-family="medium" id="poi" k="name"
-        size="14" stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" caption="true" dy="12" fill="#4D2F08" id="peak-name-caption" k="name"
-        size="14" stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" caption="true" dy="-12" fill="#4D2F08" id="peak-ele-caption" k="ele"
-        size="12" stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" caption="true" cat="housenumber" fill="#606060" font-family="condensed"
+    <!-- POIs -->
+    <style-text caption="true" dy="20" fill="#ffffff" font-family="medium" id="poi" k="name"
+        size="14" stroke="#000000" stroke-width="2.0" />
+    <style-text style="bold" caption="true" dy="12" fill="#ffffff" id="peak-name-caption" k="name"
+        size="14" stroke="#000000" stroke-width="2.0" />
+    <style-text style="bold" caption="true" dy="-12" fill="#ffffff" id="peak-ele-caption" k="ele"
+        size="12" stroke="#000000" stroke-width="2.0" />
+    <style-text style="bold" caption="true" cat="housenumber" fill="#ffffff" font-family="condensed"
         id="housenumber-caption" k="addr:housenumber" priority="12" size="12" />
     <style-text style="bold" caption="true" fill="#ffffff" font-family="condensed"
-        id="house-name-caption" k="name" priority="11" size="12" stroke="#000000"
+        id="house-name-caption" k="name" priority="8" size="12" stroke="#000000"
         stroke-width="2.0" />
 
-    <!-- De Area Styles -->
+    <!-- Area Fill Colors -->
     <style-area fade="10" fill="#0D0D0D" id="de-residential" />
     <style-area fade="13" fill="#47473e" id="de-pedestrian" />
     <style-area fade="10" fill="#1a0d00" id="de-industrial" />
-    <style-area fade="6" fill="#003300" id="de-school" />
+    <style-area fade="6" fill="#00111a" id="de-school" />
     <style-area fade="6" fill="#1a0d00" id="de-hospital" />
-    <style-area fade="6" fill="#0d1a00" id="de-park" />
-    <style-area fade="6" fill="#0d1a00" id="de-forest" />
-    <style-area fade="6" fill="#0d1a00" id="de-grass" />
+    <style-area fade="6" fill="#00111a" id="de-park" />
+    <style-area fade="6" fill="#00111a" id="de-forest" />
+    <style-area fade="6" fill="#00111a" id="de-grass" />
     <style-area fade="6" fill="#0D0D0D" id="de-campsite" />
     <style-area fade="6" fill="#0D0D0D" id="de-cemetery" />
     <style-area fade="6" fill="#332200" id="de-military" />
@@ -283,24 +286,21 @@
     <style-area fade="6" fill="#666666" id="de-rail" />
     <style-area fade="6" fill="#4d4d33" id="de-station" />
 
-    <!-- Avoid patterns and textures because of old GPU issues -->
-    <!--<style-area id="tex1" src="assets:textures/rough.png" />-->
-
-    <!-- Colors from OSM-DE Style -->
-    <style-line cap="butt" id="de-motorway" stroke="#000033" width="3.0" />
-    <style-line cap="butt" id="de-trunk" stroke="#003300" width="3.0" />
-    <style-line id="de-primary" stroke="#332100" width="2.8" />
-    <style-line id="de-secondary" stroke="#4d4d4d" width="2.5" />
-    <style-line id="de-tertiary" stroke="#293d3d" width="2.2" />
-    <style-line id="de-unclassified" stroke="#4d4d4d" width="1.5" />
-    <style-line id="de-residential" stroke="#595959" width="1.5" />
-    <style-line id="de-service" stroke="#ffffff" width="0.5" />
+    <!-- Road and Rail Colors -->
+    <style-line cap="butt" id="de-motorway" stroke="#000000" width="3.0" />
+    <style-line cap="butt" id="de-trunk" stroke="#000000" width="3.0" />
+    <style-line id="de-primary" stroke="#000000" width="2.8" />
+    <style-line id="de-secondary" stroke="#000000" width="2.5" />
+    <style-line id="de-tertiary" stroke="#000000" width="2.2" />
+    <style-line id="de-unclassified" stroke="#000000" width="1.5" />
+    <style-line id="de-residential" stroke="#000000" width="1.5" />
+    <style-line id="de-service" stroke="#000000" width="0.5" />
     <style-line cap="butt" id="de-motorway-link" use="de-motorway" width="-0.8" />
     <style-line cap="butt" id="de-trunk-link" use="de-trunk" width="-0.8" />
     <style-line cap="butt" fix="true" id="de-steps" stipple="2" stipple-stroke="#be6253"
         stipple-width="1.0" stroke="#aaffffff" width="4.2" />
     <style-line id="de-pedestrian" stroke="#47473e" width="0.5" />
-    <style-line cap="butt" fix="true" id="de-rail" stroke="#666666" width="1.2" />
+    <style-line cap="butt" fix="true" id="de-rail" stroke="#4d4d4d" width="1.2" />
     <style-line cap="butt" id="de-station" stroke="#000000" width="0.3" />
 
     <!-- Tunnels -->
@@ -344,7 +344,7 @@
     <style-line cap="butt" fix="true" id="water" stroke="#a4bbcc" width="1.0" />
     <style-line fix="false" id="river" stroke="#a4bbcc" use="water" />
     <!-- set mesh=true to display some water features correctly, but does lead to java console errors -->
-    <style-area fade="-1" fill="#003366" id="water" mesh="false" />
+    <style-area fade="-1" fill="#00264d" id="water" mesh="false" />
 
     <!-- Building -->
     <style-line fade="15" id="building" stroke="#eeb7b6b3" use="fix" />
@@ -356,7 +356,7 @@
 
     <!-- main background colour -->
     <m e="way" k="natural" v="nosea">
-        <area fill="#000000" mesh="true" />
+        <area fill="#0d1a26" mesh="true" />
     </m>
 
     <!-- all closed ways that are not 'highway' or 'building' -->
@@ -595,13 +595,13 @@
             <area fill="#4d4d4d" />
         </m>
         <m e="way" k="aeroway" v="taxiway" closed="no" zoom-min="13">
-            <line cap="butt" stroke="#c5c1aB" width="0.8" />
+            <line cap="butt" stroke="#000000" width="0.8" />
         </m>
         <m e="way" k="aeroway" v="taxiway" closed="yes" zoom-min="15">
-            <line stroke="#c5c1aB" width="1.6" />
+            <line stroke="#000000" width="1.6" />
         </m>
         <m e="way" k="aeroway" v="runway" closed="no" zoom-min="11">
-            <line cap="square" stroke="#c5c1aB" width="5" />
+            <line cap="square" stroke="#4d4d4d" width="5" />
             <line cap="square" stroke="#000000" width="0.8" />
         </m>
 
@@ -636,8 +636,7 @@
                 </m>
             </m>
             <m zoom-min="17">
-                <extrusion hsv-s="0.1" hsv-v="0.5" line-color="#50606060" side-color="#ea404040"
-                    top-color="#ea404040" />
+                <extrusion hsv-s="0.1" hsv-v="0.5" line-color="#50606060" side-color="#ea404040" top-color="#ea404040" />
             </m>
 
             <m select="first">
@@ -732,13 +731,14 @@
         <outline-layer id="1" stroke="#aa807040" width="0.1" />
 
         <!-- Outlines for DE-Style -->
-        <outline-layer id="de-motorway-outline" stroke="#ffff00" width=".4" />
-        <outline-layer id="de-trunk-outline" stroke="#ffff00" width=".4" />
-        <outline-layer id="de-primary-outline" stroke="#ffff00" width=".3" />
-        <outline-layer id="de-secondary-outline" stroke="#ffff00" width=".3" />
-        <outline-layer id="de-tertiary-outline" stroke="#ffff00" width=".3" />
-        <outline-layer id="de-unclassified-outline" stroke="#ffff00" width=".3" />
-        <outline-layer id="de-residential-outline" stroke="#ffff00" width=".3" />
+        <outline-layer id="de-motorway-outline" stroke="#bfbfbf" width=".4" />
+        <outline-layer id="de-trunk-outline" stroke="#bfbfbf" width=".4" />
+        <outline-layer id="de-primary-outline" stroke="#bfbfbf" width=".3" />
+        <outline-layer id="de-secondary-outline" stroke="#bfbfbf" width=".3" />
+        <outline-layer id="de-tertiary-outline" stroke="#bfbfbf" width=".3" />
+        <outline-layer id="de-unclassified-outline" stroke="#bfbfbf" width=".3" />
+        <outline-layer id="de-residential-outline" stroke="#bfbfbf" width=".3" />
+        <outline-layer id="de-service-outline" stroke="#bfbfbf" width=".1" />
 
         <!-- match tunnel-tag (to ensure tunnel key is present) -->
         <m k="tunnel" zoom-min="8">
@@ -826,7 +826,7 @@
         <!-- railway -->
         <m k="railway"
             v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|disused|abandoned">
-            <line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6"
+            <line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#bfbfbf"
                 stipple-width="0.8" stroke="#333333" width="1.6" />
         </m>
         <m k="railway"
@@ -915,6 +915,9 @@
                         <m v="residential|road">
                             <line outline="de-residential-outline" use="de-residential" />
                         </m>
+                        <m v="service">
+                            <line outline="de-service-outline" use="de-service" />
+                        </m>
                         <m v="unclassified">
                             <line outline="de-unclassified-outline" use="de-unclassified" />
                         </m>
@@ -937,8 +940,8 @@
                 </m><!-- end tunnel|bridge=~|no|false -->
 
                 <!-- Bridge casings should be above other roads -->
-                <outline-layer id="bridge" stroke="#000000" width="0.08" />
-                <outline-layer id="de-bridge" stroke="#000000" width="0.2" />
+                <outline-layer id="bridge" stroke="#ffff00" width="0.08" />
+                <outline-layer id="de-bridge" stroke="#bfbfbf" width="1.0" />
 
                 <!-- must contain bridge -->
                 <m k="bridge">
@@ -1055,10 +1058,19 @@
                                 <text use="road-ref" />
                             </m>
                         </m>
-                        <m v="trunk|primary">
+                        <m v="trunk">
                             <text use="major-road" />
                             <m zoom-max="12">
                                 <text use="road-ref-caption" />
+                            </m>
+                            <m zoom-min="13">
+                                <text use="road-ref" />
+                            </m>
+                        </m>
+                        <m v="primary">
+                            <text use="major-road" />
+                            <m zoom-max="12">
+                                <text use="primary-road-ref-caption" />
                             </m>
                             <m zoom-min="13">
                                 <text use="road-ref" />
