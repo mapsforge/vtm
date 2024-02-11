@@ -58,6 +58,7 @@ public class Style {
 
     public final float heightOffset;
     public final boolean randomOffset;
+    public final boolean transparent;
 
     private Style(Builder builder) {
         strokeWidth = builder.strokeWidth;
@@ -84,6 +85,7 @@ public class Style {
 
         heightOffset = builder.heightOffset;
         randomOffset = builder.randomOffset;
+        transparent = builder.transparent;
     }
 
     /**
@@ -121,6 +123,7 @@ public class Style {
 
         public float heightOffset = 0;
         public boolean randomOffset = true;
+        public boolean transparent = false;
 
         protected Builder() {
         }
@@ -272,6 +275,11 @@ public class Style {
 
         public Builder randomOffset(boolean randomOffset) {
             this.randomOffset = randomOffset;
+            return this;
+        }
+
+        public Builder transparent(boolean transparent) {
+            this.transparent = transparent;
             return this;
         }
     }

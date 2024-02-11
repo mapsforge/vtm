@@ -101,11 +101,6 @@ public final class Parameters {
     public static boolean TEXTURE_ATLAS = false;
 
     /**
-     * Transparent line layers.
-     */
-    public static boolean TRANSPARENT_LINES = false;
-
-    /**
      * Threaded system initialization.
      */
     public static boolean THREADED_INIT = false;

@@ -58,23 +58,26 @@ public final class LineStyle extends RenderStyle<LineStyle> {
     public final float repeatStart;
     public final float repeatGap;
 
+    public final boolean transparent;
+
     public LineStyle(int color, float width) {
-        this(0, "", color, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
+        this(0, "", color, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale(), false);
     }
 
     public LineStyle(int level, int color, float width) {
-        this(level, "", color, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
+        this(level, "", color, width, Cap.BUTT, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale(), false);
     }
 
     public LineStyle(int color, float width, Cap cap) {
-        this(0, "", color, width, cap, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale());
+        this(0, "", color, width, cap, true, 1, 0, 0, 0, -1, 0, false, null, true, null, REPEAT_START_DEFAULT * CanvasAdapter.getScale(), REPEAT_GAP_DEFAULT * CanvasAdapter.getScale(), false);
     }
 
     public LineStyle(int level, String style, int color, float width,
                      Cap cap, boolean fixed, double strokeIncrease,
                      int stipple, int stippleColor, float stippleWidth,
                      int fadeScale, float blur, boolean isOutline, TextureItem texture,
-                     boolean randomOffset, float[] dashArray, float repeatStart, float repeatGap) {
+                     boolean randomOffset, float[] dashArray, float repeatStart, float repeatGap,
+                     boolean transparent) {
 
         this.level = level;
         this.style = style;
@@ -104,6 +107,8 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         this.dashArray = dashArray;
         this.repeatStart = repeatStart;
         this.repeatGap = repeatGap;
+
+        this.transparent = transparent;
     }
 
     private LineStyle(LineBuilder<?> b) {
@@ -133,6 +138,8 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         this.dashArray = b.dashArray;
         this.repeatStart = b.repeatStart;
         this.repeatGap = b.repeatGap;
+
+        this.transparent = b.transparent;
     }
 
     @Override
@@ -170,6 +177,8 @@ public final class LineStyle extends RenderStyle<LineStyle> {
         public float repeatStart;
         public float repeatGap;
 
+        public boolean transparent;
+
         public LineBuilder() {
         }
 
@@ -203,6 +212,8 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             this.dashArray = line.dashArray;
             this.repeatStart = line.repeatStart;
             this.repeatGap = line.repeatGap;
+
+            this.transparent = line.transparent;
 
             return self();
         }
@@ -302,6 +313,11 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             return self();
         }
 
+        public T transparent(boolean transparent) {
+            this.transparent = transparent;
+            return self();
+        }
+
         public T reset() {
             cat = null;
             level = -1;
@@ -331,6 +347,8 @@ public final class LineStyle extends RenderStyle<LineStyle> {
             dashArray = null;
             repeatStart = REPEAT_START_DEFAULT * CanvasAdapter.getScale();
             repeatGap = REPEAT_GAP_DEFAULT * CanvasAdapter.getScale();
+
+            transparent = false;
 
             return self();
         }

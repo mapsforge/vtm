@@ -295,6 +295,7 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
                     .strokeIncrease(style.strokeIncrease)
                     .strokeWidth(style.strokeWidth)
                     .texture(style.texture)
+                    .transparent(style.transparent)
                     .build();
             ll.setDropDistance(style.dropDistance);
             if (ll instanceof LineTexBucket)
