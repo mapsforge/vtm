@@ -114,10 +114,8 @@ public class BitmapTileLayer extends TileLayer {
     public void onMapEvent(Event event, MapPosition pos) {
         super.onMapEvent(event, pos);
 
-        if (event != Map.POSITION_EVENT)
-            return;
-
-        setFade(pos);
+        if (event == Map.CLEAR_EVENT || event == Map.POSITION_EVENT)
+            setFade(pos);
     }
 
     private void setFade(MapPosition pos) {
