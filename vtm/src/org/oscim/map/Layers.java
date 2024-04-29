@@ -184,6 +184,30 @@ public final class Layers extends AbstractList<Layer> {
             return layer;
         }
 
+        // bind added layer
+        if (layer instanceof UpdateListener)
+            mMap.events.bind((UpdateListener) layer);
+        if (layer instanceof InputListener)
+            mMap.input.bind((InputListener) layer);
+        // add zoom limit to tile manager
+        if (layer instanceof ZoomLimiter.IZoomLimiter)
+            ((ZoomLimiter.IZoomLimiter) layer).addZoomLimit();
+
+        // bind added group layer
+        if (layer instanceof GroupLayer) {
+            GroupLayer groupLayer = (GroupLayer) layer;
+            for (Layer gl : groupLayer.layers) {
+                if (gl instanceof UpdateListener)
+                    mMap.events.bind((UpdateListener) gl);
+                if (gl instanceof InputListener)
+                    mMap.input.bind((InputListener) gl);
+                if (gl instanceof ZoomLimiter.IZoomLimiter)
+                    ((ZoomLimiter.IZoomLimiter) gl).addZoomLimit();
+            }
+        }
+
+        layer.setEnableHandler(mEnableHandler);
+
         mDirtyLayers = true;
         Layer remove = mLayerList.set(index, layer);
 
