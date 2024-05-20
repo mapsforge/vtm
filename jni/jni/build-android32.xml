@@ -29,5 +29,6 @@
 		<condition property="has-ndk-build">
 			<equals arg1="${ndk-build-found}" arg2="true"/>
 		</condition>
+        <fail message="ndk-build not found. Have you set NDK_HOME?" unless="has-ndk-build"/>
 	</target>
 </project>

@@ -1,3 +1,0 @@
-[submodule "libtess2"]
-        path = jni/jni/libtess2
-        url = https://github.com/memononen/libtess2.git
