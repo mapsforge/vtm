@@ -28,7 +28,7 @@ import org.oscim.core.Tile;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.internal.VtmThemes;
 
 import java.io.File;
 

@@ -19,7 +19,6 @@
 package org.oscim.ios.test;
 
 import com.badlogic.gdx.graphics.glutils.GLVersion;
-
 import org.oscim.backend.DateTime;
 import org.oscim.backend.DateTimeAdapter;
 import org.oscim.backend.GLAdapter;
@@ -35,12 +34,8 @@ import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.map.Map;
 import org.oscim.renderer.BitmapRenderer;
 import org.oscim.renderer.GLViewport;
-import org.oscim.scalebar.DefaultMapScaleBar;
-import org.oscim.scalebar.ImperialUnitAdapter;
-import org.oscim.scalebar.MapScaleBar;
-import org.oscim.scalebar.MapScaleBarLayer;
-import org.oscim.scalebar.MetricUnitAdapter;
-import org.oscim.theme.VtmThemes;
+import org.oscim.scalebar.*;
+import org.oscim.theme.internal.VtmThemes;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 public class IOSMapApp extends GdxMap {

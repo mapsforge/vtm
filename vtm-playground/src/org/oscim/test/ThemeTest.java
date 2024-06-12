@@ -7,7 +7,7 @@ import org.oscim.core.Tag;
 import org.oscim.core.TagSet;
 import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.ThemeLoader;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.internal.VtmThemes;
 import org.oscim.theme.styles.RenderStyle;
 
 import java.io.FileInputStream;

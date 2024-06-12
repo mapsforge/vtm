@@ -23,7 +23,7 @@ import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.buildings.S3DBLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.test.tiling.source.TestTileSource;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.internal.VtmThemes;
 
 public class ExtrusionsTest extends GdxMapApp {
 

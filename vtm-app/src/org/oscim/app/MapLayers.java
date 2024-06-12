@@ -29,7 +29,7 @@ import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.theme.ThemeFile;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.internal.VtmThemes;
 import org.oscim.tiling.ITileCache;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.UrlTileSource;

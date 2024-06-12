@@ -19,7 +19,6 @@
 package org.oscim.android.test;
 
 import android.os.Bundle;
-
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.core.MapPosition;
 import org.oscim.core.MercatorProjection;
@@ -28,14 +27,10 @@ import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.renderer.BitmapRenderer;
 import org.oscim.renderer.GLViewport;
-import org.oscim.scalebar.DefaultMapScaleBar;
-import org.oscim.scalebar.ImperialUnitAdapter;
-import org.oscim.scalebar.MapScaleBar;
-import org.oscim.scalebar.MapScaleBarLayer;
-import org.oscim.scalebar.MetricUnitAdapter;
+import org.oscim.scalebar.*;
 import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.ThemeLoader;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.internal.VtmThemes;
 
 public class SimpleMapActivity extends BaseMapActivity {
 

@@ -19,10 +19,13 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.theme;
+package org.oscim.theme.internal;
 
 import org.oscim.backend.AssetAdapter;
 import org.oscim.theme.IRenderTheme.ThemeException;
+import org.oscim.theme.ThemeFile;
+import org.oscim.theme.XmlRenderThemeMenuCallback;
+import org.oscim.theme.XmlThemeResourceProvider;
 
 import java.io.InputStream;
 

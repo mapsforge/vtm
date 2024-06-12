@@ -21,7 +21,7 @@ import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.RenderTheme;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.internal.VtmThemes;
 import org.oscim.theme.rule.Rule;
 import org.oscim.theme.rule.Rule.RuleVisitor;
 import org.oscim.theme.styles.AreaStyle;

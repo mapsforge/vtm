@@ -6,7 +6,7 @@ import org.oscim.map.Layers;
 import org.oscim.map.Map;
 import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.ThemeLoader;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.internal.VtmThemes;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;

@@ -18,7 +18,6 @@
 package org.oscim.ios.test;
 
 import com.badlogic.gdx.graphics.glutils.GLVersion;
-
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GLAdapter;
 import org.oscim.core.GeometryBuffer;
@@ -37,7 +36,7 @@ import org.oscim.renderer.bucket.LineTexBucket;
 import org.oscim.renderer.bucket.TextureItem;
 import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.ThemeLoader;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.internal.VtmThemes;
 import org.oscim.theme.styles.LineStyle;
 import org.oscim.theme.styles.RenderStyle;
 

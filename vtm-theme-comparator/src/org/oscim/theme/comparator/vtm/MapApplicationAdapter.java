@@ -20,7 +20,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.input.GestureDetector;
-
 import org.oscim.core.MapPosition;
 import org.oscim.event.Event;
 import org.oscim.gdx.GestureHandlerImpl;
@@ -34,14 +33,10 @@ import org.oscim.map.Map;
 import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.MapRenderer;
-import org.oscim.scalebar.DefaultMapScaleBar;
-import org.oscim.scalebar.ImperialUnitAdapter;
-import org.oscim.scalebar.MapScaleBar;
-import org.oscim.scalebar.MapScaleBarLayer;
-import org.oscim.scalebar.MetricUnitAdapter;
+import org.oscim.scalebar.*;
 import org.oscim.theme.ExternalRenderTheme;
-import org.oscim.theme.VtmThemes;
 import org.oscim.theme.comparator.BothMapPositionHandler;
+import org.oscim.theme.internal.VtmThemes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

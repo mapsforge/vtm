@@ -6,7 +6,6 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.ToggleButton;
-
 import org.oscim.backend.canvas.Color;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
@@ -14,7 +13,7 @@ import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.map.Layers;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.RenderTheme;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.internal.VtmThemes;
 import org.oscim.theme.rule.Rule;
 import org.oscim.theme.rule.Rule.RuleVisitor;
 import org.oscim.theme.styles.AreaStyle;

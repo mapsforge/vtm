@@ -30,7 +30,7 @@
 //import org.oscim.layers.tile.buildings.BuildingLayer;
 //import org.oscim.layers.tile.vector.labeling.LabelLayer;
 //import org.oscim.test.JeoTest;
-//import org.oscim.theme.VtmThemes;
+//import org.oscim.theme.internal.VtmThemes;
 //import org.oscim.theme.styles.TextStyle;
 //import org.oscim.utils.IOUtils;
 //import org.slf4j.Logger;

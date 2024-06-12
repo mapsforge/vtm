@@ -29,7 +29,7 @@ import org.oscim.layers.tile.vector.VectorTileLoader;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.map.Map;
 import org.oscim.renderer.MapRenderer;
-import org.oscim.theme.VtmThemes;
+import org.oscim.theme.internal.VtmThemes;
 import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
