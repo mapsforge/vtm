@@ -299,7 +299,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
                         params[0].getMaxLatitude(), params[0].getMaxLongitude());
                 return mPersistenceManager.findInRect(bb, categoryFilter, patterns, null, Integer.MAX_VALUE, true);
             } catch (Throwable t) {
-                log.error(t.getMessage(), t);
+                log.error(t.toString(), t);
             }
             return null;
         }

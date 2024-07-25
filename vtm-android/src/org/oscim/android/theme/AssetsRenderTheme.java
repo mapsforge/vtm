@@ -98,7 +98,7 @@ public class AssetsRenderTheme implements ThemeFile {
         try {
             return mAssetManager.open((TextUtils.isEmpty(mRelativePathPrefix) ? "" : mRelativePathPrefix) + mFileName);
         } catch (IOException e) {
-            throw new ThemeException(e.getMessage(), e);
+            throw new ThemeException(e.toString(), e);
         }
     }
 

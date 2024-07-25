@@ -345,7 +345,7 @@ public final class Layers extends AbstractList<Layer> {
 
             mDirtyLayers = false;
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error(e.toString(), e);
         }
     }
 }

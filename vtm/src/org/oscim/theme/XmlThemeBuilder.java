@@ -118,7 +118,7 @@ public class XmlThemeBuilder {
             renderThemeHandler.processRenderTheme();
             return renderThemeHandler.mRenderTheme;
         } catch (Exception e) {
-            throw new ThemeException(e.getMessage(), e);
+            throw new ThemeException(e.toString(), e);
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
@@ -409,7 +409,7 @@ public class XmlThemeBuilder {
                 throw new XmlPullParserException("unknown element: " + qName);
             }
         } catch (XmlPullParserException | IOException e) {
-            throw new ThemeException(e.getMessage(), e);
+            throw new ThemeException(e.toString(), e);
         }
     }
 
@@ -1124,7 +1124,7 @@ public class XmlThemeBuilder {
                 try {
                     b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * CanvasAdapter.symbolScale));
                 } catch (Exception e) {
-                    log.error("{}: {}", symbol, e.getMessage());
+                    log.error("{}: {}", symbol, e.toString());
                 }
             } else
                 b.texture = getAtlasRegion(symbol);
@@ -1280,7 +1280,7 @@ public class XmlThemeBuilder {
                 if (bitmap != null)
                     return buildSymbol(b, b.src, bitmap);
             } catch (Exception e) {
-                log.error("{}: {}", b.src, e.getMessage());
+                log.error("{}: {}", b.src, e.toString());
             }
             return null;
         }

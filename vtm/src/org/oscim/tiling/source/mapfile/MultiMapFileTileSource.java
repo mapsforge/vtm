@@ -82,7 +82,7 @@ public class MultiMapFileTileSource extends TileSource implements IMapFileTileSo
                     mapDatabase.restrictToZoomRange(zoomLevels[0], zoomLevels[1]);
                 multiMapDatabase.add(mapDatabase);
             } catch (IOException e) {
-                log.debug(e.getMessage());
+                log.debug(e.toString());
             }
         }
         return new OverzoomTileDataSource(multiMapDatabase, mOverZoom);

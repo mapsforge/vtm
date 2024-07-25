@@ -92,7 +92,7 @@ public class JsonTileDataSource implements ITileDataSource {
             public void onFailure(Throwable caught) {
 
                 mSink.completed(FAILED);
-                log.debug("fail! {} {}", mRequestHandle, caught.getMessage());
+                log.debug("fail! {} {}", mRequestHandle, caught.toString());
                 //mRequestHandle.cancel();
             }
 

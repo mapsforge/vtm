@@ -227,7 +227,7 @@ public class MapsforgeActivity extends MapActivity {
                     mPrefs.clear();
                 }
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error(e.toString());
                 finish();
             }
         } else if (requestCode == SELECT_THEME_ARCHIVE) {

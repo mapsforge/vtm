@@ -167,7 +167,7 @@ public class AwtBitmap implements Bitmap {
             ImageIO.write(this.bitmap, "png", outputStream);
             return outputStream.toByteArray();
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            log.error(e.toString(), e);
         } finally {
             IOUtils.closeQuietly(outputStream);
         }

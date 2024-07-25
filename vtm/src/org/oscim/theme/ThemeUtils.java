@@ -53,7 +53,7 @@ public final class ThemeUtils {
             }
             return isMapsforgeTheme.get();
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error(e.toString(), e);
             return false;
         }
     }

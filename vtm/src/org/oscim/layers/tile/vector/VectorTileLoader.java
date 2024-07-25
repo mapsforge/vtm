@@ -119,10 +119,10 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
             /* query data source, which calls process() callback */
             mTileDataSource.query(tile, this);
         } catch (NullPointerException e) {
-            log.debug("NPE {} {}", tile, e.getMessage());
+            log.debug("NPE {} {}", tile, e.toString());
             e.printStackTrace();
         } catch (Throwable t) {
-            log.debug("{} {}", tile, t.getMessage());
+            log.debug("{} {}", tile, t.toString());
             t.printStackTrace();
             return false;
         }

@@ -38,7 +38,7 @@ public final class IOUtils {
                 closeable.close();
             }
         } catch (IOException e) {
-            //log.debug(e.getMessage() + " " + e);
+            //log.debug(e.toString() + " " + e);
         }
     }
 
@@ -48,7 +48,7 @@ public final class IOUtils {
                 closeable.close();
             }
         } catch (IOException e) {
-            //log.debug(e.getMessage() + " " + e);
+            //log.debug(e.toString() + " " + e);
         }
     }
 

@@ -33,7 +33,7 @@ public final class ValidRenderTheme implements ValidFileFilter {
             ThemeLoader.load(file.getAbsolutePath());
             mOpenResult = OpenResult.SUCCESS;
         } catch (Exception e) {
-            mOpenResult = new OpenResult(e.getMessage());
+            mOpenResult = new OpenResult(e.toString());
         }
         return mOpenResult.isSuccess();
     }

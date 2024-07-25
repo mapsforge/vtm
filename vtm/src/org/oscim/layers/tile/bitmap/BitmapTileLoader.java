@@ -47,7 +47,7 @@ public class BitmapTileLoader extends TileLoader {
         try {
             mTileDataSource.query(tile, this);
         } catch (Exception e) {
-            log.debug("{} {}", tile, e.getMessage());
+            log.debug("{} {}", tile, e.toString());
             return false;
         }
         return true;

@@ -62,7 +62,7 @@ public class MBTilesMvtActivity extends MapActivity {
         } catch (MBTilesUnsupportedException e) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setTitle(R.string.warning)
-                    .setMessage(e.getMessage())
+                    .setMessage(e.toString())
                     .setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

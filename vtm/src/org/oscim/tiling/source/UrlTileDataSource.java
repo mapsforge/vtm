@@ -84,18 +84,18 @@ public class UrlTileDataSource implements ITileDataSource {
             if (mTileDecoder.decode(tile, sink, is))
                 res = QueryResult.SUCCESS;
         } catch (SocketException e) {
-            log.debug("{} Socket Error: {}", tile, e.getMessage());
+            log.debug("{} Socket Error: {}", tile, e.toString());
         } catch (SocketTimeoutException e) {
             log.debug("{} Socket Timeout", tile);
             res = QueryResult.DELAYED;
         } catch (UnknownHostException e) {
-            log.debug("{} Unknown host: {}", tile, e.getMessage());
+            log.debug("{} Unknown host: {}", tile, e.toString());
         } catch (IOException e) {
-            log.debug("{} Network Error: {}", tile, e.getMessage());
+            log.debug("{} Network Error: {}", tile, e.toString());
         } catch (Exception e) {
-            log.debug("{} Error: {}", tile, e.getMessage());
+            log.debug("{} Error: {}", tile, e.toString());
         } catch (Throwable t) {
-            log.error(t.getMessage(), t);
+            log.error(t.toString(), t);
         } finally {
             boolean ok = (res == QueryResult.SUCCESS);
 

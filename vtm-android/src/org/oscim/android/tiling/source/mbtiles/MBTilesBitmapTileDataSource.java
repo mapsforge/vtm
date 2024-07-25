@@ -125,7 +125,7 @@ public class MBTilesBitmapTileDataSource extends MBTilesTileDataSource {
             sink.setTileImage(bitmap);
             res = QueryResult.SUCCESS;
         } catch (Throwable t) {
-            log.error(t.getMessage(), t);
+            log.error(t.toString(), t);
         } finally {
             sink.completed(res);
         }

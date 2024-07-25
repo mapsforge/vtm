@@ -89,7 +89,7 @@ public class ZipRenderTheme implements ThemeFile {
         try {
             return mResourceProvider.createInputStream(mRelativePathPrefix, mXmlTheme.substring(mXmlTheme.lastIndexOf("/") + 1));
         } catch (IOException e) {
-            throw new ThemeException(e.getMessage(), e);
+            throw new ThemeException(e.toString(), e);
         }
     }
 

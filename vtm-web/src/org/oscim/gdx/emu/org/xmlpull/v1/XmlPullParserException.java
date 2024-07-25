@@ -53,10 +53,10 @@ public class XmlPullParserException extends Exception {
     /*
     public String getMessage() {
         if(detail == null)
-            return super.getMessage();
+            return super.toString();
         else
-            return super.getMessage() + "; nested exception is: \n\t"
-                + detail.getMessage();
+            return super.toString() + "; nested exception is: \n\t"
+                + detail.toString();
     }
     */
 
@@ -66,7 +66,7 @@ public class XmlPullParserException extends Exception {
             super.printStackTrace();
         } else {
             synchronized(System.err) {
-                System.err.println(super.getMessage() + "; nested exception is:");
+                System.err.println(super.toString() + "; nested exception is:");
                 detail.printStackTrace();
             }
         }

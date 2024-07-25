@@ -46,7 +46,7 @@ public class OverzoomTileDataSource implements ITileDataSource {
             }
             tileDataSource.query(mapTile, dataSink);
         } catch (Throwable t) {
-            log.error(t.getMessage(), t);
+            log.error(t.toString(), t);
         }
     }
 

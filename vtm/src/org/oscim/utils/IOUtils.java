@@ -43,7 +43,7 @@ public final class IOUtils {
         try {
             closeable.close();
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.debug(e.toString());
         }
     }
 
@@ -55,7 +55,7 @@ public final class IOUtils {
         try {
             closeable.close();
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.debug(e.toString());
         }
     }
 

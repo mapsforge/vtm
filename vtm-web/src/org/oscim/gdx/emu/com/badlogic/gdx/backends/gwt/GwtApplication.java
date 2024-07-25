@@ -196,7 +196,7 @@ public abstract class GwtApplication implements EntryPoint, Application {
             listener.create();
             listener.resize(graphics.getWidth(), graphics.getHeight());
         } catch (Throwable t) {
-            error("GwtApplication", "exception: " + t.getMessage(), t);
+            error("GwtApplication", "exception: " + t.toString(), t);
             t.printStackTrace();
             throw new RuntimeException(t);
         }
@@ -207,7 +207,7 @@ public abstract class GwtApplication implements EntryPoint, Application {
                 try {
                     mainLoop();
                 } catch (Throwable t) {
-                    error("GwtApplication", "exception: " + t.getMessage(), t);
+                    error("GwtApplication", "exception: " + t.toString(), t);
                     throw new RuntimeException(t);
                 }
                 AnimationScheduler.get().requestAnimationFrame(this, graphics.canvas);
@@ -343,7 +343,7 @@ public abstract class GwtApplication implements EntryPoint, Application {
             checkLogLabel();
             log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
             log.setCursorPos(log.getText().length() - 1);
-            System.out.println(tag + ": " + message + "\n" + exception.getMessage());
+            System.out.println(tag + ": " + message + "\n" + exception.toString());
             System.out.println(getStackTrace(exception));
         }
     }
@@ -364,7 +364,7 @@ public abstract class GwtApplication implements EntryPoint, Application {
             checkLogLabel();
             log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
             log.setCursorPos(log.getText().length() - 1);
-            System.err.println(tag + ": " + message + "\n" + exception.getMessage() + "\n");
+            System.err.println(tag + ": " + message + "\n" + exception.toString() + "\n");
             System.out.println(getStackTrace(exception));
         }
     }
@@ -385,7 +385,7 @@ public abstract class GwtApplication implements EntryPoint, Application {
             checkLogLabel();
             log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
             log.setCursorPos(log.getText().length() - 1);
-            System.out.println(tag + ": " + message + "\n" + exception.getMessage());
+            System.out.println(tag + ": " + message + "\n" + exception.toString());
             System.out.println(getStackTrace(exception));
         }
     }
@@ -393,7 +393,7 @@ public abstract class GwtApplication implements EntryPoint, Application {
     private String getMessages(Throwable e) {
         StringBuffer buffer = new StringBuffer();
         while (e != null) {
-            buffer.append(e.getMessage() + "\n");
+            buffer.append(e.toString() + "\n");
             e = e.getCause();
         }
         return buffer.toString();

@@ -145,7 +145,7 @@ public class LwHttp implements HttpEngine {
             try {
                 while (bytesRead < contentLength && read() >= 0) ;
             } catch (IOException e) {
-                log.debug(e.getMessage());
+                log.debug(e.toString());
             }
 
             return bytesRead == contentLength;
@@ -350,7 +350,7 @@ public class LwHttp implements HttpEngine {
                         close();
                     }
                 } catch (IOException e) {
-                    log.debug(e.getMessage());
+                    log.debug(e.toString());
                     close();
                 }
             }

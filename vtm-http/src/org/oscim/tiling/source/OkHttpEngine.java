@@ -89,7 +89,7 @@ public class OkHttpEngine implements HttpEngine {
             } else
                 mInputStream = response.body().byteStream();
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error(e.toString(), e);
         }
     }
 
@@ -101,7 +101,7 @@ public class OkHttpEngine implements HttpEngine {
         try {
             mInputStream.close();
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error(e.toString(), e);
         }
         mInputStream = null;
     }
@@ -112,7 +112,7 @@ public class OkHttpEngine implements HttpEngine {
             try {
                 os.write(mCachedData);
             } catch (IOException e) {
-                log.error(e.getMessage(), e);
+                log.error(e.toString(), e);
             }
         }
     }

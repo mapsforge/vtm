@@ -115,7 +115,7 @@ public class XmlThemeBuilder extends DefaultHandler {
         try {
             new XMLReaderAdapter().parse(renderThemeHandler, theme.getRenderThemeAsStream());
         } catch (Exception e) {
-            throw new ThemeException(e.getMessage(), e);
+            throw new ThemeException(e.toString(), e);
         }
 
         return renderThemeHandler.mRenderTheme;
@@ -236,12 +236,12 @@ public class XmlThemeBuilder extends DefaultHandler {
 
     @Override
     public void error(SAXParseException exception) {
-        log.debug(exception.getMessage());
+        log.debug(exception.toString());
     }
 
     @Override
     public void warning(SAXParseException exception) {
-        log.debug(exception.getMessage());
+        log.debug(exception.toString());
     }
 
     @Override
@@ -385,9 +385,9 @@ public class XmlThemeBuilder extends DefaultHandler {
                 throw new SAXException("unknown element: " + localName);
             }
         } catch (SAXException e) {
-            throw new ThemeException(e.getMessage(), e);
+            throw new ThemeException(e.toString(), e);
         } catch (IOException e) {
-            throw new ThemeException(e.getMessage(), e);
+            throw new ThemeException(e.toString(), e);
         }
     }
 
@@ -1103,7 +1103,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 try {
                     b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, b.symbolPercent);
                 } catch (Exception e) {
-                    log.error("{}: {}", symbol, e.getMessage());
+                    log.error("{}: {}", symbol, e.toString());
                 }
             } else
                 b.texture = getAtlasRegion(symbol);
@@ -1251,7 +1251,7 @@ public class XmlThemeBuilder extends DefaultHandler {
                 if (bitmap != null)
                     return buildSymbol(b, b.src, bitmap);
             } catch (Exception e) {
-                log.error("{}: {}", b.src, e.getMessage());
+                log.error("{}: {}", b.src, e.toString());
             }
             return null;
         }

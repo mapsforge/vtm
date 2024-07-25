@@ -96,7 +96,7 @@ public class MapRenderer {
         try {
             draw();
         } catch (Throwable t) {
-            log.error(t.getMessage(), t);
+            log.error(t.toString(), t);
         }
 
         mMap.doneFrame(rerender);

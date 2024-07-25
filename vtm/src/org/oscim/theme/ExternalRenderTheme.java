@@ -106,7 +106,7 @@ public class ExternalRenderTheme implements ThemeFile {
         try {
             is = new FileInputStream(mPath);
         } catch (FileNotFoundException e) {
-            throw new ThemeException(e.getMessage(), e);
+            throw new ThemeException(e.toString(), e);
         }
         return is;
     }

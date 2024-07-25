@@ -153,10 +153,10 @@ public class MapFileTileSource extends TileSource implements IMapFileTileSource 
             log.debug("File version: " + fileInfo.fileVersion);
             return OpenResult.SUCCESS;
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error(e.toString());
             // make sure that the file is closed
             close();
-            return new OpenResult(e.getMessage());
+            return new OpenResult(e.toString());
         }
     }
 
@@ -165,7 +165,7 @@ public class MapFileTileSource extends TileSource implements IMapFileTileSource 
         try {
             return new OverzoomTileDataSource(new MapDatabase(this), mOverZoom);
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.debug(e.toString());
         }
         return null;
     }
@@ -177,7 +177,7 @@ public class MapFileTileSource extends TileSource implements IMapFileTileSource 
                 inputChannel.close();
                 inputChannel = null;
             } catch (IOException e) {
-                log.error(e.getMessage());
+                log.error(e.toString());
             }
         }
         fileHeader = null;

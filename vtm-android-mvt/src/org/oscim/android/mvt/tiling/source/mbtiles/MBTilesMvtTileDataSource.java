@@ -135,7 +135,7 @@ public class MBTilesMvtTileDataSource extends MBTilesTileDataSource {
             } else
                 responseDataSink.completed(QueryResult.TILE_NOT_FOUND);
         } catch (Throwable t) {
-            log.error(t.getMessage(), t);
+            log.error(t.toString(), t);
             responseDataSink.completed(QueryResult.FAILED);
         } finally {
             if (cursor != null)

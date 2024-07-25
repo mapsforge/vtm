@@ -49,7 +49,7 @@ public class IosSvgBitmap extends IosBitmap {
                 sb.append(line);
             }
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            log.error(e.toString(), e);
         } finally {
             IOUtils.closeQuietly(br);
         }

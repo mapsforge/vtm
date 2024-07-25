@@ -236,7 +236,7 @@ public class MapDatabase implements ITileDataSource {
             }
             mFileSize = mInputChannel.size();
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error(e.toString());
             /* make sure that the file is closed */
             dispose();
             throw new IOException();
@@ -310,7 +310,7 @@ public class MapDatabase implements ITileDataSource {
                 processBlocks(sink, queryParameters, subFileParameter);
             sink.completed(QueryResult.SUCCESS);
         } catch (Throwable t) {
-            log.error(t.getMessage(), t);
+            log.error(t.toString(), t);
             sink.completed(QueryResult.FAILED);
         }
     }
@@ -322,7 +322,7 @@ public class MapDatabase implements ITileDataSource {
                 mInputChannel.close();
                 mInputChannel = null;
             } catch (IOException e) {
-                log.error(e.getMessage());
+                log.error(e.toString());
             }
         }
     }
@@ -1161,7 +1161,7 @@ public class MapDatabase implements ITileDataSource {
             QueryCalculations.calculateBlocks(queryParameters, subFileParameter);
             processBlocks(queryParameters, subFileParameter, Tile.getBoundingBox(upperLeft, lowerRight), selector, mapReadResult);
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error(e.toString());
             return null;
         }
 

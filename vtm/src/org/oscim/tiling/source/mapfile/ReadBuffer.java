@@ -91,7 +91,7 @@ public class ReadBuffer {
             try {
                 mBufferData = new byte[length];
             } catch (Throwable t) {
-                LOG.log(Level.SEVERE, t.getMessage(), t);
+                LOG.log(Level.SEVERE, t.toString(), t);
                 return false;
             }
             mBufferWrapper = ByteBuffer.wrap(mBufferData, 0, length);
@@ -127,7 +127,7 @@ public class ReadBuffer {
             try {
                 mBufferData = new byte[length];
             } catch (Throwable t) {
-                LOG.log(Level.SEVERE, t.getMessage(), t);
+                LOG.log(Level.SEVERE, t.toString(), t);
                 return false;
             }
             mBufferWrapper = ByteBuffer.wrap(mBufferData, 0, length);

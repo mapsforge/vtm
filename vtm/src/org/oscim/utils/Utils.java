@@ -49,7 +49,7 @@ public final class Utils {
                 return new TextureItem(potBitmap(bitmap), true);
             }
         } catch (Exception e) {
-            log.error("{}: missing file / {}", src, e.getMessage());
+            log.error("{}: missing file / {}", src, e.toString());
         }
         return null;
     }
