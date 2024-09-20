@@ -1,7 +1,7 @@
 apply plugin: 'application'
 
 dependencies {
-    implementation 'com.badlogicgames.gdx:gdx-jnigen:2.5.1'
+    implementation 'com.badlogicgames.gdx:gdx-jnigen:2.5.2'
 }
 
 sourceSets {
