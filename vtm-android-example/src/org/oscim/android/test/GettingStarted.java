@@ -52,8 +52,8 @@ public class GettingStarted extends Activity {
         super.onCreate(savedInstanceState);
 
         // Map view
-        mapView = new MapView(this);
-        setContentView(mapView);
+        setContentView(R.layout.activity_map);
+        mapView = findViewById(R.id.mapView);
 
         // Open map
         Intent intent = new Intent(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT);
