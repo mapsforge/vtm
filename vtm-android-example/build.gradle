@@ -16,7 +16,7 @@ dependencies {
     implementation project(':vtm-gdx')
     implementation project(':vtm-gdx-poi3d')
 
-    implementation 'com.github.mapsforge.mapsforge:mapsforge-poi-android:0.23.0'
+    implementation 'org.mapsforge:mapsforge-poi-android:0.23.0'
 }
 
 android {

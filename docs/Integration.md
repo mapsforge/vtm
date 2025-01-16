@@ -3,7 +3,7 @@
 
 # Integration guide
 
-This article describes how to integrate the library in your project with Maven and [JitPack](https://jitpack.io/#mapsforge/vtm).
+This article describes how to integrate the library in your project with Maven and [JitPack](https://jitpack.io/#mapsforge/vtm) repositories.
 
 ## Maven
 
