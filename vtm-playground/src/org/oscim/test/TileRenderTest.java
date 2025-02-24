@@ -109,7 +109,7 @@ public class TileRenderTest extends GdxMapApp {
 
         //mMap.layers().add(tileLayer);
         mMap.setBaseMap(tileLayer);
-        mMap.setTheme(VtmThemes.DEFAULT);
+        mMap.setTheme(VtmThemes.MOTORIDER);
 
         log.fine("load tiles:");
         if (loadOneTile) {

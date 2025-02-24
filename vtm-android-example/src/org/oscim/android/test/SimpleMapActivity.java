@@ -77,7 +77,7 @@ public class SimpleMapActivity extends BaseMapActivity {
         renderer.setOffset(5 * CanvasAdapter.getScale(), 0);
         mMap.layers().add(mapScaleBarLayer);
 
-        mMap.setTheme(VtmThemes.DEFAULT);
+        mMap.setTheme(VtmThemes.MOTORIDER);
     }
 
     void runTheMonkey() {

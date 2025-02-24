@@ -36,7 +36,7 @@ public class MapzenTest extends GdxMapApp {
                 .build();
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);
-        mMap.setTheme(VtmThemes.DEFAULT);
+        mMap.setTheme(VtmThemes.MOTORIDER);
 
         mMap.layers().add(new BuildingLayer(mMap, l));
         mMap.layers().add(new LabelLayer(mMap, l));

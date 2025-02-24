@@ -97,7 +97,7 @@ public class GdxActivity extends AndroidApplication {
                     .httpFactory(new OkHttpEngine.OkHttpFactory())
                     .build();
             VectorTileLayer l = mMap.setBaseMap(tileSource);
-            mMap.setTheme(VtmThemes.DEFAULT);
+            mMap.setTheme(VtmThemes.MOTORIDER);
 
             if (mS3db)
                 mMap.layers().add(new S3DBLayer(mMap, l));

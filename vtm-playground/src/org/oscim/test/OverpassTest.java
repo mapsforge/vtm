@@ -71,7 +71,7 @@ public class OverpassTest extends GdxMapApp {
         groupLayer.layers.add(new LabelLayer(map, l));
         map.layers().add(groupLayer);
 
-        map.setTheme(VtmThemes.DEFAULT);
+        map.setTheme(VtmThemes.MOTORIDER);
         MapPosition pos = MapPreferences.getMapPosition();
         if (pos != null)
             map.setMapPosition(pos);

@@ -89,7 +89,7 @@ public class GettingStarted extends Activity {
             mapView.map().layers().add(new LabelLayer(mapView.map(), tileLayer));
 
             // Render theme
-            theme = mapView.map().setTheme(VtmThemes.DEFAULT);
+            theme = mapView.map().setTheme(VtmThemes.MOTORIDER);
 
             // Scale bar
             MapScaleBar mapScaleBar = new DefaultMapScaleBar(mapView.map());

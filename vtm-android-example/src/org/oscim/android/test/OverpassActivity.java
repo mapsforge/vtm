@@ -64,7 +64,7 @@ public class OverpassActivity extends MapActivity {
         mMap.layers().add(new S3DBLayer(mMap, l));
         mMap.layers().add(new LabelLayer(mMap, l));
 
-        mMap.setTheme(VtmThemes.DEFAULT);
+        mMap.setTheme(VtmThemes.MOTORIDER);
     }
 
     @Override

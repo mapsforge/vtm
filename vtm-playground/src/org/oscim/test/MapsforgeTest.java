@@ -152,7 +152,7 @@ public class MapsforgeTest extends GdxMapApp {
     }
 
     void loadTheme(final String styleId) {
-        mMap.setTheme(VtmThemes.DEFAULT);
+        mMap.setTheme(VtmThemes.MOTORIDER);
     }
 
     public static void main(String[] args) {

@@ -59,7 +59,7 @@ public class SimpleMapTest extends GdxMapApp {
         renderer.setOffset(5, 0);
         map.layers().add(mapScaleBarLayer);
 
-        map.setTheme(VtmThemes.DEFAULT);
+        map.setTheme(VtmThemes.MOTORIDER);
         MapPosition pos = MapPreferences.getMapPosition();
         if (pos != null)
             map.setMapPosition(pos);

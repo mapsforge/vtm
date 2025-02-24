@@ -290,7 +290,7 @@ public class ExtrusionsTest extends GdxMapApp {
         mMap.layers().add(buildingLayer);
         mMap.layers().add(new TileGridLayer(mMap));
 
-        mMap.setTheme(VtmThemes.DEFAULT);
+        mMap.setTheme(VtmThemes.MOTORIDER);
 
         mMap.setMapPosition(0, 0, 1 << 17);
     }

@@ -57,7 +57,7 @@ public abstract class GdxMap implements ApplicationListener {
 
         if (tileSource != null) {
             VectorTileLayer mapLayer = mMap.setBaseMap(tileSource);
-            mMap.setTheme(VtmThemes.DEFAULT);
+            mMap.setTheme(VtmThemes.MOTORIDER);
 
             if (buildings)
                 layers.add(new BuildingLayer(mMap, mapLayer));

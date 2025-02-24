@@ -293,7 +293,7 @@ public class MapsforgeActivity extends MapActivity {
     protected void loadTheme(final String styleId) {
         if (mTheme != null)
             mTheme.dispose();
-        mTheme = mMap.setTheme(VtmThemes.DEFAULT);
+        mTheme = mMap.setTheme(VtmThemes.MOTORIDER);
     }
 
     private void mapsforgeTheme(IRenderTheme theme) {

@@ -72,7 +72,7 @@ public class RuleVisitorTest extends GdxMapApp {
                 .build();
         VectorTileLayer l = mMap.setBaseMap(ts);
 
-        mMap.setTheme(VtmThemes.DEFAULT);
+        mMap.setTheme(VtmThemes.MOTORIDER);
         RenderTheme t = (RenderTheme) l.getTheme();
         mTheme = t;
         //t.traverseRules(new DesaturateAreaStyles());

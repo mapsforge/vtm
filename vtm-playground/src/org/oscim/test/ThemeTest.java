@@ -31,7 +31,7 @@ public class ThemeTest {
             }
         });
 
-        IRenderTheme t = ThemeLoader.load(VtmThemes.DEFAULT);
+        IRenderTheme t = ThemeLoader.load(VtmThemes.MOTORIDER);
 
         TagSet tags = new TagSet();
         tags.add(new Tag("highway", "trunk_link"));

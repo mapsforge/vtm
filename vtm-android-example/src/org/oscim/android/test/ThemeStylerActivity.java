@@ -42,7 +42,7 @@ public class ThemeStylerActivity extends BaseMapActivity implements OnSeekBarCha
         layers.add(new BuildingLayer(mMap, mBaseLayer));
         layers.add(new LabelLayer(mMap, mBaseLayer));
 
-        mMap.setTheme(VtmThemes.DEFAULT);
+        mMap.setTheme(VtmThemes.MOTORIDER);
     }
 
     class ModStyleVisitor extends RuleVisitor {

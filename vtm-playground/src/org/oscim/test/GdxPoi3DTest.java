@@ -41,8 +41,7 @@ public class GdxPoi3DTest extends GdxMapApp {
         // initDefaultLayers(ts, false, false, false);
 
         VectorTileLayer mMapLayer = mMap.setBaseMap(ts);
-        mMap.setTheme(VtmThemes.DEFAULT);
-        // mMap.setTheme(VtmThemes.TRONRENDER);
+        mMap.setTheme(VtmThemes.MOTORIDER);
 
         mMap.layers().add(new BuildingLayer(mMap, mMapLayer));
 

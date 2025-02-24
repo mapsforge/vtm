@@ -124,7 +124,7 @@ public class MapFragment extends android.app.Fragment implements XmlRenderThemeM
             mapView.map().layers().add(new LabelLayer(mapView.map(), tileLayer));
 
             if (theme == null) {
-                theme = mapView.map().setTheme(VtmThemes.DEFAULT);
+                theme = mapView.map().setTheme(VtmThemes.MOTORIDER);
             }
 
             // Scale bar
@@ -165,7 +165,7 @@ public class MapFragment extends android.app.Fragment implements XmlRenderThemeM
                 ThemeFile themeFile = new ZipRenderTheme(xmlThemes.get(0), new ZipXmlThemeResourceProvider(new ZipInputStream(new BufferedInputStream(getActivity().getContentResolver().openInputStream(themeUri)))));
                 theme = mapView.map().setTheme(themeFile);
             } else {
-                theme = mapView.map().setTheme(VtmThemes.DEFAULT);
+                theme = mapView.map().setTheme(VtmThemes.MOTORIDER);
             }
 
         } catch (Exception e) {
