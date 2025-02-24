@@ -17,9 +17,6 @@
  */
 package org.oscim.renderer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -28,7 +25,6 @@ import static org.oscim.backend.GLAdapter.gl;
 
 public class GLMatrix {
 
-    static final Logger log = LoggerFactory.getLogger(GLMatrix.class);
     private static final boolean dbg = false;
 
     private final long pointer;

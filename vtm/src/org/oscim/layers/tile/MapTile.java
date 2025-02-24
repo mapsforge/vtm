@@ -25,15 +25,10 @@ import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.utils.pool.Inlist;
 import org.oscim.utils.quadtree.TileIndex;
 import org.oscim.utils.quadtree.TreeNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import static org.oscim.layers.tile.MapTile.State.CANCEL;
-import static org.oscim.layers.tile.MapTile.State.DEADBEEF;
-import static org.oscim.layers.tile.MapTile.State.LOADING;
-import static org.oscim.layers.tile.MapTile.State.NEW_DATA;
-import static org.oscim.layers.tile.MapTile.State.NONE;
-import static org.oscim.layers.tile.MapTile.State.READY;
+import java.util.logging.Logger;
+
+import static org.oscim.layers.tile.MapTile.State.*;
 
 /**
  * Extends Tile class to hold state and data.
@@ -43,7 +38,7 @@ import static org.oscim.layers.tile.MapTile.State.READY;
  */
 public class MapTile extends Tile {
 
-    static final Logger log = LoggerFactory.getLogger(MapTile.class);
+    private static final Logger log = Logger.getLogger(MapTile.class.getName());
 
     public static class TileNode extends TreeNode<TileNode, MapTile> {
     }
@@ -195,7 +190,7 @@ public class MapTile extends Tile {
      */
     void lock() {
         if (state == DEADBEEF) {
-            log.debug("Locking dead tile {}", this);
+            log.fine("Locking dead tile " + this);
             return;
         }
 
@@ -265,7 +260,7 @@ public class MapTile extends Tile {
         proxy = 0;
 
         if (state == DEADBEEF) {
-            log.debug("Unlock dead tile {}", this);
+            log.fine("Unlock dead tile " + this);
             clear();
         }
     }

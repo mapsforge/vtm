@@ -56,18 +56,17 @@ import org.oscim.theme.styles.AreaStyle;
 import org.oscim.theme.styles.RenderStyle;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
 import org.oscim.tiling.source.mapfile.MapInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.zip.ZipInputStream;
 
 public class MapsforgeActivity extends MapActivity {
 
-    private static final Logger log = LoggerFactory.getLogger(MapsforgeActivity.class);
+    private static final Logger log = Logger.getLogger(MapsforgeActivity.class.getName());
 
     static final int SELECT_MAP_FILE = 0;
     private static final int SELECT_THEME_ARCHIVE = 1;
@@ -227,7 +226,7 @@ public class MapsforgeActivity extends MapActivity {
                     mPrefs.clear();
                 }
             } catch (Exception e) {
-                log.error(e.toString());
+                log.severe(e.toString());
                 finish();
             }
         } else if (requestCode == SELECT_THEME_ARCHIVE) {

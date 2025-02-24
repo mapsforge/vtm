@@ -21,15 +21,14 @@ package org.oscim.renderer;
 import org.oscim.backend.AssetAdapter;
 import org.oscim.backend.GL;
 import org.oscim.backend.GLAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.IntBuffer;
+import java.util.logging.Logger;
 
 import static org.oscim.backend.GLAdapter.gl;
 
 public abstract class GLShader {
-    static final Logger log = LoggerFactory.getLogger(GLShader.class);
+    private static final Logger log = Logger.getLogger(GLShader.class.getName());
 
     public int program;
 
@@ -64,14 +63,14 @@ public abstract class GLShader {
     protected int getAttrib(String name) {
         int loc = gl.getAttribLocation(program, name);
         if (loc < 0)
-            log.debug("missing attribute: {}", name);
+            log.fine("missing attribute: " + name);
         return loc;
     }
 
     protected int getUniform(String name) {
         int loc = gl.getUniformLocation(program, name);
         if (loc < 0)
-            log.debug("missing uniform: {}", name);
+            log.fine("missing uniform: " + name);
         return loc;
     }
 
@@ -116,8 +115,8 @@ public abstract class GLShader {
             gl.getShaderiv(shader, GL.COMPILE_STATUS, compiled);
             compiled.position(0);
             if (compiled.get() == 0) {
-                log.error("Could not compile shader " + shaderType + ":");
-                log.error(gl.getShaderInfoLog(shader));
+                log.severe("Could not compile shader " + shaderType + ":");
+                log.severe(gl.getShaderInfoLog(shader));
                 gl.deleteShader(shader);
                 shader = 0;
             }
@@ -162,8 +161,8 @@ public abstract class GLShader {
             gl.getProgramiv(program, GL.LINK_STATUS, linkStatus);
             linkStatus.position(0);
             if (linkStatus.get() != GL.TRUE) {
-                log.error("Could not link program: ");
-                log.error(gl.getProgramInfoLog(program));
+                log.severe("Could not link program: ");
+                log.severe(gl.getProgramInfoLog(program));
                 gl.deleteProgram(program);
                 program = 0;
             }

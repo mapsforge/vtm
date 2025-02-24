@@ -23,12 +23,11 @@ import org.oscim.map.Map;
 import org.oscim.theme.styles.ExtrusionStyle;
 import org.oscim.utils.ExtrusionUtils;
 import org.oscim.utils.geom.GeometryUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 
@@ -37,7 +36,7 @@ import static org.oscim.renderer.MapRenderer.COORD_SCALE;
  */
 public class S3DBLayer extends BuildingLayer {
 
-    private static final Logger log = LoggerFactory.getLogger(S3DBLayer.class);
+    private static final Logger log = Logger.getLogger(S3DBLayer.class.getName());
 
     private final float TILE_SCALE = (ExtrusionUtils.REF_TILE_SIZE / (Tile.SIZE * COORD_SCALE));
 
@@ -329,7 +328,7 @@ public class S3DBLayer extends BuildingLayer {
                 get(tile).addMeshElement(specialParts, groundScale, buildingColor);
             }
         } else {
-            log.debug("Roof calculation failed: " + element.toString());
+            log.fine("Roof calculation failed: " + element);
         }
     }
 }

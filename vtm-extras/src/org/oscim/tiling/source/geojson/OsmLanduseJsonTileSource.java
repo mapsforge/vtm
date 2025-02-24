@@ -19,14 +19,11 @@ package org.oscim.tiling.source.geojson;
 import org.oscim.core.GeometryBuffer.GeometryType;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class OsmLanduseJsonTileSource extends GeoJsonTileSource {
-    static final Logger log = LoggerFactory.getLogger(OsmLanduseJsonTileSource.class);
 
     public OsmLanduseJsonTileSource() {
         super("http://tile.openstreetmap.us/vectiles-land-usages");

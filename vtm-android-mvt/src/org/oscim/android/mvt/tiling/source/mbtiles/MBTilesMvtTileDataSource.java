@@ -24,13 +24,12 @@ import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.OverzoomDataSink;
 import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.source.mvt.TileDecoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -38,7 +37,7 @@ import java.util.zip.GZIPInputStream;
  */
 public class MBTilesMvtTileDataSource extends MBTilesTileDataSource {
 
-    private static final Logger log = LoggerFactory.getLogger(MBTilesMvtTileDataSource.class);
+    private static final Logger log = Logger.getLogger(MBTilesMvtTileDataSource.class.getName());
 
     private static final List<String> SUPPORTED_FORMATS = Collections.singletonList("pbf");
     private static final String WHERE_FORMAT = "zoom_level=%d AND tile_column=%d AND tile_row=%d";
@@ -65,7 +64,7 @@ public class MBTilesMvtTileDataSource extends MBTilesTileDataSource {
         try {
             assertDatabaseFormat();
         } catch (MBTilesUnsupportedException e) {
-            log.error("Invalid MBTiles database", e);
+            log.severe("Invalid MBTiles database" + e);
         }
     }
 
@@ -135,7 +134,7 @@ public class MBTilesMvtTileDataSource extends MBTilesTileDataSource {
             } else
                 responseDataSink.completed(QueryResult.TILE_NOT_FOUND);
         } catch (Throwable t) {
-            log.error(t.toString(), t);
+            log.severe(t.toString());
             responseDataSink.completed(QueryResult.FAILED);
         } finally {
             if (cursor != null)

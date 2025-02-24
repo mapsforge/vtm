@@ -41,12 +41,12 @@ import org.oscim.utils.Parameters;
 import org.oscim.utils.ThreadUtils;
 import org.oscim.utils.async.AsyncExecutor;
 import org.oscim.utils.async.TaskQueue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public abstract class Map implements TaskQueue {
 
-    private static final Logger log = LoggerFactory.getLogger(Map.class);
+    private static final Logger log = Logger.getLogger(Map.class.getName());
 
     /**
      * Listener interface for map update notifications.
@@ -218,7 +218,7 @@ public abstract class Map implements TaskQueue {
             }
         }
         if (!themeSet) {
-            log.error("No vector layers set");
+            log.severe("No vector layers set");
             throw new IllegalStateException();
         }
 

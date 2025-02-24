@@ -34,8 +34,6 @@ import org.oscim.theme.styles.TextStyle;
 import org.oscim.utils.FastMath;
 import org.oscim.utils.Parameters;
 import org.oscim.utils.geom.OBB2D;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -45,7 +43,6 @@ import static org.oscim.layers.tile.MapTile.State.READY;
 
 public class LabelPlacement {
     static final boolean dbg = false;
-    static final Logger log = LoggerFactory.getLogger(LabelPlacement.class);
 
     public static final LabelTileData getLabels(MapTile tile) {
         return (LabelTileData) tile.getData(LabelLayer.LABEL_DATA);

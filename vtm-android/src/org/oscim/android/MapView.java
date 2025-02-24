@@ -43,11 +43,10 @@ import org.oscim.core.Tile;
 import org.oscim.map.Map;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.utils.Parameters;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,7 +59,7 @@ import java.util.regex.Pattern;
  */
 public class MapView extends GLSurfaceView {
 
-    static final Logger log = LoggerFactory.getLogger(MapView.class);
+    private static final Logger log = Logger.getLogger(MapView.class.getName());
 
     private static final Pattern GL_PATTERN = Pattern.compile("OpenGL ES (\\d(\\.\\d){0,2})");
 
@@ -143,7 +142,7 @@ public class MapView extends GLSurfaceView {
                 try {
                     setEGLContextFactory(new GlContextFactory());
                 } catch (Throwable t) {
-                    log.error("Falling back to GLES 2", t);
+                    log.severe("Falling back to GLES 2" + t);
                     setEGLContextClientVersion(2);
                 }
             } else
@@ -314,7 +313,7 @@ public class MapView extends GLSurfaceView {
         }
 
         public void pause(boolean pause) {
-            log.debug("pause... {}", pause);
+            log.fine("pause... " + pause);
             mPausing = pause;
         }
     }
@@ -338,7 +337,7 @@ public class MapView extends GLSurfaceView {
                 version[1] = split.length < 2 ? 0 : parseInt(split[1], 0);
                 version[2] = split.length < 3 ? 0 : parseInt(split[2], 0);
             } else {
-                log.error("Invalid version string: " + versionString);
+                log.severe("Invalid version string: " + versionString);
                 version[0] = 2;
                 version[1] = 0;
                 version[2] = 0;
@@ -353,7 +352,7 @@ public class MapView extends GLSurfaceView {
             try {
                 return Integer.parseInt(value);
             } catch (NumberFormatException e) {
-                log.error("Error parsing number: " + value + ", assuming: " + defaultValue);
+                log.severe("Error parsing number: " + value + ", assuming: " + defaultValue);
                 return defaultValue;
             }
         }
@@ -378,7 +377,7 @@ public class MapView extends GLSurfaceView {
                     else
                         GLAdapter.init(new AndroidGL());
                 } catch (Throwable t) {
-                    log.error("Falling back to GLES 2", t);
+                    log.severe("Falling back to GLES 2" + t);
                     GLAdapter.init(new AndroidGL());
                 }
             }

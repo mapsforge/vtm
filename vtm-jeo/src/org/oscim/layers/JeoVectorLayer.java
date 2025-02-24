@@ -30,14 +30,13 @@ import org.oscim.renderer.bucket.LineBucket;
 import org.oscim.renderer.bucket.MeshBucket;
 import org.oscim.theme.styles.AreaStyle;
 import org.oscim.theme.styles.LineStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class JeoVectorLayer extends JtsLayer {
 
-    public static final Logger log = LoggerFactory.getLogger(JeoVectorLayer.class);
+    private static final Logger log = Logger.getLogger(JeoVectorLayer.class.getName());
     static final boolean dbg = false;
 
     private final VectorDataset mDataset;
@@ -53,7 +52,7 @@ public class JeoVectorLayer extends JtsLayer {
 
         mRules = style.getRules().selectById(data.name(), true).flatten();
         //mRules = style.getRules().selectById("way", true).flatten();
-        log.debug(mRules.toString());
+        log.fine(mRules.toString());
 
         mRenderer = new Renderer();
     }
@@ -71,10 +70,10 @@ public class JeoVectorLayer extends JtsLayer {
         try {
             VectorQuery q = new VectorQuery().bounds(b);
             if (dbg)
-                log.debug("query {}", b);
+                log.fine("query " + b);
             for (Feature f : mDataset.read(q)) {
                 if (dbg)
-                    log.debug("feature {}", f);
+                    log.fine("feature " + f);
 
                 RuleList rs = mRules.match(f);
                 if (rs.isEmpty())
@@ -115,7 +114,7 @@ public class JeoVectorLayer extends JtsLayer {
                 }
             }
         } catch (IOException e) {
-            log.error("Error querying layer " + mDataset.name() + e);
+            log.severe("Error querying layer " + mDataset.name() + e);
         }
     }
 

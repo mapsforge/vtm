@@ -24,10 +24,9 @@ import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.styles.AreaStyle;
 import org.oscim.theme.styles.CircleStyle;
 import org.oscim.theme.styles.LineStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ShortBuffer;
+import java.util.logging.Logger;
 
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 import static org.oscim.renderer.bucket.RenderBucket.*;
@@ -39,7 +38,7 @@ import static org.oscim.renderer.bucket.RenderBucket.*;
  */
 public class RenderBuckets extends TileData {
 
-    static final Logger log = LoggerFactory.getLogger(RenderBuckets.class);
+    private static final Logger log = Logger.getLogger(RenderBuckets.class.getName());
 
     /* Count of units needed for one vertex */
     public static final int[] VERTEX_CNT = {
@@ -206,7 +205,7 @@ public class RenderBuckets extends TileData {
         if (mCurBucket != null && mCurBucket.level == level) {
             bucket = mCurBucket;
             if (bucket.type != type) {
-                log.error("BUG wrong bucket {} {} on level {}", bucket.type, type, level);
+                log.severe("BUG wrong bucket " + bucket.type + " " + type + " on level " + level);
                 throw new IllegalArgumentException();
             }
             return bucket;
@@ -264,7 +263,7 @@ public class RenderBuckets extends TileData {
 
         /* check if found buckets matches requested type */
         if (bucket.type != type) {
-            log.error("BUG wrong bucket {} {} on level {}", bucket.type, type, level);
+            log.severe("BUG wrong bucket " + bucket.type + " " + type + " on level " + level);
             throw new IllegalArgumentException();
         }
 
@@ -403,7 +402,7 @@ public class RenderBuckets extends TileData {
         }
 
         if (vboSize != vboData.position()) {
-            log.debug("wrong vertex buffer size: "
+            log.fine("wrong vertex buffer size: "
                     + " new size: " + vboSize
                     + " buffer pos: " + vboData.position()
                     + " buffer limit: " + vboData.limit()
@@ -412,7 +411,7 @@ public class RenderBuckets extends TileData {
         }
 
         if (iboSize > 0 && iboSize != iboData.position()) {
-            log.debug("wrong indice buffer size: "
+            log.fine("wrong indice buffer size: "
                     + " new size: " + iboSize
                     + " buffer pos: " + iboData.position()
                     + " buffer limit: " + iboData.limit()

@@ -24,14 +24,14 @@ import org.oscim.renderer.bucket.BitmapBucket;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.TileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.oscim.layers.tile.MapTile.State.LOADING;
 
 public class BitmapTileLoader extends TileLoader {
 
-    protected static final Logger log = LoggerFactory.getLogger(BitmapTileLoader.class);
+    private static final Logger log = Logger.getLogger(BitmapTileLoader.class.getName());
 
     private final ITileDataSource mTileDataSource;
     private final BitmapTileLayer mLayer;
@@ -47,7 +47,7 @@ public class BitmapTileLoader extends TileLoader {
         try {
             mTileDataSource.query(tile, this);
         } catch (Exception e) {
-            log.debug("{} {}", tile, e.toString());
+            log.fine(tile + " " + e);
             return false;
         }
         return true;

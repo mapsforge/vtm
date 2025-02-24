@@ -24,13 +24,12 @@ import org.oscim.layers.tile.MapTile.TileData;
 import org.oscim.renderer.BufferObject;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.utils.pool.Inlist;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ShortBuffer;
+import java.util.logging.Logger;
 
 public class ExtrusionBuckets extends TileData {
-    static final Logger log = LoggerFactory.getLogger(ExtrusionBuckets.class);
+    private static final Logger log = Logger.getLogger(ExtrusionBuckets.class.getName());
 
     public ExtrusionBucket buckets;
 
@@ -154,7 +153,7 @@ public class ExtrusionBuckets extends TileData {
         int size = sumIndices * 2;
         if (iboData.position() != sumIndices) {
             int pos = iboData.position();
-            log.error("invalid indice size: {} {}", sumIndices, pos);
+            log.severe("invalid indice size: " + sumIndices + " " + pos);
             size = pos * 2;
         }
         ibo = BufferObject.get(GL.ELEMENT_ARRAY_BUFFER, size);
@@ -163,7 +162,7 @@ public class ExtrusionBuckets extends TileData {
         size = sumVertices * 4 * 2;
         if (vboData.position() != sumVertices * 4) {
             int pos = vboData.position();
-            log.error("invalid vertex size: {} {}", sumVertices, pos);
+            log.severe("invalid vertex size: " + sumVertices + " " + pos);
             size = pos * 2;
         }
 

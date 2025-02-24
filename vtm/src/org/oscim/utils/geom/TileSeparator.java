@@ -16,12 +16,12 @@
 package org.oscim.utils.geom;
 
 import org.oscim.core.GeometryBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class TileSeparator {
 
-    private static final Logger log = LoggerFactory.getLogger(TileSeparator.class);
+    private static final Logger log = Logger.getLogger(TileSeparator.class.getName());
 
     private float xmin;
     private float xmax;
@@ -61,7 +61,7 @@ public class TileSeparator {
                 if (isInside(cx, cy))
                     return true;
             } else
-                log.warn("Geometry (Point) has wrong format: " + geom.toString());
+                log.warning("Geometry (Point) has wrong format: " + geom);
         } else if (geom.isPoly()) {
             int pointPos = 0;
 

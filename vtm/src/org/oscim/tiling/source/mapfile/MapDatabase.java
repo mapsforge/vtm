@@ -37,8 +37,6 @@ import org.oscim.tiling.source.mapfile.header.SubFileParameter;
 import org.oscim.utils.Parameters;
 import org.oscim.utils.geom.TileClipper;
 import org.oscim.utils.geom.TileSeparator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,6 +44,7 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * A class for reading binary map files.
@@ -81,7 +80,7 @@ public class MapDatabase implements ITileDataSource {
      */
     private static final String INVALID_FIRST_WAY_OFFSET = "invalid first way offset: ";
 
-    private static final Logger log = LoggerFactory.getLogger(MapDatabase.class);
+    private static final Logger log = Logger.getLogger(MapDatabase.class.getName());
 
     /**
      * Bitmask for the optional POI feature "elevation".
@@ -236,7 +235,7 @@ public class MapDatabase implements ITileDataSource {
             }
             mFileSize = mInputChannel.size();
         } catch (IOException e) {
-            log.error(e.toString());
+            log.severe(e.toString());
             /* make sure that the file is closed */
             dispose();
             throw new IOException();
@@ -295,7 +294,7 @@ public class MapDatabase implements ITileDataSource {
                     mTileSource.fileHeader.getSubFileParameter(queryParameters.queryZoomLevel);
 
             if (subFileParameter == null) {
-                log.warn("no sub-file for zoom level: "
+                log.warning("no sub-file for zoom level: "
                         + queryParameters.queryZoomLevel);
 
                 sink.completed(QueryResult.FAILED);
@@ -310,7 +309,7 @@ public class MapDatabase implements ITileDataSource {
                 processBlocks(sink, queryParameters, subFileParameter);
             sink.completed(QueryResult.SUCCESS);
         } catch (Throwable t) {
-            log.error(t.toString(), t);
+            log.severe(t.toString());
             sink.completed(QueryResult.FAILED);
         }
     }
@@ -322,7 +321,7 @@ public class MapDatabase implements ITileDataSource {
                 mInputChannel.close();
                 mInputChannel = null;
             } catch (IOException e) {
-                log.error(e.toString());
+                log.severe(e.toString());
             }
         }
     }
@@ -336,8 +335,8 @@ public class MapDatabase implements ITileDataSource {
      */
     private void logDebugSignatures() {
         if (mDebugFile) {
-            log.warn(DEBUG_SIGNATURE_WAY + mSignatureWay);
-            log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
+            log.warning(DEBUG_SIGNATURE_WAY + mSignatureWay);
+            log.warning(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
         }
     }
 
@@ -369,9 +368,9 @@ public class MapDatabase implements ITileDataSource {
         /* get the relative offset to the first stored way in the block */
         int firstWayOffset = readBuffer.readUnsignedInt();
         if (firstWayOffset < 0) {
-            log.warn(INVALID_FIRST_WAY_OFFSET + firstWayOffset);
+            log.warning(INVALID_FIRST_WAY_OFFSET + firstWayOffset);
             if (mDebugFile) {
-                log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
+                log.warning(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
             }
             return;
         }
@@ -379,9 +378,9 @@ public class MapDatabase implements ITileDataSource {
         /* add the current buffer position to the relative first way offset */
         firstWayOffset += readBuffer.getBufferPosition();
         if (firstWayOffset > readBuffer.getBufferSize()) {
-            log.warn(INVALID_FIRST_WAY_OFFSET + firstWayOffset);
+            log.warning(INVALID_FIRST_WAY_OFFSET + firstWayOffset);
             if (mDebugFile) {
-                log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
+                log.warning(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
             }
             return;
         }
@@ -398,9 +397,9 @@ public class MapDatabase implements ITileDataSource {
 
         /* finished reading POIs, check if the current buffer position is valid */
         if (readBuffer.getBufferPosition() > firstWayOffset) {
-            log.warn("invalid buffer position: " + readBuffer.getBufferPosition());
+            log.warning("invalid buffer position: " + readBuffer.getBufferPosition());
             if (mDebugFile) {
-                log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
+                log.warning(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
             }
             return;
         }
@@ -537,8 +536,8 @@ public class MapDatabase implements ITileDataSource {
                 /* get and check the current block pointer */
                 long blockPointer = blockIndexEntry & BITMASK_INDEX_OFFSET;
                 if (blockPointer < 1 || blockPointer > subFileParameter.subFileSize) {
-                    log.warn("invalid current block pointer: " + blockPointer);
-                    log.warn("subFileSize: " + subFileParameter.subFileSize);
+                    log.warning("invalid current block pointer: " + blockPointer);
+                    log.warning("subFileSize: " + subFileParameter.subFileSize);
                     return;
                 }
 
@@ -554,8 +553,8 @@ public class MapDatabase implements ITileDataSource {
                     nextBlockPointer &= BITMASK_INDEX_OFFSET;
 
                     if (nextBlockPointer < 1 || nextBlockPointer > subFileParameter.subFileSize) {
-                        log.warn("invalid next block pointer: " + nextBlockPointer);
-                        log.warn("sub-file size: " + subFileParameter.subFileSize);
+                        log.warning("invalid next block pointer: " + nextBlockPointer);
+                        log.warning("sub-file size: " + subFileParameter.subFileSize);
                         return;
                     }
                 }
@@ -563,7 +562,7 @@ public class MapDatabase implements ITileDataSource {
                 /* calculate the size of the current block */
                 int blockSize = (int) (nextBlockPointer - blockPointer);
                 if (blockSize < 0) {
-                    log.warn("current block size must not be negative: "
+                    log.warning("current block size must not be negative: "
                             + blockSize);
                     return;
                 } else if (blockSize == 0) {
@@ -572,10 +571,10 @@ public class MapDatabase implements ITileDataSource {
                 } else if (blockSize > Parameters.MAXIMUM_BUFFER_SIZE) {
                     /* the current block is too large, continue with the next
                      * block */
-                    log.warn("current block size too large: " + blockSize);
+                    log.warning("current block size too large: " + blockSize);
                     continue;
                 } else if (blockPointer + blockSize > mFileSize) {
-                    log.warn("current block larger than file size: "
+                    log.warning("current block larger than file size: "
                             + blockSize);
                     return;
                 }
@@ -585,7 +584,7 @@ public class MapDatabase implements ITileDataSource {
                 ReadBuffer readBuffer = new ReadBuffer(mInputChannel);
                 if (!readBuffer.readFromFile(subFileParameter.startAddress + blockPointer, blockSize)) {
                     /* skip the current block */
-                    log.warn("reading current block has failed: " + blockSize);
+                    log.warning("reading current block has failed: " + blockSize);
                     return;
                 }
 
@@ -616,7 +615,7 @@ public class MapDatabase implements ITileDataSource {
             /* get and check the block signature */
             mSignatureBlock = readBuffer.readUTF8EncodedString(SIGNATURE_LENGTH_BLOCK);
             if (!mSignatureBlock.startsWith("###TileStart")) {
-                log.warn("invalid block signature: " + mSignatureBlock);
+                log.warning("invalid block signature: " + mSignatureBlock);
                 return false;
             }
         }
@@ -644,8 +643,8 @@ public class MapDatabase implements ITileDataSource {
                 /* get and check the POI signature */
                 mSignaturePoi = readBuffer.readUTF8EncodedString(SIGNATURE_LENGTH_POI);
                 if (!mSignaturePoi.startsWith("***POIStart")) {
-                    log.warn("invalid POI signature: " + mSignaturePoi);
-                    log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
+                    log.warning("invalid POI signature: " + mSignaturePoi);
+                    log.warning(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
                     return false;
                 }
             }
@@ -724,7 +723,7 @@ public class MapDatabase implements ITileDataSource {
         /* get and check the number of way coordinate blocks (VBE-U) */
         int numBlocks = readBuffer.readUnsignedInt();
         if (numBlocks < 1 || numBlocks > Short.MAX_VALUE) {
-            log.warn("invalid number of way coordinate blocks: " + numBlocks);
+            log.warning("invalid number of way coordinate blocks: " + numBlocks);
             return false;
         }
 
@@ -737,7 +736,7 @@ public class MapDatabase implements ITileDataSource {
             int numWayNodes = readBuffer.readUnsignedInt();
 
             if (numWayNodes < 2 || numWayNodes > Short.MAX_VALUE) {
-                log.warn("invalid number of way nodes: " + numWayNodes);
+                log.warning("invalid number of way nodes: " + numWayNodes);
                 logDebugSignatures();
                 return false;
             }
@@ -884,8 +883,8 @@ public class MapDatabase implements ITileDataSource {
                 // get and check the way signature
                 mSignatureWay = readBuffer.readUTF8EncodedString(SIGNATURE_LENGTH_WAY);
                 if (!mSignatureWay.startsWith("---WayStart")) {
-                    log.warn("invalid way signature: " + mSignatureWay);
-                    log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
+                    log.warning("invalid way signature: " + mSignatureWay);
+                    log.warning(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
                     return false;
                 }
             }
@@ -914,11 +913,11 @@ public class MapDatabase implements ITileDataSource {
             } else {
                 int wayDataSize = readBuffer.readUnsignedInt();
                 if (wayDataSize < 0) {
-                    log.warn("invalid way data size: " + wayDataSize);
+                    log.warning("invalid way data size: " + wayDataSize);
                     if (mDebugFile) {
-                        log.warn(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
+                        log.warning(DEBUG_SIGNATURE_BLOCK + mSignatureBlock);
                     }
-                    log.error("BUG way 2");
+                    log.severe("BUG way 2");
                     return false;
                 }
 
@@ -990,7 +989,7 @@ public class MapDatabase implements ITileDataSource {
                 wayDataBlocks = readBuffer.readUnsignedInt();
 
                 if (wayDataBlocks < 1) {
-                    log.warn("invalid number of way data blocks: " + wayDataBlocks);
+                    log.warning("invalid number of way data blocks: " + wayDataBlocks);
                     logDebugSignatures();
                     return false;
                 }
@@ -1151,7 +1150,7 @@ public class MapDatabase implements ITileDataSource {
                     mTileSource.fileHeader.getSubFileParameter(queryParameters.queryZoomLevel);
 
             if (subFileParameter == null) {
-                log.warn("no sub-file for zoom level: "
+                log.warning("no sub-file for zoom level: "
                         + queryParameters.queryZoomLevel);
 
                 return null;
@@ -1161,7 +1160,7 @@ public class MapDatabase implements ITileDataSource {
             QueryCalculations.calculateBlocks(queryParameters, subFileParameter);
             processBlocks(queryParameters, subFileParameter, Tile.getBoundingBox(upperLeft, lowerRight), selector, mapReadResult);
         } catch (IOException e) {
-            log.error(e.toString());
+            log.severe(e.toString());
             return null;
         }
 

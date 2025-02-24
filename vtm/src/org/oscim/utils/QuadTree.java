@@ -5,8 +5,6 @@ import org.oscim.core.Point;
 import org.oscim.utils.pool.Pool;
 import org.oscim.utils.quadtree.BoxTree;
 import org.oscim.utils.quadtree.BoxTree.BoxItem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -16,8 +14,6 @@ import java.util.List;
  * so items extents should be greater than 1. FIXME tests this case
  */
 public class QuadTree<T> extends BoxTree<BoxItem<T>, T> implements SpatialIndex<T> {
-
-    static final Logger log = LoggerFactory.getLogger(QuadTree.class);
 
     public QuadTree(int extents, int maxDepth) {
         super(extents, maxDepth);

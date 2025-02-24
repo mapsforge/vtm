@@ -15,12 +15,12 @@
 package org.oscim.tiling;
 
 import org.oscim.layers.tile.MapTile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class OverzoomTileDataSource implements ITileDataSource {
 
-    private static final Logger log = LoggerFactory.getLogger(OverzoomTileDataSource.class);
+    private static final Logger log = Logger.getLogger(OverzoomTileDataSource.class.getName());
 
     private final ITileDataSource tileDataSource;
     private final int overZoom;
@@ -46,7 +46,7 @@ public class OverzoomTileDataSource implements ITileDataSource {
             }
             tileDataSource.query(mapTile, dataSink);
         } catch (Throwable t) {
-            log.error(t.toString(), t);
+            log.severe(t.toString());
         }
     }
 

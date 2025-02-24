@@ -27,12 +27,11 @@ import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.source.PbfDecoder;
 import org.oscim.tiling.source.UrlTileDataSource;
 import org.oscim.tiling.source.UrlTileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class OSciMap2TileSource extends UrlTileSource {
 
@@ -46,7 +45,7 @@ public class OSciMap2TileSource extends UrlTileSource {
     }
 
     static class TileDecoder extends PbfDecoder {
-        static final Logger log = LoggerFactory.getLogger(TileDecoder.class);
+        private static final Logger log = Logger.getLogger(TileDecoder.class.getName());
         private static final int TAG_TILE_NUM_TAGS = 1;
         private static final int TAG_TILE_TAG_KEYS = 2;
         private static final int TAG_TILE_TAG_VALUES = 3;
@@ -133,7 +132,7 @@ public class OSciMap2TileSource extends UrlTileSource {
                         break;
 
                     default:
-                        log.debug(mTile + " invalid type for tile: " + tag);
+                        log.fine(mTile + " invalid type for tile: " + tag);
                         return false;
                 }
             }
@@ -153,7 +152,7 @@ public class OSciMap2TileSource extends UrlTileSource {
             else
                 tag = new Tag(key, tagString, true);
             if (debug)
-                log.debug(mTile + " add tag: " + curTag + " " + tag);
+                log.fine(mTile + " add tag: " + curTag + " " + tag);
 
             mTileTags.add(tag);
 
@@ -222,14 +221,14 @@ public class OSciMap2TileSource extends UrlTileSource {
 
                     case TAG_ELEM_COORDS:
                         if (coordCnt == 0) {
-                            log.debug(mTile + " no coordinates");
+                            log.fine(mTile + " no coordinates");
                         }
 
                         mElem.ensurePointSize(coordCnt, false);
                         int cnt = decodeInterleavedPoints(mElem, mScale);
 
                         if (cnt != coordCnt) {
-                            log.debug(mTile + " wrong number of coordintes");
+                            log.fine(mTile + " wrong number of coordinates");
                             fail = true;
                         }
                         break;
@@ -254,12 +253,12 @@ public class OSciMap2TileSource extends UrlTileSource {
                         break;
 
                     default:
-                        log.debug(mTile + " invalid type for way: " + tag);
+                        log.fine(mTile + " invalid type for way: " + tag);
                 }
             }
 
             if (fail || indexCnt == 0) {
-                log.debug(mTile + " failed reading way: bytes:" + bytes + " index:"
+                log.fine(mTile + " failed reading way: bytes:" + bytes + " index:"
                         + (Arrays.toString(index)) + " tag:"
                         + (mElem.tags.size() > 0 ? Arrays.deepToString(mElem.tags.getTags()) : "null")
                         + " " + indexCnt + " " + coordCnt);
@@ -296,7 +295,7 @@ public class OSciMap2TileSource extends UrlTileSource {
                 int tagNum = decodeVarint32();
 
                 if (tagNum < 0) {
-                    log.debug("NULL TAG: " + mTile
+                    log.fine("NULL TAG: " + mTile
                             + " invalid tag:"
                             + tagNum + " " + cnt);
                     return false;
@@ -309,7 +308,7 @@ public class OSciMap2TileSource extends UrlTileSource {
                 tagNum -= Tags.LIMIT;
 
                 if (tagNum < 0 || tagNum > max) {
-                    log.debug("NULL TAG: " + mTile
+                    log.fine("NULL TAG: " + mTile
                             + " could not find tag:"
                             + tagNum + " " + cnt);
                     return false;
@@ -319,7 +318,7 @@ public class OSciMap2TileSource extends UrlTileSource {
             }
 
             if (cnt == 0) {
-                log.debug("got no TAG!");
+                log.fine("got no TAG!");
                 return false;
             }
             return true;

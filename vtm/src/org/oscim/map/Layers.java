@@ -29,18 +29,17 @@ import org.oscim.layers.tile.ZoomLimiter;
 import org.oscim.map.Map.InputListener;
 import org.oscim.map.Map.UpdateListener;
 import org.oscim.renderer.LayerRenderer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Logger;
 
 public final class Layers extends AbstractList<Layer> {
 
-    private static final Logger log = LoggerFactory.getLogger(Layers.class);
+    private static final Logger log = Logger.getLogger(Layers.class.getName());
 
     private final Map mMap;
     private final Layer.EnableHandler mEnableHandler;
@@ -81,7 +80,7 @@ public final class Layers extends AbstractList<Layer> {
     @Override
     public synchronized void add(int index, Layer layer) {
         if (mLayerList.contains(layer)) {
-            log.warn("layer already exists");
+            log.warning("layer already exists");
             return;
         }
 
@@ -117,12 +116,12 @@ public final class Layers extends AbstractList<Layer> {
      */
     public synchronized void add(Layer layer, int group) {
         if (mLayerList.contains(layer)) {
-            log.warn("layer already exists");
+            log.warning("layer already exists");
             return;
         }
         int index = mGroupList.indexOf(group);
         if (index < 0) {
-            log.warn("unknown / adding layer group" + group);
+            log.warning("unknown / adding layer group" + group);
             addGroup(group);
         }
 
@@ -180,7 +179,7 @@ public final class Layers extends AbstractList<Layer> {
     @Override
     public synchronized Layer set(int index, Layer layer) {
         if (mLayerList.contains(layer)) {
-            log.warn("layer already exists");
+            log.warning("layer already exists");
             return layer;
         }
 
@@ -239,7 +238,7 @@ public final class Layers extends AbstractList<Layer> {
 
     public synchronized void addGroup(int group) {
         if (mGroupList.contains(group)) {
-            log.warn("group " + group + " already exists");
+            log.warning("group " + group + " already exists");
             return;
         }
 
@@ -345,7 +344,7 @@ public final class Layers extends AbstractList<Layer> {
 
             mDirtyLayers = false;
         } catch (Exception e) {
-            log.error(e.toString(), e);
+            log.severe(e.toString());
         }
     }
 }

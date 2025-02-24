@@ -17,14 +17,13 @@
  */
 package org.oscim.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 /**
  * An abstract base class for threads which support pausing and resuming.
  */
 public abstract class PausableThread extends Thread {
-    private static final Logger log = LoggerFactory.getLogger(PausableThread.class);
+    private static final Logger log = Logger.getLogger(PausableThread.class.getName());
     private static final boolean dbg = false;
 
     private boolean mPausing = true;
@@ -41,7 +40,7 @@ public abstract class PausableThread extends Thread {
             while (!isPausing()) {
 
                 if (dbg)
-                    log.debug("Await Pause {}", getThreadName());
+                    log.fine("Await Pause " + getThreadName());
 
                 try {
                     wait(100);
@@ -57,7 +56,7 @@ public abstract class PausableThread extends Thread {
         if (!mRunning)
             return;
 
-        log.debug("Finish {}", getThreadName());
+        log.fine("Finish " + getThreadName());
 
         mShouldStop = true;
         this.interrupt();
@@ -113,18 +112,14 @@ public abstract class PausableThread extends Thread {
                             mPausing = true;
 
                             if (dbg)
-                                log.debug("Pausing: {}",
-                                        getThreadName());
+                                log.fine("Pausing: " + getThreadName());
                         }
 
                         wait();
 
                     } catch (InterruptedException e) {
                         if (dbg)
-                            log.debug("Interrupted {} {}:{}",
-                                    getThreadName(),
-                                    mShouldPause,
-                                    mShouldStop);
+                            log.fine("Interrupted " + getThreadName() + " " + mShouldPause + ":" + mShouldStop);
 
                         if (mShouldStop)
                             break O;
@@ -141,15 +136,12 @@ public abstract class PausableThread extends Thread {
                 doWork();
             } catch (InterruptedException e) {
                 if (dbg)
-                    log.debug("Interrupted {} {}:{}",
-                            getThreadName(),
-                            mShouldPause,
-                            mShouldStop);
+                    log.fine("Interrupted " + getThreadName() + " " + mShouldPause + ":" + mShouldStop);
 
             }
         }
 
-        log.debug("Done {}", getThreadName());
+        log.fine("Done " + getThreadName());
 
         mPausing = true;
         mRunning = false;

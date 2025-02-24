@@ -28,8 +28,8 @@ import org.oscim.tiling.TileSource;
 import org.oscim.tiling.TileSource.OpenResult;
 import org.oscim.utils.pool.Inlist.List;
 import org.oscim.utils.pool.LList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 /**
  * The vector-tile-map layer. This class manages instances of
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * for rendering.
  */
 public class VectorTileLayer extends TileLayer {
-    static final Logger log = LoggerFactory.getLogger(VectorTileLayer.class);
+    private static final Logger log = Logger.getLogger(VectorTileLayer.class.getName());
 
     private final List<LList<TileLoaderProcessHook>> mLoaderProcessHooks = new List<>();
 
@@ -87,7 +87,7 @@ public class VectorTileLayer extends TileLayer {
         OpenResult msg = tileSource.open();
 
         if (msg != OpenResult.SUCCESS) {
-            log.debug(msg.getErrorMessage());
+            log.fine(msg.getErrorMessage());
             return false;
         }
 

@@ -32,11 +32,8 @@ import org.oscim.renderer.MapRenderer;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.utils.async.SimpleWorker;
 import org.oscim.utils.geom.TileClipper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class AbstractVectorLayer<T> extends Layer implements UpdateListener {
-    public static final Logger log = LoggerFactory.getLogger(AbstractVectorLayer.class);
 
     protected static final double UNSCALE_COORD = 4;
 

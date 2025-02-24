@@ -24,14 +24,11 @@ import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLUtils;
 import org.oscim.renderer.GLViewport;
 import org.oscim.theme.styles.LineStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.oscim.backend.GLAdapter.gl;
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 
 public class HairLineBucket extends RenderBucket {
-    static final Logger log = LoggerFactory.getLogger(HairLineBucket.class);
 
     public LineStyle line;
 

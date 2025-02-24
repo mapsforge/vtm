@@ -26,17 +26,15 @@ import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLUtils;
 import org.oscim.utils.pool.Inlist;
 import org.oscim.utils.pool.SyncPool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
 
 import javax.annotation.CheckReturnValue;
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import static org.oscim.backend.GLAdapter.gl;
 
 public class TextureItem extends Inlist<TextureItem> {
-    static final Logger log = LoggerFactory.getLogger(TextureItem.class);
+    private static final Logger log = Logger.getLogger(TextureItem.class.getName());
 
     static final boolean dbg = false;
 
@@ -287,7 +285,7 @@ public class TextureItem extends Inlist<TextureItem> {
                 initTexture(t);
 
                 if (dbg)
-                    log.debug("fill:" + getFill()
+                    log.fine("fill:" + getFill()
                             + " count:" + mTexCnt
                             + " new texture " + t.id);
 

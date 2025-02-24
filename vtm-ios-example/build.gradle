@@ -26,7 +26,6 @@ createIPA.dependsOn build
 dependencies {
     implementation project(':vtm-ios')
     implementation project(':vtm-jts')
-    implementation "org.slf4j:slf4j-simple:$slf4jVersion"
 }
 
 task copyVtmResources(type: Copy) {

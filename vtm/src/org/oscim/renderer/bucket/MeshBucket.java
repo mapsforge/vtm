@@ -30,14 +30,14 @@ import org.oscim.renderer.bucket.VertexData.Chunk;
 import org.oscim.theme.styles.AreaStyle;
 import org.oscim.utils.ColorUtil;
 import org.oscim.utils.TessJNI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.oscim.backend.GLAdapter.gl;
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 
 public class MeshBucket extends RenderBucket {
-    static final Logger log = LoggerFactory.getLogger(MeshBucket.class);
+    private static final Logger log = Logger.getLogger(MeshBucket.class.getName());
     static final boolean dbgRender = false;
 
     public AreaStyle area;
@@ -102,7 +102,7 @@ public class MeshBucket extends RenderBucket {
         }
         if (!tess.tesselate()) {
             tess.dispose();
-            log.error("error in tessellation {}", numPoints);
+            log.severe("error in tessellation " + numPoints);
             return;
         }
 

@@ -3,9 +3,7 @@ apply plugin: 'maven-publish'
 
 dependencies {
     api project(':vtm')
-    api('com.github.jeo.jeo:jeo-carto:master-SNAPSHOT') {
-        exclude group: 'org.slf4j', module: 'slf4j-jdk14'
-    }
+    api 'com.github.jeo.jeo:jeo-carto:master-SNAPSHOT'
 }
 
 sourceSets {

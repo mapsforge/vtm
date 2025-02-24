@@ -23,8 +23,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.oscim.core.Tile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -32,10 +30,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 public class OkHttpEngine implements HttpEngine {
 
-    private static final Logger log = LoggerFactory.getLogger(OkHttpEngine.class);
+    private static final Logger log = Logger.getLogger(OkHttpEngine.class.getName());
 
     private final OkHttpClient mClient;
     private final UrlTileSource mTileSource;
@@ -89,7 +88,7 @@ public class OkHttpEngine implements HttpEngine {
             } else
                 mInputStream = response.body().byteStream();
         } catch (Exception e) {
-            log.error(e.toString(), e);
+            log.severe(e.toString());
         }
     }
 
@@ -101,7 +100,7 @@ public class OkHttpEngine implements HttpEngine {
         try {
             mInputStream.close();
         } catch (Exception e) {
-            log.error(e.toString(), e);
+            log.severe(e.toString());
         }
         mInputStream = null;
     }
@@ -112,7 +111,7 @@ public class OkHttpEngine implements HttpEngine {
             try {
                 os.write(mCachedData);
             } catch (IOException e) {
-                log.error(e.toString(), e);
+                log.severe(e.toString());
             }
         }
     }

@@ -27,20 +27,19 @@ import org.oscim.core.MercatorProjection;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.QueryResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * A tile data source for MBTiles raster databases.
  */
 public class MBTilesBitmapTileDataSource extends MBTilesTileDataSource {
 
-    private static final Logger log = LoggerFactory.getLogger(MBTilesBitmapTileDataSource.class);
+    private static final Logger log = Logger.getLogger(MBTilesBitmapTileDataSource.class.getName());
 
     private static final List<String> SUPPORTED_FORMATS = Arrays.asList("png", "jpg", "jpeg");
 
@@ -62,7 +61,7 @@ public class MBTilesBitmapTileDataSource extends MBTilesTileDataSource {
         try {
             assertDatabaseFormat();
         } catch (MBTilesUnsupportedException e) {
-            log.error("Invalid MBTiles database", e);
+            log.severe("Invalid MBTiles database" + e);
         }
     }
 
@@ -125,7 +124,7 @@ public class MBTilesBitmapTileDataSource extends MBTilesTileDataSource {
             sink.setTileImage(bitmap);
             res = QueryResult.SUCCESS;
         } catch (Throwable t) {
-            log.error(t.toString(), t);
+            log.severe(t.toString());
         } finally {
             sink.completed(res);
         }

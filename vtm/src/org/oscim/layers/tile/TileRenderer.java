@@ -24,15 +24,12 @@ import org.oscim.renderer.LayerRenderer;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.utils.ScanBox;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.oscim.layers.tile.MapTile.PROXY_PARENT;
 import static org.oscim.layers.tile.MapTile.State.NEW_DATA;
 import static org.oscim.layers.tile.MapTile.State.READY;
 
 public abstract class TileRenderer extends LayerRenderer {
-    static final Logger log = LoggerFactory.getLogger(TileRenderer.class);
 
     /**
      * fade-in time

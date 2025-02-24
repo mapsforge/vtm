@@ -23,17 +23,15 @@ import org.oscim.core.Tile;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.source.ITileDecoder;
-import org.oscim.tiling.source.LwHttp;
 import org.oscim.tiling.source.UrlTileDataSource;
 import org.oscim.tiling.source.UrlTileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 public class BitmapTileSource extends UrlTileSource {
-    static final Logger log = LoggerFactory.getLogger(LwHttp.class);
+    private static final Logger log = Logger.getLogger(BitmapTileSource.class.getName());
 
     public static class Builder<T extends Builder<T>> extends UrlTileSource.Builder<T> {
 
@@ -92,7 +90,7 @@ public class BitmapTileSource extends UrlTileSource {
 
             Bitmap bitmap = CanvasAdapter.decodeBitmap(is);
             if (!bitmap.isValid()) {
-                log.debug("{} invalid bitmap", tile);
+                log.fine(tile + " invalid bitmap");
                 return false;
             }
             sink.setTileImage(bitmap);

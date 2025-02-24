@@ -14,7 +14,6 @@ dependencies {
     implementation project(':vtm-models')
     implementation project(':vtm-mvt')
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    implementation "org.slf4j:slf4j-jdk14:$slf4jVersion"
 }
 
 sourceSets {

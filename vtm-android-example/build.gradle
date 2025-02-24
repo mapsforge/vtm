@@ -10,7 +10,6 @@ dependencies {
     implementation project(':vtm-jts')
     implementation project(':vtm-mvt')
     implementation project(':vtm-themes')
-    implementation "org.slf4j:slf4j-android:$slf4jVersion"
 
     implementation project(':vtm-android-gdx')
     implementation project(':vtm-gdx')

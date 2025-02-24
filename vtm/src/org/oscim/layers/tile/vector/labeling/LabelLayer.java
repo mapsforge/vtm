@@ -34,8 +34,6 @@ import org.oscim.utils.async.SimpleWorker;
 public class LabelLayer extends Layer implements Map.UpdateListener, TileManager.Listener,
         ZoomLimiter.IZoomLimiter {
 
-    //private static final Logger log = LoggerFactory.getLogger(LabelLayer.class);
-
     static final String LABEL_DATA = LabelLayer.class.getName();
 
     private static final long MAX_RELABEL_DELAY = 100;

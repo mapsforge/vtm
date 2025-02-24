@@ -5,10 +5,9 @@ import org.oscim.utils.pool.Inlist;
 import org.oscim.utils.pool.Pool;
 import org.oscim.utils.quadtree.BoxTree.BoxItem;
 import org.oscim.utils.quadtree.BoxTree.BoxNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 /**
  * A BoxTree is made of BoxNodes which hold a list of
@@ -18,7 +17,7 @@ import java.util.Arrays;
  */
 public class BoxTree<T extends BoxItem<E>, E> extends TileIndex<BoxNode<T>, T> {
 
-    static final Logger log = LoggerFactory.getLogger(BoxTree.class);
+    private static final Logger log = Logger.getLogger(BoxTree.class.getName());
     static boolean dbg = false;
 
     protected final int extents;
@@ -476,7 +475,7 @@ public class BoxTree<T extends BoxItem<E>, E> extends TileIndex<BoxNode<T>, T> {
                 cur.item = box;
 
                 if (dbg)
-                    log.debug("insert: " + level
+                    log.fine("insert: " + level
                             + " cnt:" + Inlist.size(cur.item) + " " + x1 + ":" + y1
                             + " /" + (x2) + "x" + (y2) + " " + box.item);
                 break;
@@ -528,7 +527,7 @@ public class BoxTree<T extends BoxItem<E>, E> extends TileIndex<BoxNode<T>, T> {
                 for (BoxItem<E> it = cur.item; it != null; it = it.next) {
                     if (it.item == item) {
                         if (dbg)
-                            log.debug("remove: " + level
+                            log.fine("remove: " + level
                                     + " cnt:" + Inlist.size(cur.item) + " " + x1 + ":" + y1
                                     + " /" + (x2) + "x" + (y2) + " " + item);
 

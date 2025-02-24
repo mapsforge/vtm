@@ -28,8 +28,8 @@ import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLUtils;
 import org.oscim.renderer.GLViewport;
 import org.oscim.theme.styles.LineStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.oscim.backend.GLAdapter.gl;
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
@@ -41,7 +41,7 @@ import static org.oscim.renderer.MapRenderer.COORD_SCALE;
  * to fixed point values.
  */
 public class LineBucket extends RenderBucket {
-    static final Logger log = LoggerFactory.getLogger(LineBucket.class);
+    private static final Logger log = Logger.getLogger(LineBucket.class.getName());
 
     /**
      * scale factor mapping extrusion vector to short values
@@ -121,7 +121,7 @@ public class LineBucket extends RenderBucket {
         else if (geom.isLine())
             addLine(geom.points, geom.index, -1, false);
         else
-            log.debug("geometry must be LINE or POLYGON");
+            log.fine("geometry must be LINE or POLYGON");
     }
 
     public void addLine(float[] points, int numPoints, boolean closed) {

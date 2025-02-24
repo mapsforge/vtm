@@ -27,15 +27,14 @@ import org.oscim.tiling.source.PbfDecoder;
 import org.oscim.utils.FastMath;
 import org.oscim.utils.pool.Inlist;
 import org.oscim.utils.pool.Pool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class TileDecoder extends PbfDecoder {
-    private static final Logger log = LoggerFactory.getLogger(TileDecoder.class);
+    private static final Logger log = Logger.getLogger(TileDecoder.class.getName());
 
     private static final int TAG_TILE_LAYERS = 3;
 
@@ -86,7 +85,7 @@ public class TileDecoder extends PbfDecoder {
             throws IOException {
 
         if (debug)
-            log.debug(tile + " decode");
+            log.fine(tile + " decode");
 
         //setInputStream(new InflaterInputStream(is));
         setInputStream(is);
@@ -178,7 +177,7 @@ public class TileDecoder extends PbfDecoder {
 
         Tag layerTag = new Tag("layer", name);
         if (debug)
-            log.debug("add layer " + name);
+            log.fine("add layer " + name);
 
         if (numFeatures == 0)
             return true;

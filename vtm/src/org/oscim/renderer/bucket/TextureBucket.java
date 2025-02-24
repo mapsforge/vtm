@@ -23,8 +23,6 @@ import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.renderer.bucket.TextureItem.TexturePool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ShortBuffer;
 
@@ -33,8 +31,6 @@ import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 import static org.oscim.renderer.MapRenderer.MAX_INDICES;
 
 public class TextureBucket extends RenderBucket {
-
-    static final Logger log = LoggerFactory.getLogger(TextureBucket.class);
 
     public static final int INDICES_PER_SPRITE = 6;
     static final int VERTICES_PER_SPRITE = 4;

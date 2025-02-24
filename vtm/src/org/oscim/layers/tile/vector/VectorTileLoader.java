@@ -27,14 +27,14 @@ import org.oscim.theme.RenderTheme;
 import org.oscim.theme.styles.*;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.oscim.layers.tile.MapTile.State.LOADING;
 
 public class VectorTileLoader extends TileLoader implements RenderStyle.Callback {
 
-    static final Logger log = LoggerFactory.getLogger(VectorTileLoader.class);
+    private static final Logger log = Logger.getLogger(VectorTileLoader.class.getName());
 
     protected static final double STROKE_INCREASE = 1.4;
     protected static final byte LAYERS = 11;
@@ -93,12 +93,12 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
     public boolean loadTile(MapTile tile) {
 
         if (mTileDataSource == null) {
-            log.error("no tile source is set");
+            log.severe("no tile source is set");
             return false;
         }
         renderTheme = mTileLayer.getTheme();
         if (renderTheme == null) {
-            log.error("no theme is set");
+            log.severe("no theme is set");
             return false;
         }
 
@@ -119,10 +119,10 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
             /* query data source, which calls process() callback */
             mTileDataSource.query(tile, this);
         } catch (NullPointerException e) {
-            log.debug("NPE {} {}", tile, e.toString());
+            log.fine("NPE " + tile + " " + e);
             e.printStackTrace();
         } catch (Throwable t) {
-            log.debug("{} {}", tile, t.toString());
+            log.fine(tile + " " + t);
             t.printStackTrace();
             return false;
         }
@@ -229,7 +229,7 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
         int nLevel = mCurBucket + level;
 
         if (line.outline && mCurLineBucket == null) {
-            log.debug("missing line for outline! " + mElement.tags
+            log.fine("missing line for outline! " + mElement.tags
                     + " lvl:" + level + " layer:" + mElement.layer);
             return;
         }

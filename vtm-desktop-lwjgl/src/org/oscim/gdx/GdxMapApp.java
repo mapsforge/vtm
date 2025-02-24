@@ -31,12 +31,8 @@ import org.oscim.core.Tile;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 import org.oscim.utils.FastMath;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GdxMapApp extends GdxMap {
-
-    public static final Logger log = LoggerFactory.getLogger(GdxMapApp.class);
 
     public static void init() {
         // load native library

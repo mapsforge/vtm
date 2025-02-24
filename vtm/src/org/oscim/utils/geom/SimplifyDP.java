@@ -18,8 +18,8 @@
 package org.oscim.utils.geom;
 
 import org.oscim.core.GeometryBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.oscim.utils.geom.GeometryUtils.squareSegmentDistance;
 
@@ -30,7 +30,7 @@ import static org.oscim.utils.geom.GeometryUtils.squareSegmentDistance;
  * https://github.com/ekeneijeoma/simplify-java
  */
 public class SimplifyDP {
-    static final Logger log = LoggerFactory.getLogger(SimplifyDP.class);
+    private static final Logger log = Logger.getLogger(SimplifyDP.class.getName());
 
     boolean[] markers = new boolean[128];
     int[] stack = new int[32];
@@ -53,7 +53,7 @@ public class SimplifyDP {
 
             int end = simplify(geom.points, inPos, len, outPos, sqTolerance);
             if (end > inPos + len)
-                log.error("out larger than cur: {} > {}", end, inPos + len);
+                log.severe("out larger than cur: " + end + " > " + (inPos + len));
 
             idx[i] = (short) (end - outPos);
             outPos = end;

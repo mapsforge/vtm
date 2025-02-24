@@ -29,11 +29,11 @@ import org.oscim.renderer.bucket.ExtrusionBucket;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.TileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 class S3DBTileLoader extends TileLoader {
-    static final Logger log = LoggerFactory.getLogger(S3DBTileLoader.class);
+    private static final Logger log = Logger.getLogger(S3DBTileLoader.class.getName());
 
     private static final Color.HSV HSV = new Color.HSV(0f, 0.5f, 1.2f);
 
@@ -89,7 +89,7 @@ class S3DBTileLoader extends TileLoader {
             /* query database, which calls process() callback */
             mTileDataSource.query(mTile, this);
         } catch (Exception e) {
-            log.debug("{}", e);
+            log.fine(e.toString());
             return false;
         }
 
@@ -114,7 +114,7 @@ class S3DBTileLoader extends TileLoader {
     public void process(MapElement element) {
 
         if (element.type != GeometryType.TRIS) {
-            log.debug("wrong type " + element.type);
+            log.fine("wrong type " + element.type);
             return;
         }
 

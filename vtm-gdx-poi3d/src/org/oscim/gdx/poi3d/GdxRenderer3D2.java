@@ -25,7 +25,6 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-
 import org.oscim.backend.GL;
 import org.oscim.core.Tile;
 import org.oscim.map.Map;
@@ -34,8 +33,6 @@ import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.LayerRenderer;
 import org.oscim.utils.geom.GeometryUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.oscim.backend.GLAdapter.gl;
 
@@ -43,7 +40,6 @@ import static org.oscim.backend.GLAdapter.gl;
  * Gdx renderer for more complex 3D models.
  */
 public class GdxRenderer3D2 extends LayerRenderer {
-    static final Logger log = LoggerFactory.getLogger(GdxRenderer3D2.class);
 
     ModelBatch modelBatch;
     public MapCamera cam;

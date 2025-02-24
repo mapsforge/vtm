@@ -16,18 +16,16 @@
  */
 package org.oscim.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 /**
  * A utility class with IO-specific helper methods.
  */
 public final class IOUtils {
-    static final Logger log = LoggerFactory.getLogger(IOUtils.class);
+    private static final Logger log = Logger.getLogger(IOUtils.class.getName());
 
     /**
      * Invokes the {@link Closeable#close()} method on the given object. If an
@@ -43,7 +41,7 @@ public final class IOUtils {
         try {
             closeable.close();
         } catch (IOException e) {
-            log.debug(e.toString());
+            log.fine(e.toString());
         }
     }
 
@@ -55,7 +53,7 @@ public final class IOUtils {
         try {
             closeable.close();
         } catch (IOException e) {
-            log.debug(e.toString());
+            log.fine(e.toString());
         }
     }
 

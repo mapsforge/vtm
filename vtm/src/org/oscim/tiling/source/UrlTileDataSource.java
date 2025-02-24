@@ -25,18 +25,17 @@ import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
 import org.oscim.utils.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.logging.Logger;
 
 public class UrlTileDataSource implements ITileDataSource {
 
-    private static final Logger log = LoggerFactory.getLogger(UrlTileDataSource.class);
+    private static final Logger log = Logger.getLogger(UrlTileDataSource.class.getName());
 
     protected final HttpEngine mConn;
     protected final ITileDecoder mTileDecoder;
@@ -64,7 +63,7 @@ public class UrlTileDataSource implements ITileDataSource {
                         return;
                     }
                 } catch (IOException e) {
-                    log.debug("{} Cache read: {}", tile, e);
+                    log.fine(tile + " Cache read: " + e);
                 } finally {
                     IOUtils.closeQuietly(is);
                 }
@@ -84,18 +83,18 @@ public class UrlTileDataSource implements ITileDataSource {
             if (mTileDecoder.decode(tile, sink, is))
                 res = QueryResult.SUCCESS;
         } catch (SocketException e) {
-            log.debug("{} Socket Error: {}", tile, e.toString());
+            log.fine(tile + " Socket Error: " + e);
         } catch (SocketTimeoutException e) {
-            log.debug("{} Socket Timeout", tile);
+            log.fine(tile + " Socket Timeout");
             res = QueryResult.DELAYED;
         } catch (UnknownHostException e) {
-            log.debug("{} Unknown host: {}", tile, e.toString());
+            log.fine(tile + " Unknown host: " + e);
         } catch (IOException e) {
-            log.debug("{} Network Error: {}", tile, e.toString());
+            log.fine(tile + " Network Error: " + e);
         } catch (Exception e) {
-            log.debug("{} Error: {}", tile, e.toString());
+            log.fine(tile + " Error: " + e);
         } catch (Throwable t) {
-            log.error(t.toString(), t);
+            log.severe(t.toString());
         } finally {
             boolean ok = (res == QueryResult.SUCCESS);
 

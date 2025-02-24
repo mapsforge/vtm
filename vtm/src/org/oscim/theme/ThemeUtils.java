@@ -16,20 +16,19 @@
 package org.oscim.theme;
 
 import org.oscim.backend.XMLReaderAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
 /**
  * A utility class with theme specific helper methods.
  */
 public final class ThemeUtils {
 
-    private static final Logger log = LoggerFactory.getLogger(ThemeUtils.class);
+    private static final Logger log = Logger.getLogger(ThemeUtils.class.getName());
 
     /**
      * Check if the given theme is a Mapsforge one.
@@ -53,7 +52,7 @@ public final class ThemeUtils {
             }
             return isMapsforgeTheme.get();
         } catch (Exception e) {
-            log.error(e.toString(), e);
+            log.severe(e.toString());
             return false;
         }
     }

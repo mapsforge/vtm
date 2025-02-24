@@ -24,8 +24,6 @@ import org.oscim.utils.RTree.Node;
 import org.oscim.utils.RTree.Rect;
 import org.oscim.utils.pool.Inlist;
 import org.oscim.utils.pool.SyncPool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,8 +41,6 @@ import java.util.PriorityQueue;
  * @author 2014 Ported to Java by Hannes Janetzek
  */
 public class RTree<T> implements SpatialIndex<T>, Iterable<T> {
-
-    static final Logger log = LoggerFactory.getLogger(RTree.class);
 
     static final int MAXNODES = 8;
     static final int MINNODES = 4;

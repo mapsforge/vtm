@@ -32,14 +32,11 @@ import org.oscim.theme.styles.RenderStyle;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.oscim.utils.ColorUtil.saturate;
 
 public class RuleVisitorTest extends GdxMapApp {
 
-    final Logger log = LoggerFactory.getLogger(RuleVisitorTest.class);
     RenderTheme mTheme;
     double mSaturation = 1;
 

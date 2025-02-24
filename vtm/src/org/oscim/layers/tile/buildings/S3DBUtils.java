@@ -24,16 +24,15 @@ import org.oscim.utils.ColorsCSS;
 import org.oscim.utils.Tessellator;
 import org.oscim.utils.geom.GeometryUtils;
 import org.oscim.utils.math.MathUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Provides utils for S3DB layers.
  */
 public final class S3DBUtils {
-    private static final Logger log = LoggerFactory.getLogger(S3DBUtils.class);
+    private static final Logger log = Logger.getLogger(S3DBUtils.class.getName());
 
     // Toggle this to debug and improve ridge calculation, you can see the faults in map then.
     private static final boolean IMPROVE_RIDGE_CALCULATION = false;
@@ -73,7 +72,7 @@ public final class S3DBUtils {
         if (point == null) return;
         for (float[] ridPoint : ridgePoints.values()) {
             if (ridPoint == null) {
-                log.debug("Ridge point not found!");
+                log.fine("Ridge point not found!");
                 continue;
             }
             if (GeometryUtils.distance2D(ridPoint, point) < SNAP_THRESHOLD) {
@@ -517,7 +516,7 @@ public final class S3DBUtils {
                             isOdd = false;
                             continue;
                         } else {
-                            log.debug("Should never happen, because positionRidge wouldn't be null then");
+                            log.fine("Should never happen, because positionRidge wouldn't be null then");
                             currentRidgeInd = null;
                             continue;
                         }
@@ -525,7 +524,7 @@ public final class S3DBUtils {
 
                     // Calc actual concave
                     if (currentRidgeInd == null || indexNext == null || ridgeLines.get(currentRidgeInd) == null || ridgeLines.get(indexNext) == null) {
-                        log.debug("Concave shape not calculated correctly: " + element.toString());
+                        log.fine("Concave shape not calculated correctly: " + element);
                         currentRidgeInd = null;
                         continue;
                     }
@@ -565,13 +564,13 @@ public final class S3DBUtils {
                     // If is gabled, then use the normal line as intersection instead of bisection, but if the angle is not right, this is usually not a gable point
                     if (isGabled && direction > 1) {
                         if (ridgePoints.get(currentRidgeInd) == null) {
-                            log.debug("Gabled intersection calc failed");
+                            log.fine("Gabled intersection calc failed");
                             currentRidgeInd = null;
                             continue;
                         }
                         intersection = GeometryUtils.intersectionLines2D(ridgePoints.get(currentRidgeInd), ridgeLines.get(currentRidgeInd), point3Fs.get(shift), normVectors.get(shift));
                         if (intersection == null) {
-                            log.debug("Gabled intersection calc failed");
+                            log.fine("Gabled intersection calc failed");
                             currentRidgeInd = null;
                             continue;
                         }
@@ -614,7 +613,7 @@ public final class S3DBUtils {
                 Map.Entry<Integer, float[]> ridgeEntry = ridgeIt.next();
                 Integer key = ridgeEntry.getKey();
                 if (ridgeEntry.getValue() == null) {
-                    log.debug("Ridge calculation failed at point " + key);
+                    log.fine("Ridge calculation failed at point " + key);
                     ridgeIt.remove();
                     continue;
                 }
@@ -1126,7 +1125,7 @@ public final class S3DBUtils {
         else {
             Integer css = ColorsCSS.get(color);
             if (css == null) {
-                log.debug("unknown color:{}", color);
+                log.fine("unknown color: " + color);
                 c = Color.CYAN;
             } else
                 c = css;
@@ -1345,7 +1344,7 @@ public final class S3DBUtils {
                     break;
                 default:
                     c = Color.CYAN;
-                    log.debug("unknown material:{}", material);
+                    log.fine("unknown material: " + material);
                     break;
             }
         }

@@ -24,21 +24,20 @@ import org.oscim.layers.tile.MapTile;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.TileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import static org.oscim.tiling.QueryResult.*;
 
 public class JeoTileSource extends TileSource {
-    static final Logger log = LoggerFactory.getLogger(JeoTileSource.class);
+    private static final Logger log = Logger.getLogger(JeoTileSource.class.getName());
 
     final TileDataset mTileDataset;
 
     public JeoTileSource(TileDataset tileDataset) {
-        log.debug("load tileset {}", tileDataset.name());
+        log.fine("load tileset " + tileDataset.name());
         mTileDataset = tileDataset;
         //mTileDataset.pyramid().
         mZoomMax = 1;
@@ -51,26 +50,26 @@ public class JeoTileSource extends TileSource {
 
             @Override
             public void query(MapTile tile, ITileDataSink sink) {
-                log.debug("query {}", tile);
+                log.fine("query " + tile);
                 try {
                     Tile t = mTileDataset.read(tile.zoomLevel, tile.tileX,
                             // flip Y axis
                             (1 << tile.zoomLevel) - 1 - tile.tileY);
                     if (t == null) {
-                        log.debug("not found {}", tile);
+                        log.fine("not found " + tile);
                         sink.completed(TILE_NOT_FOUND);
                         return;
                     }
                     Bitmap b = CanvasAdapter.decodeBitmap(new ByteArrayInputStream(t.data()));
                     sink.setTileImage(b);
-                    log.debug("success {}", tile);
+                    log.fine("success " + tile);
                     sink.completed(SUCCESS);
                     return;
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                log.debug("fail {}", tile);
+                log.fine("fail " + tile);
                 sink.completed(FAILED);
             }
 

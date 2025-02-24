@@ -1,11 +1,6 @@
 package org.oscim.gdx.poi3d;
 
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.Renderable;
-import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider;
@@ -13,7 +8,6 @@ import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-
 import org.oscim.backend.GL;
 import org.oscim.core.Tile;
 import org.oscim.map.Map;
@@ -21,13 +15,10 @@ import org.oscim.map.Viewport;
 import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.LayerRenderer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.oscim.backend.GLAdapter.gl;
 
 public class GdxModelRenderer extends LayerRenderer {
-    static final Logger log = LoggerFactory.getLogger(GdxModelRenderer.class);
 
     ModelBatch modelBatch;
     public MapCamera cam;

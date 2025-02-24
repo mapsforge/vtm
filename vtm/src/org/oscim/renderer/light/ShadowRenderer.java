@@ -16,24 +16,14 @@
 package org.oscim.renderer.light;
 
 import org.oscim.backend.GL;
-import org.oscim.renderer.ExtrusionRenderer;
-import org.oscim.renderer.GLMatrix;
-import org.oscim.renderer.GLShader;
-import org.oscim.renderer.GLState;
-import org.oscim.renderer.GLUtils;
-import org.oscim.renderer.GLViewport;
-import org.oscim.renderer.LayerRenderer;
-import org.oscim.renderer.MapRenderer;
+import org.oscim.renderer.*;
 import org.oscim.utils.math.MathUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.FloatBuffer;
 
 import static org.oscim.backend.GLAdapter.gl;
 
 public class ShadowRenderer extends LayerRenderer {
-    private static final Logger log = LoggerFactory.getLogger(ShadowRenderer.class);
 
     public static boolean DEBUG = false;
 

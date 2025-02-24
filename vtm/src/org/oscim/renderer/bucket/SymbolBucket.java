@@ -23,15 +23,14 @@ import org.oscim.core.PointF;
 import org.oscim.renderer.GLMatrix;
 import org.oscim.renderer.atlas.TextureAtlas;
 import org.oscim.utils.pool.Inlist;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ShortBuffer;
+import java.util.logging.Logger;
 
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 
 public final class SymbolBucket extends TextureBucket {
-    static final Logger log = LoggerFactory.getLogger(SymbolBucket.class);
+    private static final Logger log = Logger.getLogger(SymbolBucket.class.getName());
 
     private static final int VERTICES_PER_SPRITE = 4;
     private static final int LBIT_MASK = 0xfffffffe;
@@ -129,7 +128,7 @@ public final class SymbolBucket extends TextureBucket {
                 height = t.height;
 
             } else { //if (to == null) {
-                log.debug("Bad SymbolItem");
+                log.fine("Bad SymbolItem");
                 continue;
             }
 

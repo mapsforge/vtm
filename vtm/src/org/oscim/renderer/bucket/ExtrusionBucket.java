@@ -27,15 +27,14 @@ import org.oscim.utils.KeyMap.HashItem;
 import org.oscim.utils.Tessellator;
 import org.oscim.utils.geom.LineClipper;
 import org.oscim.utils.pool.Pool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ShortBuffer;
+import java.util.logging.Logger;
 
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 
 public class ExtrusionBucket extends RenderBucket {
-    static final Logger log = LoggerFactory.getLogger(ExtrusionBucket.class);
+    private static final Logger log = Logger.getLogger(ExtrusionBucket.class.getName());
 
     private VertexData mIndices[];
     private LineClipper mClipper;
@@ -388,7 +387,7 @@ public class ExtrusionBucket extends RenderBucket {
             if (points[ppos] == points[ppos + len - 2]
                     && points[ppos + 1] == points[ppos + len - 1]) {
                 len -= 2;
-                log.debug("explicit closed poly " + len);
+                log.fine("explicit closed poly " + len);
             }
 
             /* need at least three points (x and y) */

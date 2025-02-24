@@ -20,17 +20,15 @@ package org.oscim.renderer;
 import org.oscim.backend.GL;
 import org.oscim.backend.GLAdapter;
 import org.oscim.utils.pool.Inlist;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.nio.Buffer;
 
 import javax.annotation.CheckReturnValue;
+import java.nio.Buffer;
+import java.util.logging.Logger;
 
 import static org.oscim.backend.GLAdapter.gl;
 
 public final class BufferObject extends Inlist<BufferObject> {
-    static final Logger log = LoggerFactory.getLogger(BufferObject.class);
+    private static final Logger log = Logger.getLogger(BufferObject.class.getName());
     private static final int MB = 1024 * 1024;
     private static final int LIMIT_BUFFERS = 16 * MB;
 
@@ -61,7 +59,7 @@ public final class BufferObject extends Inlist<BufferObject> {
         boolean clear = false;
 
         if (buf.position() != 0) {
-            log.debug("flip your buffer!");
+            log.fine("flip your buffer!");
             buf.flip();
         }
 
@@ -97,9 +95,9 @@ public final class BufferObject extends Inlist<BufferObject> {
         if (mBufferMemoryUsage < LIMIT_BUFFERS)
             return;
 
-        log.debug("use: " + mBufferMemoryUsage / MB + "MB");
+        log.fine("use: " + mBufferMemoryUsage / MB + "MB");
         mBufferMemoryUsage -= BufferObject.limitUsage(MB);
-        log.debug("now: " + mBufferMemoryUsage / MB + "MB");
+        log.fine("now: " + mBufferMemoryUsage / MB + "MB");
     }
 
     private static final BufferObject pool[] = new BufferObject[2];
@@ -180,7 +178,7 @@ public final class BufferObject extends Inlist<BufferObject> {
             BufferObject prev = pool[t];
 
             if (prev == null) {
-                log.debug("nothing to free");
+                log.fine("nothing to free");
                 continue;
             }
 

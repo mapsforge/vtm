@@ -29,13 +29,12 @@ package org.oscim.android.gl;
 
 import android.opengl.GLSurfaceView;
 import org.oscim.android.MapView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
+import java.util.logging.Logger;
 
 /**
  * https://developer.android.com/guide/topics/graphics/opengl.html#version-check
@@ -44,7 +43,7 @@ import javax.microedition.khronos.egl.EGLDisplay;
  */
 public class GlContextFactory implements GLSurfaceView.EGLContextFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(GlContextFactory.class);
+    private static final Logger log = Logger.getLogger(GlContextFactory.class.getName());
 
     private static final int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
 
@@ -57,7 +56,7 @@ public class GlContextFactory implements GLSurfaceView.EGLContextFactory {
         boolean success = checkEglError("After eglCreateContext " + MapView.OPENGL_VERSION, egl);
 
         if ((!success || context == null) && MapView.OPENGL_VERSION > 2) {
-            log.warn("Falling back to GLES 2");
+            log.warning("Falling back to GLES 2");
             MapView.OPENGL_VERSION = 2.0;
             return createContext(egl, display, eglConfig);
         }
@@ -75,7 +74,7 @@ public class GlContextFactory implements GLSurfaceView.EGLContextFactory {
         boolean result = true;
         while ((error = egl.eglGetError()) != EGL10.EGL_SUCCESS) {
             result = false;
-            log.error(String.format("%s: EGL error: 0x%x", prompt, error));
+            log.severe(String.format("%s: EGL error: 0x%x", prompt, error));
         }
         return result;
     }

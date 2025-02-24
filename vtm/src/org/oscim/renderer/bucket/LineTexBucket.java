@@ -24,8 +24,6 @@ import org.oscim.core.GeometryBuffer;
 import org.oscim.renderer.*;
 import org.oscim.theme.styles.LineStyle;
 import org.oscim.utils.FastMath;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -80,8 +78,6 @@ import static org.oscim.renderer.MapRenderer.*;
  * - see addLine hack otherwise.
  */
 public final class LineTexBucket extends LineBucket {
-
-    static final Logger log = LoggerFactory.getLogger(LineTexBucket.class);
 
     public int evenQuads;
     public int oddQuads;

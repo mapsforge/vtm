@@ -20,15 +20,14 @@ import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.TileDataSink;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MultiMapDatabase implements ITileDataSource {
 
-    private static final Logger log = LoggerFactory.getLogger(MultiMapDatabase.class);
+    private static final Logger log = Logger.getLogger(MultiMapDatabase.class.getName());
 
     private final boolean deduplicate;
     private final List<MapDatabase> mapDatabases = new ArrayList<>();
@@ -76,7 +75,7 @@ public class MultiMapDatabase implements ITileDataSource {
             }
             sink.completed(QueryResult.SUCCESS);
         } catch (Throwable t) {
-            log.error(t.toString(), t);
+            log.severe(t.toString());
             sink.completed(QueryResult.FAILED);
         }
     }

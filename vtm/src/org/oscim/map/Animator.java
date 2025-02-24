@@ -27,15 +27,15 @@ import org.oscim.renderer.MapRenderer;
 import org.oscim.utils.ThreadUtils;
 import org.oscim.utils.animation.Easing;
 import org.oscim.utils.async.Task;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.oscim.core.MercatorProjection.latitudeToY;
 import static org.oscim.core.MercatorProjection.longitudeToX;
 import static org.oscim.utils.FastMath.clamp;
 
 public class Animator {
-    static final Logger log = LoggerFactory.getLogger(Animator.class);
+    private static final Logger log = Logger.getLogger(Animator.class.getName());
 
     public static final int ANIM_NONE = 0;
     public static final int ANIM_MOVE = 1 << 0;
@@ -89,7 +89,7 @@ public class Animator {
         double dy = Math.abs(latitudeToY(bbox.getMinLatitude())
                 - latitudeToY(bbox.getMaxLatitude()));
 
-        log.debug("anim bbox " + bbox);
+        log.fine("anim bbox " + bbox);
 
         double zx = mMap.getWidth() / (dx * Tile.SIZE);
         double zy = mMap.getHeight() / (dy * Tile.SIZE);
@@ -248,7 +248,7 @@ public class Animator {
         mVelocity.x = clamp(mVelocity.x, xmin, xmax);
         mVelocity.y = clamp(mVelocity.y, ymin, ymax);
         if (Double.isNaN(mVelocity.x) || Double.isNaN(mVelocity.y)) {
-            log.debug("fling NaN!");
+            log.fine("fling NaN!");
             return;
         }
 
@@ -280,7 +280,7 @@ public class Animator {
         /* cancel animation when position was changed since last
          * update, i.e. when it was modified outside the animator. */
         if (v.getMapPosition(mCurPos)) {
-            log.debug("cancel anim - changed");
+            log.fine("cancel anim - changed");
             cancel();
             return;
         }

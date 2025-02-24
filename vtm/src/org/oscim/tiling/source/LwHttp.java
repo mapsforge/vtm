@@ -20,8 +20,6 @@ package org.oscim.tiling.source;
 import org.oscim.core.Tile;
 import org.oscim.utils.ArrayUtils;
 import org.oscim.utils.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -32,6 +30,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -39,7 +38,7 @@ import java.util.zip.GZIPInputStream;
  * https, full header parsing or other stuff.
  */
 public class LwHttp implements HttpEngine {
-    static final Logger log = LoggerFactory.getLogger(LwHttp.class);
+    private static final Logger log = Logger.getLogger(LwHttp.class.getName());
     static final boolean dbg = false;
 
     private static final byte[] HEADER_HTTP_OK = "200 OK".getBytes();
@@ -145,7 +144,7 @@ public class LwHttp implements HttpEngine {
             try {
                 while (bytesRead < contentLength && read() >= 0) ;
             } catch (IOException e) {
-                log.debug(e.toString());
+                log.fine(e.toString());
             }
 
             return bytesRead == contentLength;
@@ -154,13 +153,13 @@ public class LwHttp implements HttpEngine {
         @Override
         public void close() throws IOException {
             if (dbg)
-                log.debug("close()... ignored");
+                log.fine("close()... ignored");
         }
 
         @Override
         public synchronized void mark(int readlimit) {
             if (dbg)
-                log.debug("mark {}", readlimit);
+                log.fine("mark " + readlimit);
 
             marked = bytesRead;
             super.mark(readlimit);
@@ -187,7 +186,7 @@ public class LwHttp implements HttpEngine {
             }
 
             if (dbg)
-                log.debug("skip:{}/{} pos:{}", n, sumSkipped, bytesRead);
+                log.fine("skip:" + n + "/" + sumSkipped + " pos:" + bytesRead);
 
             bytesRead += sumSkipped;
             return sumSkipped;
@@ -196,7 +195,7 @@ public class LwHttp implements HttpEngine {
         @Override
         public synchronized void reset() throws IOException {
             if (dbg)
-                log.debug("reset");
+                log.fine("reset");
 
             if (marked >= 0)
                 bytesRead = marked;
@@ -233,7 +232,7 @@ public class LwHttp implements HttpEngine {
             int len = super.read(buffer, offset, byteCount);
 
             if (dbg)
-                log.debug("read {} {} {}", len, bytesRead, contentLength);
+                log.fine("read " + len + " " + bytesRead + " " + contentLength);
 
             if (len <= 0)
                 return len;
@@ -315,7 +314,7 @@ public class LwHttp implements HttpEngine {
 
             if (dbg) {
                 String line = new String(buf, pos, end - pos - 1);
-                log.debug("> {} <", line);
+                log.fine("> " + line + " <");
             }
 
             pos += (end - pos) + 1;
@@ -346,11 +345,11 @@ public class LwHttp implements HttpEngine {
                 try {
                     int n = mResponseStream.available();
                     if (n > 0) {
-                        log.debug("left over bytes {} ", n);
+                        log.fine("left over bytes " + n);
                         close();
                     }
                 } catch (IOException e) {
-                    log.debug(e.toString());
+                    log.fine(e.toString());
                     close();
                 }
             }
@@ -372,12 +371,12 @@ public class LwHttp implements HttpEngine {
         len += pos;
 
         if (dbg)
-            log.debug("request: {}", new String(mRequestBuffer, 0, len));
+            log.fine("request: " + new String(mRequestBuffer, 0, len));
 
         try {
             writeRequest(len);
         } catch (IOException e) {
-            log.debug("recreate connection");
+            log.fine("recreate connection");
             close();
 
             lwHttpConnect();

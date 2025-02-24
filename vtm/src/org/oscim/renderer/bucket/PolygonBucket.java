@@ -28,8 +28,6 @@ import org.oscim.theme.styles.AreaStyle;
 import org.oscim.utils.ArrayUtils;
 import org.oscim.utils.geom.LineClipper;
 import org.oscim.utils.math.Interpolation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ShortBuffer;
 
@@ -41,8 +39,6 @@ import static org.oscim.utils.FastMath.clamp;
  * Special Renderer for drawing tile polygons using the stencil buffer method
  */
 public final class PolygonBucket extends RenderBucket {
-
-    static final Logger log = LoggerFactory.getLogger(PolygonBucket.class);
 
     public static final int CLIP_STENCIL = 1;
     public static final int CLIP_DEPTH = 2;

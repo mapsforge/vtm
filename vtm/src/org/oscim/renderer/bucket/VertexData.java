@@ -20,8 +20,6 @@ import org.oscim.renderer.bucket.VertexData.Chunk;
 import org.oscim.utils.FastMath;
 import org.oscim.utils.pool.Inlist;
 import org.oscim.utils.pool.SyncPool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ShortBuffer;
 
@@ -31,7 +29,6 @@ import java.nio.ShortBuffer;
  * TODO override append() etc to update internal (cur) state.
  */
 public class VertexData extends Inlist.List<Chunk> {
-    static final Logger log = LoggerFactory.getLogger(VertexData.class);
 
     /**
      * Size of array chunks. Must be multiple of:

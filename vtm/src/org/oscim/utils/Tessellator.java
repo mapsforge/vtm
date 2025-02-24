@@ -20,13 +20,12 @@ package org.oscim.utils;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.renderer.bucket.VertexData;
 import org.oscim.utils.math.MathUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class Tessellator {
-    static final Logger log = LoggerFactory.getLogger(Tessellator.class);
+    private static final Logger log = Logger.getLogger(Tessellator.class.getName());
 
     /**
      * Special version for ExtrusionLayer to match indices with vertex positions.
@@ -63,7 +62,7 @@ public class Tessellator {
         //log.debug("tess elems:{} verts:{} points:{}", nelems, nverts, numPoints);
 
         if (numPoints != nverts) {
-            log.debug("tess ----- skip poly: " + nverts + " " + numPoints);
+            log.fine("tess ----- skip poly: " + nverts + " " + numPoints);
             tess.dispose();
             return 0;
         }
@@ -90,9 +89,7 @@ public class Tessellator {
 
             for (int i = start; i < end; i++) {
                 if (indices[i] < 0) {
-                    log.debug(">>>> eeek {} {} {}",
-                            start, end,
-                            Arrays.toString(Arrays.copyOfRange(indices, start, end)));
+                    log.fine(">>>> eeek " + start + " " + end + " " + Arrays.toString(Arrays.copyOfRange(indices, start, end)));
                     break;
                 }
                 indices[i] *= 2;
@@ -166,7 +163,7 @@ public class Tessellator {
         int nelems = tess.getElementCount() * 3;
 
         if (numPoints != nverts) {
-            log.debug("tess ----- skip poly: " + nverts + " " + numPoints);
+            log.fine("tess ----- skip poly: " + nverts + " " + numPoints);
             tess.dispose();
             return 0;
         }

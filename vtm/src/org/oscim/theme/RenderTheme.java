@@ -28,16 +28,15 @@ import org.oscim.theme.rule.Rule.RuleVisitor;
 import org.oscim.theme.styles.RenderStyle;
 import org.oscim.utils.ArrayUtils;
 import org.oscim.utils.LRUCache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class RenderTheme implements IRenderTheme {
-    static final Logger log = LoggerFactory.getLogger(RenderTheme.class);
+    private static final Logger log = Logger.getLogger(RenderTheme.class.getName());
 
     private static final int MATCHING_CACHE_SIZE = 8192;
 
@@ -161,7 +160,7 @@ public class RenderTheme implements IRenderTheme {
 
         int type = geometryType.nativeInt;
         if (type < 1 || type > 3) {
-            log.debug("invalid geometry type for RenderTheme " + geometryType.name());
+            log.fine("invalid geometry type for RenderTheme " + geometryType.name());
             return null;
         }
 
@@ -216,7 +215,7 @@ public class RenderTheme implements IRenderTheme {
                         RenderStyle r = matches.get(i);
                         for (int j = i + 1; j < size; j++) {
                             if (matches.get(j) == r) {
-                                log.debug("fix duplicate instruction! "
+                                log.fine("fix duplicate instruction! "
                                         + Arrays.deepToString(cache.cacheKey.mTags)
                                         + " zoom:" + zoomLevel + " "
                                         + r.getClass().getName());

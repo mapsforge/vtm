@@ -21,8 +21,6 @@ package org.oscim.renderer;
 import org.oscim.backend.GL;
 import org.oscim.backend.GLAdapter;
 import org.oscim.utils.FastMath;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -30,6 +28,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static org.oscim.backend.GLAdapter.gl;
 import static org.oscim.backend.GLAdapter.gl30;
@@ -38,7 +37,7 @@ import static org.oscim.backend.GLAdapter.gl30;
  * Utility functions
  */
 public class GLUtils {
-    static final Logger log = LoggerFactory.getLogger(GLUtils.class);
+    private static final Logger log = Logger.getLogger(GLUtils.class.getName());
 
     /**
      * Set int color argb to uniform wxyz.
@@ -132,7 +131,7 @@ public class GLUtils {
     public static int checkFramebufferStatus(String op) {
         int status = gl.checkFramebufferStatus(GL.FRAMEBUFFER);
         if (status != GL.FRAMEBUFFER_COMPLETE)
-            log.error(op + ": \tglFramebuffer " + getFramebufferStatusString(status) + " (" + status + ")");
+            log.severe(op + ": \tglFramebuffer " + getFramebufferStatusString(status) + " (" + status + ")");
         return status;
     }
 
@@ -166,7 +165,7 @@ public class GLUtils {
     public static void checkGlError(String op) {
         int error; // GL.NO_ERROR
         while ((error = gl.getError()) != GL.NO_ERROR) {
-            log.error(op + ": \tglError " + getGlErrorString(error) + " (" + error + ")");
+            log.severe(op + ": \tglError " + getGlErrorString(error) + " (" + error + ")");
             // throw new RuntimeException(op + ": glError " + error);
         }
     }
@@ -183,7 +182,7 @@ public class GLUtils {
         boolean hasError = false;
         int error; // GL.NO_ERROR
         while ((error = gl.getError()) != GL.NO_ERROR) {
-            log.error(op + ": \tglError " + getGlErrorString(error) + " (" + error + ")");
+            log.severe(op + ": \tglError " + getGlErrorString(error) + " (" + error + ")");
             // throw new RuntimeException(op + ": glError " + error);
             if (error == id)
                 hasError = true;
@@ -202,7 +201,7 @@ public class GLUtils {
         List<Integer> errors = new ArrayList<>();
         int error; // GL.NO_ERROR
         while ((error = gl.getError()) != GL.NO_ERROR) {
-            log.error(op + ": \tglError " + getGlErrorString(error) + " (" + error + ")");
+            log.severe(op + ": \tglError " + getGlErrorString(error) + " (" + error + ")");
             // throw new RuntimeException(op + ": glError " + error);
             errors.add(error);
         }
@@ -245,7 +244,7 @@ public class GLUtils {
             gl.uniform4f(handle, c[0], c[1], c[2], c[3]);
         } else {
             if (alpha < 0) {
-                log.debug("setColor: " + alpha);
+                log.fine("setColor: " + alpha);
                 alpha = 0;
                 gl.uniform4f(handle, 0, 0, 0, 0);
             }

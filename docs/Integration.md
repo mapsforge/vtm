@@ -24,7 +24,6 @@ repositories {
 ```groovy
 implementation '[PACKAGE]:vtm:[CURRENT-VERSION]'
 implementation '[PACKAGE]:vtm-themes:[CURRENT-VERSION]'
-implementation 'org.slf4j:slf4j-api:1.7.28'
 ```
 
 ### Android
@@ -148,9 +147,7 @@ implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
 
 ```groovy
 implementation '[PACKAGE]:vtm-jeo:[CURRENT-VERSION]'
-implementation('com.github.jeo.jeo:jeo-carto:master-SNAPSHOT') {
-    exclude group: 'org.slf4j', module: 'slf4j-jdk14'
-}
+implementation 'com.github.jeo.jeo:jeo-carto:master-SNAPSHOT'
 ```
 
 ## Snapshots

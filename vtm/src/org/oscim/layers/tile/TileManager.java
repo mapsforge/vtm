@@ -30,24 +30,18 @@ import org.oscim.renderer.BufferObject;
 import org.oscim.tiling.QueryResult;
 import org.oscim.utils.ScanBox;
 import org.oscim.utils.quadtree.TileIndex;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
-import static org.oscim.layers.tile.MapTile.State.CANCEL;
-import static org.oscim.layers.tile.MapTile.State.DEADBEEF;
-import static org.oscim.layers.tile.MapTile.State.LOADING;
-import static org.oscim.layers.tile.MapTile.State.NEW_DATA;
-import static org.oscim.layers.tile.MapTile.State.NONE;
-import static org.oscim.layers.tile.MapTile.State.READY;
+import static org.oscim.layers.tile.MapTile.State.*;
 import static org.oscim.utils.FastMath.clamp;
 
 public class TileManager {
-    static final Logger log = LoggerFactory.getLogger(TileManager.class);
+    private static final Logger log = Logger.getLogger(TileManager.class.getName());
     static final boolean dbg = false;
 
     public static final Event TILE_LOADED = new Event();
@@ -382,7 +376,7 @@ public class TileManager {
             if (BufferObject.isMaxFill()) {
                 mCacheReduce += 10;
                 if (dbg)
-                    log.debug("reduce cache {}", (mCacheLimit - mCacheReduce));
+                    log.fine("reduce cache " + (mCacheLimit - mCacheReduce));
             } else {
                 mCacheReduce = 0;
             }
@@ -481,7 +475,7 @@ public class TileManager {
             }
 
             if (mTilesEnd == mTiles.length) {
-                log.debug("realloc tiles {}", mTilesEnd);
+                log.fine("realloc tiles " + mTilesEnd);
                 MapTile[] tmp = new MapTile[mTiles.length + 20];
                 System.arraycopy(mTiles, 0, tmp, 0, mTilesCount);
                 mTiles = tmp;
@@ -497,8 +491,7 @@ public class TileManager {
          * TileLoader thread, defer clearing to jobCompleted() */
 
         if (dbg)
-            log.debug("remove from cache {} {} {}",
-                    t, t.state(), t.isLocked());
+            log.fine("remove from cache " + t + " " + t.state() + " " + t.isLocked());
 
         if (t.isLocked())
             return false;
@@ -529,7 +522,7 @@ public class TileManager {
                 newTileCnt++;
 
             if (t.state(DEADBEEF)) {
-                log.debug("found DEADBEEF {}", t);
+                log.fine("found DEADBEEF " + t);
                 t.clear();
                 tiles[i] = null;
                 continue;
@@ -560,8 +553,7 @@ public class TileManager {
              * try again in next run. */
             if (t.isLocked()) {
                 if (dbg)
-                    log.debug("{} locked (state={}, d={})",
-                            t, t.state(), t.distance);
+                    log.fine(t + " locked (state=" + t.state() + ", d=" + t.distance + ")");
                 continue;
             }
 
@@ -573,7 +565,7 @@ public class TileManager {
             if (t.state(LOADING)) {
                 t.setState(CANCEL);
                 if (dbg)
-                    log.debug("{} canceled (d={})", t, t.distance);
+                    log.fine(t + " canceled (d=" + t.distance + ")");
                 continue;
             }
 
@@ -581,11 +573,11 @@ public class TileManager {
             if (t.state(NEW_DATA)) {
                 newTileCnt--;
                 if (dbg)
-                    log.debug("{} unused (d=({})", t, t.distance);
+                    log.fine(t + " unused (d=(" + t.distance + ")");
             }
 
             if (!t.state(READY | NEW_DATA)) {
-                log.error("stuff that should be here! {} {}", t, t.state());
+                log.severe("stuff that should be here! " + t + " " + t.state());
             }
 
             if (removeFromCache(t)) {
@@ -646,9 +638,7 @@ public class TileManager {
                 return;
             }
             // TODO use mMap.update(true) to retry tile loading?
-            log.debug("Load: {} {} state:{}",
-                    tile, result,
-                    tile.state());
+            log.fine("Load: " + tile + " " + result + " state: " + tile.state());
 
             /* got orphaned tile */
             if (tile.state(DEADBEEF)) {
@@ -709,7 +699,7 @@ public class TileManager {
                 MapTile tile = null;
 
                 if (cnt == maxTiles) {
-                    log.debug("too many tiles {}", maxTiles);
+                    log.fine("too many tiles " + maxTiles);
                     break;
                 }
                 int xx = x;

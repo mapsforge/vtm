@@ -18,14 +18,13 @@ package org.oscim.tiling.source;
 
 import org.oscim.core.GeometryBuffer;
 import org.oscim.utils.UTF8Decoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 public abstract class PbfDecoder implements ITileDecoder {
-    static final Logger log = LoggerFactory.getLogger(PbfDecoder.class);
+    private static final Logger log = Logger.getLogger(PbfDecoder.class.getName());
 
     private static final int S1 = 7;
     private static final int S2 = 14;
@@ -483,7 +482,7 @@ public abstract class PbfDecoder implements ITileDecoder {
         if (size > maxSize) {
 
             if (debug)
-                log.debug("increase read buffer to " + size + " bytes");
+                log.fine("increase read buffer to " + size + " bytes");
 
             maxSize = size;
 
@@ -504,7 +503,7 @@ public abstract class PbfDecoder implements ITileDecoder {
         } else if (bufferPos + size > maxSize) {
             // copy bytes left to the beginning of buffer
             if (debug)
-                log.debug("shift " + bufferFill + " " + bufferPos + " " + size);
+                log.fine("shift " + bufferFill + " " + bufferPos + " " + size);
 
             System.arraycopy(buffer, bufferPos, buffer, 0, bytesLeft);
 
@@ -526,7 +525,7 @@ public abstract class PbfDecoder implements ITileDecoder {
 
             if (len < 0) {
                 if (debug)
-                    log.debug("finished reading {}", mMsgPos);
+                    log.fine("finished reading " + mMsgPos);
 
                 // finished reading, mark end
                 buffer[bufferFill] = 0;

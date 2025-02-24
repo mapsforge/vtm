@@ -28,13 +28,13 @@ import org.oscim.renderer.MapRenderer;
 import org.oscim.utils.ThreadUtils;
 import org.oscim.utils.animation.DragForce;
 import org.oscim.utils.animation.Easing;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.oscim.utils.FastMath.clamp;
 
 public class Animator2 extends Animator {
-    private static final Logger log = LoggerFactory.getLogger(Animator2.class);
+    private static final Logger log = Logger.getLogger(Animator2.class.getName());
 
     private static final int ANIM_KINETIC = 1 << 5;
 
@@ -203,7 +203,7 @@ public class Animator2 extends Animator {
         velocityX = clamp(velocityX, xmin, xmax);
         velocityY = clamp(velocityY, ymin, ymax);
         if (Float.isNaN(velocityX) || Float.isNaN(velocityY)) {
-            log.debug("fling NaN!");
+            log.fine("fling NaN!");
             return;
         }
 
@@ -228,7 +228,7 @@ public class Animator2 extends Animator {
         /* cancel animation when position was changed since last
          * update, i.e. when it was modified outside the animator. */
         if (v.getMapPosition(mCurPos)) {
-            log.debug("cancel anim - changed");
+            log.fine("cancel anim - changed");
             cancel();
             return;
         }

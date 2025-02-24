@@ -24,17 +24,16 @@ import org.oscim.backend.canvas.Color;
 import org.oscim.map.Map;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.renderer.bucket.TextureItem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
+import java.util.logging.Logger;
 
 import static org.oscim.backend.GLAdapter.gl;
 
 public class MapRenderer {
-    private static final Logger log = LoggerFactory.getLogger(MapRenderer.class);
+    private static final Logger log = Logger.getLogger(MapRenderer.class.getName());
 
     /**
      * scale factor used for short vertices
@@ -96,7 +95,7 @@ public class MapRenderer {
         try {
             draw();
         } catch (Throwable t) {
-            log.error(t.toString(), t);
+            log.severe(t.toString());
         }
 
         mMap.doneFrame(rerender);
@@ -244,11 +243,11 @@ public class MapRenderer {
         String vendor = gl.getString(GL.VENDOR);
         String renderer = gl.getString(GL.RENDERER);
         String version = gl.getString(GL.VERSION);
-        log.debug("{}/{}/{}", vendor, renderer, version);
+        log.fine(vendor + "/" + renderer + "/" + version);
 
         // Prevent issue with Adreno 3xx series
         if (renderer != null && renderer.startsWith("Adreno (TM) 3")) {
-            log.debug("==> not using glBufferSubData");
+            log.fine("==> not using glBufferSubData");
             GLAdapter.NO_BUFFER_SUB_DATA = true;
         }
 

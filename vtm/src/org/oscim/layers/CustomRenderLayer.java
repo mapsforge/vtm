@@ -22,12 +22,12 @@ import org.oscim.map.Map;
 import org.oscim.map.Map.UpdateListener;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.LayerRenderer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class CustomRenderLayer extends Layer implements UpdateListener {
 
-    static final Logger log = LoggerFactory.getLogger(CustomRenderLayer.class);
+    private static final Logger log = Logger.getLogger(CustomRenderLayer.class.getName());
 
     class CustomRenderer extends LayerRenderer {
 
@@ -40,7 +40,7 @@ public class CustomRenderLayer extends Layer implements UpdateListener {
                 currentState = someConccurentVariable;
                 compile();
             }
-            log.debug("state " + currentState);
+            log.fine("state " + currentState);
 
         }
 

@@ -16,19 +16,16 @@
  */
 package org.oscim.layers.tile;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
-import static org.oscim.layers.tile.MapTile.State.CANCEL;
-import static org.oscim.layers.tile.MapTile.State.LOADING;
-import static org.oscim.layers.tile.MapTile.State.NONE;
+import static org.oscim.layers.tile.MapTile.State.*;
 
 /**
  * A JobQueue keeps the list of pending jobs for a MapView and prioritizes them.
  */
 public class JobQueue {
 
-    static final Logger log = LoggerFactory.getLogger(JobQueue.class);
+    private static final Logger log = Logger.getLogger(JobQueue.class.getName());
 
     private int mCurrentJob = 0;
     private MapTile[] mJobs;
@@ -56,7 +53,7 @@ public class JobQueue {
             if (t.state(LOADING | CANCEL)) {
                 t.setState(NONE);
             } else {
-                log.debug("Wrong tile in queue {} {}", t, t.state());
+                log.fine("Wrong tile in queue " + t + " " + t.state());
             }
             tiles[i] = null;
         }

@@ -23,31 +23,21 @@ import org.oscim.core.Tile;
 import org.oscim.renderer.GLMatrix;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.MapRenderer;
-import org.oscim.renderer.bucket.BitmapBucket;
-import org.oscim.renderer.bucket.CircleBucket;
-import org.oscim.renderer.bucket.HairLineBucket;
-import org.oscim.renderer.bucket.LineBucket;
-import org.oscim.renderer.bucket.LineTexBucket;
-import org.oscim.renderer.bucket.MeshBucket;
-import org.oscim.renderer.bucket.PolygonBucket;
-import org.oscim.renderer.bucket.RenderBucket;
-import org.oscim.renderer.bucket.RenderBuckets;
+import org.oscim.renderer.bucket.*;
 import org.oscim.utils.FastMath;
+
+import java.util.logging.Logger;
 
 import static org.oscim.backend.GLAdapter.gl;
 import static org.oscim.layers.tile.MapTile.PROXY_GRAMPA;
 import static org.oscim.layers.tile.MapTile.PROXY_PARENT;
 import static org.oscim.layers.tile.MapTile.State.READY;
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
-import static org.oscim.renderer.bucket.RenderBucket.BITMAP;
-import static org.oscim.renderer.bucket.RenderBucket.CIRCLE;
-import static org.oscim.renderer.bucket.RenderBucket.HAIRLINE;
-import static org.oscim.renderer.bucket.RenderBucket.LINE;
-import static org.oscim.renderer.bucket.RenderBucket.MESH;
-import static org.oscim.renderer.bucket.RenderBucket.POLYGON;
-import static org.oscim.renderer.bucket.RenderBucket.TEXLINE;
+import static org.oscim.renderer.bucket.RenderBucket.*;
 
 public class VectorTileRenderer extends TileRenderer {
+
+    private static final Logger log = Logger.getLogger(VectorTileRenderer.class.getName());
 
     static final boolean debugOverdraw = false;
 
@@ -226,7 +216,7 @@ public class VectorTileRenderer extends TileRenderer {
                     break;
                 default:
                     /* just in case */
-                    log.error("unknown layer {}", b.type);
+                    log.severe("unknown layer " + b.type);
                     b = b.next;
                     break;
             }

@@ -2,6 +2,7 @@
 
 ## Next version
 
+- Remove SLF4J dependency [#1167](https://github.com/mapsforge/vtm/pull/1167)
 - Disable `vtm-ios` [#1166](https://github.com/mapsforge/vtm/pull/1166)
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.24.0)
 

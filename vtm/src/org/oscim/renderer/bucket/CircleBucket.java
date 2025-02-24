@@ -25,15 +25,15 @@ import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLUtils;
 import org.oscim.renderer.GLViewport;
 import org.oscim.theme.styles.CircleStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.oscim.backend.GLAdapter.gl;
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 
 public class CircleBucket extends RenderBucket {
 
-    private static final Logger log = LoggerFactory.getLogger(CircleBucket.class);
+    private static final Logger log = Logger.getLogger(CircleBucket.class.getName());
 
     public CircleStyle circle;
 
@@ -44,7 +44,7 @@ public class CircleBucket extends RenderBucket {
 
     public void addCircle(GeometryBuffer geom) {
         if (!geom.isPoint()) {
-            log.error("Circle style applied to non-point geometry");
+            log.severe("Circle style applied to non-point geometry");
             return;
         }
 

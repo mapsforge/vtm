@@ -22,15 +22,11 @@ import org.oscim.core.MapElement;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.QueryResult;
 import org.oscim.utils.PausableThread;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.oscim.tiling.QueryResult.FAILED;
 import static org.oscim.tiling.QueryResult.SUCCESS;
 
 public abstract class TileLoader extends PausableThread implements ITileDataSink {
-
-    static final Logger log = LoggerFactory.getLogger(TileLoader.class);
 
     private static int id;
 

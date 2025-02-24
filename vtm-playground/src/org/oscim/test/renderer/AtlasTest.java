@@ -30,10 +30,9 @@ import org.oscim.renderer.bucket.TextBucket;
 import org.oscim.renderer.bucket.TextItem;
 import org.oscim.theme.styles.LineStyle;
 import org.oscim.theme.styles.TextStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class AtlasTest extends GdxMapApp {
 
@@ -50,7 +49,7 @@ public class AtlasTest extends GdxMapApp {
 
     static class AtlasRenderLayer extends BucketRenderer {
 
-        Logger log = LoggerFactory.getLogger(AtlasRenderLayer.class);
+        Logger log = Logger.getLogger(AtlasRenderLayer.class.getName());
 
         public AtlasRenderLayer() {
 
@@ -79,7 +78,7 @@ public class AtlasTest extends GdxMapApp {
                 int h = (int) (20 + Math.random() * 56);
                 Rect r = mAtlas.getRegion(w, h);
                 if (r == null) {
-                    log.debug("no space left");
+                    log.fine("no space left");
                     continue;
                 }
                 r.x += 1;
@@ -110,7 +109,7 @@ public class AtlasTest extends GdxMapApp {
                 points[8] = r.x;
                 points[9] = r.y;
 
-                log.debug("add region: " + Arrays.toString(points));
+                log.fine("add region: " + Arrays.toString(points));
                 ll2.addLine(points, 10, false);
 
                 TextItem ti = TextItem.pool.get();

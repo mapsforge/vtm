@@ -22,7 +22,7 @@ import org.oscim.utils.pool.Inlist;
 import org.oscim.utils.pool.SyncPool;
 
 public class TextItem extends Inlist<TextItem> {
-    //static final Logger log = LoggerFactory.getLogger(TextItem.class);
+
     private static final int MAX_POOL = 250;
 
     public static final SyncPool<TextItem> pool = new SyncPool<TextItem>(MAX_POOL) {

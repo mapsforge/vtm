@@ -23,20 +23,19 @@ import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
 import org.oscim.theme.XmlThemeResourceProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 /**
  * The Class CanvasAdapter.
  */
 public abstract class CanvasAdapter {
-    private static final Logger log = LoggerFactory.getLogger(CanvasAdapter.class);
+    private static final Logger log = Logger.getLogger(CanvasAdapter.class.getName());
 
     private static final String PREFIX_ASSETS = "assets:";
     public static final String PREFIX_FILE = "file:";
@@ -184,7 +183,7 @@ public abstract class CanvasAdapter {
             try {
                 inputStream = resourceProvider.createInputStream(relativePathPrefix, src);
             } catch (IOException ioe) {
-                log.debug("Exception trying to access resource: " + src + " using custom provider: " + ioe);
+                log.fine("Exception trying to access resource: " + src + " using custom provider: " + ioe);
                 // Ignore and try to resolve input stream using the standard process
             }
         }
@@ -212,7 +211,7 @@ public abstract class CanvasAdapter {
         }
 
         if (inputStream == null) {
-            log.error("invalid resource: " + src);
+            log.severe("invalid resource: " + src);
             return null;
         }
 

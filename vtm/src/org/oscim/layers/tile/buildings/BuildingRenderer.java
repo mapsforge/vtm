@@ -18,18 +18,12 @@
  */
 package org.oscim.layers.tile.buildings;
 
-import org.oscim.layers.tile.MapTile;
-import org.oscim.layers.tile.TileDistanceSort;
-import org.oscim.layers.tile.TileRenderer;
-import org.oscim.layers.tile.TileSet;
-import org.oscim.layers.tile.ZoomLimiter;
+import org.oscim.layers.tile.*;
 import org.oscim.renderer.ExtrusionRenderer;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.renderer.bucket.ExtrusionBuckets;
 import org.oscim.renderer.bucket.RenderBuckets;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,7 +34,6 @@ import static org.oscim.layers.tile.MapTile.State.READY;
 import static org.oscim.utils.FastMath.clamp;
 
 public class BuildingRenderer extends ExtrusionRenderer {
-    static final Logger log = LoggerFactory.getLogger(BuildingRenderer.class);
 
     private final TileRenderer mTileRenderer;
     private final TileSet mTileSet;

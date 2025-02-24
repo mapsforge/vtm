@@ -20,30 +20,25 @@ package org.oscim.awt;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.BufferUtils;
-
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.GL;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.renderer.bucket.TextureBucket;
 import org.oscim.utils.GraphicUtils;
 import org.oscim.utils.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.IntBuffer;
-
-import javax.imageio.ImageIO;
+import java.util.logging.Logger;
 
 public class AwtBitmap implements Bitmap {
-    private static final Logger log = LoggerFactory.getLogger(AwtBitmap.class);
+    private static final Logger log = Logger.getLogger(AwtBitmap.class.getName());
 
     BufferedImage bitmap;
 
@@ -167,7 +162,7 @@ public class AwtBitmap implements Bitmap {
             ImageIO.write(this.bitmap, "png", outputStream);
             return outputStream.toByteArray();
         } catch (IOException e) {
-            log.error(e.toString(), e);
+            log.severe(e.toString());
         } finally {
             IOUtils.closeQuietly(outputStream);
         }

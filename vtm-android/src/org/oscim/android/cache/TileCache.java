@@ -27,22 +27,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-
 import org.oscim.core.Tile;
 import org.oscim.tiling.ITileCache;
-import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class TileCache implements ITileCache {
 
-    static final org.slf4j.Logger log = LoggerFactory.getLogger(TileCache.class);
+    private static final Logger log = Logger.getLogger(TileCache.class.getName());
     static final boolean dbg = false;
 
     class CacheTileReader implements TileReader {
@@ -106,7 +100,7 @@ public class TileCache implements ITileCache {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public TileCache(Context context, String cacheDirectory, String dbName) {
         if (dbg)
-            log.debug("open cache {}, {}", cacheDirectory, dbName);
+            log.fine("open cache " + cacheDirectory + ", " + dbName);
 
         if (cacheDirectory != null)
             dbName = new File(cacheDirectory, dbName).getAbsolutePath();
@@ -178,13 +172,13 @@ public class TileCache implements ITileCache {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            log.debug("create table");
+            log.fine("create table");
             db.execSQL(TILE_SCHEMA);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            log.debug("drop table");
+            log.fine("drop table");
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             onCreate(db);
         }
@@ -207,7 +201,7 @@ public class TileCache implements ITileCache {
         }
 
         if (dbg)
-            log.debug("store tile {} {}", tile, Boolean.valueOf(success));
+            log.fine("store tile " + tile + " " + success);
 
         if (!success)
             return;
@@ -237,14 +231,14 @@ public class TileCache implements ITileCache {
             ParcelFileDescriptor result = mStmtGetTile.simpleQueryForBlobFileDescriptor();
             in = new FileInputStream(result.getFileDescriptor());
         } catch (SQLiteDoneException e) {
-            log.debug("not in cache {}", tile);
+            log.fine("not in cache " + tile);
             return null;
         } finally {
             mStmtGetTile.clearBindings();
         }
 
         if (dbg)
-            log.debug("load tile {}", tile);
+            log.fine("load tile " + tile);
 
         return new CacheTileReader(tile, in);
     }
@@ -267,7 +261,7 @@ public class TileCache implements ITileCache {
 
         if (!cursor.moveToFirst()) {
             if (dbg)
-                log.debug("not in cache {}", tile);
+                log.fine("not in cache " + tile);
 
             cursor.close();
             return null;
@@ -277,7 +271,7 @@ public class TileCache implements ITileCache {
         cursor.close();
 
         if (dbg)
-            log.debug("load tile {}", tile);
+            log.fine("load tile " + tile);
 
         return new CacheTileReader(tile, in);
     }

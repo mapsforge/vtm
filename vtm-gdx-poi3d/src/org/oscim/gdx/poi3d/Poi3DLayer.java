@@ -21,14 +21,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.utils.Array;
-
-import org.oscim.core.Box;
-import org.oscim.core.GeometryBuffer;
-import org.oscim.core.MapElement;
-import org.oscim.core.MapPosition;
-import org.oscim.core.MercatorProjection;
-import org.oscim.core.Tag;
-import org.oscim.core.Tile;
+import org.oscim.core.*;
 import org.oscim.event.Event;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.layers.Layer;
@@ -46,23 +39,17 @@ import org.oscim.renderer.bucket.SymbolItem;
 import org.oscim.utils.geom.GeometryUtils;
 import org.oscim.utils.geom.TileClipper;
 import org.oscim.utils.pool.Inlist;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Experimental Layer to display POIs with 3D models.
  */
 public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter.IZoomLimiter {
 
-    private static final Logger log = LoggerFactory.getLogger(Poi3DLayer.class);
+    private static final Logger log = Logger.getLogger(Poi3DLayer.class.getName());
 
     static class Poi3DTileData extends TileData {
         public final HashMap<ModelHolder, List<SymbolItem>> symbols = new HashMap<>();
@@ -294,7 +281,7 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
             for (ModelHolder holder : holders) {
                 Model model = mAssets.get(holder.getPath());
                 for (Node node : model.nodes) {
-                    log.debug("loader node " + node.id);
+                    log.fine("loader node " + node.id);
 
                     /* Use with {@link GdxRenderer3D} */
                     if (node.hasChildren() && ((Object) mG3d) instanceof GdxRenderer3D) {
@@ -302,7 +289,7 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
                             throw new RuntimeException("Model has more than one node with GdxRenderer: " + model.toString());
                         }
                         node = node.getChild(0);
-                        log.debug("loader node " + node.id);
+                        log.fine("loader node " + node.id);
 
                         model.nodes.removeIndex(0);
                         model.nodes.add(node);
@@ -432,7 +419,7 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
             if (instances.size == 0)
                 continue;
 
-            log.debug("add " + t + " " + instances.size);
+            log.fine("add " + t + " " + instances.size);
 
             changed = true;
 
@@ -452,7 +439,7 @@ public class Poi3DLayer extends Layer implements Map.UpdateListener, ZoomLimiter
 
             removed.addAll(instances);
             mTileMap.remove(t);
-            log.debug("remove " + t);
+            log.fine("remove " + t);
         }
 
         mPrevTiles.releaseTiles();

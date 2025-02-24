@@ -35,7 +35,11 @@ import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
+import java.util.logging.Logger;
+
 public class TileRenderTest extends GdxMapApp {
+
+    private static final Logger log = Logger.getLogger(TileRenderTest.class.getName());
 
     static boolean loadOneTile = true;
     //    static int tileX = 34365 >> 2;
@@ -107,9 +111,9 @@ public class TileRenderTest extends GdxMapApp {
         mMap.setBaseMap(tileLayer);
         mMap.setTheme(VtmThemes.DEFAULT);
 
-        log.debug("load tiles:");
+        log.fine("load tiles:");
         if (loadOneTile) {
-            log.debug("load {}", tile);
+            log.fine("load " + tile);
 
             tileLoader[0].loadTile(tile);
             tileManager.jobCompleted(tile, QueryResult.SUCCESS);
@@ -117,7 +121,7 @@ public class TileRenderTest extends GdxMapApp {
             tileManager.update(mapPosition);
             MapTile t = tileManager.getTileJob();
             while (t != null) {
-                log.debug("load {}", t);
+                log.fine("load " + t);
 
                 tileLoader[0].loadTile(t);
                 tileManager.jobCompleted(t, QueryResult.SUCCESS);

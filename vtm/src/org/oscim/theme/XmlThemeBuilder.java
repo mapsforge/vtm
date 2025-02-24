@@ -53,8 +53,6 @@ import org.oscim.utils.FastMath;
 import org.oscim.utils.IOUtils;
 import org.oscim.utils.Parameters;
 import org.oscim.utils.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -62,10 +60,11 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class XmlThemeBuilder {
 
-    private static final Logger log = LoggerFactory.getLogger(XmlThemeBuilder.class);
+    private static final Logger log = Logger.getLogger(XmlThemeBuilder.class.getName());
 
     private static final int RENDER_THEME_VERSION_MAPSFORGE = 6;
     private static final int RENDER_THEME_VERSION_VTM = 1;
@@ -144,7 +143,7 @@ public class XmlThemeBuilder {
      * @param attributeIndex the XML attribute index position.
      */
     private static void logUnknownAttribute(String element, String name, String value, int attributeIndex) {
-        log.warn("unknown attribute in element {} {} : {} = {}", element, attributeIndex, name, value);
+        log.warning("unknown attribute in element " + element + " " + attributeIndex + " : " + name + " = " + value);
     }
 
     private final ArrayList<RuleBuilder> mRulesList = new ArrayList<>();
@@ -405,7 +404,7 @@ public class XmlThemeBuilder {
                 // no-op
 
             } else {
-                log.error("unknown element: {}", qName);
+                log.severe("unknown element: " + qName);
                 throw new XmlPullParserException("unknown element: " + qName);
             }
         } catch (XmlPullParserException | IOException e) {
@@ -492,7 +491,7 @@ public class XmlThemeBuilder {
         TextureRegion texture = mTextureAtlas.getTextureRegion(src);
 
         if (texture == null)
-            log.debug("missing texture atlas item '" + src + "'");
+            log.fine("missing texture atlas item '" + src + "'");
 
         return texture;
     }
@@ -505,7 +504,7 @@ public class XmlThemeBuilder {
         if (use != null) {
             style = (LineStyle) mStyles.get(LINE_STYLE + use);
             if (style == null) {
-                log.debug("missing line style 'use': " + use);
+                log.fine("missing line style 'use': " + use);
                 return;
             }
         }
@@ -714,7 +713,7 @@ public class XmlThemeBuilder {
         if (use != null) {
             style = (AreaStyle) mStyles.get(AREA_STYLE + use);
             if (style == null) {
-                log.debug("missing area style 'use': " + use);
+                log.fine("missing area style 'use': " + use);
                 return;
             }
         }
@@ -819,7 +818,7 @@ public class XmlThemeBuilder {
                         .setCat(cat);
             }
         }
-        log.debug("BUG not an outline style: " + style);
+        log.fine("BUG not an outline style: " + style);
         return null;
     }
 
@@ -996,14 +995,14 @@ public class XmlThemeBuilder {
         if (style != null) {
             pt = mTextStyles.get(style);
             if (pt == null) {
-                log.debug("missing text style: " + style);
+                log.fine("missing text style: " + style);
                 return;
             }
         }
 
         TextBuilder<?> b = createText(qName, isCaption, pt);
         if (isStyle) {
-            log.debug("put style {}", b.style);
+            log.fine("put style " + b.style);
             mTextStyles.put(b.style, TextStyle.builder().from(b));
         } else {
             TextStyle text = b.buildInternal();
@@ -1124,7 +1123,7 @@ public class XmlThemeBuilder {
                 try {
                     b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * CanvasAdapter.symbolScale));
                 } catch (Exception e) {
-                    log.error("{}: {}", symbol, e.toString());
+                    log.severe(symbol + ": " + e);
                 }
             } else
                 b.texture = getAtlasRegion(symbol);
@@ -1183,14 +1182,14 @@ public class XmlThemeBuilder {
         if (style != null) {
             ps = mSymbolStyles.get(style);
             if (ps == null) {
-                log.debug("missing symbol style: " + style);
+                log.fine("missing symbol style: " + style);
                 return;
             }
         }
 
         SymbolBuilder<?> b = createSymbol(qName, ps);
         if (isStyle) {
-            log.debug("put style {}", b.style);
+            log.fine("put style " + b.style);
             mSymbolStyles.put(b.style, SymbolStyle.builder().from(b));
         } else {
             SymbolStyle symbol = buildSymbol(b);
@@ -1280,7 +1279,7 @@ public class XmlThemeBuilder {
                 if (bitmap != null)
                     return buildSymbol(b, b.src, bitmap);
             } catch (Exception e) {
-                log.error("{}: {}", b.src, e.toString());
+                log.severe(b.src + ": " + e);
             }
             return null;
         }
@@ -1393,7 +1392,7 @@ public class XmlThemeBuilder {
         }
 
         if (k == null || k.isEmpty() || libK == null || libK.isEmpty()) {
-            log.debug("empty key in element " + qName);
+            log.fine("empty key in element " + qName);
             return;
         }
 

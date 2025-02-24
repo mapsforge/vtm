@@ -18,13 +18,10 @@
 package org.oscim.renderer;
 
 import org.oscim.backend.GL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.oscim.backend.GLAdapter.gl;
 
 public class OffscreenRenderer extends LayerRenderer {
-    static final Logger log = LoggerFactory.getLogger(OffscreenRenderer.class);
 
     public enum Mode {
         FXAA, // Fast Approximate Anti-Aliasing

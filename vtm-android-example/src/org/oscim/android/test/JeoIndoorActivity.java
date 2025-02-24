@@ -33,17 +33,16 @@
 //import org.oscim.theme.internal.VtmThemes;
 //import org.oscim.theme.styles.TextStyle;
 //import org.oscim.utils.IOUtils;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 //
 //import java.io.IOException;
 //import java.io.InputStream;
 //import java.net.URL;
 //import java.net.URLConnection;
 //import java.util.Arrays;
+//import java.util.logging.Logger;
 //
 //public class JeoIndoorActivity extends BaseMapActivity {
-//    public static final Logger log = LoggerFactory.getLogger(JeoIndoorActivity.class);
+//    private static final Logger log = Logger.getLogger(JeoIndoorActivity.class.getName());
 //
 //    // from http://overpass-turbo.eu/s/2vp
 //    String PATH = "https://gist.githubusercontent.com/anonymous/09062103a66844a96048f25626078c8d/raw/1d3af6a5a55e9ea4adc9551fa633a051a44a5a9c/overpass.geojson";
@@ -165,7 +164,7 @@
 //        mIndoorLayer.activeLevels[i] ^= true;
 //        if (v instanceof ToggleButton)
 //            ((ToggleButton) v).setChecked(mIndoorLayer.activeLevels[i]);
-//        log.debug(Arrays.toString(mIndoorLayer.activeLevels));
+//        log.fine(Arrays.toString(mIndoorLayer.activeLevels));
 //        mIndoorLayer.update();
 //    }
 //

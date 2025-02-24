@@ -20,7 +20,6 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.utils.Array;
-
 import org.oscim.core.MapPosition;
 import org.oscim.core.MercatorProjection;
 import org.oscim.core.Tile;
@@ -30,17 +29,16 @@ import org.oscim.layers.Layer;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.map.Map;
 import org.oscim.model.VtmModels;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * Experimental layer to display 3d models.
  */
 public class GdxModelLayer extends Layer implements Map.UpdateListener {
 
-    private static final Logger log = LoggerFactory.getLogger(GdxModelLayer.class);
+    private static final Logger log = Logger.getLogger(GdxModelLayer.class.getName());
 
     private static final int MIN_ZOOM = BuildingLayer.MIN_ZOOM;
 
@@ -93,7 +91,7 @@ public class GdxModelLayer extends Layer implements Map.UpdateListener {
         for (ModelHolder poiModel : mScenes.values()) {
             Model model = mAssets.get(poiModel.getPath());
             for (Node node : model.nodes) {
-                log.debug("loader node " + node.id);
+                log.fine("loader node " + node.id);
 
                 /* Use with {@link GdxRenderer3D} */
                 if (node.hasChildren() && ((Object) mG3d) instanceof GdxRenderer3D) {
@@ -101,7 +99,7 @@ public class GdxModelLayer extends Layer implements Map.UpdateListener {
                         throw new RuntimeException("Model has more than one node with GdxRenderer: " + model.toString());
                     }
                     node = node.getChild(0);
-                    log.debug("loader node " + node.id);
+                    log.fine("loader node " + node.id);
 
                     model.nodes.removeIndex(0);
                     model.nodes.add(node);

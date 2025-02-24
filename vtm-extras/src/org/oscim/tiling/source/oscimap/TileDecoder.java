@@ -22,17 +22,16 @@ import org.oscim.core.Tag;
 import org.oscim.core.Tile;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.source.PbfDecoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class TileDecoder extends PbfDecoder {
-    static final Logger log = LoggerFactory.getLogger(TileDecoder.class);
+    private static final Logger log = Logger.getLogger(TileDecoder.class.getName());
 
     private static final float REF_TILE_SIZE = 4096.0f;
 
@@ -121,7 +120,7 @@ public class TileDecoder extends PbfDecoder {
                     break;
 
                 default:
-                    log.debug("invalid type for tile: " + tag);
+                    log.fine("invalid type for tile: " + tag);
                     return false;
             }
         }
@@ -190,14 +189,14 @@ public class TileDecoder extends PbfDecoder {
 
                 case TAG_WAY_COORDS:
                     if (coordCnt == 0) {
-                        log.debug(mTile + " no coordinates");
+                        log.fine(mTile + " no coordinates");
                     }
 
                     mElem.ensurePointSize(coordCnt, false);
                     int cnt = decodeInterleavedPoints(mElem.points, mScale);
 
                     if (cnt != coordCnt) {
-                        log.debug(mTile + " wrong number of coordintes "
+                        log.fine(mTile + " wrong number of coordinates "
                                 + coordCnt + "/" + cnt);
                         fail = true;
                     }
@@ -221,12 +220,12 @@ public class TileDecoder extends PbfDecoder {
                     break;
 
                 default:
-                    log.debug("X invalid type for way: " + tag);
+                    log.fine("X invalid type for way: " + tag);
             }
         }
 
         if (fail || indexCnt == 0 || tagCnt == 0) {
-            log.debug("failed reading way: bytes:" + bytes + " index:"
+            log.fine("failed reading way: bytes:" + bytes + " index:"
                     //+ (tags != null ? tags.toString() : "...") + " "
                     + indexCnt + " " + coordCnt + " " + tagCnt);
             return false;
@@ -266,7 +265,7 @@ public class TileDecoder extends PbfDecoder {
                 case TAG_NODE_COORDS:
                     int cnt = decodeNodeCoordinates(coordCnt, layer);
                     if (cnt != coordCnt) {
-                        log.debug("X wrong number of coordintes");
+                        log.fine("X wrong number of coordinates");
                         return false;
                     }
                     break;
@@ -284,7 +283,7 @@ public class TileDecoder extends PbfDecoder {
                     break;
 
                 default:
-                    log.debug("X invalid type for node: " + tag);
+                    log.fine("X invalid type for node: " + tag);
             }
         }
 
@@ -333,7 +332,7 @@ public class TileDecoder extends PbfDecoder {
             int tagNum = decodeVarint32();
 
             if (tagNum < 0 || cnt == tagCnt) {
-                log.debug("NULL TAG: " + mTile
+                log.fine("NULL TAG: " + mTile
                         + " invalid tag:" + tagNum
                         + " " + tagCnt + "/" + cnt);
                 continue;
@@ -349,7 +348,7 @@ public class TileDecoder extends PbfDecoder {
             if (tagNum >= 0 && tagNum < max) {
                 mElem.tags.add(curTags[tagNum]);
             } else {
-                log.debug("NULL TAG: " + mTile
+                log.fine("NULL TAG: " + mTile
                         + " could find tag:"
                         + tagNum + " " + tagCnt
                         + "/" + cnt);
@@ -357,7 +356,7 @@ public class TileDecoder extends PbfDecoder {
         }
 
         if (tagCnt != cnt) {
-            log.debug("NULL TAG: " + mTile);
+            log.fine("NULL TAG: " + mTile);
             return false;
         }
 

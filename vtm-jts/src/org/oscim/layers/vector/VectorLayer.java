@@ -40,13 +40,12 @@ import org.oscim.utils.FastMath;
 import org.oscim.utils.QuadTree;
 import org.oscim.utils.SpatialIndex;
 import org.oscim.utils.geom.GeomBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static org.oscim.core.MercatorProjection.latitudeToY;
 import static org.oscim.core.MercatorProjection.longitudeToX;
@@ -60,7 +59,7 @@ import static org.oscim.core.MercatorProjection.longitudeToX;
  */
 public class VectorLayer extends AbstractVectorLayer<Drawable> implements GestureListener {
 
-    public static final Logger log = LoggerFactory.getLogger(VectorLayer.class);
+    private static final Logger log = Logger.getLogger(VectorLayer.class.getName());
 
     private static final int STROKE_MIN_ZOOM = 12;
 
@@ -182,7 +181,7 @@ public class VectorLayer extends AbstractVectorLayer<Drawable> implements Gestur
         }
 
         if (toRemove == null) {
-            log.error("Can't find geometry to remove.");
+            log.severe("Can't find geometry to remove.");
             return;
         }
 

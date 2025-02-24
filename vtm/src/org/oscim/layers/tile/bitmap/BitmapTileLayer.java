@@ -29,12 +29,8 @@ import org.oscim.map.Map;
 import org.oscim.renderer.bucket.TextureItem.TexturePool;
 import org.oscim.tiling.TileSource;
 import org.oscim.utils.FastMath;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BitmapTileLayer extends TileLayer {
-
-    protected static final Logger log = LoggerFactory.getLogger(BitmapTileLayer.class);
 
     private static final int CACHE_LIMIT = 40;
 

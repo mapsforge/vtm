@@ -19,29 +19,13 @@ package org.oscim.renderer;
 
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
-import org.oscim.renderer.bucket.BitmapBucket;
-import org.oscim.renderer.bucket.CircleBucket;
-import org.oscim.renderer.bucket.HairLineBucket;
-import org.oscim.renderer.bucket.LineBucket;
-import org.oscim.renderer.bucket.LineTexBucket;
-import org.oscim.renderer.bucket.MeshBucket;
-import org.oscim.renderer.bucket.PolygonBucket;
-import org.oscim.renderer.bucket.RenderBucket;
-import org.oscim.renderer.bucket.RenderBuckets;
-import org.oscim.renderer.bucket.TextureBucket;
+import org.oscim.renderer.bucket.*;
 import org.oscim.utils.FastMath;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
-import static org.oscim.renderer.bucket.RenderBucket.BITMAP;
-import static org.oscim.renderer.bucket.RenderBucket.CIRCLE;
-import static org.oscim.renderer.bucket.RenderBucket.HAIRLINE;
-import static org.oscim.renderer.bucket.RenderBucket.LINE;
-import static org.oscim.renderer.bucket.RenderBucket.MESH;
-import static org.oscim.renderer.bucket.RenderBucket.POLYGON;
-import static org.oscim.renderer.bucket.RenderBucket.SYMBOL;
-import static org.oscim.renderer.bucket.RenderBucket.TEXLINE;
+import static org.oscim.renderer.bucket.RenderBucket.*;
 
 /**
  * Base class to use the renderer.elements for drawing.
@@ -50,7 +34,7 @@ import static org.oscim.renderer.bucket.RenderBucket.TEXLINE;
  */
 public class BucketRenderer extends LayerRenderer {
 
-    public static final Logger log = LoggerFactory.getLogger(BucketRenderer.class);
+    private static final Logger log = Logger.getLogger(BucketRenderer.class.getName());
 
     /**
      * Use mMapPosition.copy(position) to keep the position for which
@@ -146,7 +130,7 @@ public class BucketRenderer extends LayerRenderer {
                     b = CircleBucket.Renderer.draw(b, v);
                     break;
                 default:
-                    log.error("invalid bucket {}", b.type);
+                    log.severe("invalid bucket " + b.type);
                     b = b.next;
                     break;
             }

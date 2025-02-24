@@ -7,7 +7,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.easytesting:fest-assert-core:2.0M10'
     testImplementation 'org.mockito:mockito-all:1.10.19'
-    testImplementation "org.slf4j:slf4j-jdk14:$slf4jVersion"
 }
 
 sourceSets {

@@ -20,13 +20,13 @@ package org.oscim.renderer;
 
 import org.oscim.backend.GL;
 import org.oscim.backend.GLAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.oscim.backend.GLAdapter.gl;
 
 public class GLState {
-    static final Logger log = LoggerFactory.getLogger(GLState.class);
+    private static final Logger log = Logger.getLogger(GLState.class.getName());
 
     public static final int DISABLED = -1;
     public static final int UNBIND = 0;
@@ -128,7 +128,7 @@ public class GLState {
      */
     public static void enableVertexArrays(int va1, int va2) {
         if (va1 > 1 || va2 > 1)
-            log.debug("FIXME: enableVertexArrays...");
+            log.fine("FIXME: enableVertexArrays...");
 
         if ((va1 == 0 || va2 == 0)) {
             if (!vertexArray[0]) {
@@ -205,7 +205,7 @@ public class GLState {
                 return;
             glIndexBuffer = id;
         } else {
-            log.debug("invalid target {}", target);
+            log.fine("invalid target " + target);
             return;
         }
         //log.debug("bind buffer {} {}", target == GL20.ARRAY_BUFFER, id);

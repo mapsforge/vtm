@@ -21,12 +21,12 @@ import org.oscim.backend.canvas.Canvas;
 import org.oscim.renderer.bucket.TextureItem;
 import org.oscim.theme.XmlThemeResourceProvider;
 import org.oscim.utils.math.MathUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public final class Utils {
 
-    private static final Logger log = LoggerFactory.getLogger(Utils.class);
+    private static final Logger log = Logger.getLogger(Utils.class.getName());
 
     /**
      * Null safe equals.
@@ -45,11 +45,11 @@ public final class Utils {
         try {
             Bitmap bitmap = CanvasAdapter.getBitmapAsset(relativePathPrefix, src, resourceProvider, width, height, percent);
             if (bitmap != null) {
-                log.debug("loading {}", src);
+                log.fine("loading " + src);
                 return new TextureItem(potBitmap(bitmap), true);
             }
         } catch (Exception e) {
-            log.error("{}: missing file / {}", src, e.toString());
+            log.severe(src + ": missing file / " + e);
         }
         return null;
     }
@@ -64,7 +64,7 @@ public final class Utils {
             int potWidth = MathUtils.nextPowerOfTwo(bitmap.getWidth());
             int potHeight = MathUtils.nextPowerOfTwo(bitmap.getHeight());
             if (potWidth != bitmap.getWidth() || potHeight != bitmap.getHeight()) {
-                log.debug("POT texture: {}x{} -> {}x{}", bitmap.getWidth(), bitmap.getHeight(), potWidth, potHeight);
+                log.fine("POT texture: " + bitmap.getWidth() + "x" + bitmap.getHeight() + " -> " + potWidth + "x" + potHeight);
                 Bitmap potBitmap = CanvasAdapter.newBitmap(potWidth, potHeight, 0);
                 Canvas potCanvas = CanvasAdapter.newCanvas();
                 potCanvas.setBitmap(potBitmap);

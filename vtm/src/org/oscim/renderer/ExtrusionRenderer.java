@@ -27,14 +27,11 @@ import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.renderer.light.ShadowRenderer;
 import org.oscim.renderer.light.Sun;
 import org.oscim.utils.FastMath;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.oscim.backend.GLAdapter.gl;
 import static org.oscim.renderer.MapRenderer.COORD_SCALE;
 
 public abstract class ExtrusionRenderer extends LayerRenderer {
-    static final Logger log = LoggerFactory.getLogger(ExtrusionRenderer.class);
 
     // Don't draw extrusions which are covered by others
     private final boolean mTranslucent;

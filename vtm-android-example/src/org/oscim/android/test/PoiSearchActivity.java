@@ -44,13 +44,12 @@ import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.map.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * POI search.<br/>
@@ -60,7 +59,7 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLayer.OnItemGestureListener<MarkerInterface> {
 
-    private static final Logger log = LoggerFactory.getLogger(PoiSearchActivity.class);
+    private static final Logger log = Logger.getLogger(PoiSearchActivity.class.getName());
 
     private static final String POI_CATEGORY = "Restaurants";
     private static final int SELECT_POI_FILE = MapsforgeActivity.SELECT_THEME_FILE + 1;
@@ -299,7 +298,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
                         params[0].getMaxLatitude(), params[0].getMaxLongitude());
                 return mPersistenceManager.findInRect(bb, categoryFilter, patterns, null, Integer.MAX_VALUE, true);
             } catch (Throwable t) {
-                log.error(t.toString(), t);
+                log.severe(t.toString());
             }
             return null;
         }

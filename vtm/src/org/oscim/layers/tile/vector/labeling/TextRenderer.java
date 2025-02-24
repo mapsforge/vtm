@@ -36,11 +36,8 @@ import org.oscim.renderer.GLState;
 import org.oscim.renderer.GLViewport;
 import org.oscim.renderer.bucket.RenderBucket;
 import org.oscim.renderer.bucket.TextureBucket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class TextRenderer extends BucketRenderer {
-    static final Logger log = LoggerFactory.getLogger(TextRenderer.class);
     static final boolean dbg = false;
 
     private final Worker mWorker;

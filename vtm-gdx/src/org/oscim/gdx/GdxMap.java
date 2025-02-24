@@ -36,12 +36,12 @@ import org.oscim.renderer.MapRenderer;
 import org.oscim.theme.internal.VtmThemes;
 import org.oscim.tiling.TileSource;
 import org.oscim.utils.Parameters;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public abstract class GdxMap implements ApplicationListener {
 
-    private static final Logger log = LoggerFactory.getLogger(GdxMap.class);
+    private static final Logger log = Logger.getLogger(GdxMap.class.getName());
 
     protected Map mMap;
     protected GestureDetector mGestureDetector;

@@ -26,9 +26,7 @@ import org.oscim.renderer.bucket.TextureItem.TexturePool;
 import java.nio.ShortBuffer;
 
 import static org.oscim.backend.GLAdapter.gl;
-import static org.oscim.renderer.MapRenderer.COORD_SCALE;
-import static org.oscim.renderer.MapRenderer.MAX_INDICES;
-import static org.oscim.renderer.MapRenderer.bindQuadIndicesVBO;
+import static org.oscim.renderer.MapRenderer.*;
 
 /**
  * Renderer for a single bitmap, width and height must be power of 2.
@@ -36,7 +34,6 @@ import static org.oscim.renderer.MapRenderer.bindQuadIndicesVBO;
 public class BitmapBucket extends TextureBucket {
     // TODO share layers.vbo() between BitmapTileLayers
 
-    //    static final Logger log = LoggerFactory.getLogger(BitmapLayer.class);
     private Bitmap mBitmap;
     private final boolean mReuseBitmap;
     private final short[] mVertices;

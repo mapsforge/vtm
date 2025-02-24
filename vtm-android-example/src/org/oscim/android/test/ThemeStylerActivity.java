@@ -21,11 +21,11 @@ import org.oscim.theme.styles.AreaStyle.AreaBuilder;
 import org.oscim.theme.styles.LineStyle;
 import org.oscim.theme.styles.LineStyle.LineBuilder;
 import org.oscim.theme.styles.RenderStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class ThemeStylerActivity extends BaseMapActivity implements OnSeekBarChangeListener {
-    final Logger log = LoggerFactory.getLogger(ThemeStylerActivity.class);
+    final Logger log = Logger.getLogger(ThemeStylerActivity.class.getName());
 
     public ThemeStylerActivity() {
         super(R.layout.activity_map_styler);
@@ -124,7 +124,7 @@ public class ThemeStylerActivity extends BaseMapActivity implements OnSeekBarCha
         else if (id == R.id.seekBarH)
             c.hue = progress / 100f;
 
-        log.debug((modArea ? "area" : "line")
+        log.fine((modArea ? "area" : "line")
                 + " h:" + c.hue
                 + " s:" + c.saturation
                 + " v:" + c.value);

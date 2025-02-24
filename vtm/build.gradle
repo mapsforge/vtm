@@ -3,7 +3,6 @@ apply plugin: 'maven-publish'
 
 dependencies {
     compileOnly 'net.sf.kxml:kxml2:2.3.0'
-    api "org.slf4j:slf4j-api:$slf4jVersion"
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
