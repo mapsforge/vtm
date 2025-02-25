@@ -118,7 +118,25 @@ public class MapsforgeActivity extends MapActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.theme_default) {
+        if (itemId == R.id.theme_motorider) {
+            if (mTheme != null)
+                mTheme.dispose();
+            mTheme = mMap.setTheme(VtmThemes.MOTORIDER);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_motorider_dark) {
+            if (mTheme != null)
+                mTheme.dispose();
+            mTheme = mMap.setTheme(VtmThemes.MOTORIDER_DARK);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_biker) {
+            if (mTheme != null)
+                mTheme.dispose();
+            mTheme = mMap.setTheme(VtmThemes.BIKER);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_default) {
             if (mTheme != null)
                 mTheme.dispose();
             mTheme = mMap.setTheme(VtmThemes.DEFAULT);
@@ -128,24 +146,6 @@ public class MapsforgeActivity extends MapActivity {
             if (mTheme != null)
                 mTheme.dispose();
             mTheme = mMap.setTheme(VtmThemes.OSMARENDER);
-            item.setChecked(true);
-            return true;
-        } else if (itemId == R.id.theme_osmagray) {
-            if (mTheme != null)
-                mTheme.dispose();
-            mTheme = mMap.setTheme(VtmThemes.OSMAGRAY);
-            item.setChecked(true);
-            return true;
-        } else if (itemId == R.id.theme_tubes) {
-            if (mTheme != null)
-                mTheme.dispose();
-            mTheme = mMap.setTheme(VtmThemes.TRONRENDER);
-            item.setChecked(true);
-            return true;
-        } else if (itemId == R.id.theme_newtron) {
-            if (mTheme != null)
-                mTheme.dispose();
-            mTheme = mMap.setTheme(VtmThemes.NEWTRON);
             item.setChecked(true);
             return true;
         } else if (itemId == R.id.theme_external_archive) {

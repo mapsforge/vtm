@@ -116,12 +116,12 @@ public class InputHandler implements InputProcessor {
                 break;
 
             case Input.Keys.NUM_1:
-                mMap.setTheme(VtmThemes.DEFAULT);
+                mMap.setTheme(VtmThemes.MOTORIDER);
                 mMap.updateMap(false);
                 break;
 
             case Input.Keys.NUM_2:
-                mMap.setTheme(VtmThemes.OSMARENDER);
+                mMap.setTheme(VtmThemes.MOTORIDER_DARK);
                 mMap.updateMap(false);
                 break;
 
@@ -131,12 +131,12 @@ public class InputHandler implements InputProcessor {
                 break;
 
             case Input.Keys.NUM_4:
-                mMap.setTheme(VtmThemes.MOTORIDER);
+                mMap.setTheme(VtmThemes.DEFAULT);
                 mMap.updateMap(false);
                 break;
 
             case Input.Keys.NUM_5:
-                mMap.setTheme(VtmThemes.MOTORIDER_DARK);
+                mMap.setTheme(VtmThemes.OSMARENDER);
                 mMap.updateMap(false);
                 break;
 

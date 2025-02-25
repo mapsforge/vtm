@@ -76,24 +76,24 @@ public class BaseMapActivity extends MapActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.theme_default) {
+        if (itemId == R.id.theme_motorider) {
+            mMap.setTheme(VtmThemes.MOTORIDER);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_motorider_dark) {
+            mMap.setTheme(VtmThemes.MOTORIDER_DARK);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_biker) {
+            mMap.setTheme(VtmThemes.BIKER);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_default) {
             mMap.setTheme(VtmThemes.DEFAULT);
             item.setChecked(true);
             return true;
         } else if (itemId == R.id.theme_osmarender) {
             mMap.setTheme(VtmThemes.OSMARENDER);
-            item.setChecked(true);
-            return true;
-        } else if (itemId == R.id.theme_osmagray) {
-            mMap.setTheme(VtmThemes.OSMAGRAY);
-            item.setChecked(true);
-            return true;
-        } else if (itemId == R.id.theme_tubes) {
-            mMap.setTheme(VtmThemes.TRONRENDER);
-            item.setChecked(true);
-            return true;
-        } else if (itemId == R.id.theme_newtron) {
-            mMap.setTheme(VtmThemes.NEWTRON);
             item.setChecked(true);
             return true;
         } else if (itemId == R.id.gridlayer) {

@@ -5,21 +5,21 @@
         android:id="@+id/themes"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/theme_default"
+            android:id="@+id/theme_motorider"
             android:checked="true"
+            android:title="@string/theme_motorider" />
+        <item
+            android:id="@+id/theme_motorider_dark"
+            android:title="@string/theme_motorider_dark" />
+        <item
+            android:id="@+id/theme_biker"
+            android:title="@string/theme_biker" />
+        <item
+            android:id="@+id/theme_default"
             android:title="@string/theme_default" />
         <item
             android:id="@+id/theme_osmarender"
             android:title="@string/theme_osmarender" />
-        <item
-            android:id="@+id/theme_osmagray"
-            android:title="@string/theme_osmagray" />
-        <item
-            android:id="@+id/theme_tubes"
-            android:title="@string/theme_tubes" />
-        <item
-            android:id="@+id/theme_newtron"
-            android:title="@string/theme_newtron" />
         <item
             android:id="@+id/theme_external_archive"
             android:title="@string/theme_external_archive" />
