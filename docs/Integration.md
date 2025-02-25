@@ -107,9 +107,9 @@ implementation 'org.locationtech.jts:jts-core:1.20.0'
 
 ```groovy
 implementation '[PACKAGE]:vtm-http:[CURRENT-VERSION]'
-// https://github.com/square/okhttp/issues/4481
-implementation 'com.squareup.okhttp3:okhttp:3.12.13'
-implementation 'com.squareup.okio:okio:1.15.0'
+implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+implementation 'com.squareup.okio:okio:3.6.0'
+implementation 'com.squareup.okio:okio-jvm:3.6.0'
 ```
 
 ### MBTiles

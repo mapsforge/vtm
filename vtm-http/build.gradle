@@ -3,8 +3,7 @@ apply plugin: 'maven-publish'
 
 dependencies {
     api project(':vtm')
-    // https://github.com/square/okhttp/issues/4481
-    api 'com.squareup.okhttp3:okhttp:3.12.13'
+    api 'com.squareup.okhttp3:okhttp:4.12.0'
 }
 
 sourceSets {
