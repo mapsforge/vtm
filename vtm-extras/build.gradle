@@ -4,8 +4,7 @@ apply plugin: 'maven-publish'
 dependencies {
     api project(':vtm')
     api 'com.fasterxml.jackson.core:jackson-core:2.9.9'
-    // https://github.com/locationtech/jts/issues/145
-    api 'org.locationtech.jts:jts-core:1.15.1'
+    api 'org.locationtech.jts:jts-core:1.20.0'
     api 'org.openstreetmap.osmosis:osmosis-osm-binary:0.47'
 }
 

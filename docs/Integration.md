@@ -100,8 +100,7 @@ runtimeOnly 'org.lwjgl:lwjgl:3.3.1:natives-windows'
 
 ```groovy
 implementation '[PACKAGE]:vtm-jts:[CURRENT-VERSION]'
-// https://github.com/locationtech/jts/issues/145
-implementation 'org.locationtech.jts:jts-core:1.15.1'
+implementation 'org.locationtech.jts:jts-core:1.20.0'
 ```
 
 ### Online tiles
@@ -120,8 +119,7 @@ implementation '[PACKAGE]:vtm-android-mvt:[CURRENT-VERSION]'
 implementation '[PACKAGE]:vtm-mvt:[CURRENT-VERSION]'
 implementation 'com.google.protobuf:protobuf-java:3.6.1'
 implementation 'com.wdtinc:mapbox-vector-tile:3.1.0'
-// https://github.com/locationtech/jts/issues/145
-implementation 'org.locationtech.jts:jts-core:1.15.1'
+implementation 'org.locationtech.jts:jts-core:1.20.0'
 ```
 
 ### Mapbox vector tiles
@@ -130,8 +128,7 @@ implementation 'org.locationtech.jts:jts-core:1.15.1'
 implementation '[PACKAGE]:vtm-mvt:[CURRENT-VERSION]'
 implementation 'com.google.protobuf:protobuf-java:3.6.1'
 implementation 'com.wdtinc:mapbox-vector-tile:3.1.0'
-// https://github.com/locationtech/jts/issues/145
-implementation 'org.locationtech.jts:jts-core:1.15.1'
+implementation 'org.locationtech.jts:jts-core:1.20.0'
 ```
 
 ### GeoJSON vector tiles

@@ -2,6 +2,7 @@
 
 ## Next version
 
+- Update JTS dependency [#1172](https://github.com/mapsforge/vtm/pull/1172)
 - Remove SLF4J dependency [#1167](https://github.com/mapsforge/vtm/pull/1167) [#1170](https://github.com/mapsforge/vtm/pull/1170)
 - Disable `vtm-ios` [#1166](https://github.com/mapsforge/vtm/pull/1166)
 - Remove `vtm-theme-comparator` [#1169](https://github.com/mapsforge/vtm/pull/1169)
