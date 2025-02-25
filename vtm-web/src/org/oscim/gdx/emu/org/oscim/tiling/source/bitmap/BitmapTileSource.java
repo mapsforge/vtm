@@ -25,7 +25,6 @@ import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
-
 import org.oscim.gdx.client.GwtBitmap;
 import org.oscim.layers.tile.LoadDelayTask;
 import org.oscim.layers.tile.MapTile;
@@ -33,13 +32,9 @@ import org.oscim.layers.tile.TileLoader;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
-import org.oscim.tiling.source.LwHttp;
 import org.oscim.tiling.source.UrlTileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BitmapTileSource extends UrlTileSource {
-    static final Logger log = LoggerFactory.getLogger(LwHttp.class);
 
     public static class Builder<T extends Builder<T>> extends UrlTileSource.Builder<T> {
 

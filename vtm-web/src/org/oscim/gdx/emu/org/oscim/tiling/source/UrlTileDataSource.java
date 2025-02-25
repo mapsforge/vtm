@@ -19,17 +19,16 @@ import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.TileLoader;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 import static org.oscim.tiling.QueryResult.FAILED;
 import static org.oscim.tiling.QueryResult.SUCCESS;
 
 public class UrlTileDataSource implements ITileDataSource {
-    static final Logger log = LoggerFactory.getLogger(UrlTileDataSource.class);
+    private static final Logger log = Logger.getLogger(UrlTileDataSource.class.getName());
 
     protected final LwHttp mConn;
     protected final ITileDecoder mTileDecoder;
@@ -53,7 +52,7 @@ public class UrlTileDataSource implements ITileDataSource {
 
     public void process(final InputStream is) {
         if (is == null) {
-            log.debug("{} no inputstream", mTile);
+            log.fine(mTile + " no inputstream");
             mSink.completed(FAILED);
             mTile = null;
             mSink = null;
@@ -75,7 +74,7 @@ public class UrlTileDataSource implements ITileDataSource {
                     sink.completed(SUCCESS);
                 } else {
                     sink.completed(FAILED);
-                    log.debug("{} decode failed", tile);
+                    log.fine(tile + " decode failed");
                 }
             }
         });

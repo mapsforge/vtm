@@ -19,11 +19,8 @@ package org.oscim.web.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
-
-import org.oscim.backend.CanvasAdapter;
-import org.oscim.backend.DateTimeAdapter;
-import org.oscim.backend.GL;
-import org.oscim.backend.GLAdapter;
+import com.badlogic.gdx.graphics.glutils.GLVersion;
+import org.oscim.backend.*;
 import org.oscim.core.MapPosition;
 import org.oscim.gdx.GdxAssets;
 import org.oscim.gdx.GdxMap;
@@ -33,11 +30,11 @@ import org.oscim.gdx.client.MapConfig;
 import org.oscim.gdx.client.MapUrl;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.web.js.JsMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class GwtMap extends GdxMap {
-    static final Logger log = LoggerFactory.getLogger(GwtMap.class);
+    private static final Logger log = Logger.getLogger(GwtMap.class.getName());
 
     @Override
     public void create() {
@@ -72,8 +69,16 @@ public class GwtMap extends GdxMap {
     }-*/;
 
     @Override
+    protected void initGLAdapter(GLVersion version) {
+        if (version.getMajorVersion() >= 3)
+            GLAdapter.init((GL30) Gdx.graphics.getGL30());
+        else
+            GLAdapter.init((GL) Gdx.graphics.getGL20());
+    }
+
+    @Override
     protected void createLayers() {
-        log.debug("<<< create layers >>>");
+        log.fine("<<< create layers >>>");
         createLayersN();
     }
 }

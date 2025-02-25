@@ -21,13 +21,10 @@ import org.oscim.core.Tag;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.source.JsonTileDataSource;
 import org.oscim.tiling.source.UrlTileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 public abstract class GeoJsonTileSource extends UrlTileSource {
-    static final Logger log = LoggerFactory.getLogger(GeoJsonTileSource.class);
 
     public GeoJsonTileSource(String url) {
         super(url, "/{Z}/{X}/{Y}.json");

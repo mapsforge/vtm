@@ -1,18 +1,17 @@
 package java.io;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 public class FileInputStream extends InputStream {
 
-    static final Logger log = LoggerFactory.getLogger(FileInputStream.class);
+    private static final Logger log = Logger.getLogger(FileInputStream.class.getName());
 
     public FileInputStream(File f) {
 
     }
 
     public FileInputStream(String s) throws FileNotFoundException {
-        log.debug("FileInputStream {}", s);
+        log.fine("FileInputStream " + s);
     }
 
     @Override

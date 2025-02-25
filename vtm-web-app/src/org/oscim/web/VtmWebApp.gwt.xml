@@ -4,7 +4,6 @@
     <entry-point class="org.oscim.web.client.GwtLauncher" />
     <inherits name="org.oscim.gdx.VtmWeb" />
     <inherits name="VtmGdxPoi3D" />
-    <inherits name="ru.finam.slf4jgwt.logging.gwt.Logging" />
 
     <set-property name='gwt.logging.enabled' value='TRUE' />
     <set-property name='gwt.logging.consoleHandler' value='ENABLED' />

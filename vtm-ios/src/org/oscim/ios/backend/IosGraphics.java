@@ -22,8 +22,6 @@ import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
 import org.oscim.theme.XmlThemeResourceProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,8 +30,6 @@ import java.io.InputStream;
  * iOS specific implementation of {@link CanvasAdapter}.
  */
 public class IosGraphics extends CanvasAdapter {
-
-    private static final Logger log = LoggerFactory.getLogger(IosGraphics.class);
 
     public static void init() {
         CanvasAdapter.init(new IosGraphics());

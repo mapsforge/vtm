@@ -27,15 +27,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
-
 import org.oscim.android.MapView;
 import org.oscim.app.location.Compass;
 import org.oscim.app.location.LocationDialog;
@@ -45,13 +39,12 @@ import org.oscim.core.GeoPoint;
 import org.oscim.overlay.DistanceTouchOverlay;
 import org.osmdroid.location.POI;
 import org.osmdroid.overlays.MapEventsReceiver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class TileMap extends MapActivity implements MapEventsReceiver {
-    static final Logger log = LoggerFactory.getLogger(TileMap.class);
+    private static final Logger log = Logger.getLogger(TileMap.class.getName());
 
     private static final int DIALOG_ENTER_COORDINATES = 0;
     private static final int DIALOG_LOCATION_PROVIDER_DISABLED = 2;
@@ -134,7 +127,7 @@ public class TileMap extends MapActivity implements MapEventsReceiver {
         Uri uri = intent.getData();
         if (uri != null) {
             String scheme = uri.getSchemeSpecificPart();
-            log.debug("got intent: " + (scheme == null ? "" : scheme));
+            log.fine("got intent: " + (scheme == null ? "" : scheme));
         }
     }
 
@@ -252,10 +245,10 @@ public class TileMap extends MapActivity implements MapEventsReceiver {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         switch (requestCode) {
             case POIS_REQUEST:
-                log.debug("result: POIS_REQUEST");
+                log.fine("result: POIS_REQUEST");
                 if (resultCode == RESULT_OK) {
                     int id = intent.getIntExtra("ID", 0);
-                    log.debug("result: POIS_REQUEST: " + id);
+                    log.fine("result: POIS_REQUEST: " + id);
 
                     App.poiSearch.poiMarkers.showBubbleOnItem(id);
                     POI poi = App.poiSearch.getPOIs().get(id);

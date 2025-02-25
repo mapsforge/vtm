@@ -17,7 +17,6 @@ package org.oscim.ios.test;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-
 import org.oscim.backend.CanvasAdapter;
 import org.oscim.utils.Parameters;
 import org.robovm.apple.foundation.NSAutoreleasePool;
@@ -57,7 +56,6 @@ public class ExampleLauncher extends IOSApplication.Delegate {
 
     public static void main(String[] argv) {
         NSAutoreleasePool pool = new NSAutoreleasePool();
-        System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE");
 
         UIApplication.main(argv, null, ExampleLauncher.class);
         pool.drain();

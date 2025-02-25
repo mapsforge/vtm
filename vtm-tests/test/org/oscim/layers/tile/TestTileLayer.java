@@ -24,11 +24,11 @@ import org.oscim.map.Map;
 import org.oscim.renderer.bucket.LineBucket;
 import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.theme.styles.LineStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class TestTileLayer extends TileLayer {
-    static final Logger log = LoggerFactory.getLogger(TestTileLayer.class);
+    private static final Logger log = Logger.getLogger(TestTileLayer.class.getName());
 
     public TestTileLayer(Map map) {
         super(map,
@@ -52,7 +52,7 @@ public class TestTileLayer extends TileLayer {
 
         @Override
         public boolean loadTile(MapTile tile) {
-            log.debug("load tile " + tile);
+            log.fine("load tile " + tile);
             RenderBuckets buckets = new RenderBuckets();
             tile.data = buckets;
 

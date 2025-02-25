@@ -3,21 +3,19 @@ package org.osmdroid.location;
 import org.oscim.core.BoundingBox;
 import org.oscim.core.GeoPoint;
 import org.osmdroid.utils.HttpConnection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import java.util.logging.Logger;
 
 /**
  * POI Provider using Picasa service.
@@ -27,7 +25,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class PicasaPOIProvider implements POIProvider {
 
-    static final Logger log = LoggerFactory.getLogger(PicasaPOIProvider.class);
+    private static final Logger log = Logger.getLogger(PicasaPOIProvider.class.getName());
 
     String mAccessToken;
 
@@ -59,7 +57,7 @@ public class PicasaPOIProvider implements POIProvider {
     }
 
     public ArrayList<POI> getThem(String fullUrl) {
-        log.debug("PicasaPOIProvider:get:" + fullUrl);
+        log.fine("PicasaPOIProvider:get:" + fullUrl);
         HttpConnection connection = new HttpConnection();
         connection.doGet(fullUrl);
         InputStream stream = connection.getStream();
@@ -82,7 +80,7 @@ public class PicasaPOIProvider implements POIProvider {
         }
         connection.close();
         if (handler.mPOIs != null)
-            log.debug("done:" + handler.mPOIs.size() + " got on a total of:"
+            log.fine("done:" + handler.mPOIs.size() + " got on a total of:"
                     + handler.mTotalResults);
         return handler.mPOIs;
     }

@@ -23,16 +23,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
 import org.oscim.app.App;
 import org.oscim.app.R;
 import org.oscim.app.TileMap;
 import org.oscim.core.MapPosition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class LocationHandler implements LocationListener {
-    private static final Logger log = LoggerFactory.getLogger(LocationHandler.class);
+    private static final Logger log = Logger.getLogger(LocationHandler.class.getName());
 
     public enum Mode {
         OFF,
@@ -190,7 +189,7 @@ public class LocationHandler implements LocationListener {
         double lat = location.getLatitude();
         double lon = location.getLongitude();
 
-        log.debug("update location " + lat + ":" + lon);
+        log.fine("update location " + lat + ":" + lon);
 
         if (mSetCenter || mMode == Mode.SNAP) {
             mSetCenter = false;
@@ -221,7 +220,7 @@ public class LocationHandler implements LocationListener {
 
     public void pause() {
         if (mMode != Mode.OFF) {
-            log.debug("pause location listener");
+            log.fine("pause location listener");
         }
     }
 

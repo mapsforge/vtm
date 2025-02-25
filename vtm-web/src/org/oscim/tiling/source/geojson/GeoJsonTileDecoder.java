@@ -17,14 +17,11 @@
 package org.oscim.tiling.source.geojson;
 
 import com.google.gwt.core.client.JavaScriptObject;
-
 import org.oscim.core.GeometryBuffer.GeometryType;
 import org.oscim.core.MapElement;
 import org.oscim.core.Tile;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.source.ITileDecoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +31,6 @@ import static org.oscim.core.MercatorProjection.latitudeToY;
 import static org.oscim.core.MercatorProjection.longitudeToX;
 
 public class GeoJsonTileDecoder implements ITileDecoder {
-    static final Logger log = LoggerFactory.getLogger(GeoJsonTileDecoder.class);
 
     private final MapElement mapElement;
     private final GeoJsonTileSource mTileSource;

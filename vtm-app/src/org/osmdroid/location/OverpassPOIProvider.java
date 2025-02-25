@@ -7,18 +7,16 @@ import org.oscim.core.osm.OsmData;
 import org.oscim.core.osm.OsmNode;
 import org.oscim.utils.osmpbf.OsmPbfReader;
 import org.osmdroid.utils.HttpConnection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class OverpassPOIProvider implements POIProvider {
 
-    static final Logger log = LoggerFactory
-            .getLogger(OverpassPOIProvider.class);
+    private static final Logger log = Logger.getLogger(OverpassPOIProvider.class.getName());
 
     public static final String TAG_KEY_WEBSITE = "website".intern();
 
@@ -38,7 +36,7 @@ public class OverpassPOIProvider implements POIProvider {
             e1.printStackTrace();
             return null;
         }
-        log.debug("request " + url + encoded);
+        log.fine("request " + url + encoded);
         connection.doGet(url + encoded);
         OsmData osmData = OsmPbfReader.process(connection.getStream());
         ArrayList<POI> pois = new ArrayList<POI>(osmData.getNodes().size());
@@ -57,7 +55,7 @@ public class OverpassPOIProvider implements POIProvider {
                 p.type = t.value;
 
             if ((t = n.tags.get(TAG_KEY_WEBSITE)) != null) {
-                log.debug(p.description + " " + t.value);
+                log.fine(p.description + " " + t.value);
                 p.url = t.value;
             }
             pois.add(p);

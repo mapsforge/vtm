@@ -21,13 +21,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayNumber;
 import com.google.gwt.dom.client.Style.Visibility;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.jsonp.client.JsonpRequestBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -40,24 +34,22 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
-
 import org.oscim.core.BoundingBox;
 import org.oscim.core.GeometryBuffer;
 import org.oscim.core.MapPosition;
 import org.oscim.layers.PathLayer;
 import org.oscim.map.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class SearchBox {
 
-    protected static final Logger log = LoggerFactory.getLogger(SearchBox.class);
+    private static final Logger log = Logger.getLogger(SearchBox.class.getName());
 
     private static final String NOMINATIM_GLOBAL = "http://nominatim.openstreetmap.org/search?polygon_text=1&addressdetails=0&format=json&limit=25&q=";
 
@@ -268,7 +260,7 @@ public class SearchBox {
                         try {
                             r.parse(wkt, g);
                         } catch (Exception e) {
-                            log.debug(wkt);
+                            log.fine(wkt);
                         }
                         //FIXME mOverlay.setGeom(g);
 
@@ -341,7 +333,7 @@ public class SearchBox {
                 builder.requestObject(url, new AsyncCallback<JsArray<NominatimData>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        log.debug("request failed");
+                        log.fine("request failed");
                         searchButton.setEnabled(true);
                     }
 

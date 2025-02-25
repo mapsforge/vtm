@@ -26,21 +26,20 @@ import org.robovm.apple.foundation.NSData;
 import org.robovm.apple.uikit.UIColor;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.rt.VM;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.Buffer;
 import java.nio.ByteOrder;
+import java.util.logging.Logger;
 
 /**
  * iOS specific implementation of {@link Bitmap}.
  */
 public class IosBitmap implements Bitmap {
 
-    static final Logger log = LoggerFactory.getLogger(IosBitmap.class);
+    private static final Logger log = Logger.getLogger(IosBitmap.class.getName());
 
     CGBitmapContext cgBitmapContext;
     final int width;
@@ -115,7 +114,7 @@ public class IosBitmap implements Bitmap {
 
         InputStream inputStream = AssetAdapter.readFileAsStream(fileName);
         if (inputStream == null) {
-            log.error("invalid bitmap source: " + fileName);
+            log.severe("invalid bitmap source: " + fileName);
             // no image source defined
             this.cgBitmapContext = null;
             this.width = 0;

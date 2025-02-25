@@ -5,7 +5,6 @@
 
     <inherits name="org.oscim.gdx.VtmWeb" />
     <inherits name='org.timepedia.exporter.Exporter' />
-    <inherits name="ru.finam.slf4jgwt.logging.gwt.Logging" />
 
     <set-property name="export" value="yes" />
 

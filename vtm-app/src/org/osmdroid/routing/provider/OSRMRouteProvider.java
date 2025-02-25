@@ -11,12 +11,11 @@ import org.osmdroid.routing.RouteProvider;
 import org.osmdroid.utils.BonusPackHelper;
 import org.osmdroid.utils.HttpConnection;
 import org.osmdroid.utils.PolylineEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 /**
  * get a route between a start and a destination point. It uses OSRM, a free
@@ -30,7 +29,7 @@ import java.util.Locale;
  */
 public class OSRMRouteProvider extends RouteProvider {
 
-    static final Logger log = LoggerFactory.getLogger(OSRMRouteProvider.class);
+    private static final Logger log = Logger.getLogger(OSRMRouteProvider.class.getName());
 
     // 1 for 6 digit precision, 10 for 5
     private static final int ENCODING_PRECISION = 1;
@@ -196,7 +195,7 @@ public class OSRMRouteProvider extends RouteProvider {
     @Override
     public Route getRoute(List<GeoPoint> waypoints) {
         String url = getUrl(waypoints);
-        log.debug("OSRMRouteManager.getRoute:" + url);
+        log.fine("OSRMRouteManager.getRoute:" + url);
 
         //String jString = BonusPackHelper.requestStringFromUrl(url);
         HttpConnection connection = new HttpConnection();
@@ -206,7 +205,7 @@ public class OSRMRouteProvider extends RouteProvider {
         connection.close();
 
         if (jString == null) {
-            log.error("OSRMRouteManager::getRoute: request failed.");
+            log.severe("OSRMRouteManager::getRoute: request failed.");
             return new Route(waypoints);
         }
         Locale l = Locale.getDefault();
@@ -261,7 +260,7 @@ public class OSRMRouteProvider extends RouteProvider {
             //    bb.getLatSouthE6(), bb.getLonWestE6(), bb.getLatNorthE6(), bb.getLonEastE6());
             route.status = Route.STATUS_OK;
         }
-        log.debug("OSRMRouteManager.getRoute - finished");
+        log.fine("OSRMRouteManager.getRoute - finished");
         return route;
     }
 

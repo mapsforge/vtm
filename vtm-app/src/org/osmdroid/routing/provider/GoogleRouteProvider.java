@@ -8,21 +8,19 @@ import org.osmdroid.routing.RouteNode;
 import org.osmdroid.routing.RouteProvider;
 import org.osmdroid.utils.HttpConnection;
 import org.osmdroid.utils.PolylineEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import java.util.logging.Logger;
 
 /**
  * class to get a route between a start and a destination point, going through a
@@ -35,7 +33,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class GoogleRouteProvider extends RouteProvider {
 
-    static final Logger log = LoggerFactory.getLogger(GoogleRouteProvider.class);
+    private static final Logger log = Logger.getLogger(GoogleRouteProvider.class.getName());
 
     static final String GOOGLE_DIRECTIONS_SERVICE = "http://maps.googleapis.com/maps/api/directions/xml?";
 
@@ -79,7 +77,7 @@ public class GoogleRouteProvider extends RouteProvider {
     @Override
     public Route getRoute(List<GeoPoint> waypoints) {
         String url = getUrl(waypoints);
-        log.debug("GoogleRouteManager.getRoute:" + url);
+        log.fine("GoogleRouteManager.getRoute:" + url);
         Route route = null;
         HttpConnection connection = new HttpConnection();
         connection.doGet(url);
@@ -98,7 +96,7 @@ public class GoogleRouteProvider extends RouteProvider {
             }
             route.status = Route.STATUS_OK;
         }
-        log.debug("GoogleRouteManager.getRoute - finished");
+        log.fine("GoogleRouteManager.getRoute - finished");
         return route;
     }
 

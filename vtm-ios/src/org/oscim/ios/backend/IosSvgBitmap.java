@@ -21,18 +21,16 @@ import org.oscim.utils.IOUtils;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.uikit.UIImage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import svg.SVGRenderer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import svg.SVGRenderer;
+import java.util.logging.Logger;
 
 public class IosSvgBitmap extends IosBitmap {
-    private static final Logger log = LoggerFactory.getLogger(IosSvgBitmap.class);
+    private static final Logger log = Logger.getLogger(IosSvgBitmap.class.getName());
 
     /**
      * Default size is 20x20px (400px) at 160dpi.
@@ -49,7 +47,7 @@ public class IosSvgBitmap extends IosBitmap {
                 sb.append(line);
             }
         } catch (IOException e) {
-            log.error(e.toString(), e);
+            log.severe(e.toString());
         } finally {
             IOUtils.closeQuietly(br);
         }

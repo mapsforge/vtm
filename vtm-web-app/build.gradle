@@ -20,7 +20,6 @@ sourceSets {
 dependencies {
     providedCompile project(':vtm-gdx-poi3d')
     providedCompile project(':vtm-web')
-    providedCompile 'ru.finam:slf4j-gwt:1.7.7.1'
 }
 
 // explicit dependencies for org.gradle.configureondemand=true

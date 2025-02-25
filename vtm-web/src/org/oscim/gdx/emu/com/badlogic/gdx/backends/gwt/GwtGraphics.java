@@ -34,11 +34,11 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.webgl.client.WebGLContextAttributes;
 import com.google.gwt.webgl.client.WebGLRenderingContext;
 import org.oscim.gdx.client.GdxGL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class GwtGraphics implements Graphics {
-    static final Logger log = LoggerFactory.getLogger(GwtGraphics.class);
+    private static final Logger log = Logger.getLogger(GwtGraphics.class.getName());
 
     /* Enum values from http://www.w3.org/TR/screen-orientation. Filtered based on what the browsers actually support. */
     public enum OrientationLockType {
@@ -106,11 +106,11 @@ public class GwtGraphics implements Graphics {
 
         // this actually *enables* the option to use std derivatives in shader..
         if (context.getExtension("OES_standard_derivatives") == null) {
-            log.error("Missing gl extension for OES_standard_derivatives");
+            log.severe("Missing gl extension for OES_standard_derivatives");
         }
 
         if (context.getExtension("WEBKIT_WEBGL_depth_texture") == null) {
-            log.error("Missing gl extension for WEBKIT_WEBGL_depth_texture");
+            log.severe("Missing gl extension for WEBKIT_WEBGL_depth_texture");
         }
 
         this.gl = config.useDebugGL ? new GwtGL20Debug(context) : new GdxGL(context);

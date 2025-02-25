@@ -37,15 +37,11 @@ import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
 import org.oscim.tiling.source.mapnik.MapnikVectorTileSource;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Collections;
 
 public class MapLayers {
-
-    static final Logger log = LoggerFactory.getLogger(MapLayers.class);
 
     abstract static class Config {
         final String name;

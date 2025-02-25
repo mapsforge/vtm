@@ -36,8 +36,6 @@ import org.oscim.utils.FastMath;
 @SuppressWarnings("deprecation")
 public class Compass extends Layer implements SensorEventListener, Map.UpdateListener, LocationCallback {
 
-    // static final Logger log = LoggerFactory.getLogger(Compass.class);
-
     public enum Mode {
         OFF, C2D, C3D,
     }

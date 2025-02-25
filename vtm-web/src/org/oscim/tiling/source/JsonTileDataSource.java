@@ -20,23 +20,21 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.jsonp.client.JsonpRequest;
 import com.google.gwt.jsonp.client.JsonpRequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.MapTile.State;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.source.geojson.GeoJsonTileDecoder;
 import org.oscim.tiling.source.geojson.GeoJsonTileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 import static org.oscim.tiling.QueryResult.FAILED;
 import static org.oscim.tiling.QueryResult.SUCCESS;
 
 public class JsonTileDataSource implements ITileDataSource {
-    static final Logger log = LoggerFactory.getLogger(JsonTileDataSource.class);
+    private static final Logger log = Logger.getLogger(JsonTileDataSource.class.getName());
 
     protected final GeoJsonTileDecoder mTileDecoder;
     protected final UrlTileSource mTileSource;
@@ -92,20 +90,20 @@ public class JsonTileDataSource implements ITileDataSource {
             public void onFailure(Throwable caught) {
 
                 mSink.completed(FAILED);
-                log.debug("fail! {} {}", mRequestHandle, caught.toString());
+                log.fine("fail! " + mRequestHandle + " " + caught.toString());
                 //mRequestHandle.cancel();
             }
 
             @Override
             public void onSuccess(JavaScriptObject jso) {
                 if (mTile.state(State.NONE)) {
-                    log.debug("tile cleared {}", url);
+                    log.fine("tile cleared " + url);
                     mSink.completed(FAILED);
                     return;
                 }
 
                 if (jso == null) {
-                    log.debug("Couldn't retrieve JSON for {}", url);
+                    log.fine("Couldn't retrieve JSON for " + url);
                     mSink.completed(FAILED);
                     return;
                 }
@@ -116,7 +114,7 @@ public class JsonTileDataSource implements ITileDataSource {
                         return;
                     }
                 } catch (Exception e) {
-                    log.debug("Couldn't retrieve JSON for {} {}" + url, e);
+                    log.fine("Couldn't retrieve JSON for " + url + " " + e);
                     // FIXME need to check where it might be thrown
                     mSink.completed(FAILED);
                 }

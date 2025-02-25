@@ -19,7 +19,6 @@ import com.google.gwt.typedarrays.shared.Uint8Array;
 import com.google.gwt.xhr.client.ReadyStateChangeHandler;
 import com.google.gwt.xhr.client.XMLHttpRequest;
 import com.google.gwt.xhr.client.XMLHttpRequest.ResponseType;
-
 import org.oscim.core.Tile;
 import org.oscim.layers.tile.MapTile;
 
@@ -28,7 +27,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class LwHttp implements HttpEngine {
-    //static final Logger log = LoggerFactory.getLogger(LwHttp.class);
 
     private XMLHttpRequest mHttpRequest;
 

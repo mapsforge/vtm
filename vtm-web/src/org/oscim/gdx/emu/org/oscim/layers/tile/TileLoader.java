@@ -16,19 +16,15 @@ package org.oscim.layers.tile;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer;
-
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.MapElement;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.tiling.ITileDataSink;
 import org.oscim.tiling.QueryResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.oscim.tiling.QueryResult.FAILED;
 
 public abstract class TileLoader implements ITileDataSink {
-    static final Logger log = LoggerFactory.getLogger(TileLoader.class);
 
     private final TileManager mTileManager;
     private Timer mTimer;

@@ -1,20 +1,15 @@
 package org.oscim.utils;
 
-import com.google.gwt.core.client.JavaScriptException;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArrayInteger;
-import com.google.gwt.core.client.JsArrayNumber;
-import com.google.gwt.core.client.JsArrayUtils;
+import com.google.gwt.core.client.*;
 import com.google.gwt.typedarrays.shared.Float32Array;
 import com.google.gwt.typedarrays.shared.Int32Array;
-
 import org.oscim.core.GeometryBuffer;
 import org.oscim.renderer.bucket.VertexData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class Tessellator {
-    static final Logger log = LoggerFactory.getLogger(Tessellator.class);
+    private static final Logger log = Logger.getLogger(Tessellator.class.getName());
 
     public static int tessellate(GeometryBuffer geom, float scale,
                                  VertexData outPoints, VertexData outTris, int vertexOffset) {
@@ -39,7 +34,7 @@ public class Tessellator {
             }
 
             if (numPoints <= 0 && numRings == 1) {
-                log.debug("tessellation skip empty");
+                log.fine("tessellation skip empty");
                 pointPos += numPoints;
                 continue;
             }
@@ -55,7 +50,7 @@ public class Tessellator {
             pointPos += numPoints;
 
             if (res == null) {
-                log.debug("tessellation failed");
+                log.fine("tessellation failed");
                 continue;
             }
 

@@ -45,13 +45,12 @@ import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.bitmap.BitmapTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
+import java.util.logging.Logger;
 
 class GwtMap extends GdxMap {
-    static final Logger log = LoggerFactory.getLogger(GwtMap.class);
+    private static final Logger log = Logger.getLogger(GwtMap.class.getName());
 
     BuildingLayer mBuildingLayer;
     BuildingSolutionControl mBuildingSolutionControl;
@@ -77,7 +76,7 @@ class GwtMap extends GdxMap {
         CanvasAdapter.dpi = (int) (GwtGraphics.getDevicePixelRatioJSNI() * CanvasAdapter.DEFAULT_DPI);
         Tile.SIZE = Tile.calculateTileSize();
 
-        log.debug("GLAdapter.init");
+        log.fine("GLAdapter.init");
         MapRenderer.setBackgroundColor(0xffffff);
         //Gdx.app.setLogLevel(Application.LOG_DEBUG);
 

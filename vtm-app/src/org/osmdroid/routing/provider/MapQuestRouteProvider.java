@@ -7,20 +7,18 @@ import org.osmdroid.routing.RouteNode;
 import org.osmdroid.routing.RouteProvider;
 import org.osmdroid.utils.HttpConnection;
 import org.osmdroid.utils.PolylineEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import java.util.logging.Logger;
 
 /**
  * class to get a route between a start and a destination point, going through a
@@ -32,7 +30,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class MapQuestRouteProvider extends RouteProvider {
 
-    static final Logger log = LoggerFactory.getLogger(MapQuestRouteProvider.class);
+    private static final Logger log = Logger.getLogger(MapQuestRouteProvider.class.getName());
 
     static final String MAPQUEST_GUIDANCE_SERVICE = "http://open.mapquestapi.com/guidance/v0/route?";
 
@@ -83,7 +81,7 @@ public class MapQuestRouteProvider extends RouteProvider {
     @Override
     public Route getRoute(List<GeoPoint> waypoints) {
         String url = getUrl(waypoints);
-        log.debug("MapQuestRouteManager.getRoute:" + url);
+        log.fine("MapQuestRouteManager.getRoute:" + url);
         Route route = null;
         HttpConnection connection = new HttpConnection();
         connection.doGet(url);
@@ -95,7 +93,7 @@ public class MapQuestRouteProvider extends RouteProvider {
             route = new Route(waypoints);
         }
         connection.close();
-        log.debug("MapQuestRouteManager.getRoute - finished");
+        log.fine("MapQuestRouteManager.getRoute - finished");
         return route;
     }
 

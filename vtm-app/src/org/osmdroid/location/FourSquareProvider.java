@@ -18,15 +18,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.oscim.core.BoundingBox;
 import org.oscim.core.GeoPoint;
 import org.osmdroid.utils.BonusPackHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -34,10 +31,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class FourSquareProvider implements POIProvider {
 
-    static final Logger log = LoggerFactory.getLogger(FourSquareProvider.class);
+    private static final Logger log = Logger.getLogger(FourSquareProvider.class.getName());
 
     //    https://developer.foursquare.com/docs/venues/search
     //    https://developer.foursquare.com/docs/responses/venue
@@ -85,10 +83,10 @@ public class FourSquareProvider implements POIProvider {
      */
     public ArrayList<POI> getThem(String fullUrl) {
         // for local debug: fullUrl = "http://10.0.2.2/flickr_mockup.json";
-        log.debug("FlickrPOIProvider:get:" + fullUrl);
+        log.fine("FlickrPOIProvider:get:" + fullUrl);
         String jString = BonusPackHelper.requestStringFromUrl(fullUrl);
         if (jString == null) {
-            log.error("FlickrPOIProvider: request failed.");
+            log.severe("FlickrPOIProvider: request failed.");
             return null;
         }
         try {
@@ -159,7 +157,7 @@ public class FourSquareProvider implements POIProvider {
 
                     String redirect = conn.getHeaderField("Location");
                     if (redirect != null) {
-                        log.debug(redirect);
+                        log.fine(redirect);
                         return redirect;
                     }
                 } catch (MalformedURLException e) {

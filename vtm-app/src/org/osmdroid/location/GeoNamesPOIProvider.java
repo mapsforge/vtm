@@ -7,20 +7,18 @@ import org.oscim.core.BoundingBox;
 import org.oscim.core.GeoPoint;
 import org.osmdroid.utils.BonusPackHelper;
 import org.osmdroid.utils.HttpConnection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import java.util.logging.Logger;
 
 /**
  * POI Provider using GeoNames services. Currently, "find Nearby Wikipedia" and
@@ -31,7 +29,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class GeoNamesPOIProvider {
 
-    static final Logger log = LoggerFactory.getLogger(GeoNamesPOIProvider.class);
+    private static final Logger log = Logger.getLogger(GeoNamesPOIProvider.class.getName());
 
     protected String mUserName;
 
@@ -71,10 +69,10 @@ public class GeoNamesPOIProvider {
      * @return the list of POI
      */
     public ArrayList<POI> getThem(String fullUrl) {
-        log.debug("GeoNamesPOIProvider:get:" + fullUrl);
+        log.fine("GeoNamesPOIProvider:get:" + fullUrl);
         String jString = BonusPackHelper.requestStringFromUrl(fullUrl);
         if (jString == null) {
-            log.error("GeoNamesPOIProvider: request failed.");
+            log.severe("GeoNamesPOIProvider: request failed.");
             return null;
         }
         try {
@@ -102,7 +100,7 @@ public class GeoNamesPOIProvider {
                 //other attributes: distance?
                 pois.add(poi);
             }
-            log.debug("done");
+            log.fine("done");
             return pois;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -112,7 +110,7 @@ public class GeoNamesPOIProvider {
 
     //XML parsing seems 2 times slower than JSON parsing
     public ArrayList<POI> getThemXML(String fullUrl) {
-        log.debug("GeoNamesPOIProvider:get:" + fullUrl);
+        log.fine("GeoNamesPOIProvider:get:" + fullUrl);
         HttpConnection connection = new HttpConnection();
         connection.doGet(fullUrl);
         InputStream stream = connection.getStream();
@@ -131,7 +129,7 @@ public class GeoNamesPOIProvider {
             e.printStackTrace();
         }
         connection.close();
-        log.debug("done");
+        log.fine("done");
         return handler.mPOIs;
     }
 

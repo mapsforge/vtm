@@ -6,11 +6,10 @@ import org.json.JSONObject;
 import org.oscim.core.BoundingBox;
 import org.oscim.core.GeoPoint;
 import org.osmdroid.utils.BonusPackHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * POI Provider using Flickr service to get geolocalized photos.
@@ -20,7 +19,7 @@ import java.util.HashMap;
  */
 public class FlickrPOIProvider implements POIProvider {
 
-    static final Logger log = LoggerFactory.getLogger(FlickrPOIProvider.class);
+    private static final Logger log = Logger.getLogger(FlickrPOIProvider.class.getName());
 
     protected String mApiKey;
     private static final String PHOTO_URL = "http://www.flickr.com/photos/%s/%s/sizes/o/in/photostream/";
@@ -99,10 +98,10 @@ public class FlickrPOIProvider implements POIProvider {
      */
     public ArrayList<POI> getThem(String fullUrl) {
         // for local debug: fullUrl = "http://10.0.2.2/flickr_mockup.json";
-        log.debug("FlickrPOIProvider:get:" + fullUrl);
+        log.fine("FlickrPOIProvider:get:" + fullUrl);
         String jString = BonusPackHelper.requestStringFromUrl(fullUrl);
         if (jString == null) {
-            log.error("FlickrPOIProvider: request failed.");
+            log.severe("FlickrPOIProvider: request failed.");
             return null;
         }
         try {
