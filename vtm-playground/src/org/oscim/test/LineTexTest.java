@@ -55,7 +55,7 @@ public class LineTexTest extends GdxMapApp {
         mMap.setMapPosition(0, 0, 1 << 2);
 
         try {
-            tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png"));
+            tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png", null));
             //tex.mipmap = true;
         } catch (IOException e) {
             e.printStackTrace();

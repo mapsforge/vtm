@@ -47,7 +47,7 @@ public class LineTexActivity extends BitmapTileActivity {
 
         TextureItem tex = null;
         try {
-            tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png"));
+            tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/pike.png", null));
             //tex.mipmap = true;
         } catch (IOException e) {
             e.printStackTrace();

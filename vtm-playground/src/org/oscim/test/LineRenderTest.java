@@ -76,7 +76,7 @@ public class LineRenderTest extends GdxMapApp {
 
         TextureItem tex = null;
         try {
-            tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/dot.png"));
+            tex = new TextureItem(CanvasAdapter.getBitmapAsset("", "patterns/dot.png", null));
             //tex.mipmap = true;
         } catch (IOException e) {
             e.printStackTrace();

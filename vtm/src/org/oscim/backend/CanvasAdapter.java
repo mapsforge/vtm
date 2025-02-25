@@ -22,6 +22,7 @@ package org.oscim.backend;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
+import org.oscim.theme.ThemeCallback;
 import org.oscim.theme.XmlThemeResourceProvider;
 
 import java.io.File;
@@ -162,17 +163,17 @@ public abstract class CanvasAdapter {
      * @param src                the resource
      * @return the bitmap
      */
-    protected abstract Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) throws IOException;
+    protected abstract Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent, ThemeCallback themeCallback) throws IOException;
 
-    public static Bitmap getBitmapAsset(String relativePathPrefix, String src) throws IOException {
-        return getBitmapAsset(relativePathPrefix, src, null, 0, 0, 100);
+    public static Bitmap getBitmapAsset(String relativePathPrefix, String src, ThemeCallback themeCallback) throws IOException {
+        return getBitmapAsset(relativePathPrefix, src, null, 0, 0, 100, themeCallback);
     }
 
-    public static Bitmap getBitmapAsset(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) throws IOException {
-        return g.loadBitmapAssetImpl(relativePathPrefix, src, resourceProvider, width, height, percent);
+    public static Bitmap getBitmapAsset(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent, ThemeCallback themeCallback) throws IOException {
+        return g.loadBitmapAssetImpl(relativePathPrefix, src, resourceProvider, width, height, percent, themeCallback);
     }
 
-    protected static Bitmap createBitmap(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) throws IOException {
+    protected static Bitmap createBitmap(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent, ThemeCallback themeCallback) throws IOException {
         if (src == null || src.length() == 0) {
             // no image source defined
             return null;
@@ -221,6 +222,8 @@ public abstract class CanvasAdapter {
         else
             bitmap = decodeBitmap(inputStream, width, height, percent);
         inputStream.close();
+        if (themeCallback != null)
+            bitmap = themeCallback.getBitmap(bitmap);
         return bitmap;
     }
 

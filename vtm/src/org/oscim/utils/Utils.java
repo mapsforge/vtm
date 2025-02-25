@@ -19,6 +19,7 @@ import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.renderer.bucket.TextureItem;
+import org.oscim.theme.ThemeCallback;
 import org.oscim.theme.XmlThemeResourceProvider;
 import org.oscim.utils.math.MathUtils;
 
@@ -38,12 +39,12 @@ public final class Utils {
     /**
      * Load a texture from a specified location and optional dimensions.
      */
-    public static TextureItem loadTexture(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) {
+    public static TextureItem loadTexture(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent, ThemeCallback themeCallback) {
         if (src == null || src.length() == 0)
             return null;
 
         try {
-            Bitmap bitmap = CanvasAdapter.getBitmapAsset(relativePathPrefix, src, resourceProvider, width, height, percent);
+            Bitmap bitmap = CanvasAdapter.getBitmapAsset(relativePathPrefix, src, resourceProvider, width, height, percent, themeCallback);
             if (bitmap != null) {
                 log.fine("loading " + src);
                 return new TextureItem(potBitmap(bitmap), true);

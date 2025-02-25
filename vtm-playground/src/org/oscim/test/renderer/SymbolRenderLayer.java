@@ -34,7 +34,7 @@ public class SymbolRenderLayer extends BucketRenderer {
         it.billboard = false;
 
         try {
-            it.bitmap = CanvasAdapter.getBitmapAsset("", "symbols/food/cafe.svg");
+            it.bitmap = CanvasAdapter.getBitmapAsset("", "symbols/food/cafe.svg", null);
         } catch (Exception e) {
             e.printStackTrace();
 

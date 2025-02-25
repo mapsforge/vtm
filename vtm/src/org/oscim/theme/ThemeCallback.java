@@ -14,12 +14,18 @@
  */
 package org.oscim.theme;
 
+import org.oscim.backend.canvas.Bitmap;
 import org.oscim.theme.styles.RenderStyle;
 
 /**
  * Callback methods for render theme.
  */
 public interface ThemeCallback {
+    /**
+     * @return the resource {@link Bitmap}
+     */
+    Bitmap getBitmap(Bitmap bitmap);
+
     /**
      * @return the color-int
      */

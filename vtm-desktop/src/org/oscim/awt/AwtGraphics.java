@@ -23,6 +23,7 @@ import org.oscim.backend.Platform;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.backend.canvas.Canvas;
 import org.oscim.backend.canvas.Paint;
+import org.oscim.theme.ThemeCallback;
 import org.oscim.theme.XmlThemeResourceProvider;
 
 import java.awt.*;
@@ -117,7 +118,7 @@ public class AwtGraphics extends CanvasAdapter {
     }
 
     @Override
-    public Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent) throws IOException {
-        return createBitmap(relativePathPrefix, src, resourceProvider, width, height, percent);
+    public Bitmap loadBitmapAssetImpl(String relativePathPrefix, String src, XmlThemeResourceProvider resourceProvider, int width, int height, int percent, ThemeCallback themeCallback) throws IOException {
+        return createBitmap(relativePathPrefix, src, resourceProvider, width, height, percent, themeCallback);
     }
 }

@@ -680,7 +680,7 @@ public class XmlThemeBuilder {
             if (src != null) {
                 b.symbolPercent *= 2;
                 float symbolScale = hasSymbol && Parameters.SYMBOL_SCALING == Parameters.SymbolScaling.ALL ? CanvasAdapter.symbolScale : 1;
-                b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale));
+                b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale), mThemeCallback);
             }
             if (b.texture != null) {
                 int width = (int) (b.texture.width + (hasSymbol ? b.repeatGap : 0));
@@ -793,7 +793,7 @@ public class XmlThemeBuilder {
         }
 
         if (src != null)
-            b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, b.symbolPercent);
+            b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, b.symbolPercent, mThemeCallback);
 
         return b.build();
     }
@@ -837,7 +837,7 @@ public class XmlThemeBuilder {
         }
         validateExists("img", img, elementName);
 
-        Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), img);
+        Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), img, mThemeCallback);
         if (bitmap != null)
             mTextureAtlas = new TextureAtlas(bitmap);
     }
@@ -1121,7 +1121,7 @@ public class XmlThemeBuilder {
             String lowValue = symbol.toLowerCase(Locale.ENGLISH);
             if (lowValue.endsWith(".png") || lowValue.endsWith(".svg")) {
                 try {
-                    b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * CanvasAdapter.symbolScale));
+                    b.bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), symbol, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * CanvasAdapter.symbolScale), mThemeCallback);
                 } catch (Exception e) {
                     log.severe(symbol + ": " + e);
                 }
@@ -1275,7 +1275,7 @@ public class XmlThemeBuilder {
                             symbolScale = CanvasAdapter.symbolScale;
                         break;
                 }
-                Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), b.src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale));
+                Bitmap bitmap = CanvasAdapter.getBitmapAsset(mTheme.getRelativePathPrefix(), b.src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, (int) (b.symbolPercent * symbolScale), mThemeCallback);
                 if (bitmap != null)
                     return buildSymbol(b, b.src, bitmap);
             } catch (Exception e) {
