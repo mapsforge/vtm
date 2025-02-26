@@ -14,6 +14,7 @@
  */
 package org.oscim.tiling.source.mapfile;
 
+import org.oscim.core.BoundingBox;
 import org.oscim.core.Tile;
 import org.oscim.layers.tile.MapTile;
 import org.oscim.tiling.ITileDataSink;
@@ -22,6 +23,8 @@ import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.TileDataSink;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -44,7 +47,15 @@ public class MultiMapDatabase implements ITileDataSource {
         if (mapDatabases.contains(mapDatabase)) {
             throw new IllegalArgumentException("Duplicate map database");
         }
-        return mapDatabases.add(mapDatabase);
+        mapDatabases.add(mapDatabase);
+        Collections.sort(mapDatabases, new Comparator<MapDatabase>() {
+            @Override
+            public int compare(MapDatabase md1, MapDatabase md2) {
+                // Reverse order
+                return -Integer.compare(md1.getPriority(), md2.getPriority());
+            }
+        });
+        return true;
     }
 
     @Override
@@ -64,13 +75,20 @@ public class MultiMapDatabase implements ITileDataSource {
             }
 
             TileDataSink dataSink = new TileDataSink(sink);
+            boolean isTileFilled = false;
             for (int i = 0, n = mapDatabases.size(); i < n; i++) {
                 MapDatabase mapDatabase = mapDatabases.get(i);
+                if (isTileFilled && mapDatabase.getPriority() < 0) {
+                    break;
+                }
                 if (mapDatabase.supportsTile(tile)) {
                     mapDatabase.setDeduplicate(deduplicate);
                     dataSink.level = i + 1;
                     dataSink.levels = n;
                     mapDatabase.query(tile, dataSink);
+                }
+                if (mapDatabase.supportsFullTile(tile)) {
+                    isTileFilled = true;
                 }
             }
             sink.completed(QueryResult.SUCCESS);
@@ -96,7 +114,11 @@ public class MultiMapDatabase implements ITileDataSource {
 
     public MapReadResult readLabels(Tile tile, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
+        boolean isTileFilled = false;
         for (MapDatabase mdb : mapDatabases) {
+            if (isTileFilled && mdb.getPriority() < 0) {
+                break;
+            }
             if (mdb.supportsTile(tile)) {
                 MapReadResult result = mdb.readLabels(tile);
                 if (result == null) {
@@ -106,14 +128,22 @@ public class MultiMapDatabase implements ITileDataSource {
                 mapReadResult.isWater = isWater;
                 mapReadResult.add(result, deduplicate);
             }
+            if (mdb.supportsFullTile(tile)) {
+                isTileFilled = true;
+            }
         }
         return mapReadResult;
     }
 
     public MapReadResult readLabels(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
+        boolean isTileFilled = false;
         for (MapDatabase mdb : mapDatabases) {
-            if (mdb.supportsTile(upperLeft)) {
+            if (isTileFilled && mdb.getPriority() < 0) {
+                break;
+            }
+            if (mdb.supportsArea(upperLeft.getBoundingBox().extendBoundingBox(lowerRight.getBoundingBox()),
+                    upperLeft.zoomLevel)) {
                 MapReadResult result = mdb.readLabels(upperLeft, lowerRight);
                 if (result == null) {
                     continue;
@@ -122,13 +152,21 @@ public class MultiMapDatabase implements ITileDataSource {
                 mapReadResult.isWater = isWater;
                 mapReadResult.add(result, deduplicate);
             }
+            if (mdb.supportsFullArea(upperLeft.getBoundingBox().extendBoundingBox(lowerRight.getBoundingBox()),
+                    upperLeft.zoomLevel)) {
+                isTileFilled = true;
+            }
         }
         return mapReadResult;
     }
 
     public MapReadResult readMapData(Tile tile, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
+        boolean isTileFilled = false;
         for (MapDatabase mdb : mapDatabases) {
+            if (isTileFilled && mdb.getPriority() < 0) {
+                break;
+            }
             if (mdb.supportsTile(tile)) {
                 MapReadResult result = mdb.readMapData(tile);
                 if (result == null) {
@@ -138,14 +176,22 @@ public class MultiMapDatabase implements ITileDataSource {
                 mapReadResult.isWater = isWater;
                 mapReadResult.add(result, deduplicate);
             }
+            if (mdb.supportsFullTile(tile)) {
+                isTileFilled = true;
+            }
         }
         return mapReadResult;
     }
 
     public MapReadResult readMapData(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
+        boolean isTileFilled = false;
         for (MapDatabase mdb : mapDatabases) {
-            if (mdb.supportsTile(upperLeft)) {
+            if (isTileFilled && mdb.getPriority() < 0) {
+                break;
+            }
+            if (mdb.supportsArea(upperLeft.getBoundingBox().extendBoundingBox(lowerRight.getBoundingBox()),
+                    upperLeft.zoomLevel)) {
                 MapReadResult result = mdb.readMapData(upperLeft, lowerRight);
                 if (result == null) {
                     continue;
@@ -154,13 +200,21 @@ public class MultiMapDatabase implements ITileDataSource {
                 mapReadResult.isWater = isWater;
                 mapReadResult.add(result, deduplicate);
             }
+            if (mdb.supportsFullArea(upperLeft.getBoundingBox().extendBoundingBox(lowerRight.getBoundingBox()),
+                    upperLeft.zoomLevel)) {
+                isTileFilled = true;
+            }
         }
         return mapReadResult;
     }
 
     public MapReadResult readPoiData(Tile tile, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
+        boolean isTileFilled = false;
         for (MapDatabase mdb : mapDatabases) {
+            if (isTileFilled && mdb.getPriority() < 0) {
+                break;
+            }
             if (mdb.supportsTile(tile)) {
                 MapReadResult result = mdb.readPoiData(tile);
                 if (result == null) {
@@ -170,14 +224,22 @@ public class MultiMapDatabase implements ITileDataSource {
                 mapReadResult.isWater = isWater;
                 mapReadResult.add(result, deduplicate);
             }
+            if (mdb.supportsFullTile(tile)) {
+                isTileFilled = true;
+            }
         }
         return mapReadResult;
     }
 
     public MapReadResult readPoiData(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
+        boolean isTileFilled = false;
         for (MapDatabase mdb : mapDatabases) {
-            if (mdb.supportsTile(upperLeft)) {
+            if (isTileFilled && mdb.getPriority() < 0) {
+                break;
+            }
+            if (mdb.supportsArea(upperLeft.getBoundingBox().extendBoundingBox(lowerRight.getBoundingBox()),
+                    upperLeft.zoomLevel)) {
                 MapReadResult result = mdb.readPoiData(upperLeft, lowerRight);
                 if (result == null) {
                     continue;
@@ -186,6 +248,10 @@ public class MultiMapDatabase implements ITileDataSource {
                 mapReadResult.isWater = isWater;
                 mapReadResult.add(result, deduplicate);
             }
+            if (mdb.supportsFullArea(upperLeft.getBoundingBox().extendBoundingBox(lowerRight.getBoundingBox()),
+                    upperLeft.zoomLevel)) {
+                isTileFilled = true;
+            }
         }
         return mapReadResult;
     }
@@ -193,6 +259,33 @@ public class MultiMapDatabase implements ITileDataSource {
     public boolean supportsTile(Tile tile) {
         for (MapDatabase mdb : mapDatabases) {
             if (mdb.supportsTile(tile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean supportsFullTile(Tile tile) {
+        for (MapDatabase mdb : mapDatabases) {
+            if (mdb.supportsFullTile(tile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean supportsArea(BoundingBox boundingBox, int zoomLevel) {
+        for (MapDatabase mdb : mapDatabases) {
+            if (mdb.supportsArea(boundingBox, zoomLevel)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean supportsFullArea(BoundingBox boundingBox, int zoomLevel) {
+        for (MapDatabase mdb : mapDatabases) {
+            if (mdb.supportsFullArea(boundingBox, zoomLevel)) {
                 return true;
             }
         }

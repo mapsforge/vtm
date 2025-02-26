@@ -54,6 +54,14 @@ public class MapFileTileSource extends TileSource implements IMapFileTileSource 
     private String preferredLanguage;
     private Callback callback;
 
+    /**
+     * Priority of this MapFileTileSource. A higher number means a higher priority. Negative numbers have a special
+     * meaning, they should only be used for so-called background maps. Data from background maps is only read
+     * if no other map has provided a (complete) map tile. The most famous example of a background map is a
+     * low-resolution world map. The default priority is 0.
+     */
+    private int priority = 0;
+
     public MapFileTileSource() {
         this(Viewport.MIN_ZOOM_LEVEL, Viewport.MAX_ZOOM_LEVEL);
     }
@@ -104,6 +112,31 @@ public class MapFileTileSource extends TileSource implements IMapFileTileSource 
     @Override
     public void setPreferredLanguage(String preferredLanguage) {
         this.preferredLanguage = preferredLanguage;
+    }
+
+    /**
+     * Returns the priority of this MapFileTileSource. A higher number means a higher priority. Negative numbers
+     * have a special meaning, they should only be used for so-called background maps. Data from background
+     * maps is only read if no other map has provided a (complete) map tile. The most famous example of a
+     * background map is a low-resolution world map.
+     *
+     * @return The priority of this MapFileTileSource. Default is 0.
+     */
+    public int getPriority() {
+        return priority;
+    }
+
+    /**
+     * Sets the priority of this MapFileTileSource. A higher number means a higher priority. Negative numbers have
+     * a special meaning, they should only be used for so-called background maps. Data from background maps is
+     * only read if no other map has provided a (complete) map tile. The most famous example of a background
+     * map is a low-resolution world map. The default priority is 0.
+     *
+     * @param priority Priority of this MapFileTileSource. Negative number means background map priority (see above
+     *                 for the description).
+     */
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     @Override

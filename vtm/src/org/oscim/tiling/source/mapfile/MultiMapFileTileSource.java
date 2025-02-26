@@ -79,6 +79,7 @@ public class MultiMapFileTileSource extends TileSource implements IMapFileTileSo
                 int[] zoomLevels = zoomsByTileSource.get(mapFileTileSource);
                 if (zoomLevels != null)
                     mapDatabase.restrictToZoomRange(zoomLevels[0], zoomLevels[1]);
+                mapDatabase.setPriority(mapFileTileSource.getPriority());
                 multiMapDatabase.add(mapDatabase);
             } catch (IOException e) {
                 log.fine(e.toString());

@@ -103,6 +103,26 @@ public class BoundingBox {
     }
 
     /**
+     * @param latitude  the latitude coordinate in degrees.
+     * @param longitude the longitude coordinate in degrees.
+     * @return true if this BoundingBox contains the given coordinates, false otherwise.
+     */
+    public boolean contains(double latitude, double longitude) {
+        return this.getMinLatitude() <= latitude && this.getMaxLatitude() >= latitude
+                && this.getMinLongitude() <= longitude && this.getMaxLongitude() >= longitude;
+    }
+
+    /**
+     * @param latitudeE6  the latitude coordinate in microdegrees (degrees * 10^6).
+     * @param longitudeE6 the longitude coordinate in microdegrees (degrees * 10^6).
+     * @return true if this BoundingBox contains the given coordinates, false otherwise.
+     */
+    public boolean contains(int latitudeE6, int longitudeE6) {
+        return this.minLatitudeE6 <= latitudeE6 && this.maxLatitudeE6 >= latitudeE6
+                && this.minLongitudeE6 <= longitudeE6 && this.maxLongitudeE6 >= longitudeE6;
+    }
+
+    /**
      * @param geoPoint the point whose coordinates should be checked.
      * @return true if this BoundingBox contains the given GeoPoint, false
      * otherwise.

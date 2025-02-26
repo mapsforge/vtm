@@ -2,6 +2,7 @@
 
 ## Next version
 
+- Multi-map `MapFileTileSource.setPriority` [#1176](https://github.com/mapsforge/vtm/pull/1176)
 - Color filter theme resources [#1175](https://github.com/mapsforge/vtm/pull/1175)
   - `ThemeCallback.getBitmap`
 - Update JTS, OkHttp dependencies [#1172](https://github.com/mapsforge/vtm/pull/1172) [#1173](https://github.com/mapsforge/vtm/pull/1173)

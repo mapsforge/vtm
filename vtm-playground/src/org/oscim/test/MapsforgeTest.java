@@ -65,6 +65,8 @@ public class MapsforgeTest extends GdxMapApp {
         for (File mapFile : mapFiles) {
             MapFileTileSource mapFileTileSource = new MapFileTileSource();
             mapFileTileSource.setMapFile(mapFile.getAbsolutePath());
+            if ("world.map".equalsIgnoreCase(mapFile.getName()))
+                mapFileTileSource.setPriority(-1);
             tileSource.add(mapFileTileSource);
         }
         //tileSource.setDeduplicate(true);

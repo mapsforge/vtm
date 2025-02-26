@@ -222,6 +222,14 @@ public class MapDatabase implements ITileDataSource {
 
     private boolean deduplicate;
 
+    /**
+     * Priority of this MapDatabase. A higher number means a higher priority. Negative numbers have a special
+     * meaning, they should only be used for so-called background maps. Data from background maps is only read
+     * if no other map has provided a (complete) map tile. The most famous example of a background map is a
+     * low-resolution world map. The default priority is 0.
+     */
+    private int priority = 0;
+
     public MapDatabase(MapFileTileSource tileSource) throws IOException {
         mTileSource = tileSource;
         try {
@@ -424,6 +432,31 @@ public class MapDatabase implements ITileDataSource {
 
     void setDeduplicate(boolean deduplicate) {
         this.deduplicate = deduplicate;
+    }
+
+    /**
+     * Returns the priority of this MapDatabase. A higher number means a higher priority. Negative numbers
+     * have a special meaning, they should only be used for so-called background maps. Data from background
+     * maps is only read if no other map has provided a (complete) map tile. The most famous example of a
+     * background map is a low-resolution world map.
+     *
+     * @return The priority of this MapDatabase. Default is 0.
+     */
+    public int getPriority() {
+        return priority;
+    }
+
+    /**
+     * Sets the priority of this MapDatabase. A higher number means a higher priority. Negative numbers have
+     * a special meaning, they should only be used for so-called background maps. Data from background maps is
+     * only read if no other map has provided a (complete) map tile. The most famous example of a background
+     * map is a low-resolution world map. The default priority is 0.
+     *
+     * @param priority Priority of this MapDatabase. Negative number means background map priority (see above
+     *                 for the description).
+     */
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     private void setTileClipping(QueryParameters queryParameters, SubFileParameter subFileParameter,
@@ -1239,8 +1272,48 @@ public class MapDatabase implements ITileDataSource {
      * @return true if tile is part of database.
      */
     public boolean supportsTile(Tile tile) {
-        return tile.getBoundingBox().intersects(mTileSource.getMapInfo().boundingBox)
-                && (tile.zoomLevel >= this.zoomLevelMin && tile.zoomLevel <= this.zoomLevelMax);
+        return supportsArea(tile.getBoundingBox(), tile.zoomLevel);
+    }
+
+    /**
+     * Returns true if MapDatabase contains a complete tile.
+     *
+     * @param tile tile to be rendered.
+     * @return true if complete tile is part of database.
+     */
+    public boolean supportsFullTile(Tile tile) {
+        return supportsFullArea(tile.getBoundingBox(), tile.zoomLevel);
+    }
+
+    /**
+     * Returns true if MapDatabase covers (even partially) certain area in required zoom level.
+     *
+     * @param boundingBox area we test
+     * @param zoomLevel   zoom level we test
+     * @return true if area is part of the database.
+     */
+    public boolean supportsArea(BoundingBox boundingBox, int zoomLevel) {
+        return boundingBox.intersects(mTileSource.getMapInfo().boundingBox)
+                && (zoomLevel >= this.zoomLevelMin && zoomLevel <= this.zoomLevelMax);
+    }
+
+    /**
+     * Returns true if MapDatabase covers certain area completely in required zoom level.
+     *
+     * @param boundingBox area we test
+     * @param zoomLevel   zoom level we test
+     * @return true if complete area is part of the database.
+     */
+    public boolean supportsFullArea(BoundingBox boundingBox, int zoomLevel) {
+        final BoundingBox bbox1 = mTileSource.getMapInfo().boundingBox;
+        final BoundingBox bbox2 = boundingBox;
+        return bbox1.intersects(bbox2)
+                && zoomLevel >= this.zoomLevelMin
+                && zoomLevel <= this.zoomLevelMax
+                && bbox1.contains(bbox2.maxLatitudeE6, bbox2.maxLongitudeE6)
+                && bbox1.contains(bbox2.minLatitudeE6, bbox2.minLongitudeE6)
+                && bbox1.contains(bbox2.maxLatitudeE6, bbox2.minLongitudeE6)
+                && bbox1.contains(bbox2.minLatitudeE6, bbox2.maxLongitudeE6);
     }
 
     /**
