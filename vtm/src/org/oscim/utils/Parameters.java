@@ -70,7 +70,7 @@ public final class Parameters {
      * that is happening. So the suggestion here is to calculate the centroid of the way
      * and use that as centroidPosition of the element.
      */
-    public static boolean POLY_CENTROID = false;
+    public static boolean POLY_CENTROID = true;
 
     /**
      * Optimal placement of labels or symbols on polygons.
