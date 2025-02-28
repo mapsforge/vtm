@@ -493,7 +493,7 @@ static int CheckForRightSplice( TESStesselator *tess, ActiveRegion *regUp )
 			SpliceMergeVertices( tess, eLo->Oprev, eUp );
 		}
 	} else {
-		if( EdgeSign( eUp->Dst, eLo->Org, eUp->Org ) <= 0 ) return FALSE;
+		if( EdgeSign( eUp->Dst, eLo->Org, eUp->Org ) < 0 ) return FALSE;
 
 		/* eLo->Org appears to be above eUp, so splice eLo->Org into eUp */
 		RegionAbove(regUp)->dirty = regUp->dirty = TRUE;
@@ -1118,14 +1118,13 @@ static void InitEdgeDict( TESStesselator *tess )
 	tess->dict = dictNewDict( &tess->alloc, tess, (int (*)(void *, DictKey, DictKey)) EdgeLeq );
 	if (tess->dict == NULL) longjmp(tess->env,1);
 
-	/* If the bbox is empty, ensure that sentinels are not coincident by slightly enlarging it. */
-	w = (tess->bmax[0] - tess->bmin[0]) + (TESSreal)0.01;
-	h = (tess->bmax[1] - tess->bmin[1]) + (TESSreal)0.01;
+	w = (tess->bmax[0] - tess->bmin[0]);
+	h = (tess->bmax[1] - tess->bmin[1]);
 
 	smin = tess->bmin[0] - w;
-    smax = tess->bmax[0] + w;
-    tmin = tess->bmin[1] - h;
-    tmax = tess->bmax[1] + h;
+	smax = tess->bmax[0] + w;
+	tmin = tess->bmin[1] - h;
+	tmax = tess->bmax[1] + h;
 
 	AddSentinel( tess, smin, smax, tmin );
 	AddSentinel( tess, smin, smax, tmax );
