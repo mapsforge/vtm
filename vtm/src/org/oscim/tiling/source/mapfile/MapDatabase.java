@@ -1117,13 +1117,13 @@ public class MapDatabase implements ITileDataSource {
     }
 
     /**
-     * Reads only labels for tile.
+     * Reads only named items for a tile.
      *
      * @param tile tile for which data is requested.
      * @return label data for the tile.
      */
-    public MapReadResult readLabels(Tile tile) {
-        return readMapData(tile, tile, Selector.LABELS);
+    public MapReadResult readNamedItems(Tile tile) {
+        return readMapData(tile, tile, Selector.NAMED);
     }
 
     /**
@@ -1135,8 +1135,8 @@ public class MapDatabase implements ITileDataSource {
      * @param lowerRight tile that defines the lower right corner of the requested area.
      * @return map data for the tile.
      */
-    public MapReadResult readLabels(Tile upperLeft, Tile lowerRight) {
-        return readMapData(upperLeft, lowerRight, Selector.LABELS);
+    public MapReadResult readNamedItems(Tile upperLeft, Tile lowerRight) {
+        return readMapData(upperLeft, lowerRight, Selector.NAMED);
     }
 
     /**
@@ -1332,10 +1332,21 @@ public class MapDatabase implements ITileDataSource {
      * The Selector enum is used to specify which data subset is to be retrieved from a MapFile:
      * ALL: all data (as in version 0.6.0)
      * POIS: only poi data, no ways (new after 0.6.0)
-     * LABELS: poi data and ways that have a name (new after 0.6.0)
+     * NAMED: poi data and ways that have a name (new after 0.6.0)
      */
     private enum Selector {
-        ALL, POIS, LABELS
+        /**
+         * All data.
+         */
+        ALL,
+        /**
+         * Only POI data.
+         */
+        POIS,
+        /**
+         * POI data and ways that have a name.
+         */
+        NAMED
     }
 
     static class TileProjection {

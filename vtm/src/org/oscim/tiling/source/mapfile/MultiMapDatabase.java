@@ -112,7 +112,7 @@ public class MultiMapDatabase implements ITileDataSource {
         }
     }
 
-    public MapReadResult readLabels(Tile tile, boolean deduplicate) {
+    public MapReadResult readNamedItems(Tile tile, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         boolean isTileFilled = false;
         for (MapDatabase mdb : mapDatabases) {
@@ -120,7 +120,7 @@ public class MultiMapDatabase implements ITileDataSource {
                 break;
             }
             if (mdb.supportsTile(tile)) {
-                MapReadResult result = mdb.readLabels(tile);
+                MapReadResult result = mdb.readNamedItems(tile);
                 if (result == null) {
                     continue;
                 }
@@ -135,7 +135,7 @@ public class MultiMapDatabase implements ITileDataSource {
         return mapReadResult;
     }
 
-    public MapReadResult readLabels(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
+    public MapReadResult readNamedItems(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         boolean isTileFilled = false;
         for (MapDatabase mdb : mapDatabases) {
@@ -144,7 +144,7 @@ public class MultiMapDatabase implements ITileDataSource {
             }
             if (mdb.supportsArea(upperLeft.getBoundingBox().extendBoundingBox(lowerRight.getBoundingBox()),
                     upperLeft.zoomLevel)) {
-                MapReadResult result = mdb.readLabels(upperLeft, lowerRight);
+                MapReadResult result = mdb.readNamedItems(upperLeft, lowerRight);
                 if (result == null) {
                     continue;
                 }

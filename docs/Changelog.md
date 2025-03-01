@@ -6,6 +6,8 @@
 - Multi-map `MapFileTileSource.setPriority` [#1176](https://github.com/mapsforge/vtm/pull/1176)
 - Color filter theme resources [#1175](https://github.com/mapsforge/vtm/pull/1175)
   - `ThemeCallback.getBitmap`
+- Rename `MapDatabase.readLabels` to `readNamedItems` [#1181](https://github.com/mapsforge/vtm/pull/1181)
+  - Rename `MapDatabase.Selector.LABELS` to `NAMED`
 - Update JTS, OkHttp dependencies [#1172](https://github.com/mapsforge/vtm/pull/1172) [#1173](https://github.com/mapsforge/vtm/pull/1173)
 - Remove SLF4J dependency [#1167](https://github.com/mapsforge/vtm/pull/1167) [#1170](https://github.com/mapsforge/vtm/pull/1170)
 - Libtess2 v1.0.1 [#1178](https://github.com/mapsforge/vtm/pull/1178)

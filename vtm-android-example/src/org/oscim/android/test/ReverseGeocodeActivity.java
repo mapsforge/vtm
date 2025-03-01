@@ -18,14 +18,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-
 import org.oscim.backend.CanvasAdapter;
-import org.oscim.core.GeoPoint;
-import org.oscim.core.GeometryBuffer;
-import org.oscim.core.MercatorProjection;
-import org.oscim.core.Point;
-import org.oscim.core.Tag;
-import org.oscim.core.Tile;
+import org.oscim.core.*;
 import org.oscim.event.Gesture;
 import org.oscim.event.GestureListener;
 import org.oscim.event.MotionEvent;
@@ -97,7 +91,7 @@ public class ReverseGeocodeActivity extends MapsforgeActivity {
                 int tileYMax = MercatorProjection.pixelYToTileY(pixelY + touchRadius, (byte) mMap.getMapPosition().getZoomLevel());
                 Tile upperLeft = new Tile(tileXMin, tileYMin, (byte) mMap.getMapPosition().getZoomLevel());
                 Tile lowerRight = new Tile(tileXMax, tileYMax, (byte) mMap.getMapPosition().getZoomLevel());
-                MapReadResult mapReadResult = ((MapDatabase) ((OverzoomTileDataSource) mTileLayer.getTileSource().getDataSource()).getDataSource()).readLabels(upperLeft, lowerRight);
+                MapReadResult mapReadResult = ((MapDatabase) ((OverzoomTileDataSource) mTileLayer.getTileSource().getDataSource()).getDataSource()).readNamedItems(upperLeft, lowerRight);
 
                 StringBuilder sb = new StringBuilder();
 
