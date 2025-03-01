@@ -18,13 +18,14 @@ If you have any questions or problems, don't hesitate to ask the [forum](https:/
 - Java map library
 - OpenGL vector-tile rendering
 - Themeable vector layers ([render themes](docs/Rendertheme.md))
+- Hillshading from HGT digital elevation model data
 - Support for multiple tile sources:
-  - OpenScienceMap vector tiles
   - Mapsforge vector maps
-  - MBTiles vector & raster maps
-  - Mapbox vector tiles (e.g. Mapilion, Mapzen, Nextzen, OpenMapTiles)
-  - GeoJSON vector tiles (e.g. Mapzen, Nextzen)
-  - Raster tiles: any quadtree-scheme tiles as texture
+    - MBTiles vector & raster
+  - Mapbox vector tiles
+  - GeoJSON vector tiles
+  - OpenScienceMap vector tiles
+  - Raster tiles
 - Backends:
   - Android ([example](vtm-android-example))
   - iOS (libGDX/RoboVM, [instructions](docs/ios.md))
@@ -34,13 +35,14 @@ If you have any questions or problems, don't hesitate to ask the [forum](https:/
 
 ### Projects
 - **vtm** core library
+- **vtm-hillshading** hillshading
+- **vtm-jts** overlays
+- **vtm-http** online tiles
+- **vtm-mvt** MBTiles
 - **vtm-android** Android backend
 - **vtm-android-example** Android examples
 - **vtm-gdx** common libGDX backend
-- **vtm-android-gdx** Android libGDX backend
 - **vtm-desktop** Desktop libGDX backend
-- **vtm-desktop-lwjgl** Desktop LWJGL backend
-- **vtm-desktop-lwjgl3** Desktop LWJGL 3 backend
 - **vtm-playground** Desktop examples
 - **vtm-ios** iOS libGDX backend
 - **vtm-ios-example** iOS examples

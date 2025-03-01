@@ -26,41 +26,18 @@ implementation '[PACKAGE]:vtm:[CURRENT-VERSION]'
 implementation '[PACKAGE]:vtm-themes:[CURRENT-VERSION]'
 ```
 
-### Android
+## Android
 
 ```groovy
+implementation '[PACKAGE]:vtm-android:[CURRENT-VERSION]'
 runtimeOnly '[PACKAGE]:vtm-android:[CURRENT-VERSION]:natives-armeabi-v7a'
 runtimeOnly '[PACKAGE]:vtm-android:[CURRENT-VERSION]:natives-arm64-v8a'
 runtimeOnly '[PACKAGE]:vtm-android:[CURRENT-VERSION]:natives-x86'
 runtimeOnly '[PACKAGE]:vtm-android:[CURRENT-VERSION]:natives-x86_64'
-implementation '[PACKAGE]:vtm-android:[CURRENT-VERSION]'
 implementation 'com.caverock:androidsvg:1.4'
 ```
 
-### Android (libGDX)
-
-```groovy
-runtimeOnly '[PACKAGE]:vtm-android:[CURRENT-VERSION]:natives-armeabi-v7a'
-runtimeOnly '[PACKAGE]:vtm-android:[CURRENT-VERSION]:natives-arm64-v8a'
-runtimeOnly '[PACKAGE]:vtm-android:[CURRENT-VERSION]:natives-x86'
-runtimeOnly '[PACKAGE]:vtm-android:[CURRENT-VERSION]:natives-x86_64'
-implementation '[PACKAGE]:vtm-android:[CURRENT-VERSION]'
-implementation '[PACKAGE]:vtm-gdx:[CURRENT-VERSION]'
-runtimeOnly '[PACKAGE]:vtm-android-gdx:[CURRENT-VERSION]:natives-armeabi-v7a'
-runtimeOnly '[PACKAGE]:vtm-android-gdx:[CURRENT-VERSION]:natives-arm64-v8a'
-runtimeOnly '[PACKAGE]:vtm-android-gdx:[CURRENT-VERSION]:natives-x86'
-runtimeOnly '[PACKAGE]:vtm-android-gdx:[CURRENT-VERSION]:natives-x86_64'
-implementation '[PACKAGE]:vtm-android-gdx:[CURRENT-VERSION]'
-implementation 'com.badlogicgames.gdx:gdx:1.11.0'
-implementation 'com.badlogicgames.gdx:gdx-backend-android:1.11.0'
-implementation 'com.caverock:androidsvg:1.4'
-```
-
-### iOS
-
-Detailed iOS instructions can be found [here](ios.md).
-
-### Desktop
+## Desktop
 
 ```groovy
 implementation '[PACKAGE]:vtm-gdx:[CURRENT-VERSION]'
@@ -74,7 +51,7 @@ implementation 'guru.nidi.com.kitfox:svgSalamander:1.1.3'
 implementation 'net.sf.kxml:kxml2:2.3.0'
 ```
 
-#### Desktop (LWJGL 2)
+### LWJGL 2
 
 ```groovy
 implementation '[PACKAGE]:vtm-desktop-lwjgl:[CURRENT-VERSION]'
@@ -85,7 +62,7 @@ runtimeOnly 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-osx'
 runtimeOnly 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-windows'
 ```
 
-#### Desktop (LWJGL 3)
+### LWJGL 3
 
 ```groovy
 implementation '[PACKAGE]:vtm-desktop-lwjgl3:[CURRENT-VERSION]'
@@ -96,7 +73,18 @@ runtimeOnly 'org.lwjgl:lwjgl:3.3.1:natives-macos'
 runtimeOnly 'org.lwjgl:lwjgl:3.3.1:natives-windows'
 ```
 
-### JTS overlays
+## Features
+
+### Hillshading
+
+```groovy
+implementation '[PACKAGE]:vtm-hillshading:[CURRENT-VERSION]'
+implementation 'org.mapsforge:mapsforge-core:0.24.1'
+implementation 'org.mapsforge:mapsforge-map:0.24.1'
+implementation 'org.mapsforge:mapsforge-map-android:0.24.1'
+```
+
+### Overlays
 
 ```groovy
 implementation '[PACKAGE]:vtm-jts:[CURRENT-VERSION]'

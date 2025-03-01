@@ -2,6 +2,7 @@
 
 ## Next version
 
+- Hillshading from HGT digital elevation model data [#1189](https://github.com/mapsforge/vtm/pull/1189)
 - Motorider map theme improvements [#1183](https://github.com/mapsforge/vtm/issues/1183)
 - Rename `MapDatabase` to `MapFile` [#1184](https://github.com/mapsforge/vtm/pull/1184)
   - Rename `MultiMapDatabase` to `MultiMapFile`

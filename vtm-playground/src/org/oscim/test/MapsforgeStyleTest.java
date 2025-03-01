@@ -22,13 +22,14 @@ import org.oscim.theme.XmlRenderThemeStyleLayer;
 import org.oscim.theme.XmlRenderThemeStyleMenu;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 public class MapsforgeStyleTest extends MapsforgeTest {
 
-    private MapsforgeStyleTest(List<File> mapFiles) {
-        super(mapFiles);
+    private MapsforgeStyleTest(File demFolder, List<File> mapFiles) {
+        super(demFolder, mapFiles);
     }
 
     @Override
@@ -78,8 +79,15 @@ public class MapsforgeStyleTest extends MapsforgeTest {
         return super.onKeyDown(keycode);
     }
 
+    /**
+     * @param args command line args: expects the map files as multiple parameters
+     *             with possible SRTM hgt folder as 1st argument.
+     */
     public static void main(String[] args) {
         GdxMapApp.init();
-        GdxMapApp.run(new MapsforgeStyleTest(getMapFiles(args)));
+        File demFolder = getDemFolder(args);
+        if (demFolder != null)
+            args = Arrays.copyOfRange(args, 1, args.length);
+        GdxMapApp.run(new MapsforgeStyleTest(demFolder, getMapFiles(args)));
     }
 }

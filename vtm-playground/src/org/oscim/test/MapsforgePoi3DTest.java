@@ -18,16 +18,24 @@ package org.oscim.test;
 import org.oscim.gdx.GdxMapApp;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 public class MapsforgePoi3DTest extends MapsforgeTest {
 
-    private MapsforgePoi3DTest(List<File> mapFiles) {
-        super(mapFiles, false, true);
+    private MapsforgePoi3DTest(File demFolder, List<File> mapFiles) {
+        super(demFolder, mapFiles, false, true);
     }
 
+    /**
+     * @param args command line args: expects the map files as multiple parameters
+     *             with possible SRTM hgt folder as 1st argument.
+     */
     public static void main(String[] args) {
         GdxMapApp.init();
-        GdxMapApp.run(new MapsforgePoi3DTest(getMapFiles(args)));
+        File demFolder = getDemFolder(args);
+        if (demFolder != null)
+            args = Arrays.copyOfRange(args, 1, args.length);
+        GdxMapApp.run(new MapsforgePoi3DTest(demFolder, getMapFiles(args)));
     }
 }

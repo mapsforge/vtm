@@ -6,6 +6,7 @@ allprojects {
     group = 'org.mapsforge'
     version = 'master-SNAPSHOT'
 
+    ext.mapsforgeVersion = "0.24.1"
     ext.gdxVersion = "1.11.0"
     ext.gwtVersion = "2.8.2"
 
