@@ -18,12 +18,13 @@ If you have any questions or problems, don't hesitate to ask the [forum](https:/
 - Java map library
 - OpenGL vector-tile rendering
 - Themeable vector layers ([render themes](docs/Rendertheme.md))
+- Hillshading from HGT digital elevation model data
 - Support for multiple tile sources:
-  - OpenScienceMap vector tiles
   - Mapsforge vector maps
   - MBTiles vector & raster maps
   - Mapbox vector tiles (e.g. Mapilion, Mapzen, Nextzen, OpenMapTiles)
   - GeoJSON vector tiles (e.g. Mapzen, Nextzen)
+  - OpenScienceMap vector tiles
   - Raster tiles: any quadtree-scheme tiles as texture
 - Backends:
   - Android ([example](vtm-android-example))

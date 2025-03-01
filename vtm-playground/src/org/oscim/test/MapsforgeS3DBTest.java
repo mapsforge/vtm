@@ -17,16 +17,20 @@ package org.oscim.test;
 import org.oscim.gdx.GdxMapApp;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 public class MapsforgeS3DBTest extends MapsforgeTest {
 
-    private MapsforgeS3DBTest(List<File> mapFiles) {
-        super(mapFiles, true, false);
+    private MapsforgeS3DBTest(File demFolder, List<File> mapFiles) {
+        super(demFolder, mapFiles, true, false);
     }
 
     public static void main(String[] args) {
         GdxMapApp.init();
-        GdxMapApp.run(new MapsforgeS3DBTest(getMapFiles(args)));
+        File demFolder = getDemFolder(args);
+        if (demFolder != null)
+            args = Arrays.copyOfRange(args, 1, args.length);
+        GdxMapApp.run(new MapsforgeS3DBTest(demFolder, getMapFiles(args)));
     }
 }
