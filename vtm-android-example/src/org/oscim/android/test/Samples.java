@@ -84,31 +84,14 @@ public class Samples extends Activity {
 
         setContentView(R.layout.activity_samples);
         LinearLayout linearLayout = findViewById(R.id.samples);
-        linearLayout.addView(createButton(GettingStarted.class));
-        linearLayout.addView(createLabel(null));
         linearLayout.addView(createButton(MapsforgeActivity.class));
-        linearLayout.addView(createButton(SimpleMapActivity.class));
-        linearLayout.addView(createButton(MBTilesMvtActivity.class));
-        linearLayout.addView(createButton(MapilionMvtActivity.class));
-        /*linearLayout.addView(createButton(MapzenMvtActivity.class));
-        linearLayout.addView(createButton(MapzenGeojsonActivity.class));
-        linearLayout.addView(createButton(NextzenMvtActivity.class));
-        linearLayout.addView(createButton(NextzenGeojsonActivity.class));
-        linearLayout.addView(createButton(OpenMapTilesMvtActivity.class));*/
-        linearLayout.addView(createButton(GdxActivity.class));
 
-        linearLayout.addView(createLabel("Features"));
-        linearLayout.addView(createButton(LocationActivity.class));
+        linearLayout.addView(createLabel(null));
         linearLayout.addView(createButton(LocationTextureActivity.class));
         linearLayout.addView(createButton(PoiSearchActivity.class));
-
-        linearLayout.addView(createLabel("Vector Features"));
         linearLayout.addView(createButton(MapsforgeStyleActivity.class));
         linearLayout.addView(createButton(MapsforgeS3DBActivity.class));
-        linearLayout.addView(createButton(ShadowActivity.class));
-
-        linearLayout.addView(createLabel("Raster Maps"));
-        linearLayout.addView(createButton(BitmapTileActivity.class));
+        linearLayout.addView(createButton(MBTilesMvtActivity.class));
         linearLayout.addView(createButton(MBTilesBitmapActivity.class));
 
         linearLayout.addView(createLabel("Overlays"));
@@ -117,15 +100,5 @@ public class Samples extends Activity {
         linearLayout.addView(createButton(LineTexActivity.class));
         linearLayout.addView(createButton(VectorLayerActivity.class));
         linearLayout.addView(createButton(AtlasMultiTextureActivity.class));
-
-        linearLayout.addView(createLabel("Experiments"));
-        linearLayout.addView(createButton(ReverseGeocodeActivity.class));
-        linearLayout.addView(createButton(ThemeStylerActivity.class));
-        //linearLayout.addView(createButton(JeoIndoorActivity.class));
-        linearLayout.addView(createButton(GdxPoi3DActivity.class));
-        linearLayout.addView(createButton(OverpassActivity.class));
-        linearLayout.addView(createButton(DraggableMarkerOverlayActivity.class));
-        linearLayout.addView(createButton(ClusterMarkerOverlayActivity.class));
-        linearLayout.addView(createButton(FragmentActivity.class));
     }
 }

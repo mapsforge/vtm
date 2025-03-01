@@ -26,7 +26,7 @@ If you have any questions or problems, don't hesitate to ask the [forum](https:/
   - GeoJSON vector tiles (e.g. Mapzen, Nextzen)
   - Raster tiles: any quadtree-scheme tiles as texture
 - Backends:
-  - Android ([example](vtm-android-example/src/org/oscim/android/test/GettingStarted.java))
+  - Android ([example](vtm-android-example))
   - iOS (libGDX/RoboVM, [instructions](docs/ios.md))
   - Desktop (libGDX/LWJGL, [instructions](docs/desktop.md))
   - HTML5/WebGL (libGDX/GWT, [instructions](docs/web.md))
