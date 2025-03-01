@@ -51,6 +51,9 @@
         <activity
             android:name=".GdxPoi3DActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".HillshadingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <!--<activity
             android:name=".JeoIndoorActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />-->
