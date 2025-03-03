@@ -51,7 +51,9 @@ import java.util.logging.Logger;
  *
  * @see <a href="https://github.com/mapsforge/mapsforge/blob/master/docs/Specification-Binary-Map-File.md">Specification</a>
  */
-public class MapDatabase implements ITileDataSource {
+public class MapFile implements ITileDataSource {
+    private static final Logger log = Logger.getLogger(MapFile.class.getName());
+
     /**
      * Bitmask to extract the block offset from an index entry.
      */
@@ -79,8 +81,6 @@ public class MapDatabase implements ITileDataSource {
      * Error message for an invalid first way offset.
      */
     private static final String INVALID_FIRST_WAY_OFFSET = "invalid first way offset: ";
-
-    private static final Logger log = Logger.getLogger(MapDatabase.class.getName());
 
     /**
      * Bitmask for the optional POI feature "elevation".
@@ -223,14 +223,14 @@ public class MapDatabase implements ITileDataSource {
     private boolean deduplicate;
 
     /**
-     * Priority of this MapDatabase. A higher number means a higher priority. Negative numbers have a special
+     * Priority of this MapFile. A higher number means a higher priority. Negative numbers have a special
      * meaning, they should only be used for so-called background maps. Data from background maps is only read
      * if no other map has provided a (complete) map tile. The most famous example of a background map is a
      * low-resolution world map. The default priority is 0.
      */
     private int priority = 0;
 
-    public MapDatabase(MapFileTileSource tileSource) throws IOException {
+    public MapFile(MapFileTileSource tileSource) throws IOException {
         mTileSource = tileSource;
         try {
             // false positive: stream gets closed when the channel is closed
@@ -435,24 +435,24 @@ public class MapDatabase implements ITileDataSource {
     }
 
     /**
-     * Returns the priority of this MapDatabase. A higher number means a higher priority. Negative numbers
+     * Returns the priority of this MapFile. A higher number means a higher priority. Negative numbers
      * have a special meaning, they should only be used for so-called background maps. Data from background
      * maps is only read if no other map has provided a (complete) map tile. The most famous example of a
      * background map is a low-resolution world map.
      *
-     * @return The priority of this MapDatabase. Default is 0.
+     * @return The priority of this MapFile. Default is 0.
      */
     public int getPriority() {
         return priority;
     }
 
     /**
-     * Sets the priority of this MapDatabase. A higher number means a higher priority. Negative numbers have
+     * Sets the priority of this MapFile. A higher number means a higher priority. Negative numbers have
      * a special meaning, they should only be used for so-called background maps. Data from background maps is
      * only read if no other map has provided a (complete) map tile. The most famous example of a background
      * map is a low-resolution world map. The default priority is 0.
      *
-     * @param priority Priority of this MapDatabase. Negative number means background map priority (see above
+     * @param priority Priority of this MapFile. Negative number means background map priority (see above
      *                 for the description).
      */
     public void setPriority(int priority) {
@@ -1255,7 +1255,7 @@ public class MapDatabase implements ITileDataSource {
 
     /**
      * Restricts returns of data to zoom level range specified. This can be used to restrict
-     * the use of this map data base when used in MultiMapDatabase settings.
+     * the use of this map data base when used in MultiMapFile settings.
      *
      * @param minZoom minimum zoom level supported
      * @param maxZoom maximum zoom level supported
@@ -1266,7 +1266,7 @@ public class MapDatabase implements ITileDataSource {
     }
 
     /**
-     * Returns true if MapDatabase contains tile.
+     * Returns true if MapFile contains tile.
      *
      * @param tile tile to be rendered.
      * @return true if tile is part of database.
@@ -1276,7 +1276,7 @@ public class MapDatabase implements ITileDataSource {
     }
 
     /**
-     * Returns true if MapDatabase contains a complete tile.
+     * Returns true if MapFile contains a complete tile.
      *
      * @param tile tile to be rendered.
      * @return true if complete tile is part of database.
@@ -1286,7 +1286,7 @@ public class MapDatabase implements ITileDataSource {
     }
 
     /**
-     * Returns true if MapDatabase covers (even partially) certain area in required zoom level.
+     * Returns true if MapFile covers (even partially) certain area in required zoom level.
      *
      * @param boundingBox area we test
      * @param zoomLevel   zoom level we test
@@ -1298,7 +1298,7 @@ public class MapDatabase implements ITileDataSource {
     }
 
     /**
-     * Returns true if MapDatabase covers certain area completely in required zoom level.
+     * Returns true if MapFile covers certain area completely in required zoom level.
      *
      * @param boundingBox area we test
      * @param zoomLevel   zoom level we test

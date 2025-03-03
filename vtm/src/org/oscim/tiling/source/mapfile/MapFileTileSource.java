@@ -195,7 +195,7 @@ public class MapFileTileSource extends TileSource implements IMapFileTileSource 
     @Override
     public ITileDataSource getDataSource() {
         try {
-            return new OverzoomTileDataSource(new MapDatabase(this), mOverZoom);
+            return new OverzoomTileDataSource(new MapFile(this), mOverZoom);
         } catch (IOException e) {
             log.fine(e.toString());
         }

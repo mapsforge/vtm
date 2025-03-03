@@ -27,7 +27,7 @@ import org.oscim.layers.Layer;
 import org.oscim.layers.TileGridLayer;
 import org.oscim.map.Map;
 import org.oscim.tiling.OverzoomTileDataSource;
-import org.oscim.tiling.source.mapfile.MapDatabase;
+import org.oscim.tiling.source.mapfile.MapFile;
 import org.oscim.tiling.source.mapfile.MapReadResult;
 import org.oscim.tiling.source.mapfile.PointOfInterest;
 import org.oscim.tiling.source.mapfile.Way;
@@ -91,7 +91,7 @@ public class ReverseGeocodeActivity extends MapsforgeActivity {
                 int tileYMax = MercatorProjection.pixelYToTileY(pixelY + touchRadius, (byte) mMap.getMapPosition().getZoomLevel());
                 Tile upperLeft = new Tile(tileXMin, tileYMin, (byte) mMap.getMapPosition().getZoomLevel());
                 Tile lowerRight = new Tile(tileXMax, tileYMax, (byte) mMap.getMapPosition().getZoomLevel());
-                MapReadResult mapReadResult = ((MapDatabase) ((OverzoomTileDataSource) mTileLayer.getTileSource().getDataSource()).getDataSource()).readNamedItems(upperLeft, lowerRight);
+                MapReadResult mapReadResult = ((MapFile) ((OverzoomTileDataSource) mTileLayer.getTileSource().getDataSource()).getDataSource()).readNamedItems(upperLeft, lowerRight);
 
                 StringBuilder sb = new StringBuilder();
 

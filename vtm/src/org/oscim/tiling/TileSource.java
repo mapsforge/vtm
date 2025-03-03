@@ -191,8 +191,7 @@ public abstract class TileSource {
     }
 
     /**
-     * A FileOpenResult is a simple DTO which is returned by
-     * IMapDatabase#open().
+     * A FileOpenResult is a simple DTO which is returned by {@link TileSource#open()}.
      */
     public static class OpenResult {
         /**

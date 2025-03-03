@@ -28,29 +28,29 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class MultiMapDatabase implements ITileDataSource {
+public class MultiMapFile implements ITileDataSource {
 
-    private static final Logger log = Logger.getLogger(MultiMapDatabase.class.getName());
+    private static final Logger log = Logger.getLogger(MultiMapFile.class.getName());
 
     private final boolean deduplicate;
-    private final List<MapDatabase> mapDatabases = new ArrayList<>();
+    private final List<MapFile> mapFiles = new ArrayList<>();
 
-    public MultiMapDatabase() {
+    public MultiMapFile() {
         this(false);
     }
 
-    public MultiMapDatabase(boolean deduplicate) {
+    public MultiMapFile(boolean deduplicate) {
         this.deduplicate = deduplicate;
     }
 
-    public boolean add(MapDatabase mapDatabase) {
-        if (mapDatabases.contains(mapDatabase)) {
-            throw new IllegalArgumentException("Duplicate map database");
+    public boolean add(MapFile mapFile) {
+        if (mapFiles.contains(mapFile)) {
+            throw new IllegalArgumentException("Duplicate map file");
         }
-        mapDatabases.add(mapDatabase);
-        Collections.sort(mapDatabases, new Comparator<MapDatabase>() {
+        mapFiles.add(mapFile);
+        Collections.sort(mapFiles, new Comparator<MapFile>() {
             @Override
-            public int compare(MapDatabase md1, MapDatabase md2) {
+            public int compare(MapFile md1, MapFile md2) {
                 // Reverse order
                 return -Integer.compare(md1.getPriority(), md2.getPriority());
             }
@@ -64,8 +64,8 @@ public class MultiMapDatabase implements ITileDataSource {
             boolean deduplicate = this.deduplicate;
             if (deduplicate) {
                 int n = 0;
-                for (MapDatabase mapDatabase : mapDatabases) {
-                    if (mapDatabase.supportsTile(tile)) {
+                for (MapFile mapFile : mapFiles) {
+                    if (mapFile.supportsTile(tile)) {
                         if (++n > 1) {
                             break;
                         }
@@ -76,18 +76,18 @@ public class MultiMapDatabase implements ITileDataSource {
 
             TileDataSink dataSink = new TileDataSink(sink);
             boolean isTileFilled = false;
-            for (int i = 0, n = mapDatabases.size(); i < n; i++) {
-                MapDatabase mapDatabase = mapDatabases.get(i);
-                if (isTileFilled && mapDatabase.getPriority() < 0) {
+            for (int i = 0, n = mapFiles.size(); i < n; i++) {
+                MapFile mapFile = mapFiles.get(i);
+                if (isTileFilled && mapFile.getPriority() < 0) {
                     break;
                 }
-                if (mapDatabase.supportsTile(tile)) {
-                    mapDatabase.setDeduplicate(deduplicate);
+                if (mapFile.supportsTile(tile)) {
+                    mapFile.setDeduplicate(deduplicate);
                     dataSink.level = i + 1;
                     dataSink.levels = n;
-                    mapDatabase.query(tile, dataSink);
+                    mapFile.query(tile, dataSink);
                 }
-                if (mapDatabase.supportsFullTile(tile)) {
+                if (mapFile.supportsFullTile(tile)) {
                     isTileFilled = true;
                 }
             }
@@ -100,22 +100,22 @@ public class MultiMapDatabase implements ITileDataSource {
 
     @Override
     public void dispose() {
-        for (MapDatabase mapDatabase : mapDatabases) {
-            mapDatabase.dispose();
+        for (MapFile mapFile : mapFiles) {
+            mapFile.dispose();
         }
     }
 
     @Override
     public void cancel() {
-        for (MapDatabase mapDatabase : mapDatabases) {
-            mapDatabase.cancel();
+        for (MapFile mapFile : mapFiles) {
+            mapFile.cancel();
         }
     }
 
     public MapReadResult readNamedItems(Tile tile, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         boolean isTileFilled = false;
-        for (MapDatabase mdb : mapDatabases) {
+        for (MapFile mdb : mapFiles) {
             if (isTileFilled && mdb.getPriority() < 0) {
                 break;
             }
@@ -138,7 +138,7 @@ public class MultiMapDatabase implements ITileDataSource {
     public MapReadResult readNamedItems(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         boolean isTileFilled = false;
-        for (MapDatabase mdb : mapDatabases) {
+        for (MapFile mdb : mapFiles) {
             if (isTileFilled && mdb.getPriority() < 0) {
                 break;
             }
@@ -163,7 +163,7 @@ public class MultiMapDatabase implements ITileDataSource {
     public MapReadResult readMapData(Tile tile, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         boolean isTileFilled = false;
-        for (MapDatabase mdb : mapDatabases) {
+        for (MapFile mdb : mapFiles) {
             if (isTileFilled && mdb.getPriority() < 0) {
                 break;
             }
@@ -186,7 +186,7 @@ public class MultiMapDatabase implements ITileDataSource {
     public MapReadResult readMapData(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         boolean isTileFilled = false;
-        for (MapDatabase mdb : mapDatabases) {
+        for (MapFile mdb : mapFiles) {
             if (isTileFilled && mdb.getPriority() < 0) {
                 break;
             }
@@ -211,7 +211,7 @@ public class MultiMapDatabase implements ITileDataSource {
     public MapReadResult readPoiData(Tile tile, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         boolean isTileFilled = false;
-        for (MapDatabase mdb : mapDatabases) {
+        for (MapFile mdb : mapFiles) {
             if (isTileFilled && mdb.getPriority() < 0) {
                 break;
             }
@@ -234,7 +234,7 @@ public class MultiMapDatabase implements ITileDataSource {
     public MapReadResult readPoiData(Tile upperLeft, Tile lowerRight, boolean deduplicate) {
         MapReadResult mapReadResult = new MapReadResult();
         boolean isTileFilled = false;
-        for (MapDatabase mdb : mapDatabases) {
+        for (MapFile mdb : mapFiles) {
             if (isTileFilled && mdb.getPriority() < 0) {
                 break;
             }
@@ -257,7 +257,7 @@ public class MultiMapDatabase implements ITileDataSource {
     }
 
     public boolean supportsTile(Tile tile) {
-        for (MapDatabase mdb : mapDatabases) {
+        for (MapFile mdb : mapFiles) {
             if (mdb.supportsTile(tile)) {
                 return true;
             }
@@ -266,7 +266,7 @@ public class MultiMapDatabase implements ITileDataSource {
     }
 
     public boolean supportsFullTile(Tile tile) {
-        for (MapDatabase mdb : mapDatabases) {
+        for (MapFile mdb : mapFiles) {
             if (mdb.supportsFullTile(tile)) {
                 return true;
             }
@@ -275,7 +275,7 @@ public class MultiMapDatabase implements ITileDataSource {
     }
 
     public boolean supportsArea(BoundingBox boundingBox, int zoomLevel) {
-        for (MapDatabase mdb : mapDatabases) {
+        for (MapFile mdb : mapFiles) {
             if (mdb.supportsArea(boundingBox, zoomLevel)) {
                 return true;
             }
@@ -284,7 +284,7 @@ public class MultiMapDatabase implements ITileDataSource {
     }
 
     public boolean supportsFullArea(BoundingBox boundingBox, int zoomLevel) {
-        for (MapDatabase mdb : mapDatabases) {
+        for (MapFile mdb : mapFiles) {
             if (mdb.supportsFullArea(boundingBox, zoomLevel)) {
                 return true;
             }

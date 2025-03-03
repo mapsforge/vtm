@@ -72,20 +72,20 @@ public class MultiMapFileTileSource extends TileSource implements IMapFileTileSo
 
     @Override
     public ITileDataSource getDataSource() {
-        MultiMapDatabase multiMapDatabase = new MultiMapDatabase(deduplicate);
+        MultiMapFile multiMapFile = new MultiMapFile(deduplicate);
         for (MapFileTileSource mapFileTileSource : mapFileTileSources) {
             try {
-                MapDatabase mapDatabase = new MapDatabase(mapFileTileSource);
+                MapFile mapFile = new MapFile(mapFileTileSource);
                 int[] zoomLevels = zoomsByTileSource.get(mapFileTileSource);
                 if (zoomLevels != null)
-                    mapDatabase.restrictToZoomRange(zoomLevels[0], zoomLevels[1]);
-                mapDatabase.setPriority(mapFileTileSource.getPriority());
-                multiMapDatabase.add(mapDatabase);
+                    mapFile.restrictToZoomRange(zoomLevels[0], zoomLevels[1]);
+                mapFile.setPriority(mapFileTileSource.getPriority());
+                multiMapFile.add(mapFile);
             } catch (IOException e) {
                 log.fine(e.toString());
             }
         }
-        return new OverzoomTileDataSource(multiMapDatabase, mOverZoom);
+        return new OverzoomTileDataSource(multiMapFile, mOverZoom);
     }
 
     @Override

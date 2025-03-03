@@ -2,6 +2,8 @@
 
 ## Next version
 
+- Rename `MapDatabase` to `MapFile`
+  - Rename `MultiMapDatabase` to `MultiMapFile`
 - Minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.25.0)
 
