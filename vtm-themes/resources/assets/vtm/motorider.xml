@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->
-    <!-- Version 2.0 3rd March 2025-->
+    <!-- Version 2.0 5th March 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -378,7 +378,7 @@
     <style-text caption="true" fill="#000000" id="country-caption" k="name" priority="0" size="20" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="city-lz-caption" k="name" priority="3" size="18" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="city-caption" k="name" priority="1" size="16" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="town-caption" k="name" priority="4" size="11" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text caption="true" fill="#000000" id="town-caption" k="name" priority="4" size="12" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="town-lz-caption" k="name" priority="4" size="13" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="village-caption" k="name" priority="6" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="suburb-caption" k="name" priority="5" size="12" style="italic" stroke="#FFFFFF" stroke-width="2.0" />
@@ -1007,11 +1007,11 @@
                         <m v="unclassified">
 							<m zoom-min="11" zoom-max="11">
 								<line cap="butt" stroke="#000000" width="1.2" />
-								<line cap="butt" stroke="#FFFFFF" width="1.0" />
+								<line cap="butt" stroke="#ffffe6" width="1.0" />
 							</m>
 							<m zoom-min="12">
 								<line cap="butt" stroke="#000000" width="1.8" />
-								<line cap="butt" stroke="#FFFFFF" width="1.6" />
+								<line cap="butt" stroke="#ffffe6" width="1.6" />
 							</m>
                         </m>
                         <m v="tertiary|tertiary_link">
@@ -1173,6 +1173,9 @@
                 <!-- Highway Captions/Names -->
                 <m k="area" v="~|no|false">
                     <m k="highway">
+						<m v="services">
+							<text use="junction-caption" />
+						</m>
                         <m v="motorway|motorway_link">
 							<m cat="road_detail" v="motorway" zoom-min="10" zoom-max="10">
                                 <text use="motorway-road-box" />
@@ -1366,7 +1369,7 @@
             <m v="town" zoom-min="9" zoom-max="12">
                 <text use="town-lz-caption" />
             </m>
-            <m v="town" zoom-min="13" zoom-max="16">
+            <m v="town" zoom-min="13" zoom-max="14">
                 <text use="town-caption" />
             </m>
             <m v="city" zoom-min="6" zoom-max="9">
