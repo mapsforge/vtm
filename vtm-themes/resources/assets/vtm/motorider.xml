@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->
-    <!-- Version 2.0 3rd March 2025-->
+    <!-- Version 2.0 6th March 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -378,7 +378,7 @@
     <style-text caption="true" fill="#000000" id="country-caption" k="name" priority="0" size="20" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="city-lz-caption" k="name" priority="3" size="18" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="city-caption" k="name" priority="1" size="16" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="town-caption" k="name" priority="4" size="11" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text caption="true" fill="#000000" id="town-caption" k="name" priority="4" size="12" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="town-lz-caption" k="name" priority="4" size="13" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="village-caption" k="name" priority="6" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="suburb-caption" k="name" priority="5" size="12" style="italic" stroke="#FFFFFF" stroke-width="2.0" />
@@ -424,7 +424,7 @@
     <style-area fade="6" fill="#f5e9c6" id="de-sand" />
     <style-area fade="6" fill="#f5e9c6" id="de-rail" />
     <style-area fade="6" fill="#ccccb3" id="de-station" />
-
+	
     <!-- Road and Rail Colors -->
     <style-line cap="butt" id="de-motorway" stroke="#98afcd" width="2.5" />
     <style-line cap="butt" id="de-trunk" stroke="#00CC66" width="2.5" />
@@ -795,7 +795,7 @@
         </m>
         <!-- non-physical routes -->
         <m k="route" v="ferry">
-            <line stroke="#2d51bc" width="1" />
+			<line dasharray="5,5" cap="butt" stroke="#5b7ad7" width="0.8" />
             <m zoom-min="13">
                 <text use="ferry" />
             </m>
@@ -1007,11 +1007,11 @@
                         <m v="unclassified">
 							<m zoom-min="11" zoom-max="11">
 								<line cap="butt" stroke="#000000" width="1.2" />
-								<line cap="butt" stroke="#FFFFFF" width="1.0" />
+								<line cap="butt" stroke="#ffffe6" width="1.0" />
 							</m>
 							<m zoom-min="12">
 								<line cap="butt" stroke="#000000" width="1.8" />
-								<line cap="butt" stroke="#FFFFFF" width="1.6" />
+								<line cap="butt" stroke="#ffffe6" width="1.6" />
 							</m>
                         </m>
                         <m v="tertiary|tertiary_link">
@@ -1173,6 +1173,9 @@
                 <!-- Highway Captions/Names -->
                 <m k="area" v="~|no|false">
                     <m k="highway">
+						<m v="services">
+							<text use="junction-caption" />
+						</m>
                         <m v="motorway|motorway_link">
 							<m cat="road_detail" v="motorway" zoom-min="10" zoom-max="10">
                                 <text use="motorway-road-box" />
@@ -1259,39 +1262,6 @@
             <line use="de-station" />
         </m>
 
-        <!-- Borders -->
-        <m k="boundary" v="administrative">
-            <m k="admin_level">
-                <m v="6" zoom-min="15">
-                    <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="1.5" />
-                </m>
-                <m v="5">
-                    <m zoom-min="6" zoom-max="11">
-						<line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="1.5" />
-					</m>
-                    <m zoom-min="12">
-						<line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="2" />
-					</m>
-                </m>
-                <m v="4">
-					<m zoom-min="6" zoom-max="11">
-						<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="2.5" stroke="#737373" width="1.5" />
-					</m>
-					<m zoom-min="12">
-						<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#dadada" width="2.0" />
-					</m>
-                </m>
-                <m v="2">
-					<m zoom-min="6" zoom-max="11">
-						<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="2.5" stroke="#737373" width="1.5" />
-					</m>
-					<m zoom-min="12">
-						<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#dadada" width="2.0" />
-					</m>
-                </m>
-            </m>
-        </m>
-
         <!-- highway one-way markers -->
         <m k="tunnel" v="~|false|no">
             <m k="area" v="~|false|no">
@@ -1306,20 +1276,6 @@
     </m><!-- end e="way" -->
 
     <m e="node" select="first">
-        <!--<m select="first">
-            <m k="tourism">
-                <m cat="view" v="viewpoint" zoom-min="13">
-                    <symbol src="assets:symbols/tourist/view_point.svg" />
-                </m>
-            </m>
-            <m cat="mountain_pass" k="mountain_pass" v="yes" zoom-min="13">
-                <symbol src="assets:symbols/poi/mountain_pass.svg" symbol-percent="60" />
-            </m>
-            <m select="when-matched">
-                <text use="poi" />
-            </m>
-        </m>-->
-
 		<!-- motorway junctions -->
         <m k="highway">
             <m v="motorway_junction" zoom-min="14">
@@ -1366,7 +1322,7 @@
             <m v="town" zoom-min="9" zoom-max="12">
                 <text use="town-lz-caption" />
             </m>
-            <m v="town" zoom-min="13" zoom-max="16">
+            <m v="town" zoom-min="13" zoom-max="14">
                 <text use="town-caption" />
             </m>
             <m v="city" zoom-min="6" zoom-max="9">
@@ -1392,6 +1348,40 @@
             </m>
         </m>
     </m>
+
+	<!-- Borders -->
+	<m k="boundary" v="administrative">
+		<m k="admin_level">
+			<m v="2"> <!-- country border -->
+				<m zoom-min="6" zoom-max="11">
+					<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="2.5" stroke="#737373" width="1.5" />
+				</m>
+				<m zoom-min="12">
+					<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#dadada" width="2.0" />
+				</m>
+			</m>
+			<m v="4"> <!-- state border -->
+				<m zoom-min="6" zoom-max="11">
+					<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="2.5" stroke="#737373" width="1.5" />
+				</m>
+				<m zoom-min="12">
+					<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#dadada" width="2.0" />
+				</m>
+			</m>
+			<m v="5" zoom-min="12">
+				<line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="2" />
+			</m>
+			<m v="6" zoom-min="12"> <!-- county border -->
+				<line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="1.5" />
+			</m>
+			<m v="8" zoom-min="12">
+				<line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="1.5" />
+			</m>
+			<m v="9" zoom-min="12">
+				<line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="1.5" />
+			</m>
+		</m>
+	</m>
 
     <!-- accommodation LAYER -->
 	<m k="name" select="first">
