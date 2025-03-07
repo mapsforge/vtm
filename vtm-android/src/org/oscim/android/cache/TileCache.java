@@ -278,5 +278,7 @@ public class TileCache implements ITileCache {
 
     @Override
     public void setCacheSize(long size) {
+        if (size == 0)
+            mDatabase.execSQL("DELETE FROM " + TABLE_NAME);
     }
 }
