@@ -7,6 +7,7 @@ dependencies {
     }
     implementation project(':vtm-extras')
     implementation project(':vtm-gdx-poi3d')
+    implementation project(':vtm-hillshading')
     implementation project(':vtm-http')
     //implementation project(':vtm-jeo')
     implementation project(':vtm-json')
@@ -14,6 +15,7 @@ dependencies {
     implementation project(':vtm-models')
     implementation project(':vtm-mvt')
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    implementation "org.mapsforge:mapsforge-map-awt:$mapsforgeVersion"
 }
 
 sourceSets {
