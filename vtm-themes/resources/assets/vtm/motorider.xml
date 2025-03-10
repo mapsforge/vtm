@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->
-    <!-- Version 2.0 6th March 2025-->
+    <!-- Version 2.0 9th March 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -354,10 +354,12 @@
     <style-text caption="true" style="bold" fill="#FFFFFF" id="road-ref-caption" k="ref" priority="5" size="11" bg-fill="#006600" />
 
     <style-text caption="true" bg-fill="#ff704d" fill="#FFFFFF" id="primary-road-box" k="ref" priority="5" size="11" style="bold" />
-    <style-text caption="true" fill="#FFFFFF" id="primary-road-caption" k="ref" priority="6" size="12" style="normal" stroke="#ff704d" stroke-width="2.0" />
+    <style-text fill="#000000" id="primary-road-name" k="name" priority="6" size="12" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text fill="#000000" id="primary-road-ref" k="ref" priority="6" size="12" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
 
     <style-text caption="true" bg-fill="#994d00" fill="#FFFFFF" id="secondary-road-box" k="ref" priority="6" size="11" style="bold" />
-    <style-text caption="true" fill="#FFFFFF" id="secondary-road-caption" k="ref" priority="6" size="12" style="normal" stroke="#994d00" stroke-width="2.0" />
+    <style-text fill="#000000" id="secondary-road-name" k="name" priority="6" size="12" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text fill="#000000" id="secondary-road-ref" k="ref" priority="6" size="12" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
 
     <style-text caption="true" bg-fill="#006600" fill="#ffff00" id="trunk-road-box" k="ref" priority="5" size="11" style="bold" />
     <style-text caption="true" fill="#ffff00" id="trunk-road-caption" k="ref" priority="6" size="11" style="normal" stroke="#006600" stroke-width="8.0" />
@@ -436,8 +438,7 @@
     <style-line id="de-service" stroke="#a99323" width="0.3" />
     <style-line cap="butt" id="de-motorway-link" use="de-motorway" width="-0.8" />
     <style-line cap="butt" id="de-trunk-link" use="de-trunk" width="-0.8" />
-    <style-line cap="butt" fix="true" id="de-steps" stipple="2" stipple-stroke="#be6253"
-        stipple-width="1.0" stroke="#FFFFFF" width="4.2" />
+    <style-line cap="butt" fix="true" id="de-steps" stipple="2" stipple-stroke="#be6253" stipple-width="1.0" stroke="#FFFFFF" width="4.2" />
     <style-line id="de-pedestrian" stroke="#b8b8c1" width="0.5" />
     <style-line cap="butt" fix="true" id="de-rail" stroke="#4d4d4d" width="1.2" />
     <style-line cap="butt" id="de-station" stroke="#000000" width="0.2" />
@@ -1207,7 +1208,8 @@
                                 <text use="primary-road-box" />
                             </m>-->
                             <m zoom-min="13">
-                                <text use="road-ref" />
+								<text use="primary-road-name" />
+								<text use="primary-road-ref" />
                             </m>
                         </m>
                         <m v="secondary|secondary_link">
@@ -1218,7 +1220,8 @@
                                 <text use="secondary-road-box" />
                             </m>-->
                             <m zoom-min="13">
-                                <text use="road-ref" />
+								<text use="secondary-road-name" />
+								<text use="secondary-road-ref" />
                             </m>
                         </m>
                         <m v="tertiary|tertiary_link" zoom-min="14">
