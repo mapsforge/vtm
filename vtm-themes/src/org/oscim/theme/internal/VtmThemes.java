@@ -38,10 +38,8 @@ public enum VtmThemes implements ThemeFile {
     BIKER("vtm/biker.xml"),
     MAPZEN("vtm/mapzen.xml"),
     MOTORIDER("vtm/motorider.xml"),
-    MOTORIDER_DARK("vtm/motorider-dark.xml"),
     NEWTRON("vtm/newtron.xml"),
     OPENMAPTILES("vtm/openmaptiles.xml"),
-    OSMAGRAY("vtm/osmagray.xml"),
     OSMARENDER("vtm/osmarender.xml"),
     TRONRENDER("vtm/tronrender.xml");
 

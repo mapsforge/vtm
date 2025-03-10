@@ -124,12 +124,6 @@ public class MapsforgeActivity extends MapActivity {
             mTheme = mMap.setTheme(VtmThemes.MOTORIDER);
             item.setChecked(true);
             return true;
-        } else if (itemId == R.id.theme_motorider_dark) {
-            if (mTheme != null)
-                mTheme.dispose();
-            mTheme = mMap.setTheme(VtmThemes.MOTORIDER_DARK);
-            item.setChecked(true);
-            return true;
         } else if (itemId == R.id.theme_biker) {
             if (mTheme != null)
                 mTheme.dispose();

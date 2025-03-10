@@ -80,10 +80,6 @@ public class BaseMapActivity extends MapActivity {
             mMap.setTheme(VtmThemes.MOTORIDER);
             item.setChecked(true);
             return true;
-        } else if (itemId == R.id.theme_motorider_dark) {
-            mMap.setTheme(VtmThemes.MOTORIDER_DARK);
-            item.setChecked(true);
-            return true;
         } else if (itemId == R.id.theme_biker) {
             mMap.setTheme(VtmThemes.BIKER);
             item.setChecked(true);
