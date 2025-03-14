@@ -27,6 +27,7 @@ import org.oscim.theme.RenderTheme;
 import org.oscim.theme.styles.*;
 import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
+import org.oscim.utils.Constants;
 
 import java.util.logging.Logger;
 
@@ -38,6 +39,7 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
 
     protected static final double STROKE_INCREASE = 1.4;
     protected static final byte LAYERS = 11;
+    private static final int LEVELS = 256;
 
     public static final byte STROKE_MIN_ZOOM = 12;
 
@@ -69,6 +71,7 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
     protected float mLineScale = 1.0f;
 
     protected RenderBuckets mBuckets;
+    private int mLandLevel = LEVELS, mSeaLevel = 0;
 
     private final VectorTileLayer mTileLayer;
 
@@ -152,6 +155,22 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
         }
     }
 
+    private int getAndIncrementLandLevel() {
+        if (mLandLevel >= 2 * LEVELS)
+            mLandLevel = LEVELS;
+        int result = mLandLevel;
+        mLandLevel++;
+        return result;
+    }
+
+    private int getAndIncrementSeaLevel() {
+        if (mSeaLevel >= LEVELS)
+            mSeaLevel = 0;
+        int result = mSeaLevel;
+        mSeaLevel++;
+        return result;
+    }
+
     public void setDataSource(ITileDataSource dataSource) {
         dispose();
         mTileDataSource = dataSource;
@@ -194,7 +213,12 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
         if (element.type == GeometryType.POINT) {
             renderNode(renderTheme.matchElement(element.type, tags, mTile.zoomLevel));
         } else {
-            mCurBucket = getValidLayer(element.layer) * renderTheme.getLevels() * (element.level > 0 ? element.level : 1);
+            if (element.tags.contains(Constants.TAG_MAPSFORGE_ISSEA) || element.tags.contains(Constants.TAG_MAPSFORGE_SEA) || element.tags.contains(Constants.TAG_FREIZEITKARTE_MEER))
+                mCurBucket = getAndIncrementSeaLevel();
+            else if (element.tags.contains(Constants.TAG_MAPSFORGE_NOSEA) || element.tags.contains(Constants.TAG_FREIZEITKARTE_LAND))
+                mCurBucket = getAndIncrementLandLevel();
+            else
+                mCurBucket = (2 * LEVELS) + getValidLayer(element.layer) * renderTheme.getLevels() * (element.level > 0 ? element.level : 1);
             renderWay(renderTheme.matchElement(element.type, tags, mTile.zoomLevel));
         }
         clearState();

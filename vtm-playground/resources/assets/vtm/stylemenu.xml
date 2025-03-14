@@ -36,11 +36,11 @@
     </stylemenu>
 
     <m cat="sea" e="way" k="natural" v="issea|sea">
-        <area fill="#b5d6f1" mesh="true" />
+        <area fill="#b5d6f1" />
     </m>
 
     <m cat="land" e="way" k="natural" v="nosea">
-        <area fill="#f8f8f8" mesh="true" />
+        <area fill="#f8f8f8" />
     </m>
 
     <m cat="nature" e="way" k="natural|landuse" v="forest|wood">

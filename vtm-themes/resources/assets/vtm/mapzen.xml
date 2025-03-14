@@ -133,7 +133,7 @@
     <style-symbol id="oneway" repeat="true" src="assets:symbols/oneway.svg" />
 
     <m closed="yes" e="way" k="layer" v="water">
-        <area mesh="true" use="water" />
+        <area use="water" />
     </m>
 
     <m closed="no" e="way" k="layer" v="water">

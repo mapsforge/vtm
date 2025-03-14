@@ -136,7 +136,7 @@
     <m k="layer" v="water">
         <m k="class">
             <m v="ocean">
-                <area mesh="true" use="water" />
+                <area use="water" />
             </m>
         </m>
     </m>

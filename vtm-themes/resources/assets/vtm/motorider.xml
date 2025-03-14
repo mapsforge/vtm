@@ -471,8 +471,7 @@
     <style-line cap="butt" fix="true" id="water:outline" stroke="#a4bbcc" width="1.0" />
     <style-line cap="butt" fix="true" id="water" stroke="#a4bbcc" width="1.0" />
     <style-line fix="false" id="river" stroke="#a4bbcc" use="water" />
-    <!-- set mesh=true to display some water features correctly, but does lead to java console errors -->
-    <style-area fade="-1" fill="#99badf" id="water" mesh="false" />
+    <style-area fade="-1" fill="#99badf" id="water" />
 
     <!-- Building fill/line -->
     <style-line fade="15" id="building" stroke="#eeb7b6b3" use="fix" />
@@ -480,10 +479,10 @@
 
     <!-- color of the ocean/sea -->
     <m e="way" k="natural" v="issea|sea">
-        <area mesh="true" use="water" />
+        <area use="water" />
     </m>
     <m e="way" k="freizeitkarte" v="meer">
-        <area mesh="true" use="water" />
+        <area use="water" />
     </m>
 	<m closed="yes" k="natural" v="water">
 		<area use="water" />
@@ -492,10 +491,10 @@
 
     <!-- main background colour -->
     <m e="way" k="natural" v="nosea">
-        <area fill="#ffffff" mesh="true" />
+        <area fill="#ffffff" />
     </m>
     <m e="way" k="freizeitkarte" v="land">
-        <area fill="#ffffff" mesh="true" />
+        <area fill="#ffffff" />
     </m>
     <m e="way" k="natural" v="land">
         <area fill="#BBF8F8F8" stroke="#F8F8F8" stroke-width="0.1" />

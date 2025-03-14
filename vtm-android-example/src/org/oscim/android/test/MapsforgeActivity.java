@@ -33,27 +33,21 @@ import android.view.MenuItem;
 import org.oscim.android.theme.ContentRenderTheme;
 import org.oscim.android.theme.ContentResolverResourceProvider;
 import org.oscim.backend.CanvasAdapter;
-import org.oscim.core.MapElement;
 import org.oscim.core.MapPosition;
-import org.oscim.core.Tag;
 import org.oscim.core.Tile;
 import org.oscim.layers.TileGridLayer;
-import org.oscim.layers.tile.MapTile;
 import org.oscim.layers.tile.buildings.BuildingLayer;
 import org.oscim.layers.tile.buildings.S3DBLayer;
 import org.oscim.layers.tile.vector.VectorTileLayer;
 import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.renderer.BitmapRenderer;
 import org.oscim.renderer.GLViewport;
-import org.oscim.renderer.bucket.RenderBuckets;
 import org.oscim.scalebar.*;
 import org.oscim.theme.IRenderTheme;
 import org.oscim.theme.ThemeFile;
 import org.oscim.theme.ZipRenderTheme;
 import org.oscim.theme.ZipXmlThemeResourceProvider;
 import org.oscim.theme.internal.VtmThemes;
-import org.oscim.theme.styles.AreaStyle;
-import org.oscim.theme.styles.RenderStyle;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
 import org.oscim.tiling.source.mapfile.MapInfo;
 
@@ -72,10 +66,6 @@ public class MapsforgeActivity extends MapActivity {
     private static final int SELECT_THEME_ARCHIVE = 1;
     private static final int SELECT_THEME_DIR = 2;
     static final int SELECT_THEME_FILE = 3;
-
-    private static final Tag ISSEA_TAG = new Tag("natural", "issea");
-    private static final Tag NOSEA_TAG = new Tag("natural", "nosea");
-    private static final Tag SEA_TAG = new Tag("natural", "sea");
 
     private TileGridLayer mGridLayer;
     private Menu mMenu;
@@ -245,7 +235,6 @@ public class MapsforgeActivity extends MapActivity {
                             if (mTheme != null)
                                 mTheme.dispose();
                             mTheme = mMap.setTheme(theme);
-                            mapsforgeTheme(mTheme);
                             mMenu.findItem(R.id.theme_external_archive).setChecked(true);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -279,7 +268,6 @@ public class MapsforgeActivity extends MapActivity {
             if (mTheme != null)
                 mTheme.dispose();
             mTheme = mMap.setTheme(theme);
-            mapsforgeTheme(mTheme);
             mMenu.findItem(R.id.theme_external).setChecked(true);
         }
     }
@@ -288,26 +276,5 @@ public class MapsforgeActivity extends MapActivity {
         if (mTheme != null)
             mTheme.dispose();
         mTheme = mMap.setTheme(VtmThemes.MOTORIDER);
-    }
-
-    private void mapsforgeTheme(IRenderTheme theme) {
-        if (!theme.isMapsforgeTheme())
-            return;
-
-        // Use tessellation with sea and land for Mapsforge themes
-        mTileLayer.addHook(new VectorTileLayer.TileLoaderThemeHook() {
-            @Override
-            public boolean process(MapTile tile, RenderBuckets buckets, MapElement element, RenderStyle style, int level) {
-                if (element.tags.contains(ISSEA_TAG) || element.tags.contains(SEA_TAG) || element.tags.contains(NOSEA_TAG)) {
-                    if (style instanceof AreaStyle)
-                        ((AreaStyle) style).mesh = true;
-                }
-                return false;
-            }
-
-            @Override
-            public void complete(MapTile tile, boolean success) {
-            }
-        });
     }
 }

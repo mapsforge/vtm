@@ -5,6 +5,7 @@
 - Hillshading from HGT digital elevation model data [#1189](https://github.com/mapsforge/vtm/pull/1189)
   - `vtm-hillshading` module
 - Online tiles support multiple servers [#1196](https://github.com/mapsforge/vtm/pull/1196)
+- Render themes: remove tesselation [#1202](https://github.com/mapsforge/vtm/pull/1202)
 - Motorider map theme improvements [#1183](https://github.com/mapsforge/vtm/issues/1183)
 - Biker map theme improvements [#1192](https://github.com/mapsforge/vtm/issues/1192)
 - Rename `MapDatabase` to `MapFile` [#1184](https://github.com/mapsforge/vtm/pull/1184)

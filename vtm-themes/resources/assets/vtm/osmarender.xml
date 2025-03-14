@@ -61,11 +61,11 @@
     <!--###### ASSIGNMENT ######-->
 
     <m e="way" k="natural" v="issea|sea">
-        <area mesh="true" use="water" />
+        <area use="water" />
     </m>
 
     <m e="way" k="natural" v="nosea">
-        <area fill="#f8f8f8" mesh="true" />
+        <area fill="#f8f8f8" />
     </m>
 
     <!-- ways -->

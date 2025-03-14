@@ -34,6 +34,7 @@ import org.oscim.tiling.ITileDataSource;
 import org.oscim.tiling.QueryResult;
 import org.oscim.tiling.TileDataSink;
 import org.oscim.tiling.source.mapfile.header.SubFileParameter;
+import org.oscim.utils.Constants;
 import org.oscim.utils.Parameters;
 import org.oscim.utils.geom.TileClipper;
 import org.oscim.utils.geom.TileSeparator;
@@ -189,13 +190,6 @@ public class MapFile implements ITileDataSource {
      */
     public static int SIMPLIFICATION_MIN_ZOOM = 8;
     public static int SIMPLIFICATION_MAX_ZOOM = 11;
-
-    /**
-     * Mapsforge artificial tags for land/sea areas.
-     */
-    private static final Tag TAG_ISSEA = new Tag("natural", "issea");
-    private static final Tag TAG_NOSEA = new Tag("natural", "nosea");
-    private static final Tag TAG_SEA = new Tag("natural", "sea");
 
     private long mFileSize;
     private boolean mDebugFile;
@@ -858,9 +852,11 @@ public class MapFile implements ITileDataSource {
                 //log.debug("drop zero delta ");
             } else if (Parameters.SIMPLIFICATION_TOLERANCE == 0
                     || (isLine
-                    || e.tags.contains(TAG_ISSEA)
-                    || e.tags.contains(TAG_SEA)
-                    || e.tags.contains(TAG_NOSEA)
+                    || e.tags.contains(Constants.TAG_MAPSFORGE_ISSEA)
+                    || e.tags.contains(Constants.TAG_MAPSFORGE_NOSEA)
+                    || e.tags.contains(Constants.TAG_MAPSFORGE_SEA)
+                    || e.tags.contains(Constants.TAG_FREIZEITKARTE_LAND)
+                    || e.tags.contains(Constants.TAG_FREIZEITKARTE_MEER)
                     || e.tags.contains(Parameters.SIMPLIFICATION_EXCEPTIONS)
                     || deltaLon > minDeltaLon || deltaLon < -minDeltaLon
                     || deltaLat > minDeltaLat || deltaLat < -minDeltaLat)) {
