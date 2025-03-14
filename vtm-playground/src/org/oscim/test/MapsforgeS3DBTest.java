@@ -22,19 +22,23 @@ import java.util.List;
 
 public class MapsforgeS3DBTest extends MapsforgeTest {
 
-    private MapsforgeS3DBTest(File demFolder, List<File> mapFiles) {
-        super(demFolder, mapFiles, true, false);
+    private MapsforgeS3DBTest(File demFolder, List<File> mapFiles, File themeFile) {
+        super(demFolder, mapFiles, true, false, themeFile);
     }
 
     /**
      * @param args command line args: expects the map files as multiple parameters
-     *             with possible SRTM hgt folder as 1st argument.
+     *             with possible theme file as 1st argument
+     *             and possible SRTM hgt folder as 2nd argument.
      */
     public static void main(String[] args) {
         GdxMapApp.init();
+        File themeFile = getThemeFile(args);
+        if (themeFile != null)
+            args = Arrays.copyOfRange(args, 1, args.length);
         File demFolder = getDemFolder(args);
         if (demFolder != null)
             args = Arrays.copyOfRange(args, 1, args.length);
-        GdxMapApp.run(new MapsforgeS3DBTest(demFolder, getMapFiles(args)));
+        GdxMapApp.run(new MapsforgeS3DBTest(demFolder, getMapFiles(args), themeFile));
     }
 }

@@ -23,19 +23,23 @@ import java.util.List;
 
 public class MapsforgePoi3DTest extends MapsforgeTest {
 
-    private MapsforgePoi3DTest(File demFolder, List<File> mapFiles) {
-        super(demFolder, mapFiles, false, true);
+    private MapsforgePoi3DTest(File demFolder, List<File> mapFiles, File themeFile) {
+        super(demFolder, mapFiles, false, true, themeFile);
     }
 
     /**
      * @param args command line args: expects the map files as multiple parameters
-     *             with possible SRTM hgt folder as 1st argument.
+     *             with possible theme file as 1st argument
+     *             and possible SRTM hgt folder as 2nd argument.
      */
     public static void main(String[] args) {
         GdxMapApp.init();
+        File themeFile = getThemeFile(args);
+        if (themeFile != null)
+            args = Arrays.copyOfRange(args, 1, args.length);
         File demFolder = getDemFolder(args);
         if (demFolder != null)
             args = Arrays.copyOfRange(args, 1, args.length);
-        GdxMapApp.run(new MapsforgePoi3DTest(demFolder, getMapFiles(args)));
+        GdxMapApp.run(new MapsforgePoi3DTest(demFolder, getMapFiles(args), themeFile));
     }
 }

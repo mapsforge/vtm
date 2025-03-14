@@ -38,16 +38,14 @@ import org.oscim.renderer.BitmapRenderer;
 import org.oscim.renderer.ExtrusionRenderer;
 import org.oscim.renderer.GLViewport;
 import org.oscim.scalebar.*;
+import org.oscim.theme.ExternalRenderTheme;
 import org.oscim.theme.internal.VtmThemes;
 import org.oscim.tiling.source.hills.HillshadingTileSource;
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
 import org.oscim.tiling.source.mapfile.MultiMapFileTileSource;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class MapsforgeTest extends GdxMapApp {
 
@@ -57,16 +55,18 @@ public class MapsforgeTest extends GdxMapApp {
     private final List<File> mapFiles;
     private final boolean poi3d;
     private final boolean s3db;
+    private final File themeFile;
 
-    MapsforgeTest(File demFolder, List<File> mapFiles) {
-        this(demFolder, mapFiles, false, false);
+    MapsforgeTest(File demFolder, List<File> mapFiles, File themeFile) {
+        this(demFolder, mapFiles, false, false, themeFile);
     }
 
-    MapsforgeTest(File demFolder, List<File> mapFiles, boolean s3db, boolean poi3d) {
+    MapsforgeTest(File demFolder, List<File> mapFiles, boolean s3db, boolean poi3d, File themeFile) {
         this.demFolder = demFolder;
         this.mapFiles = mapFiles;
         this.s3db = s3db;
         this.poi3d = poi3d;
+        this.themeFile = themeFile;
     }
 
     @Override
@@ -186,19 +186,35 @@ public class MapsforgeTest extends GdxMapApp {
         return result;
     }
 
+    static File getThemeFile(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("missing argument: <mapFile>");
+        }
+
+        File themeFile = new File(args[0]);
+        if (themeFile.exists() && themeFile.isFile() && themeFile.canRead() && themeFile.getName().toLowerCase(Locale.ROOT).endsWith(".xml")) {
+            return themeFile;
+        }
+        return null;
+    }
+
     void loadTheme(final String styleId) {
-        mMap.setTheme(VtmThemes.MOTORIDER);
+        mMap.setTheme(themeFile != null ? new ExternalRenderTheme(themeFile.getAbsolutePath()) : VtmThemes.MOTORIDER);
     }
 
     /**
      * @param args command line args: expects the map files as multiple parameters
-     *             with possible SRTM hgt folder as 1st argument.
+     *             with possible theme file as 1st argument
+     *             and possible SRTM hgt folder as 2nd argument.
      */
     public static void main(String[] args) {
         GdxMapApp.init();
+        File themeFile = getThemeFile(args);
+        if (themeFile != null)
+            args = Arrays.copyOfRange(args, 1, args.length);
         File demFolder = getDemFolder(args);
         if (demFolder != null)
             args = Arrays.copyOfRange(args, 1, args.length);
-        GdxMapApp.run(new MapsforgeTest(demFolder, getMapFiles(args)));
+        GdxMapApp.run(new MapsforgeTest(demFolder, getMapFiles(args), themeFile));
     }
 }

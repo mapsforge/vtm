@@ -28,8 +28,8 @@ import java.util.Set;
 
 public class MapsforgeStyleTest extends MapsforgeTest {
 
-    private MapsforgeStyleTest(File demFolder, List<File> mapFiles) {
-        super(demFolder, mapFiles);
+    private MapsforgeStyleTest(File demFolder, List<File> mapFiles, File themeFile) {
+        super(demFolder, mapFiles, themeFile);
     }
 
     @Override
@@ -81,13 +81,17 @@ public class MapsforgeStyleTest extends MapsforgeTest {
 
     /**
      * @param args command line args: expects the map files as multiple parameters
-     *             with possible SRTM hgt folder as 1st argument.
+     *             with possible theme file as 1st argument
+     *             and possible SRTM hgt folder as 2nd argument.
      */
     public static void main(String[] args) {
         GdxMapApp.init();
+        File themeFile = getThemeFile(args);
+        if (themeFile != null)
+            args = Arrays.copyOfRange(args, 1, args.length);
         File demFolder = getDemFolder(args);
         if (demFolder != null)
             args = Arrays.copyOfRange(args, 1, args.length);
-        GdxMapApp.run(new MapsforgeStyleTest(demFolder, getMapFiles(args)));
+        GdxMapApp.run(new MapsforgeStyleTest(demFolder, getMapFiles(args), themeFile));
     }
 }
