@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 
 dependencies {
     api project(':vtm')
-    api 'com.wdtinc:mapbox-vector-tile:3.1.0'
+    api 'io.github.ci-cmg:mapbox-vector-tile:4.0.6'
 }
 
 sourceSets {

@@ -18,10 +18,10 @@
  */
 package org.oscim.tiling.source.mvt;
 
-import com.wdtinc.mapbox_vector_tile.adapt.jts.MvtReader;
-import com.wdtinc.mapbox_vector_tile.adapt.jts.TagKeyValueMapConverter;
-import com.wdtinc.mapbox_vector_tile.adapt.jts.model.JtsLayer;
-import com.wdtinc.mapbox_vector_tile.adapt.jts.model.JtsMvt;
+import edu.colorado.cires.cmg.mvt.adapt.jts.MvtReader;
+import edu.colorado.cires.cmg.mvt.adapt.jts.TagKeyValueMapConverter;
+import edu.colorado.cires.cmg.mvt.adapt.jts.model.JtsLayer;
+import edu.colorado.cires.cmg.mvt.adapt.jts.model.JtsMvt;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.oscim.core.MapElement;

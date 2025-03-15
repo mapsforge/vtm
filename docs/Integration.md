@@ -105,8 +105,8 @@ implementation 'com.squareup.okio:okio-jvm:3.6.0'
 ```groovy
 implementation '[PACKAGE]:vtm-android-mvt:[CURRENT-VERSION]'
 implementation '[PACKAGE]:vtm-mvt:[CURRENT-VERSION]'
-implementation 'com.google.protobuf:protobuf-java:3.6.1'
-implementation 'com.wdtinc:mapbox-vector-tile:3.1.0'
+implementation 'com.google.protobuf:protobuf-java:3.24.2'
+implementation 'io.github.ci-cmg:mapbox-vector-tile:4.0.6'
 implementation 'org.locationtech.jts:jts-core:1.20.0'
 ```
 
@@ -114,8 +114,8 @@ implementation 'org.locationtech.jts:jts-core:1.20.0'
 
 ```groovy
 implementation '[PACKAGE]:vtm-mvt:[CURRENT-VERSION]'
-implementation 'com.google.protobuf:protobuf-java:3.6.1'
-implementation 'com.wdtinc:mapbox-vector-tile:3.1.0'
+implementation 'com.google.protobuf:protobuf-java:3.24.2'
+implementation 'io.github.ci-cmg:mapbox-vector-tile:4.0.6'
 implementation 'org.locationtech.jts:jts-core:1.20.0'
 ```
 
