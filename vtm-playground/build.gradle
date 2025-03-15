@@ -24,7 +24,6 @@ sourceSets {
 }
 
 application {
-    mainClass = "org.oscim.test.MapsforgeTest"
     run {
         if (project.hasProperty("args")) {
             args project.getProperty("args").split(",")
@@ -36,8 +35,9 @@ application {
         from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
         exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/services/io.jeo.data.Driver'
         manifest {
-            attributes 'Main-Class': "${mainClass}"
+            attributes 'Main-Class': 'org.oscim.test.MapsforgeTest'
         }
+        duplicatesStrategy DuplicatesStrategy.INCLUDE
         with jar
     }
 }
