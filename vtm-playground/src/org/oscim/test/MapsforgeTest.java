@@ -17,6 +17,7 @@
  */
 package org.oscim.test;
 
+import com.badlogic.gdx.Input;
 import org.mapsforge.map.awt.graphics.AwtGraphicFactory;
 import org.mapsforge.map.layer.hills.AdaptiveClasyHillShading;
 import org.mapsforge.map.layer.hills.DemFolderFS;
@@ -152,6 +153,19 @@ public class MapsforgeTest extends GdxMapApp {
     public void dispose() {
         MapPreferences.saveMapPosition(mMap.getMapPosition());
         super.dispose();
+    }
+
+    @Override
+    protected boolean onKeyDown(int keycode) {
+        if (keycode == Input.Keys.F5) {
+            if (themeFile != null) {
+                mMap.setTheme(new ExternalRenderTheme(themeFile.getAbsolutePath()));
+                mMap.clearMap();
+            }
+            return true;
+        }
+
+        return false;
     }
 
     static File getDemFolder(String[] args) {
