@@ -72,7 +72,7 @@ public class MapRenderer {
         /* FIXME should be done in 'destroy' method
          * clear all previous vbo refs */
         BufferObject.clear();
-        setBackgroundColor(Color.DKGRAY);
+        setBackgroundColor(Color.LTGRAY);
     }
 
     public static void setBackgroundColor(int color) {
