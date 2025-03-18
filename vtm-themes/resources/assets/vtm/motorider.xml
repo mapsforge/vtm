@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->
-    <!-- Version 2.0 10th March 2025-->
+    <!-- Version 2.3 18th March 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -388,76 +388,81 @@
 
     <!-- POI captions/labels -->
     <style-text priority="3" caption="true" dy="-20" fill="#b35900" font-family="medium" id="poi" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
-    <style-text priority="5" caption="true" dy="-20" fill="#006633" font-family="medium" id="poi-misc" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
-    <style-text priority="1" caption="true" dy="-20" fill="#ff0000" font-family="medium" id="poi-emergency" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text priority="4" caption="true" dy="-20" fill="#ff0066" font-family="medium" id="poi-accommodation" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
-    <style-text priority="5" caption="true" dy="20" fill="#af3a3a" font-family="medium" id="poi-transport" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text priority="1" caption="true" dy="-20" fill="#ff0000" font-family="medium" id="poi-emergency" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text priority="2" caption="true" dy="-20" fill="#ac39ac" font-family="medium" id="poi-fuel" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text priority="5" caption="true" dy="-20" fill="#006633" font-family="medium" id="poi-misc" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text priority="5" caption="true" dy="-20" fill="#0066cc" font-family="medium" id="poi-parking" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text priority="5" caption="true" dy="-20" fill="#af3a3a" font-family="medium" id="poi-transport" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text style="bold" caption="true" dy="-12" fill="#4D2F08" id="peak-name-caption" k="name" size="14" stroke="#FFFFFF" stroke-width="2.0" />
-    <style-text style="bold" caption="true" dy="-12" fill="#4D2F08" id="peak-ele-caption" k="ele" size="12" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text style="bold" caption="true" dy="12" fill="#4D2F08" id="peak-ele-caption" k="ele" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text style="bold" caption="true" cat="housenumber" fill="#606060" font-family="condensed" id="housenumber-caption" k="addr:housenumber" priority="12" size="12" />
     <style-text style="bold" caption="true" fill="#606060" font-family="condensed" id="house-name-caption" k="name" priority="8" size="12" stroke="#FFFFFF" stroke-width="2.0" />
 
     <!-- Area Fill Colors -->
-    <style-area fade="10" fill="#e6e6e6" id="de-residential" />
-    <style-area fade="10" fill="#eddeea" id="de-commercial" />
-    <style-area fade="10" fill="#f8e7d3" id="de-retail" />
-    <style-area fade="13" fill="#b8b8c1" id="de-pedestrian" />
-    <style-area fade="13" fill="#b8b8c1" id="de-offroad" />
-    <style-area fade="10" fill="#eddeea" id="de-industrial" />
-    <style-area fade="6" fill="#e0e0b8" id="de-school" />
-    <style-area fade="6" fill="#ffcccc" id="de-hospital" />
-    <style-area fade="6" fill="#ace0b0" id="de-park" />
-    <style-area fade="6" fill="#BBE9FCE6" id="de-fell" />
-    <style-area fade="6" fill="#a6cd98" id="de-forest" />
-    <style-area fade="6" fill="#c3dbad" id="de-grass" />
-    <style-area fade="6" fill="#E6FFDB" id="de-meadow" />
-    <style-area fade="6" fill="#b6d6a9" id="de-heath" />
-    <style-area fade="6" fill="#BBF5F5F5" id="de-scree" />
-    <style-area fade="6" fill="#c4deba" id="de-scrub" />
-    <style-area fade="6" fill="#e5efdc" id="de-field" />
-    <style-area fade="6" fill="#BBC7F1A3" id="de-campsite" />
-    <style-area fade="6" fill="#aacbaf" id="de-cemetery" />
-    <style-area fade="6" fill="#bbffe6e6" id="de-military" />
-    <style-area fade="6" fill="#D0D9BF" id="de-mud" />
-    <style-area fade="6" fill="#e8eff2" id="de-ice" />
-    <style-area fade="6" fill="#c5c3c3" id="de-quarry" />
-    <style-area fade="6" fill="#BBF1F1F1" id="de-rock" />
-    <style-area fade="6" fill="#f5e9c6" id="de-sand" />
-    <style-area fade="6" fill="#f5e9c6" id="de-rail" />
-    <style-area fade="6" fill="#ccccb3" id="de-station" />
+    <style-area fade="10" fill="#e6e6e6" id="area-residential" />
+    <style-area fade="10" fill="#eddeea" id="area-commercial" />
+    <style-area fade="10" fill="#f8e7d3" id="area-retail" />
+    <style-area fade="13" fill="#b8b8c1" id="area-pedestrian" />
+    <style-area fade="13" fill="#b8b8c1" id="area-offroad" />
+    <style-area fade="10" fill="#eddeea" id="area-industrial" />
+    <style-area fade="6" fill="#e0e0b8" id="area-school" />
+    <style-area fade="6" fill="#ffcccc" id="area-hospital" />
+    <style-area fade="6" fill="#ace0b0" id="area-park" />
+    <style-area fade="6" fill="#BBE9FCE6" id="area-fell" />
+    <style-area fade="6" fill="#a6cd98" id="area-forest" />
+    <style-area fade="6" fill="#c3dbad" id="area-grass" />
+    <style-area fade="6" fill="#E6FFDB" id="area-meadow" />
+    <style-area fade="6" fill="#b6d6a9" id="area-heath" />
+    <style-area fade="6" fill="#BBF5F5F5" id="area-scree" />
+    <style-area fade="6" fill="#c4deba" id="area-scrub" />
+    <style-area fade="6" fill="#e5efdc" id="area-field" />
+    <style-area fade="6" fill="#BBC7F1A3" id="area-campsite" />
+    <style-area fade="6" fill="#aacbaf" id="area-cemetery" />
+    <style-area fade="6" fill="#bbffe6e6" id="area-military" />
+    <style-area fade="6" fill="#D0D9BF" id="area-mud" />
+    <style-area fade="6" fill="#e8eff2" id="area-ice" />
+    <style-area fade="6" fill="#c5c3c3" id="area-quarry" />
+    <style-area fade="6" fill="#BBF1F1F1" id="area-rock" />
+    <style-area fade="6" fill="#f5e9c6" id="area-sand" />
+    <style-area fade="6" fill="#f5e9c6" id="area-rail" />
+    <style-area fade="6" fill="#ccccb3" id="area-station" />
 	
-    <!-- Road and Rail Colors -->
-    <style-line cap="butt" id="de-motorway" stroke="#98afcd" width="2.5" />
-    <style-line cap="butt" id="de-trunk" stroke="#00CC66" width="2.5" />
-    <style-line id="de-primary" stroke="#ff9999" width="2.2" />
-    <style-line id="de-secondary" stroke="#ffbf80" width="2.2" />
-    <style-line id="de-tertiary" stroke="#ffff80" width="2.2" />
-    <style-line id="de-unclassified" stroke="#FFFFFF" width="1.8" />
-    <style-line id="de-residential" stroke="#FFFFFF" width="1.4" />
-    <style-line id="de-service" stroke="#a99323" width="0.3" />
-    <style-line cap="butt" id="de-motorway-link" use="de-motorway" width="-0.8" />
-    <style-line cap="butt" id="de-trunk-link" use="de-trunk" width="-0.8" />
-    <style-line cap="butt" fix="true" id="de-steps" stipple="2" stipple-stroke="#be6253" stipple-width="1.0" stroke="#FFFFFF" width="4.2" />
-    <style-line id="de-pedestrian" stroke="#b8b8c1" width="0.5" />
-    <style-line cap="butt" fix="true" id="de-rail" stroke="#4d4d4d" width="1.2" />
-    <style-line cap="butt" id="de-station" stroke="#000000" width="0.2" />
+    <!-- Road and Rail Colors, road casings/outlines are defined in the "highway" section -->
+    <style-line cap="butt" id="road-motorway-thin" stroke="#98afcd" width="1.5" />
+    <style-line cap="butt" id="road-motorway-core" stroke="#98afcd" width="2.2" />
+    <style-line cap="butt" id="road-trunk-thin" stroke="#00CC66" width="1.5" />
+    <style-line cap="butt" id="road-trunk-core" stroke="#00CC66" width="2.5" />
+    <style-line id="road-primary-thin" stroke="#ff9999" width="1.0" />
+    <style-line id="road-primary-core" stroke="#ff9999" width="2.2" />
+    <style-line id="road-secondary-thin" stroke="#ffbf80" width="1.0" />
+    <style-line id="road-secondary-core" stroke="#ffbf80" width="2.2" />
+    <style-line id="road-tertiary-thin" stroke="#ffff80" width="0.6" />
+    <style-line id="road-tertiary-core" stroke="#ffff80" width="1.5" />
+    <style-line id="road-unclassified-core" stroke="#FFFFFF" width="1.0" />
+    <style-line id="road-residential-core" stroke="#FFFFFF" width="1.0" />
+    <style-line id="road-service-core" stroke="#FFFFFF" width="0.5" />
+    <style-line id="road-construction-core" stipple="2" stipple-stroke="#9ea092" stipple-width="1.0" stroke="#e0e0e0" width="1.0" />
+    <style-line cap="butt" id="road-motorway-link" use="road-motorway-core" width="-0.8" />
+    <style-line cap="butt" id="road-trunk-link" use="road-trunk-core" width="-0.8" />
+    <style-line cap="butt" fix="true" id="road-steps" stipple="2" stipple-stroke="#be6253" stipple-width="1.0" stroke="#FFFFFF" width="4.2" />
+    <style-line id="road-pedestrian" stroke="#b8b8c1" width="0.5" />
+    <style-line cap="butt" fix="true" id="road-rail" stroke="#4d4d4d" width="1.2" />
+    <style-line cap="butt" id="road-station" stroke="#000000" width="0.2" />
 
     <!-- Tunnels -->
-    <style-line cap="butt" id="de-motorway-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-motorway" width="1.1" />
-    <style-line cap="butt" id="de-trunk-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-trunk" width="0.7" />
-    <style-line cap="butt" id="de-primary-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-primary" width="0.7" />
-    <style-line cap="butt" id="de-secondary-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-secondary" />
-    <style-line cap="butt" id="de-tertiary-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-tertiary" />
-    <style-line cap="butt" id="de-unclassified-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-unclassified" />
-    <style-line cap="butt" id="de-residential-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-residential" />
-    <style-line cap="butt" id="de-service-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-service" />
-    <style-line cap="butt" id="de-motorway-link-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-motorway-link" width="1.1" />
-    <style-line cap="butt" id="de-trunk-link-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-trunk-link" width="0.7" />
+    <style-line cap="butt" id="road-motorway-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-motorway-core" width="1.1" />
+    <style-line cap="butt" id="road-trunk-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-trunk-core" width="0.7" />
+    <style-line cap="butt" id="road-primary-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-primary-core" width="0.7" />
+    <style-line cap="butt" id="road-secondary-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-secondary-core" />
+    <style-line cap="butt" id="road-tertiary-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-tertiary-core" />
+    <style-line cap="butt" id="road-unclassified-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-unclassified-core" />
+    <style-line cap="butt" id="road-residential-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-residential-core" />
+    <style-line cap="butt" id="road-service-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-service-core" />
+    <style-line cap="butt" id="road-motorway-link-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-motorway-link" width="1.1" />
+    <style-line cap="butt" id="road-trunk-link-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-trunk-link" width="0.7" />
 
-    <!-- when inheriting another style with 'from' then 'width' is relative to the parent -->
     <style-line id="residential" stroke="#FFFFFF" width="1.3" />
-    <style-line id="construction" stroke="#e0e0e0" width="1.2" />
 
     <!-- track|footway|path|cycleway -->
     <style-line cap="butt" fix="true" id="footway" stipple="2" stipple-stroke="#a39b68" stipple-width="0.6" stroke="#aaffffff" width="1.8" />
@@ -504,77 +509,77 @@
     <m closed="yes" e="way" k="highway|building" v="~">
         <m k="landuse|natural|leisure">
             <m v="common|conservation|garden|grass|recreation_ground|village_green">
-                <area use="de-grass" />
+                <area use="area-grass" />
             </m>
             <m v="farm|farmland|field|orchard|vineyard">
-                <area use="de-field" />
+                <area use="area-field" />
             </m>
             <m v="fell">
-                <area use="de-fell" />
+                <area use="area-fell" />
             </m>
             <m v="forest|wood">
-                <area use="de-forest" />
+                <area use="area-forest" />
             </m>
             <m v="glacier">
-                <area use="de-ice" />
+                <area use="area-ice" />
             </m>
             <m v="grassland|meadow">
-                <area use="de-meadow" />
+                <area use="area-meadow" />
             </m>
             <m v="heath">
-                <area use="de-heath" />
+                <area use="area-heath" />
             </m>
             <m v="marsh|mud|wetland">
-                <area use="de-mud" />
+                <area use="area-mud" />
             </m>
 			<m v="allotments|green|greenfield|golf_course|park">
-				<area use="de-park" />
+				<area use="area-park" />
 			</m>
             <m v="landfill|quarry">
-                <area use="de-quarry" />
+                <area use="area-quarry" />
             </m>
 			<m e="way" k="natural" v="rock|stone|bare_rock|bedrock">
-                <area use="de-rock" />
+                <area use="area-rock" />
 			</m>
             <m v="scree">
-                <area use="de-scree" />
+                <area use="area-scree" />
             </m>
             <m v="scrub">
-                <area use="de-scrub" />
+                <area use="area-scrub" />
             </m>
         </m>
 
         <!-- landuse, human -->
         <m k="landuse">
             <m v="residential|urban" zoom-min="12">
-                <area use="de-residential" />
+                <area use="area-residential" />
             </m>
             <m v="commercial" zoom-min="12">
-                <area use="de-commercial" />
+                <area use="area-commercial" />
             </m>
             <m v="retail" zoom-min="12">
-                <area use="de-retail" />
+                <area use="area-retail" />
             </m>
             <m v="industrial|brownfield|railway|garages|construction" zoom-min="12">
-                <area use="de-industrial" />
+                <area use="area-industrial" />
             </m>
         </m>
         <m k="landuse|leisure|tourism">
             <m v="camp_site|caravan_site|park|picnic_site|zoo">
-                <area use="de-campsite" />
+                <area use="area-campsite" />
             </m>
         </m>
         <m k="landuse">
             <m v="military">
-                <area use="de-military" />
+                <area use="area-military" />
             </m>
             <m v="cemetery|grave_yard" zoom-min="11">
-                <area use="de-cemetery" />
+                <area use="area-cemetery" />
             </m>
         </m>
         <m k="natural">
             <m v="beach|sand">
-                <area use="de-sand" />
+                <area use="area-sand" />
             </m>
         </m>
         <m k="landuse" v="reservoir|basin">
@@ -584,10 +589,10 @@
         <!-- amenity -->
         <m k="amenity" zoom-min="12">
             <m v="kindergarten|school|college|university">
-                <area use="de-school" />
+                <area use="area-school" />
             </m>
             <m v="hospital">
-                <area use="de-hospital" />
+                <area use="area-hospital" />
             </m>
             <m v="public_bath">
                 <area use="water" />
@@ -597,7 +602,7 @@
         <!-- leisure -->
         <m k="leisure" zoom-min="14">
             <m v="stadium|sports_centre|water_park|playground|miniature_golf|playing_fields|pitch|track">
-                <area use="de-park" />
+                <area use="area-park" />
             </m>
             <m v="swimming_pool">
                 <area use="water" />
@@ -805,15 +810,10 @@
         <outline-layer id="0" stroke="#44000000" width="0.1" />
         <outline-layer id="1" stroke="#aa807040" width="0.1" />
 
-        <!-- outlines for roads -->
-        <outline-layer id="de-motorway-outline" stroke="#000000" width=".3" />
-        <outline-layer id="de-trunk-outline" stroke="#000000" width=".3" />
-        <outline-layer id="de-primary-outline" stroke="#000000" width=".3" />
-        <outline-layer id="de-secondary-outline" stroke="#000000" width=".3" />
-        <outline-layer id="de-tertiary-outline" stroke="#000000" width=".2" />
-        <outline-layer id="de-unclassified-outline" stroke="#000000" width=".2" />
-        <outline-layer id="de-residential-outline" stroke="#000000" width=".2" />
-        <outline-layer id="de-service-outline" stroke="#000000" width=".1" />
+        <!-- casings/outlines for roads -->
+        <outline-layer id="road-major-outline" stroke="#000000" width=".3" />
+        <outline-layer id="road-minor-outline" stroke="#000000" width=".2" />
+        <outline-layer id="road-thin-outline" stroke="#000000" width=".1" />
 
         <!-- match tunnel-tag (to ensure tunnel key is present) -->
         <m k="tunnel" zoom-min="8">
@@ -825,23 +825,23 @@
                     <m k="highway">
                         <!-- links have to appear first -->
                         <m v="tertiary_link">
-                            <line use="de-tertiary-tunnel" />
+                            <line use="road-tertiary-tunnel" />
                         </m>
                         <m v="secondary_link">
-                            <line use="de-secondary-tunnel" />
+                            <line use="road-secondary-tunnel" />
                         </m>
                         <m v="primary_link">
-                            <line use="de-primary-tunnel" />
+                            <line use="road-primary-tunnel" />
                         </m>
                         <m v="trunk_link">
-                            <line use="de-trunk-link-tunnel" />
+                            <line use="road-trunk-link-tunnel" />
                         </m>
                         <m v="motorway_link">
-                            <line use="de-motorway-link-tunnel" />
+                            <line use="road-motorway-link-tunnel" />
                         </m>
                         <m zoom-min="16">
                             <m v="steps">
-                                <line use="de-steps" />
+                                <line use="road-steps" />
                             </m>
                         </m>
                         <m zoom-min="14">
@@ -859,35 +859,35 @@
                             </m>
                             <m v="construction">
                                 <outline use="0" />
-                                <line outline="0" use="construction" />
+                                <line outline="0" use="road-construction-core" />
                             </m>
                             <m v="service">
-                                <line use="de-service-tunnel" />
+                                <line use="road-service-tunnel" />
                             </m>
                         </m>
                         <m v="byway|pedestrian|living_street">
-                            <line outline="0" use="de-pedestrian" />
+                            <line outline="0" use="road-pedestrian" />
                         </m>
                         <m v="residential|road">
-                            <line outline="0" use="de-residential-tunnel" />
+                            <line outline="0" use="road-residential-tunnel" />
                         </m>
                         <m v="unclassified">
-                            <line use="de-unclassified-tunnel" />
+                            <line use="road-unclassified-tunnel" />
                         </m>
                         <m v="tertiary">
-                            <line use="de-tertiary-tunnel" />
+                            <line use="road-tertiary-tunnel" />
                         </m>
                         <m v="secondary">
-                            <line use="de-secondary-tunnel" />
+                            <line use="road-secondary-tunnel" />
                         </m>
                         <m v="primary">
-                            <line use="de-primary-tunnel" />
+                            <line use="road-primary-tunnel" />
                         </m>
                         <m v="trunk">
-                            <line use="de-trunk-tunnel" />
+                            <line use="road-trunk-tunnel" />
                         </m>
                         <m v="motorway">
-                            <line use="de-motorway-tunnel" />
+                            <line use="road-motorway-tunnel" />
                         </m>
                     </m>
 					<!-- railway tunnel -->
@@ -933,11 +933,11 @@
                     <!-- highway area -->
                     <m k="area" v="yes|true" zoom-min="14">
                         <m v="service|unclassified|residential|road">
-                            <area fill="#FFFFFF" />
+                            <area use="area-residential" />
                             <line cap="butt" fix="true" stroke="#44000000" width="1.0" />
                         </m>
                         <m v="pedestrian|footway|living_street">
-                            <area use="de-pedestrian" />
+                            <area use="area-pedestrian" />
                             <line cap="butt" fix="true" stroke="#44000000" width="1.0" />
                         </m>
                     </m>
@@ -945,17 +945,17 @@
                     <m k="area" v="~|no|false">
                         <m zoom-min="16">
                             <m v="steps">
-                                <line use="de-steps" />
+                                <line use="road-steps" />
                             </m>
                             <m v="track|footway|path|cycleway" zoom-min="17">
                                 <line outline="1" use="footway:z17" />
                             </m>
                         </m>
                         <m zoom-min="14">
-                            <m v="footway">
+                            <m v="footway" zoom-min="15">
                                 <line use="footway" />
                             </m>
-                            <m v="cycleway">
+                            <m v="cycleway" zoom-min="14">
                                 <line use="highway:cycleway" />
                             </m>
                             <m cat="off_road" v="byway|track">
@@ -981,93 +981,74 @@
 							<m cat="off_road" e="way" k="highway" v="bridleway" zoom-min="14">
 								<line stroke="#cbc0b3" dasharray="10,12" cap="round" width="0.6" />
 							</m>
-                            <m v="path">
+                            <m v="path" zoom-min="15">
                                 <line use="highway:path" />
                             </m>
                             <m v="construction">
-                                <line outline="1" use="construction" />
+                                <line outline="1" use="road-construction-core" />
                             </m>
                             <m v="service">
-								<line cap="butt" stroke="#000000" width="1.0" />
-								<line cap="butt" stroke="#FFFFFF" width="0.9" />
-								<m zoom-min="13">
-									<text style="bold" fill="#000000" k="name" priority="8" size="12" stroke="#FFFFFF" stroke-width="2.0" />
-								</m>
+								<line outline="road-thin-outline" use="road-service-core" />
                             </m>
-                            <m v="pedestrian|living_street">
-                                <line outline="0" use="de-pedestrian" />
+                            <m v="pedestrian|living_street" zoom-min="15">
+                                <line outline="0" use="road-pedestrian" />
                             </m>
                         </m>
                         <m v="residential|road">
-							<line outline="de-residential-outline" use="de-residential" />
-                        </m>
-                        <m v="service">
-							<line outline="de-service-outline" use="de-service" />
+							<line outline="road-thin-outline" use="road-residential-core" />
                         </m>
                         <m v="unclassified">
-							<m zoom-min="11" zoom-max="11">
-								<line cap="butt" stroke="#000000" width="1.2" />
-								<line cap="butt" stroke="#ffffe6" width="1.0" />
+							<m zoom-min="11" zoom-max="12">
+								<line outline="road-thin-outline" use="road-unclassified-core" />
 							</m>
-							<m zoom-min="12">
-								<line cap="butt" stroke="#000000" width="1.8" />
-								<line cap="butt" stroke="#ffffe6" width="1.6" />
+							<m zoom-min="13">
+								<line outline="road-thin-outline" use="road-unclassified-core" />
 							</m>
                         </m>
                         <m v="tertiary|tertiary_link">
 							<m zoom-min="10" zoom-max="10">
-								<line cap="butt" stroke="#000000" width="1.2" />
-								<line cap="butt" stroke="#ffff80" width="1.0" />
+								<line outline="road-minor-outline" use="road-tertiary-thin" />
 							</m>
 							<m zoom-min="11">
-								<line cap="butt" stroke="#000000" width="2.2" />
-								<line cap="butt" stroke="#ffff80" width="2.0" />
+								<line outline="road-minor-outline" use="road-tertiary-core" />
 							</m>
                         </m>
                         <m v="secondary|secondary_link">
 							<m zoom-min="9" zoom-max="9">
-								<line cap="butt" stroke="#000000" width="1.2" />
-								<line cap="butt" stroke="#ffbf80" width="1.0" />
+								<line outline="road-major-outline" use="road-secondary-thin" />
 							</m>
 							<m zoom-min="10">
-								<line cap="butt" stroke="#000000" width="2.2" />
-								<line cap="butt" stroke="#ffbf80" width="1.9" />
+								<line outline="road-major-outline" use="road-secondary-core" />
 							</m>
                         </m>
                         <m v="primary|primary_link">
 							<m zoom-min="8" zoom-max="8">
-								<line cap="butt" stroke="#000000" width="1.0" />
-								<line cap="butt" stroke="#ff9999" width="0.8" />
+								<line outline="road-minor-outline" use="road-primary-thin" />
 							</m>
 							<m zoom-min="9" zoom-max="9">
-								<line cap="butt" stroke="#000000" width="1.8" />
-								<line cap="butt" stroke="#ff9999" width="1.6" />
+								<line outline="road-major-outline" use="road-primary-thin" />
 							</m>
 							<m zoom-min="10">
-								<line cap="butt" stroke="#000000" width="2.2" />
-								<line cap="butt" stroke="#ff9999" width="1.9" />
+								<line outline="road-major-outline" use="road-primary-core" />
 							</m>
                         </m>
                         <m v="trunk|trunk_link">
 							<m zoom-min="7" zoom-max="8">
-								<line cap="butt" stroke="#000000" width="1.8" />
-								<line cap="butt" stroke="#00CC66" width="1.5" />
+								<line outline="road-major-outline" use="road-trunk-thin" />
 							</m>
 							<m zoom-min="9">
-								<line cap="butt" stroke="#000000" width="2.8" />
-								<line cap="butt" stroke="#00CC66" width="2.5" />
+								<line outline="road-major-outline" use="road-trunk-core" />
 							</m>
                         </m>
                         <m v="motorway|motorway_link">
-							<line cap="butt" stroke="#000000" width="2.8" />
-							<line cap="butt" stroke="#98afcd" width="2.5" />
+							<line outline="road-major-outline" use="road-motorway-core" />
                         </m>
                     </m> <!-- end area=~|no|false -->
                 </m><!-- end tunnel|bridge=~|no|false -->
 
                 <!-- Bridge casings should be above other roads -->
                 <outline-layer id="bridge" stroke="#000000" width="0.08" />
-                <outline-layer id="de-bridge" stroke="#000000" width="0.5" />
+                <outline-layer id="road-bridge" stroke="#000000" width="0.6" />
 
                 <!-- must contain bridge -->
                 <m k="bridge">
@@ -1078,19 +1059,19 @@
                         <m k="area" v="~|no|false">
                             <!-- links have to appear first -->
                             <m v="tertiary_link">
-                                <line cap="butt" outline="de-bridge" use="de-tertiary" />
+                                <line cap="butt" outline="road-bridge" use="road-tertiary-core" />
                             </m>
                             <m v="secondary_link">
-                                <line cap="butt" outline="de-bridge" use="de-secondary" />
+                                <line cap="butt" outline="road-bridge" use="road-secondary-core" />
                             </m>
                             <m v="primary_link">
-                                <line cap="butt" outline="de-bridge" use="de-primary" />
+                                <line cap="butt" outline="road-bridge" use="road-primary-core" />
                             </m>
                             <m v="trunk_link">
-                                <line outline="de-bridge" use="de-trunk-link" />
+                                <line outline="road-bridge" use="road-trunk-link" />
                             </m>
                             <m v="motorway_link">
-                                <line outline="de-bridge" use="de-motorway-link" />
+                                <line outline="road-bridge" use="road-motorway-link" />
                             </m>
                             <m zoom-min="16">
                                 <m v="steps">
@@ -1119,40 +1100,40 @@
                                     <line use="bridleway" />
                                 </m>
                                 <m v="construction">
-                                    <line cap="butt" outline="de-bridge" use="construction" />
+                                    <line cap="butt" outline="road-bridge" use="road-construction-core" />
                                 </m>
                                 <m v="service">
-                                    <line cap="butt" outline="de-bridge" use="de-service" />
+                                    <line cap="butt" outline="road-bridge" use="road-service-core" />
                                 </m>
                             </m>
 
                             <m select="first" zoom-min="13">
                                 <m v="pedestrian|living_street">
-                                    <line cap="butt" outline="bridge" use="de-pedestrian" />
+                                    <line cap="butt" outline="bridge" use="road-pedestrian" />
                                 </m>
                                 <m v="residential|road">
-                                    <line cap="butt" outline="de-bridge" use="de-residential" />
+                                    <line cap="butt" outline="road-bridge" use="road-residential-core" />
                                 </m>
                             </m>
 
                             <m select="first">
                                 <m v="unclassified">
-                                    <line cap="butt" outline="de-bridge" use="de-unclassified" />
+                                    <line cap="butt" outline="road-bridge" use="road-unclassified-core" />
                                 </m>
                                 <m v="tertiary">
-                                    <line cap="butt" outline="de-bridge" use="de-tertiary" />
+                                    <line cap="butt" outline="road-bridge" use="road-tertiary-core" />
                                 </m>
                                 <m v="secondary">
-                                    <line cap="butt" outline="de-bridge" use="de-secondary" />
+                                    <line cap="butt" outline="road-bridge" use="road-secondary-core" />
                                 </m>
                                 <m v="primary">
-                                    <line cap="butt" outline="de-bridge" use="de-primary" />
+                                    <line cap="butt" outline="road-bridge" use="road-primary-core" />
                                 </m>
                                 <m v="trunk">
-                                    <line cap="butt" outline="de-bridge" use="de-trunk" />
+                                    <line cap="butt" outline="road-bridge" use="road-trunk-core" />
                                 </m>
                                 <m v="motorway">
-                                    <line cap="butt" outline="de-bridge" use="de-motorway" />
+                                    <line cap="butt" outline="road-bridge" use="road-motorway-core" />
                                 </m>
                             </m>
                         </m><!-- end area=~|no|false -->
@@ -1163,7 +1144,7 @@
                                 <line cap="butt" fix="true" stroke="#44000000" width="1.0" />
                             </m>
                             <m v="pedestrian|footway|living_street">
-                                <area use="de-pedestrian" />
+                                <area use="area-pedestrian" />
                                 <line cap="butt" fix="true" stroke="#44000000" width="1.0" />
                             </m>
                         </m>  <!-- end area=yes|true -->
@@ -1227,7 +1208,7 @@
                             <text use="road" />
                             <text use="road-ref" />
                         </m>
-                        <m v="byway|pedestrian|residential|living_street|unclassified" zoom-min="14">
+                        <m v="byway|pedestrian|residential|living_street|service|unclassified" zoom-min="14">
                             <text use="residential-road" />
                         </m>
                     </m>
@@ -1260,8 +1241,8 @@
 		</m>
         <m k="railway"
             v="station|platform">
-            <area use="de-station" />
-            <line use="de-station" />
+            <area use="area-station" />
+            <line use="road-station" />
         </m>
 
         <!-- highway one-way markers -->
@@ -1505,7 +1486,7 @@
 			</m>
 		</m>
 		<m select="when-matched">
-			<text use="poi" />
+			<text use="poi-parking" />
 		</m>
 	</m>
 	
