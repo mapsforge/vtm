@@ -625,6 +625,36 @@ public class XmlThemeBuilder {
             else if ("repeat-gap".equals(name))
                 b.repeatGap = Float.parseFloat(value) * mScale;
 
+            else if ("align-center".equals(name))
+                ; // no-op
+
+            else if ("curve".equals(name))
+                ; // no-op
+
+            else if ("display".equals(name))
+                ; // no-op
+
+            else if ("dy".equals(name))
+                ; // no-op
+
+            else if ("position".equals(name))
+                ; // no-op
+
+            else if ("priority".equals(name))
+                ; // no-op
+
+            else if ("repeat".equals(name))
+                ; // no-op
+
+            else if ("rotate".equals(name))
+                ; // no-op
+
+            else if ("scale".equals(name))
+                ; // no-op
+
+            else if ("stroke-linejoin".equals(name))
+                ; // no-op
+
             else
                 logUnknownAttribute(elementName, name, value, i);
         }
@@ -968,6 +998,9 @@ public class XmlThemeBuilder {
             else if ("base-text-scale".equals(name) || "base-text-size".equals(name))
                 baseTextScale = Float.parseFloat(value);
 
+            else if ("map-background-outside".equals(name))
+                ; // no-op
+
             else
                 logUnknownAttribute(elementName, name, value, i);
 
@@ -1109,7 +1142,31 @@ public class XmlThemeBuilder {
                     b.dy = -Float.parseFloat(value) * mScale * CanvasAdapter.symbolScale;
                 }
 
-            } else
+            } else if ("display".equals(name))
+                ; // no-op
+
+            else if ("repeat".equals(name))
+                ; // no-op
+
+            else if ("repeat-gap".equals(name))
+                ; // no-op
+
+            else if ("repeat-start".equals(name))
+                ; // no-op
+
+            else if ("symbol-id".equals(name))
+                ; // no-op
+
+            else if ("text-orientation".equals(name))
+                ; // no-op
+
+            else if ("text-transform".equals(name))
+                ; // no-op
+
+            else if ("text-wrap-width".equals(name))
+                ; // no-op
+
+            else
                 logUnknownAttribute(elementName, name, value, i);
         }
 
@@ -1251,6 +1308,12 @@ public class XmlThemeBuilder {
 
             else if ("rotate".equals(name))
                 b.rotate(Boolean.parseBoolean(value));
+
+            else if ("display".equals(name))
+                ; // no-op
+
+            else if ("priority".equals(name))
+                ; // no-op
 
             else
                 logUnknownAttribute(elementName, name, value, i);
