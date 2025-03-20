@@ -32,7 +32,7 @@ public class ZipRenderTheme implements ThemeFile {
     private XmlRenderThemeMenuCallback mMenuCallback;
     private final String mRelativePathPrefix;
     private XmlThemeResourceProvider mResourceProvider;
-    final String mXmlTheme;
+    protected final String mXmlTheme;
 
     /**
      * @param xmlTheme         the XML theme path in the archive.
