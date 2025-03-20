@@ -1482,12 +1482,17 @@ public class XmlThemeBuilder {
      * Building rule for Mapsforge themes.
      */
     private RuleBuilder buildingRule() {
+        boolean dark = false;
+        if (mTheme instanceof ExternalRenderTheme)
+            dark = ((ExternalRenderTheme) mTheme).mPath.toLowerCase(Locale.ROOT).contains("dark");
+        else if (mTheme instanceof ZipRenderTheme)
+            dark = ((ZipRenderTheme) mTheme).mXmlTheme.toLowerCase(Locale.ROOT).contains("dark");
         ExtrusionBuilder<?> b = mExtrusionBuilder.reset();
         b.level(mLevels++);
         b.themeCallback(mThemeCallback);
-        b.colorLine(0xffd9d8d6);
-        b.colorSide(0xeaecebe9);
-        b.colorTop(0xeaf9f8f6);
+        b.colorLine(dark ? 0x50606060 : 0xffd9d8d6);
+        b.colorSide(dark ? 0xea404040 : 0xeaecebe9);
+        b.colorTop(dark ? 0xea404040 : 0xeaf9f8f6);
         RuleBuilder rule = new RuleBuilder(RuleBuilder.RuleType.POSITIVE, new String[]{Tag.KEY_BUILDING, Tag.KEY_BUILDING_PART}, new String[]{});
         rule.element(Rule.Element.WAY).zoom((byte) 17, Byte.MAX_VALUE).style(b);
         return rule;

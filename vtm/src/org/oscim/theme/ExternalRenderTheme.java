@@ -37,7 +37,7 @@ public class ExternalRenderTheme implements ThemeFile {
     private final long mFileModificationDate;
     private boolean mMapsforgeTheme;
     private XmlRenderThemeMenuCallback mMenuCallback;
-    private final String mPath;
+    final String mPath;
     private XmlThemeResourceProvider mResourceProvider;
 
     /**
