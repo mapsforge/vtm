@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#d8dbcb"
+<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#FFFFFF"
     version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->
-    <!-- Version 2.3 18th March 2025-->
+	<!-- Version 25 22nd March 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -312,6 +312,22 @@
             <name lang="zh" value="更多道路详情" />
             <cat id="road_detail" />
         </layer>
+        <layer enabled="true" id="nature">
+            <name lang="ar" value="الغطاء النباتي" />
+            <name lang="ca" value="Vegetació" />
+            <name lang="cs" value="Vegetace" />
+            <name lang="de" value="Vegetation" />
+            <name lang="el" value="Βλάστηση" />
+            <name lang="en" value="Vegetation" />
+            <name lang="es" value="Vegetación" />
+            <name lang="fr" value="Végétation" />
+            <name lang="it" value="Vegetazione" />
+            <name lang="ko" value="식생" />
+            <name lang="nl" value="Vegetatie" />
+            <name lang="pl" value="Wegetacja" />
+            <name lang="zh" value="植被" />
+            <cat id="nature" />
+        </layer>
         <layer id="normal" visible="true">
             <overlay id="accommodation" />
             <overlay id="money" />
@@ -332,6 +348,7 @@
             <overlay id="housenumber" />
             <overlay id="off_road" />
             <overlay id="road_detail" />
+            <overlay id="nature" />
         </layer>
     </stylemenu>
 
@@ -394,7 +411,7 @@
     <style-text priority="5" caption="true" dy="-20" fill="#006633" font-family="medium" id="poi-misc" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text priority="5" caption="true" dy="-20" fill="#0066cc" font-family="medium" id="poi-parking" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text priority="5" caption="true" dy="-20" fill="#af3a3a" font-family="medium" id="poi-transport" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
-    <style-text style="bold" caption="true" dy="-12" fill="#4D2F08" id="peak-name-caption" k="name" size="14" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text style="bold" caption="true" dy="-12" fill="#4D2F08" id="peak-name-caption" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text style="bold" caption="true" dy="12" fill="#4D2F08" id="peak-ele-caption" k="ele" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text style="bold" caption="true" cat="housenumber" fill="#606060" font-family="condensed" id="housenumber-caption" k="addr:housenumber" priority="12" size="12" />
     <style-text style="bold" caption="true" fill="#606060" font-family="condensed" id="house-name-caption" k="name" priority="8" size="12" stroke="#FFFFFF" stroke-width="2.0" />
@@ -406,19 +423,19 @@
     <style-area fade="13" fill="#b8b8c1" id="area-pedestrian" />
     <style-area fade="13" fill="#b8b8c1" id="area-offroad" />
     <style-area fade="10" fill="#eddeea" id="area-industrial" />
-    <style-area fade="6" fill="#e0e0b8" id="area-school" />
+    <style-area fade="6" fill="#BBE6FFDB" id="area-school" />
     <style-area fade="6" fill="#ffcccc" id="area-hospital" />
-    <style-area fade="6" fill="#ace0b0" id="area-park" />
+    <style-area fade="6" fill="#AAD3EBD9" id="area-park" />
     <style-area fade="6" fill="#BBE9FCE6" id="area-fell" />
     <style-area fade="6" fill="#a6cd98" id="area-forest" />
-    <style-area fade="6" fill="#c3dbad" id="area-grass" />
+    <style-area fade="6" fill="#e4f9d2" id="area-grass" />
     <style-area fade="6" fill="#E6FFDB" id="area-meadow" />
     <style-area fade="6" fill="#b6d6a9" id="area-heath" />
     <style-area fade="6" fill="#BBF5F5F5" id="area-scree" />
     <style-area fade="6" fill="#c4deba" id="area-scrub" />
     <style-area fade="6" fill="#e5efdc" id="area-field" />
     <style-area fade="6" fill="#BBC7F1A3" id="area-campsite" />
-    <style-area fade="6" fill="#aacbaf" id="area-cemetery" />
+    <style-area fade="6" fill="#BBB7EBA4" id="area-cemetery" />
     <style-area fade="6" fill="#bbffe6e6" id="area-military" />
     <style-area fade="6" fill="#D0D9BF" id="area-mud" />
     <style-area fade="6" fill="#e8eff2" id="area-ice" />
@@ -448,7 +465,7 @@
     <style-line cap="butt" fix="true" id="road-steps" stipple="2" stipple-stroke="#be6253" stipple-width="1.0" stroke="#FFFFFF" width="4.2" />
     <style-line id="road-pedestrian" stroke="#b8b8c1" width="0.5" />
     <style-line cap="butt" fix="true" id="road-rail" stroke="#4d4d4d" width="1.2" />
-    <style-line cap="butt" id="road-station" stroke="#000000" width="0.2" />
+    <style-line cap="butt" id="outline-station" stroke="#000000" width="0.1" />
 
     <!-- Tunnels -->
     <style-line cap="butt" id="road-motorway-tunnel" stipple="10" stipple-stroke="#c5c6be" use="road-motorway-core" width="1.1" />
@@ -474,9 +491,9 @@
 
     <!-- Water -->
     <style-line cap="butt" fix="true" id="water:outline" stroke="#a4bbcc" width="1.0" />
-    <style-line cap="butt" fix="true" id="water" stroke="#a4bbcc" width="1.0" />
-    <style-line fix="false" id="river" stroke="#a4bbcc" use="water" />
-    <style-area fade="-1" fill="#99badf" id="water" />
+    <style-line cap="butt" fix="true" id="water" stroke="#B3DDFF" width="1.0" />
+    <style-line fix="false" id="river" stroke="#B3DDFF" use="water" />
+    <style-area fade="-1" fill="#B3DDFF" id="water" />
 
     <!-- Building fill/line -->
     <style-line fade="15" id="building" stroke="#eeb7b6b3" use="fix" />
@@ -489,10 +506,6 @@
     <m e="way" k="freizeitkarte" v="meer">
         <area use="water" />
     </m>
-	<m closed="yes" k="natural" v="water">
-		<area use="water" />
-		<text area-size="0.2" use="caption-water-name" />
-	</m>
 
     <!-- main background colour -->
     <m e="way" k="natural" v="nosea">
@@ -507,7 +520,7 @@
 
     <!-- all closed areas/land/ways that are not 'highway' or 'building' -->
     <m closed="yes" e="way" k="highway|building" v="~">
-        <m k="landuse|natural|leisure">
+        <m cat="nature" k="landuse|natural|leisure">
             <m v="common|conservation|garden|grass|recreation_ground|village_green">
                 <area use="area-grass" />
             </m>
@@ -565,7 +578,7 @@
             </m>
         </m>
         <m k="landuse|leisure|tourism">
-            <m v="camp_site|caravan_site|park|picnic_site|zoo">
+            <m v="camp_site|caravan_site|picnic_site|zoo">
                 <area use="area-campsite" />
             </m>
         </m>
@@ -573,7 +586,7 @@
             <m v="military">
                 <area use="area-military" />
             </m>
-            <m v="cemetery|grave_yard" zoom-min="11">
+            <m cat="nature" v="cemetery|grave_yard" zoom-min="11">
                 <area use="area-cemetery" />
             </m>
         </m>
@@ -585,6 +598,9 @@
         <m k="landuse" v="reservoir|basin">
             <area use="water" />
         </m>
+		<m cat="nature" e="way" k="leisure|boundary" v="nature_reserve|national_park|protected_area" zoom-min="12">
+			<area fill="#88c5deba" />
+		</m>
 
         <!-- amenity -->
         <m k="amenity" zoom-min="12">
@@ -601,7 +617,7 @@
 
         <!-- leisure -->
         <m k="leisure" zoom-min="14">
-            <m v="stadium|sports_centre|water_park|playground|miniature_golf|playing_fields|pitch|track">
+            <m cat="nature" v="stadium|sports_centre|water_park|playground|miniature_golf|playing_fields|pitch|track">
                 <area use="area-park" />
             </m>
             <m v="swimming_pool">
@@ -670,6 +686,11 @@
 			<text use="river" />
 		</m>
     </m>
+
+	<m closed="yes" k="natural" v="water">
+		<area use="water" />
+		<text area-size="0.2" use="caption-water-name" />
+	</m>
 
 	<!-- contour lines LAYER, to work with Freizeitkarte and OpenAndroMaps -->
 	<m cat="contour" k="contour_ext">
@@ -908,10 +929,10 @@
 		<m e="way" k="tunnel" v="~|no|false">
 			<m k="railway" v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|disused|abandoned">
 				<m zoom-min="11" zoom-max="15">
-					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#333333" width="1.8" />
+					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#737373" width="1.8" />
 				</m>
 				<m zoom-min="16">
-					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#333333" width="2.5" />
+					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#737373" width="2.5" />
 				</m>
 			</m>
 		</m>
@@ -953,10 +974,10 @@
                         </m>
                         <m zoom-min="14">
                             <m v="footway" zoom-min="15">
-                                <line use="footway" />
+								<line use="footway" />
                             </m>
                             <m v="cycleway" zoom-min="14">
-                                <line use="highway:cycleway" />
+								<line use="highway:cycleway" />
                             </m>
                             <m cat="off_road" v="byway|track">
 								<m e="way" k="tracktype" v="grade1">
@@ -982,7 +1003,7 @@
 								<line stroke="#cbc0b3" dasharray="10,12" cap="round" width="0.6" />
 							</m>
                             <m v="path" zoom-min="15">
-                                <line use="highway:path" />
+								<line use="highway:path" />
                             </m>
                             <m v="construction">
                                 <line outline="1" use="road-construction-core" />
@@ -1103,7 +1124,7 @@
                                     <line cap="butt" outline="road-bridge" use="road-construction-core" />
                                 </m>
                                 <m v="service">
-                                    <line cap="butt" outline="road-bridge" use="road-service-core" />
+                                    <line cap="butt" outline="road-minor-outline" use="road-service-core" />
                                 </m>
                             </m>
 
@@ -1220,10 +1241,10 @@
 		<m e="way" k="bridge|tunnel" v="no|false">
 			<m k="railway" v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|disused|abandoned">
 				<m zoom-min="11" zoom-max="15">
-					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#333333" width="1.8" />
+					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#737373" width="1.8" />
 				</m>
 				<m zoom-min="16">
-					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#333333" width="2.2" />
+					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#737373" width="2.2" />
 				</m>
 			</m>
 		</m>
@@ -1242,7 +1263,7 @@
         <m k="railway"
             v="station|platform">
             <area use="area-station" />
-            <line use="road-station" />
+            <line use="outline-station" />
         </m>
 
         <!-- highway one-way markers -->
@@ -1274,18 +1295,18 @@
 		</m>
 
         <m k="barrier" zoom-min="16">
-            <m v="bollard">
-                <symbol src="assets:symbols/barrier/bollard.svg" />
-            </m>
-            <m v="block">
-                <symbol src="assets:symbols/barrier/blocks.svg" />
-            </m>
-            <m v="gate">
-                <symbol src="assets:symbols/barrier/gate.svg" />
-            </m>
-            <m v="lift_gate">
-                <symbol src="assets:symbols/barrier/lift_gate.svg" />
-            </m>
+			<m v="bollard">
+				<symbol src="assets:symbols/barrier/bollard.svg" />
+			</m>
+			<m v="block">
+				<symbol src="assets:symbols/barrier/blocks.svg" />
+			</m>
+			<m v="gate">
+				<symbol src="assets:symbols/barrier/gate.svg" />
+			</m>
+			<m v="lift_gate">
+				<symbol src="assets:symbols/barrier/lift_gate.svg" />
+			</m>
         </m>
 
         <!-- place -->
