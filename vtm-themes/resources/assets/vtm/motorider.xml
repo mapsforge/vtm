@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->
-	<!-- Version 25 22nd March 2025-->
+	<!-- Version 26 24th March 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -456,7 +456,8 @@
     <style-line id="road-secondary-core" stroke="#ffbf80" width="2.2" />
     <style-line id="road-tertiary-thin" stroke="#ffff80" width="0.6" />
     <style-line id="road-tertiary-core" stroke="#ffff80" width="1.5" />
-    <style-line id="road-unclassified-core" stroke="#FFFFFF" width="1.0" />
+    <style-line id="road-unclassified-core" stroke="#ffffcc" width="1.0" />
+    <style-line id="road-residential-thin" stroke="#FFFFFF" width="0.5" />
     <style-line id="road-residential-core" stroke="#FFFFFF" width="1.0" />
     <style-line id="road-service-core" stroke="#FFFFFF" width="0.5" />
     <style-line id="road-construction-core" stipple="2" stipple-stroke="#9ea092" stipple-width="1.0" stroke="#e0e0e0" width="1.0" />
@@ -509,10 +510,10 @@
 
     <!-- main background colour -->
     <m e="way" k="natural" v="nosea">
-        <area fill="#ffffff" />
+        <area fill="#FFFFFF" />
     </m>
     <m e="way" k="freizeitkarte" v="land">
-        <area fill="#ffffff" />
+        <area fill="#FFFFFF" />
     </m>
     <m e="way" k="natural" v="land">
         <area fill="#BBF8F8F8" stroke="#F8F8F8" stroke-width="0.1" />
@@ -943,8 +944,7 @@
                 <m k="area" v="~|no|false">
                     <!-- Low Zoom, only motorways -->
                     <m v="motorway">
-						<line cap="butt" stroke="#000000" width="2.2" />
-						<line cap="butt" stroke="#98afcd" width="2.0" />
+						<line outline="road-minor-outline" use="road-motorway-thin" />
                     </m>
                 </m>
             </m>
@@ -1016,14 +1016,19 @@
                             </m>
                         </m>
                         <m v="residential|road">
-							<line outline="road-thin-outline" use="road-residential-core" />
+							<m zoom-min="12" zoom-max="13">
+								<line outline="road-thin-outline" use="road-residential-thin" />
+							</m>
+							<m zoom-min="14">
+								<line outline="road-thin-outline" use="road-residential-core" />
+							</m>
                         </m>
                         <m v="unclassified">
 							<m zoom-min="11" zoom-max="12">
 								<line outline="road-thin-outline" use="road-unclassified-core" />
 							</m>
 							<m zoom-min="13">
-								<line outline="road-thin-outline" use="road-unclassified-core" />
+								<line outline="road-minor-outline" use="road-unclassified-core" />
 							</m>
                         </m>
                         <m v="tertiary|tertiary_link">
@@ -1235,7 +1240,7 @@
                     </m>
                 </m>
             </m>
-        </m><!-- end highway -->
+        </m><!-- end highway -->		
 
         <!-- railway tracks, not on a bridge or in a tunnel -->
 		<m e="way" k="bridge|tunnel" v="no|false">

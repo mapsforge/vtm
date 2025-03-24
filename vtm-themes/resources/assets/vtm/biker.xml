@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "Biker" theme -->
-	<!-- Version 25 22nd March 2025-->
+	<!-- Version 26 24th March 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -457,6 +457,7 @@
     <style-line id="road-tertiary-thin" stroke="#FFFFFF" width="0.6" />
     <style-line id="road-tertiary-core" stroke="#FFFFFF" width="1.5" />
     <style-line id="road-unclassified-core" stroke="#FFFFFF" width="1.0" />
+    <style-line id="road-residential-thin" stroke="#FFFFFF" width="0.5" />
     <style-line id="road-residential-core" stroke="#FFFFFF" width="1.0" />
     <style-line id="road-service-core" stroke="#FFFFFF" width="0.5" />
     <style-line id="road-construction-core" stipple="2" stipple-stroke="#9ea092" stipple-width="1.0" stroke="#e0e0e0" width="1.0" />
@@ -943,8 +944,7 @@
                 <m k="area" v="~|no|false">
                     <!-- Low Zoom, only motorways -->
                     <m v="motorway">
-						<line cap="butt" stroke="#000000" width="2.2" />
-						<line cap="butt" stroke="#e892a2" width="2.0" />
+						<line outline="road-minor-outline" use="road-motorway-thin" />
                     </m>
                 </m>
             </m>
@@ -1016,7 +1016,12 @@
                             </m>
                         </m>
                         <m v="residential|road">
-							<line outline="road-thin-outline" use="road-residential-core" />
+							<m zoom-min="12" zoom-max="13">
+								<line outline="road-thin-outline" use="road-residential-thin" />
+							</m>
+							<m zoom-min="14">
+								<line outline="road-thin-outline" use="road-residential-core" />
+							</m>
                         </m>
                         <m v="unclassified">
 							<m zoom-min="11" zoom-max="12">
