@@ -12,11 +12,11 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.oscim.android.test;
-
-public class GdxPoi3DActivity extends GdxActivity {
-
-    public GdxPoi3DActivity() {
-        super(false, true);
-    }
-}
+//package org.oscim.android.test;
+//
+//public class GdxPoi3DActivity extends GdxActivity {
+//
+//    public GdxPoi3DActivity() {
+//        super(false, true);
+//    }
+//}

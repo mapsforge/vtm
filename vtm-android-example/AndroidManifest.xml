@@ -45,12 +45,12 @@
         <activity
             android:name=".GettingStarted"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
+        <!--<activity
             android:name=".GdxActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
+            android:configChanges="keyboardHidden|orientation|screenSize" />-->
+        <!--<activity
             android:name=".GdxPoi3DActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+            android:configChanges="keyboardHidden|orientation|screenSize" />-->
         <activity
             android:name=".HillshadingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />

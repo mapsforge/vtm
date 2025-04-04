@@ -12,9 +12,9 @@ dependencies {
     implementation project(':vtm-mvt')
     implementation project(':vtm-themes')
 
-    implementation project(':vtm-android-gdx')
-    implementation project(':vtm-gdx')
-    implementation project(':vtm-gdx-poi3d')
+    //implementation project(':vtm-android-gdx')
+    //implementation project(':vtm-gdx')
+    //implementation project(':vtm-gdx-poi3d')
 
     implementation "org.mapsforge:mapsforge-map-android:$mapsforgeVersion"
     implementation "org.mapsforge:mapsforge-poi-android:$mapsforgeVersion"
