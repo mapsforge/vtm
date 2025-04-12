@@ -2,6 +2,8 @@
 
 ## Next version
 
+- Motorider map theme improvements [#1183](https://github.com/mapsforge/vtm/issues/1183)
+- Biker map theme improvements [#1192](https://github.com/mapsforge/vtm/issues/1192)
 - Minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.26.0)
 

@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->
-	<!-- Version 26 24th March 2025-->
+	<!-- Version 27 12th April 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -12,7 +12,7 @@
             <name lang="ar" value="أماكن إقامة" />
             <name lang="ca" value="Allotjament" />
             <name lang="cs" value="Ubytování" />
-            <name lang="de" value="Unterkunft" />
+            <name lang="de" value="Unterkünfte" />
             <name lang="el" value="Διαμονή" />
             <name lang="en" value="Accommodation" />
             <name lang="es" value="Alojamiento" />
@@ -296,21 +296,21 @@
             <name lang="zh" value="非铺装/越野路线" />
             <cat id="off_road" />
         </layer>
-        <layer id="road_detail">
-            <name lang="ar" value="المزيد من تفاصيل الطريق" />
-            <name lang="ca" value="Més detalls de la carretera" />
+        <layer id="map_detail">
+            <name lang="ar" value="مزيد من تفاصيل الخريطة" />
+            <name lang="ca" value="Més detalls del mapa" />
             <name lang="cs" value="Další podrobnosti o silnicích" />
-            <name lang="de" value="Weitere Straßendetails" />
-            <name lang="el" value="Περισσότερες οδικές λεπτομέρειες" />
-            <name lang="en" value="More road details" />
-            <name lang="es" value="Más detalles de la carretera" />
-            <name lang="fr" value="Plus de détails sur la route" />
-            <name lang="it" value="Maggiori dettagli stradali" />
-            <name lang="ko" value="자세한 도로 정보" />
-            <name lang="nl" value="Meer wegdetails" />
-            <name lang="pl" value="Więcej szczegółów drogi" />
-            <name lang="zh" value="更多道路详情" />
-            <cat id="road_detail" />
+            <name lang="de" value="Weitere Kartendetails" />
+            <name lang="el" value="Περισσότερες λεπτομέρειες χάρτη" />
+            <name lang="en" value="More map details" />
+            <name lang="es" value="Más detalles del mapa" />
+            <name lang="fr" value="Plus de détails sur la carte" />
+            <name lang="it" value="Maggiori dettagli sulla mappa" />
+            <name lang="ko" value="더 많은 지도 세부 정보" />
+            <name lang="nl" value="Meer kaartdetails" />
+            <name lang="pl" value="Więcej szczegółów mapy" />
+            <name lang="zh" value="更多地图详情" />
+            <cat id="map_detail" />
         </layer>
         <layer enabled="true" id="nature">
             <name lang="ar" value="الغطاء النباتي" />
@@ -347,7 +347,7 @@
             <overlay id="contour" />
             <overlay id="housenumber" />
             <overlay id="off_road" />
-            <overlay id="road_detail" />
+            <overlay id="map_detail" />
             <overlay id="nature" />
         </layer>
     </stylemenu>
@@ -833,9 +833,9 @@
         <outline-layer id="1" stroke="#aa807040" width="0.1" />
 
         <!-- casings/outlines for roads -->
-        <outline-layer id="road-major-outline" stroke="#000000" width=".3" />
-        <outline-layer id="road-minor-outline" stroke="#000000" width=".2" />
-        <outline-layer id="road-thin-outline" stroke="#000000" width=".1" />
+        <outline-layer id="road-major-outline" stroke="#000000" width="0.3" />
+        <outline-layer id="road-minor-outline" stroke="#000000" width="0.2" />
+        <outline-layer id="road-thin-outline" stroke="#000000" width="0.1" />
 
         <!-- match tunnel-tag (to ensure tunnel key is present) -->
         <m k="tunnel" zoom-min="8">
@@ -973,11 +973,21 @@
                             </m>
                         </m>
                         <m zoom-min="14">
-                            <m v="footway" zoom-min="15">
-								<line use="footway" />
+                            <m v="footway">
+								<m cat="map_detail" zoom-min="15">
+									<line use="footway" />
+								</m>
+								<m zoom-min="17">
+									<line use="footway" />
+								</m>
                             </m>
-                            <m v="cycleway" zoom-min="14">
-								<line use="highway:cycleway" />
+                            <m v="cycleway">
+								<m cat="map_detail" zoom-min="14">
+									<line use="highway:cycleway" />
+								</m>
+								<m zoom-min="17">
+									<line use="highway:cycleway" />
+								</m>
                             </m>
                             <m cat="off_road" v="byway|track">
 								<m e="way" k="tracktype" v="grade1">
@@ -1002,8 +1012,13 @@
 							<m cat="off_road" e="way" k="highway" v="bridleway" zoom-min="14">
 								<line stroke="#cbc0b3" dasharray="10,12" cap="round" width="0.6" />
 							</m>
-                            <m v="path" zoom-min="15">
-								<line use="highway:path" />
+                            <m v="path">
+								<m cat="map_detail" zoom-min="15">
+									<line use="highway:path" />
+								</m>
+								<m zoom-min="17">
+									<line use="highway:path" />
+								</m>
                             </m>
                             <m v="construction">
                                 <line outline="1" use="road-construction-core" />
@@ -1184,7 +1199,7 @@
 							<text use="junction-caption" />
 						</m>
                         <m v="motorway|motorway_link">
-							<m cat="road_detail" v="motorway" zoom-min="10" zoom-max="10">
+							<m cat="map_detail" v="motorway" zoom-min="10" zoom-max="10">
                                 <text use="motorway-road-box" />
 							</m>
                             <m zoom-min="11" zoom-max="12">
@@ -1195,7 +1210,7 @@
                             </m>
                         </m>
                         <m v="trunk|trunk_link">
-							<m cat="road_detail" v="trunk" zoom-min="11" zoom-max="11">
+							<m cat="map_detail" v="trunk" zoom-min="11" zoom-max="11">
                                 <text use="trunk-road-box" />
 							</m>
                             <m zoom-min="12" zoom-max="12">
@@ -1207,7 +1222,7 @@
                             </m>
                         </m>
                         <m v="primary|primary_link">
-							<m cat="road_detail" v="primary|primary_link" zoom-min="12" zoom-max="12">
+							<m cat="map_detail" v="primary|primary_link" zoom-min="12" zoom-max="12">
                                 <text use="primary-road-box" />
                             </m>
 							<!--<m zoom-min="13" zoom-max="13">
@@ -1219,7 +1234,7 @@
                             </m>
                         </m>
                         <m v="secondary|secondary_link">
-							<m cat="road_detail" v="secondary|secondary_link" zoom-min="12" zoom-max="12">
+							<m cat="map_detail" v="secondary|secondary_link" zoom-min="12" zoom-max="12">
                                 <text use="secondary-road-box" />
                             </m>
 							<!--<m zoom-min="13" zoom-max="13">
@@ -1299,18 +1314,34 @@
 			<symbol src="assets:symbols/railway-crossing.svg" />
 		</m>
 
-        <m k="barrier" zoom-min="16">
-			<m v="bollard">
-				<symbol src="assets:symbols/barrier/bollard.svg" />
+        <m k="barrier">
+			<m cat="map_detail" zoom-min="16">
+				<m v="bollard">
+					<symbol src="assets:symbols/barrier/bollard.svg" />
+				</m>
+				<m v="block">
+					<symbol src="assets:symbols/barrier/blocks.svg" />
+				</m>
+				<m v="gate">
+					<symbol src="assets:symbols/barrier/gate.svg" />
+				</m>
+				<m v="lift_gate">
+					<symbol src="assets:symbols/barrier/lift_gate.svg" />
+				</m>
 			</m>
-			<m v="block">
-				<symbol src="assets:symbols/barrier/blocks.svg" />
-			</m>
-			<m v="gate">
-				<symbol src="assets:symbols/barrier/gate.svg" />
-			</m>
-			<m v="lift_gate">
-				<symbol src="assets:symbols/barrier/lift_gate.svg" />
+			<m zoom-min="18">
+				<m v="bollard">
+					<symbol src="assets:symbols/barrier/bollard.svg" />
+				</m>
+				<m v="block">
+					<symbol src="assets:symbols/barrier/blocks.svg" />
+				</m>
+				<m v="gate">
+					<symbol src="assets:symbols/barrier/gate.svg" />
+				</m>
+				<m v="lift_gate">
+					<symbol src="assets:symbols/barrier/lift_gate.svg" />
+				</m>
 			</m>
         </m>
 
@@ -1346,15 +1377,25 @@
         </m>
 
         <!-- house numbers -->
-        <m k="addr:housenumber" zoom-min="17">
+        <m k="addr:housenumber">
+            <m cat="housenumber" zoom-min="16">
+				<text use="housenumber-caption" />
+			</m>
+            <m zoom-min="18">
+				<text use="housenumber-caption" />
+			</m>
             <!--<text use="house-name-caption" />-->
-            <text use="housenumber-caption" />
         </m>
 
         <m k="highway">
-            <m v="traffic_signals" zoom-min="17">
-                <symbol src="assets:symbols/transport/traffic_lights.svg" />
-            </m>
+			<m v="traffic_signals">
+				<m cat="map_detail" zoom-min="15">
+					<symbol src="assets:symbols/transport/traffic_lights.svg" />
+				</m>
+            <m zoom-min="17">
+					<symbol src="assets:symbols/transport/traffic_lights.svg" />
+				</m>
+			</m>
         </m>
     </m>
 
