@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "Biker" theme -->
-	<!-- Version 27 12th April 2025-->
+	<!-- Version 29 14th May 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -299,7 +299,7 @@
         <layer id="map_detail">
             <name lang="ar" value="مزيد من تفاصيل الخريطة" />
             <name lang="ca" value="Més detalls del mapa" />
-            <name lang="cs" value="Další podrobnosti o silnicích" />
+            <name lang="cs" value="Více detailů v mapě" />
             <name lang="de" value="Weitere Kartendetails" />
             <name lang="el" value="Περισσότερες λεπτομέρειες χάρτη" />
             <name lang="en" value="More map details" />
@@ -311,6 +311,22 @@
             <name lang="pl" value="Więcej szczegółów mapy" />
             <name lang="zh" value="更多地图详情" />
             <cat id="map_detail" />
+        </layer>
+        <layer id="toll_roads">
+            <name lang="ar" value="الطرق ذات الرسوم" />
+            <name lang="ca" value="autopistes de peatge" />
+            <name lang="cs" value="Zpoplatněné silnice" />
+            <name lang="de" value="Mautstraßen" />
+            <name lang="el" value="Δρόμοι με διόδια" />
+            <name lang="en" value="Toll roads" />
+            <name lang="es" value="Autopistas de peaje" />
+            <name lang="fr" value="Routes à péage" />
+            <name lang="it" value="Strade a pedaggio" />
+            <name lang="ko" value="유료 도로" />
+            <name lang="nl" value="Tolwegen" />
+            <name lang="pl" value="Drogi płatne" />
+            <name lang="zh" value="收费公路" />
+            <cat id="toll_roads" />
         </layer>
         <layer enabled="true" id="nature">
             <name lang="ar" value="الغطاء النباتي" />
@@ -348,6 +364,7 @@
             <overlay id="housenumber" />
             <overlay id="off_road" />
             <overlay id="map_detail" />
+            <overlay id="toll_roads" />
             <overlay id="nature" />
         </layer>
     </stylemenu>
@@ -448,6 +465,8 @@
     <!-- Road and Rail Colors, road casings/outlines are defined in the "highway" section -->
     <style-line cap="butt" id="road-motorway-thin" stroke="#e892a2" width="1.5" />
     <style-line cap="butt" id="road-motorway-core" stroke="#e892a2" width="2.2" />
+    <style-line id="road-motorway-toll-thin" stipple="6" stipple-stroke="#ff0000" stipple-width="1.0" stroke="#e892a2" width="1.5" />
+    <style-line id="road-highway-toll" dasharray="5,10" cap="butt" stroke="#FF0000" width="2.2" />
     <style-line cap="butt" id="road-trunk-thin" stroke="#f9b29c" width="1.5" />
     <style-line cap="butt" id="road-trunk-core" stroke="#f9b29c" width="2.5" />
     <style-line id="road-primary-thin" stroke="#ffc982" width="1.0" />
@@ -821,7 +840,7 @@
             </m>
         </m>
         <!-- non-physical routes -->
-        <m k="route" v="ferry">
+        <m k="route" v="ferry" zoom-min="11">
 			<line dasharray="5,5" cap="butt" stroke="#5b7ad7" width="0.8" />
             <m zoom-min="13">
                 <text use="ferry" />
@@ -945,6 +964,9 @@
                     <!-- Low Zoom, only motorways -->
                     <m v="motorway">
 						<line outline="road-minor-outline" use="road-motorway-thin" />
+						<m cat="toll_roads" e="way" k="toll" v="tl_yes">
+							<line outline="road-minor-outline" use="road-motorway-toll-thin" />
+						</m>
                     </m>
                 </m>
             </m>
@@ -1071,6 +1093,9 @@
 							</m>
 							<m zoom-min="10">
 								<line outline="road-major-outline" use="road-primary-core" />
+								<m cat="toll_roads" e="way" k="toll" v="tl_yes">
+									<line outline="road-major-outline" use="road-highway-toll" />
+								</m>
 							</m>
                         </m>
                         <m v="trunk|trunk_link">
@@ -1079,10 +1104,16 @@
 							</m>
 							<m zoom-min="9">
 								<line outline="road-major-outline" use="road-trunk-core" />
+								<m cat="toll_roads" e="way" k="toll" v="tl_yes">
+									<line outline="road-major-outline" use="road-highway-toll" />
+								</m>
 							</m>
                         </m>
                         <m v="motorway|motorway_link">
 							<line outline="road-major-outline" use="road-motorway-core" />
+							<m cat="toll_roads" e="way" k="toll" v="tl_yes" zoom-min="6">
+								<line outline="road-major-outline" use="road-highway-toll" />
+							</m>
                         </m>
                     </m> <!-- end area=~|no|false -->
                 </m><!-- end tunnel|bridge=~|no|false -->
@@ -1169,12 +1200,21 @@
                                 </m>
                                 <m v="primary">
                                     <line cap="butt" outline="road-bridge" use="road-primary-core" />
+									<m cat="toll_roads" e="way" k="toll" v="tl_yes">
+										<line outline="road-bridge" use="road-highway-toll" />
+									</m>
                                 </m>
                                 <m v="trunk">
                                     <line cap="butt" outline="road-bridge" use="road-trunk-core" />
+									<m cat="toll_roads" e="way" k="toll" v="tl_yes" zoom-min="6">
+										<line outline="road-bridge" use="road-highway-toll" />
+									</m>
                                 </m>
                                 <m v="motorway">
                                     <line cap="butt" outline="road-bridge" use="road-motorway-core" />
+									<m cat="toll_roads" e="way" k="toll" v="tl_yes" zoom-min="6">
+										<line outline="road-major-outline" use="road-highway-toll" />
+									</m>
                                 </m>
                             </m>
                         </m><!-- end area=~|no|false -->
@@ -1342,6 +1382,11 @@
 				<m v="lift_gate">
 					<symbol src="assets:symbols/barrier/lift_gate.svg" />
 				</m>
+			</m>
+			<!-- this makes toll roads (ie: France) easier to spot -->
+			<m v="toll_booth" zoom-min="15">
+				<symbol src="assets:symbols/barrier/gate.svg" />
+				<text use="poi-emergency" />
 			</m>
         </m>
 
