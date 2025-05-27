@@ -15,6 +15,7 @@
 package org.oscim.theme;
 
 import org.oscim.backend.canvas.Bitmap;
+import org.oscim.core.MapElement;
 import org.oscim.theme.styles.RenderStyle;
 
 /**
@@ -30,4 +31,9 @@ public interface ThemeCallback {
      * @return the color-int
      */
     int getColor(RenderStyle origin, int color);
+
+    /**
+     * @return the text
+     */
+    String getText(MapElement element, String text);
 }

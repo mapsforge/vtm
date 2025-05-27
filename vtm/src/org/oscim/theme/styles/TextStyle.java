@@ -268,6 +268,8 @@ public final class TextStyle extends RenderStyle<TextStyle> {
             bgFill.setColor(b.themeCallback != null ? b.themeCallback.getColor(this, b.bgFillColor) : b.bgFillColor);
         } else
             bgFill = null;
+
+        themeCallback = b.themeCallback;
     }
 
     public final String style;

@@ -149,6 +149,8 @@ public abstract class RenderStyle<T extends RenderStyle<T>> {
     RenderStyle mNext;
     boolean update;
 
+    public ThemeCallback themeCallback;
+
     public T setCat(String cat) {
         this.cat = cat;
         return self();
