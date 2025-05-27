@@ -2,6 +2,7 @@
 
 ## Next version
 
+- `ThemeCallback.getText` method
 - Motorider map theme improvements [#1183](https://github.com/mapsforge/vtm/issues/1183)
 - Biker map theme improvements [#1192](https://github.com/mapsforge/vtm/issues/1192)
 - Minor improvements and bug fixes
