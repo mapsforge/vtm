@@ -60,6 +60,8 @@ public class LabelTileLoaderHook implements TileLoaderThemeHook {
             String value = element.tags.getValue(text.textKey);
             if (value == null || value.length() == 0)
                 return false;
+            if (style.themeCallback != null)
+                value = style.themeCallback.getText(element, value);
 
             LabelTileData ld = get(tile);
             if (element.type == LINE) {
