@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->
-	<!-- Version 29 14th May 2025-->
+	<!-- Version 30 28th May 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -406,7 +406,7 @@
 
     <!-- Water -->
     <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-major-water-name" k="name" size="16" />
-    <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-water-name" k="name" size="14" />
+    <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-water-name" k="name" size="12" />
     <style-text fill="#606060" id="ferry" k="name" size="12" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text fill="#2d51bc" font-family="light" id="river" k="name" size="12" />
 
@@ -419,6 +419,7 @@
     <style-text caption="true" fill="#000000" id="village-caption" k="name" priority="6" size="12" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="suburb-caption" k="name" priority="5" size="12" style="italic" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="hamlet-caption" k="name" priority="6" size="12" stroke="#FFFFFF" stroke-width="2.0" />
+    <style-text caption="true" fill="#0000FF" id="island-caption" k="name" priority="6" size="12" style="italic" stroke="#FFFFFF" stroke-width="2.0" />
 
     <!-- POI captions/labels -->
     <style-text priority="3" caption="true" dy="-20" fill="#b35900" font-family="medium" id="poi" k="name" size="12" stroke="#FFFFFF" stroke-width="2.0" />
@@ -702,7 +703,10 @@
         <m k="lock" v="yes|true">
             <line stroke="#f8f8f8" use="fix" width="0.5" />
         </m>
-		<m zoom-min="11">
+		<m v="lake|river" zoom-min="11">
+			<text use="river" />
+		</m>
+		<m v="drain" zoom-min="15">
 			<text use="river" />
 		</m>
     </m>
@@ -1401,8 +1405,17 @@
             <m v="suburb" zoom-min="13">
                 <text use="suburb-caption" />
             </m>
-            <m v="village|island|islet" zoom-min="11" zoom-max="15">
+            <m v="village" zoom-min="11" zoom-max="15">
                 <text use="village-caption" />
+            </m>
+            <m v="island" zoom-min="10" zoom-max="15">
+                <text use="island-caption" />
+            </m>
+            <m v="islet" zoom-min="12" zoom-max="15">
+                <text use="island-caption" />
+            </m>
+            <m cat="map_detail" v="town" zoom-min="8" zoom-max="8">
+                <text use="town-lz-caption" />
             </m>
             <m v="town" zoom-min="9" zoom-max="12">
                 <text use="town-lz-caption" />
