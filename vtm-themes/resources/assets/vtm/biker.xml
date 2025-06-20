@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "Biker" theme -->
-	<!-- Version 30 28th May 2025-->
+	<!-- Version 30 20th June 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -551,6 +551,9 @@
             <m v="fell">
                 <area use="area-fell" />
             </m>
+            <m v="scree">
+                <area use="area-scree" />
+            </m>
             <m v="forest|wood">
                 <area use="area-forest" />
             </m>
@@ -575,9 +578,6 @@
 			<m e="way" k="natural" v="rock|stone|bare_rock|bedrock">
                 <area use="area-rock" />
 			</m>
-            <m v="scree">
-                <area use="area-scree" />
-            </m>
             <m v="scrub">
                 <area use="area-scrub" />
             </m>

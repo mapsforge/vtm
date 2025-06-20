@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->
-	<!-- Version 30 28th May 2025-->
+	<!-- Version 30 20th June 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -449,7 +449,7 @@
     <style-area fade="6" fill="#e4f9d2" id="area-grass" />
     <style-area fade="6" fill="#E6FFDB" id="area-meadow" />
     <style-area fade="6" fill="#b6d6a9" id="area-heath" />
-    <style-area fade="6" fill="#BBF5F5F5" id="area-scree" />
+    <style-area fade="6" fill="#BBc4deba" id="area-scree" />
     <style-area fade="6" fill="#c4deba" id="area-scrub" />
     <style-area fade="6" fill="#e5efdc" id="area-field" />
     <style-area fade="6" fill="#BBC7F1A3" id="area-campsite" />
@@ -551,6 +551,9 @@
             <m v="fell">
                 <area use="area-fell" />
             </m>
+            <m v="scree">
+                <area use="area-scree" />
+            </m>
             <m v="forest|wood">
                 <area use="area-forest" />
             </m>
@@ -575,9 +578,6 @@
 			<m e="way" k="natural" v="rock|stone|bare_rock|bedrock">
                 <area use="area-rock" />
 			</m>
-            <m v="scree">
-                <area use="area-scree" />
-            </m>
             <m v="scrub">
                 <area use="area-scrub" />
             </m>

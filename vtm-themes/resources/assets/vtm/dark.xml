@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "dark" theme based on the Biker map theme -->
-	<!-- Version 30 28th May 2025-->
+	<!-- Version 30 20th June 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -443,13 +443,13 @@
     <style-area fade="10" fill="#404040" id="area-industrial" />
     <style-area fade="6" fill="#BB404040" id="area-school" />
     <style-area fade="6" fill="#660000" id="area-hospital" />
-    <style-area fade="6" fill="#003300" id="area-park" />
+    <style-area fade="6" fill="#001a00" id="area-park" />
     <style-area fade="6" fill="#BBE9FCE6" id="area-fell" />
-    <style-area fade="6" fill="#003300" id="area-forest" />
-    <style-area fade="6" fill="#003300" id="area-grass" />
-    <style-area fade="6" fill="#003300" id="area-meadow" />
+    <style-area fade="6" fill="#001a00" id="area-forest" />
+    <style-area fade="6" fill="#001a00" id="area-grass" />
+    <style-area fade="6" fill="#001a00" id="area-meadow" />
     <style-area fade="6" fill="#262626" id="area-heath" />
-    <style-area fade="6" fill="#BBF5F5F5" id="area-scree" />
+    <style-area fade="6" fill="#BB001a00" id="area-scree" />
     <style-area fade="6" fill="#262626" id="area-scrub" />
     <style-area fade="6" fill="#262626" id="area-field" />
     <style-area fade="6" fill="#262626" id="area-campsite" />
@@ -551,6 +551,9 @@
             <m v="fell">
                 <area use="area-fell" />
             </m>
+            <m v="scree">
+                <area use="area-scree" />
+            </m>
             <m v="forest|wood">
                 <area use="area-forest" />
             </m>
@@ -575,9 +578,6 @@
 			<m e="way" k="natural" v="rock|stone|bare_rock|bedrock">
                 <area use="area-rock" />
 			</m>
-            <m v="scree">
-                <area use="area-scree" />
-            </m>
             <m v="scrub">
                 <area use="area-scrub" />
             </m>
