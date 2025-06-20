@@ -1,0 +1,1890 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#0d1a26"
+    version="1" xmlns="http://opensciencemap.org/rendertheme"
+    xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
+	
+    <!-- This is the OpenGL/VTM "Indigo" theme based on the Biker map theme -->
+	<!-- Version 30 28th May 2025-->
+
+    <!-- Defines LAYERS Menu -->
+    <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
+        <layer id="accommodation">
+            <name lang="ar" value="أماكن إقامة" />
+            <name lang="ca" value="Allotjament" />
+            <name lang="cs" value="Ubytování" />
+            <name lang="de" value="Unterkünfte" />
+            <name lang="el" value="Διαμονή" />
+            <name lang="en" value="Accommodation" />
+            <name lang="es" value="Alojamiento" />
+            <name lang="fr" value="Hébergement" />
+            <name lang="it" value="Alloggio" />
+            <name lang="ko" value="숙소" />
+            <name lang="nl" value="Onderkomen" />
+            <name lang="pl" value="Zakwaterowanie" />
+            <name lang="zh" value="住宿" />
+            <cat id="accommodation" />
+        </layer>
+        <layer id="money">
+            <name lang="ar" value="البنوك وأجهزة الصراف الآلي" />
+            <name lang="ca" value="Bancs i caixers automàtics" />
+            <name lang="cs" value="Banky a bankomaty" />
+            <name lang="de" value="Banken und Geldautomaten" />
+            <name lang="el" value="Τράπεζες και ΑΤΜ" />
+            <name lang="en" value="Banks and ATM" />
+            <name lang="es" value="Bancos y cajeros automáticos" />
+            <name lang="fr" value="Banques et distributeurs automatiques de billets" />
+            <name lang="it" value="Banche e bancomat" />
+            <name lang="ko" value="은행 및 ATM" />
+            <name lang="nl" value="Banken en geldautomaten" />
+            <name lang="pl" value="Banki i bankomaty" />
+            <name lang="zh" value="银行和 ATM" />
+            <cat id="money" />
+        </layer>
+        <layer id="entertainment">
+            <name lang="ar" value="ترفيه" />
+            <name lang="ca" value="Entreteniment" />
+            <name lang="cs" value="Zábava" />
+            <name lang="de" value="Unterhaltung" />
+            <name lang="el" value="Ψυχαγωγία" />
+            <name lang="en" value="Entertainment" />
+            <name lang="es" value="Entretenimiento" />
+            <name lang="fr" value="Divertissement" />
+            <name lang="it" value="Divertimento" />
+            <name lang="ko" value="오락" />
+            <name lang="nl" value="Vermaak" />
+            <name lang="pl" value="Rozrywka" />
+            <name lang="zh" value="娱乐" />
+            <cat id="entertainment" />
+        </layer>
+        <layer id="food">
+            <name lang="ar" value="الطعام والشراب" />
+            <name lang="ca" value="Menjar i beure" />
+            <name lang="cs" value="Jídlo a nápoje" />
+            <name lang="de" value="Essen und Trinken" />
+            <name lang="el" value="Φαγητό και ποτό" />
+            <name lang="en" value="Food and drink" />
+            <name lang="es" value="Comida y bebida" />
+            <name lang="fr" value="Nourriture et boisson" />
+            <name lang="it" value="Cibo e bevande" />
+            <name lang="ko" value="주식" />
+            <name lang="nl" value="Eten en drinken" />
+            <name lang="pl" value="Jedzenie i picie" />
+            <name lang="zh" value="餐饮" />
+            <cat id="food" />
+        </layer>
+        <layer id="emergency">
+            <name lang="ar" value="خدمات الطوارئ" />
+            <name lang="ca" value="Serveis d'emergència" />
+            <name lang="cs" value="Pohotovostní služby" />
+            <name lang="de" value="Gesundheit und Notdienste" />
+            <name lang="el" value="Υπηρεσίες έκτακτης ανάγκης" />
+            <name lang="en" value="Emergency services" />
+            <name lang="es" value="Servicios de emergencia" />
+            <name lang="fr" value="Services d'urgence" />
+            <name lang="it" value="Servizi di emergenza" />
+            <name lang="ko" value="응급 서비스" />
+            <name lang="nl" value="Hulpdiensten" />
+            <name lang="pl" value="Służby ratunkowe" />
+            <name lang="zh" value="紧急服务" />
+            <cat id="emergency" />
+        </layer>
+        <layer id="fuel">
+            <name lang="ar" value="محطات وقود" />
+            <name lang="ca" value="Benzineres" />
+            <name lang="cs" value="Čerpací stanice" />
+            <name lang="de" value="Tankstellen" />
+            <name lang="el" value="Πρατήρια καυσίμων" />
+            <name lang="en" value="Fuel stations" />
+            <name lang="es" value="Estaciones de combustible" />
+            <name lang="fr" value="Stations de carburant" />
+            <name lang="it" value="Stazioni di carburante" />
+            <name lang="ko" value="주유소" />
+            <name lang="nl" value="Tankstations" />
+            <name lang="pl" value="Stacje paliw" />
+            <name lang="zh" value="加油站" />
+            <cat id="fuel" />
+        </layer>
+        <layer id="charging_station">
+            <name lang="ar" value="محطات شحن" />
+            <name lang="ca" value="Estacions de càrrega" />
+            <name lang="cs" value="Nabíjecí stanice" />
+            <name lang="de" value="Ladestationen" />
+            <name lang="el" value="Πρατήρια φόρτισης" />
+            <name lang="en" value="Charging stations" />
+            <name lang="es" value="Estaciones de carga" />
+            <name lang="fr" value="Stations de charge" />
+            <name lang="it" value="Stazioni di carica" />
+            <name lang="ko" value="충전소" />
+            <name lang="nl" value="Laadstations" />
+            <name lang="pl" value="Stacje ładowania" />
+            <name lang="zh" value="充电站" />
+            <cat id="charging_station" />
+        </layer>
+        <layer id="parking">
+            <name lang="ar" value="مواقف" />
+            <name lang="ca" value="Zones d'aparcament" />
+            <name lang="cs" value="Parkovací plochy" />
+            <name lang="de" value="Parkplätze" />
+            <name lang="el" value="Χώροι στάθμευσης" />
+            <name lang="en" value="Parking areas" />
+            <name lang="es" value="Estacionamientos" />
+            <name lang="fr" value="Aires de stationnement" />
+            <name lang="it" value="Aree di parcheggio" />
+            <name lang="ko" value="주차장" />
+            <name lang="nl" value="Parkeerplaatsen" />
+            <name lang="pl" value="Miejsca parkingowe" />
+            <name lang="zh" value="停车场" />
+            <cat id="parking" />
+        </layer>
+        <layer id="misc">
+            <name lang="ar" value="متنوع" />
+            <name lang="ca" value="Diversos" />
+            <name lang="cs" value="Různé" />
+            <name lang="de" value="Verschiedenes" />
+            <name lang="el" value="Διάφορα" />
+            <name lang="en" value="Miscellaneous" />
+            <name lang="es" value="Misceláneos" />
+            <name lang="fr" value="Divers" />
+            <name lang="it" value="Varie" />
+            <name lang="ko" value="여러 가지 잡다한" />
+            <name lang="nl" value="Gemengd" />
+            <name lang="pl" value="Różnorodny" />
+            <name lang="zh" value="杂项" />
+            <cat id="misc" />
+        </layer>
+        <layer id="mountain_pass">
+            <name lang="ar" value="معابر جبلية" />
+            <name lang="ca" value="Passos de muntanya" />
+            <name lang="cs" value="Horské průsmyky" />
+            <name lang="de" value="Bergpässe" />
+            <name lang="el" value="Ορεινά περάσματα" />
+            <name lang="en" value="Mountain passes" />
+            <name lang="es" value="Pasos de montaña" />
+            <name lang="fr" value="Cols de montagne" />
+            <name lang="it" value="Passi di montagna" />
+            <name lang="ko" value="산악 패스" />
+            <name lang="nl" value="Bergpassen" />
+            <name lang="pl" value="Przełęcze górskie" />
+            <name lang="zh" value="垭口" />
+            <cat id="mountain_pass" />
+        </layer>
+        <layer id="mountain_peak">
+            <name lang="ar" value="قمم الجبال" />
+            <name lang="ca" value="Cims de muntanya" />
+            <name lang="cs" value="Horské vrcholy" />
+            <name lang="de" value="Bergspitzen" />
+            <name lang="el" value="Ορεινές κορυφές" />
+            <name lang="en" value="Mountain peaks" />
+            <name lang="es" value="Picos de montaña" />
+            <name lang="fr" value="Sommets de montagne" />
+            <name lang="it" value="Vette di montagna" />
+            <name lang="ko" value="산봉우리" />
+            <name lang="nl" value="Bergpieken" />
+            <name lang="pl" value="Szczyty górskie" />
+            <name lang="zh" value="山峰" />
+            <cat id="mountain_peak" />
+        </layer>
+        <layer id="public_transport">
+            <name lang="ar" value="المواصلات العامة" />
+            <name lang="ca" value="Transport públic" />
+            <name lang="cs" value="Veřejná doprava" />
+            <name lang="de" value="Öffentliche Verkehrsmittel" />
+            <name lang="el" value="Μέσα μαζικής μεταφοράς" />
+            <name lang="en" value="Public transport" />
+            <name lang="es" value="Transporte público" />
+            <name lang="fr" value="Transports en commun" />
+            <name lang="it" value="Trasporto pubblico" />
+            <name lang="ko" value="대중 교통" />
+            <name lang="nl" value="Openbaar vervoer" />
+            <name lang="pl" value="Transport publiczny" />
+            <name lang="zh" value="公共交通" />
+            <cat id="public_transport" />
+        </layer>
+        <layer id="shop">
+            <name lang="ar" value="محل" />
+            <name lang="ca" value="Botigues" />
+            <name lang="cs" value="Obchody" />
+            <name lang="de" value="Shops" />
+            <name lang="el" value="Καταστήματα" />
+            <name lang="en" value="Shops" />
+            <name lang="es" value="Tiendas" />
+            <name lang="fr" value="Boutiques" />
+            <name lang="it" value="Negozi" />
+            <name lang="ko" value="상점" />
+            <name lang="nl" value="Winkels" />
+            <name lang="pl" value="Sklepy" />
+            <name lang="zh" value="商店" />
+            <cat id="shop" />
+        </layer>
+        <layer id="attraction">
+            <name lang="ar" value="أماكن جذب سياحي" />
+            <name lang="ca" value="Atraccions turístiques" />
+            <name lang="cs" value="Turistické atrakce" />
+            <name lang="de" value="Touristenattraktionen" />
+            <name lang="el" value="Τουριστικά αξιοθέατα" />
+            <name lang="en" value="Tourist attractions" />
+            <name lang="es" value="Atracciones turísticas" />
+            <name lang="fr" value="Attractions touristiques" />
+            <name lang="it" value="Attrazioni turistiche" />
+            <name lang="ko" value="관광 명소" />
+            <name lang="nl" value="Touristische attracties" />
+            <name lang="pl" value="Atrakcje turystyczne" />
+            <name lang="zh" value="旅游景点" />
+            <cat id="attraction" />
+        </layer>
+        <layer id="view">
+            <name lang="ar" value="مطلات" />
+            <name lang="ca" value="Miradors" />
+            <name lang="cs" value="Vyhlídky" />
+            <name lang="de" value="Aussichtspunkte" />
+            <name lang="el" value="Σημεία θέασης" />
+            <name lang="en" value="Viewpoints" />
+            <name lang="es" value="Miradores" />
+            <name lang="fr" value="Points de vue" />
+            <name lang="it" value="Punti di vista" />
+            <name lang="ko" value="뷰 포인트" />
+            <name lang="nl" value="Uitzichtspunten" />
+            <name lang="pl" value="Punkty widokowe" />
+            <name lang="zh" value="观景点" />
+            <cat id="view" />
+        </layer>
+        <layer id="contour">
+            <name lang="ar" value="خطوط الكنتور" />
+            <name lang="ca" value="Línies de contorn" />
+            <name lang="cs" value="Vrstevnice" />
+            <name lang="de" value="Höhenlinien" />
+            <name lang="el" value="Γραμμές περιγράμματος" />
+            <name lang="en" value="Contour lines" />
+            <name lang="es" value="Líneas de contorno" />
+            <name lang="fr" value="Courbes de niveau" />
+            <name lang="it" value="Linee di contorno" />
+            <name lang="ko" value="등고선" />
+            <name lang="nl" value="Contourlijnen" />
+            <name lang="pl" value="Linie konturowe" />
+            <name lang="zh" value="等高线" />
+            <cat id="contour" />
+        </layer>
+        <layer id="housenumber">
+            <name lang="ar" value="أرقام المنازل" />
+            <name lang="ca" value="Números de casa" />
+            <name lang="cs" value="Čísla domů" />
+            <name lang="de" value="Hausnummern" />
+            <name lang="el" value="Αριθμοί κατοικιών" />
+            <name lang="en" value="House numbers" />
+            <name lang="es" value="Números de casa" />
+            <name lang="fr" value="Numéros de maison" />
+            <name lang="it" value="Numeri civici" />
+            <name lang="ko" value="집 번호" />
+            <name lang="nl" value="Huis nummers" />
+            <name lang="pl" value="Numery domów" />
+            <name lang="zh" value="门牌号" />
+            <cat id="housenumber" />
+        </layer>
+        <layer id="off_road">
+            <name lang="ar" value="مسارات الطرق الوعرة" />
+            <name lang="ca" value="Pistes fora de carretera" />
+            <name lang="cs" value="Terénní cesty" />
+            <name lang="de" value="Offroad-Strecken" />
+            <name lang="el" value="Διαδρομές εκτός δρόμου" />
+            <name lang="en" value="Off road tracks" />
+            <name lang="es" value="Pistas todoterreno" />
+            <name lang="fr" value="Pistes hors route" />
+            <name lang="it" value="Piste fuoristrada" />
+            <name lang="ko" value="오프로드 트랙" />
+            <name lang="nl" value="Off-road/circuitdetails" />
+            <name lang="pl" value="Trasy terenowe" />
+            <name lang="zh" value="非铺装/越野路线" />
+            <cat id="off_road" />
+        </layer>
+        <layer id="map_detail">
+            <name lang="ar" value="مزيد من تفاصيل الخريطة" />
+            <name lang="ca" value="Més detalls del mapa" />
+            <name lang="cs" value="Více detailů v mapě" />
+            <name lang="de" value="Weitere Kartendetails" />
+            <name lang="el" value="Περισσότερες λεπτομέρειες χάρτη" />
+            <name lang="en" value="More map details" />
+            <name lang="es" value="Más detalles del mapa" />
+            <name lang="fr" value="Plus de détails sur la carte" />
+            <name lang="it" value="Maggiori dettagli sulla mappa" />
+            <name lang="ko" value="더 많은 지도 세부 정보" />
+            <name lang="nl" value="Meer kaartdetails" />
+            <name lang="pl" value="Więcej szczegółów mapy" />
+            <name lang="zh" value="更多地图详情" />
+            <cat id="map_detail" />
+        </layer>
+        <layer id="toll_roads">
+            <name lang="ar" value="الطرق ذات الرسوم" />
+            <name lang="ca" value="autopistes de peatge" />
+            <name lang="cs" value="Zpoplatněné silnice" />
+            <name lang="de" value="Mautstraßen" />
+            <name lang="el" value="Δρόμοι με διόδια" />
+            <name lang="en" value="Toll roads" />
+            <name lang="es" value="Autopistas de peaje" />
+            <name lang="fr" value="Routes à péage" />
+            <name lang="it" value="Strade a pedaggio" />
+            <name lang="ko" value="유료 도로" />
+            <name lang="nl" value="Tolwegen" />
+            <name lang="pl" value="Drogi płatne" />
+            <name lang="zh" value="收费公路" />
+            <cat id="toll_roads" />
+        </layer>
+        <layer enabled="true" id="nature">
+            <name lang="ar" value="الغطاء النباتي" />
+            <name lang="ca" value="Vegetació" />
+            <name lang="cs" value="Vegetace" />
+            <name lang="de" value="Vegetation" />
+            <name lang="el" value="Βλάστηση" />
+            <name lang="en" value="Vegetation" />
+            <name lang="es" value="Vegetación" />
+            <name lang="fr" value="Végétation" />
+            <name lang="it" value="Vegetazione" />
+            <name lang="ko" value="식생" />
+            <name lang="nl" value="Vegetatie" />
+            <name lang="pl" value="Wegetacja" />
+            <name lang="zh" value="植被" />
+            <cat id="nature" />
+        </layer>
+        <layer id="normal" visible="true">
+            <overlay id="accommodation" />
+            <overlay id="money" />
+            <overlay id="entertainment" />
+            <overlay id="food" />
+            <overlay id="emergency" />
+            <overlay id="fuel" />
+            <overlay id="charging_station" />
+            <overlay id="parking" />
+            <overlay id="misc" />
+            <overlay id="mountain_pass" />
+            <overlay id="mountain_peak" />
+            <overlay id="public_transport" />
+            <overlay id="shop" />
+            <overlay id="attraction" />
+            <overlay id="view" />
+            <overlay id="contour" />
+            <overlay id="housenumber" />
+            <overlay id="off_road" />
+            <overlay id="map_detail" />
+            <overlay id="toll_roads" />
+			<overlay id="nature" />
+        </layer>
+    </stylemenu>
+
+	<!-- base style for fixed width lines -->
+    <style-line cap="butt" fix="true" id="fix" width="1.0" />
+
+    <!-- Road name/ref caption/text definitions -->
+    <!--<style-text bg-fill="#003399" fill="#FFFFFF" font-family="medium" id="junction" k="name" priority="5" size="12" style="bold_italic" />-->
+    <style-text fill="#FFFFFF" font-family="medium" id="junction" k="name" priority="5" size="12" style="bold_italic" stroke="#0d1a26" stroke-width="2.0" />
+    <style-text caption="true" id="junction-caption" use="junction" />
+
+    <style-text fill="#FFFFFF" font-family="medium" id="residential-road" k="name" priority="5" size="11" stroke="#000000" stroke-width="2.0" />
+    <style-text fill="#FFFFFF" font-family="medium" id="road" k="name" priority="10" size="11" stroke="#000000" stroke-width="2.0" />
+
+    <style-text caption="true" id="road-caption" use="road" />
+
+    <style-text font-family="medium" fill="#FFFFFF" id="major-road" k="name" priority="6" size="11" stroke="#000000" stroke-width="2.0" />
+
+    <style-text fill="#FFFFFF" id="road-ref" k="ref" priority="6" size="11" style="bold" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" style="bold" fill="#FFFFFF" id="road-ref-caption" k="ref" priority="5" size="11" bg-fill="#006600" />
+
+    <style-text caption="true" bg-fill="#ff704d" fill="#FFFFFF" id="primary-road-box" k="ref" priority="5" size="11" style="bold" />
+    <style-text fill="#FFFFFF" id="primary-road-name" k="name" priority="6" size="12" style="bold" stroke="#000000" stroke-width="2.0" />
+    <style-text fill="#FFFFFF" id="primary-road-ref" k="ref" priority="6" size="12" style="bold" stroke="#000000" stroke-width="2.0" />
+
+    <style-text caption="true" bg-fill="#994d00" fill="#FFFFFF" id="secondary-road-box" k="ref" priority="6" size="11" style="bold" />
+    <style-text fill="#FFFFFF" id="secondary-road-name" k="name" priority="6" size="12" style="bold" stroke="#000000" stroke-width="2.0" />
+    <style-text fill="#FFFFFF" id="secondary-road-ref" k="ref" priority="6" size="12" style="bold" stroke="#000000" stroke-width="2.0" />
+
+    <style-text caption="true" bg-fill="#006600" fill="#ffff00" id="trunk-road-box" k="ref" priority="5" size="11" style="bold" />
+    <style-text caption="true" fill="#ffff00" id="trunk-road-caption" k="ref" priority="6" size="11" style="normal" stroke="#006600" stroke-width="8.0" />
+    <style-text fill="#FFFFFF" id="trunk-road-name" k="name" priority="6" size="12" style="bold" stroke="#000000" stroke-width="2.0" />
+    <style-text fill="#ffff00" id="trunk-road-ref" k="ref" priority="5" size="12" style="bold" stroke="#006600" stroke-width="2.0" />
+
+    <style-text caption="true" bg-fill="#42618a" fill="#FFFFFF" id="motorway-road-box" k="ref" priority="4" size="11" style="bold" />
+    <style-text caption="true" fill="#FFFFFF" id="motorway-road-caption" k="ref" priority="6" size="12" style="normal" stroke="#42618a" stroke-width="8.0" />
+    <style-text fill="#FFFFFF" id="motorway-road-ref" k="ref" priority="6" size="12" style="bold" stroke="#42618a" stroke-width="2.0" />
+
+    <!-- Water -->
+    <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-major-water-name" k="name" size="16" />
+    <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-water-name" k="name" size="12" />
+    <style-text fill="#FFFFFF" id="ferry" k="name" size="12" style="bold" stroke="#606060" stroke-width="2.0" />
+    <style-text fill="#FFFFFF" font-family="light" id="river" k="name" size="12" stroke="#000000" stroke-width="2.0" />
+
+    <!-- Places -->
+    <style-text caption="true" fill="#FFFFFF" id="country-caption" k="name" priority="0" size="20" style="bold" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#FFFFFF" id="city-lz-caption" k="name" priority="3" size="18" style="bold" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#FFFFFF" id="city-caption" k="name" priority="1" size="16" style="bold" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#FFFFFF" id="town-caption" k="name" priority="4" size="12" style="bold" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#FFFFFF" id="town-lz-caption" k="name" priority="4" size="13" style="bold" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#FFFFFF" id="village-caption" k="name" priority="6" size="12" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#FFFFFF" id="suburb-caption" k="name" priority="5" size="12" style="italic" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#FFFFFF" id="hamlet-caption" k="name" priority="6" size="12" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#FFFFFF" id="island-caption" k="name" priority="6" size="12" style="italic" stroke="#000000" stroke-width="2.0" />
+
+    <!-- POI captions/labels -->
+    <style-text priority="3" caption="true" dy="-20" fill="#FFFFFF" font-family="medium" id="poi" k="name" size="12" stroke="#b35900" stroke-width="1.0" />
+    <style-text priority="4" caption="true" dy="-20" fill="#FFFFFF" font-family="medium" id="poi-accommodation" k="name" size="12" stroke="#004d99" stroke-width="1.0" />
+    <style-text priority="1" caption="true" dy="-20" fill="#FFFFFF" font-family="medium" id="poi-emergency" k="name" size="12" stroke="#ff0000" stroke-width="1.0" />
+    <style-text priority="2" caption="true" dy="-20" fill="#FFFFFF" font-family="medium" id="poi-fuel" k="name" size="12" stroke="#ac39ac" stroke-width="1.0" />
+    <style-text priority="5" caption="true" dy="-20" fill="#FFFFFF" font-family="medium" id="poi-misc" k="name" size="12" stroke="#006633" stroke-width="1.0" />
+    <style-text priority="3" caption="true" dy="-20" fill="#FFFFFF" font-family="medium" id="poi-parking" k="name" size="12" stroke="#004d99" stroke-width="1.0" />
+    <style-text priority="5" caption="true" dy="-20" fill="#FFFFFF" font-family="medium" id="poi-transport" k="name" size="12" stroke="#af3a3a" stroke-width="1.0" />
+    <style-text style="bold" caption="true" dy="-12" fill="#FFFFFF" id="peak-name-caption" k="name" size="12" stroke="#4D2F08" stroke-width="1.0" />
+    <style-text style="bold" caption="true" dy="12" fill="#FFFFFF" id="peak-ele-caption" k="ele" size="12" stroke="#4D2F08" stroke-width="1.0" />
+    <style-text style="bold" caption="true" cat="housenumber" fill="#606060" font-family="condensed" id="housenumber-caption" k="addr:housenumber" priority="12" size="12" />
+    <style-text style="bold" caption="true" fill="#606060" font-family="condensed" id="house-name-caption" k="name" priority="8" size="12" stroke="#FFFFFF" stroke-width="2.0" />
+
+    <!-- Area Fill Colors -->
+    <style-area fade="10" fill="#1a1a1a" id="area-residential" />
+    <style-area fade="10" fill="#262626" id="area-commercial" />
+    <style-area fade="10" fill="#1a1a1a" id="area-retail" />
+    <style-area fade="13" fill="#6b6b7b" id="area-pedestrian" />
+    <style-area fade="13" fill="#6b6b7b" id="area-offroad" />
+    <style-area fade="10" fill="#262626" id="area-industrial" />
+    <style-area fade="6" fill="#BB262626" id="area-school" />
+    <style-area fade="6" fill="#660000" id="area-hospital" />
+    <style-area fade="6" fill="#0d1a26" id="area-park" />
+    <style-area fade="6" fill="#BBE9FCE6" id="area-fell" />
+    <style-area fade="6" fill="#0d1a26" id="area-forest" />
+    <style-area fade="6" fill="#0d1a26" id="area-grass" />
+    <style-area fade="6" fill="#0d1a26" id="area-meadow" />
+    <style-area fade="6" fill="#0d1a26" id="area-heath" />
+    <style-area fade="6" fill="#BBF5F5F5" id="area-scree" />
+    <style-area fade="6" fill="#0d1a26" id="area-scrub" />
+    <style-area fade="6" fill="#0d1a26" id="area-field" />
+    <style-area fade="6" fill="#0d1a26" id="area-campsite" />
+    <style-area fade="6" fill="#BB001a00" id="area-cemetery" />
+    <style-area fade="6" fill="#BB4d0000" id="area-military" />
+    <style-area fade="6" fill="#483805" id="area-mud" />
+    <style-area fade="6" fill="#e8eff2" id="area-ice" />
+    <style-area fade="6" fill="#CC675c32" id="area-quarry" />
+    <style-area fade="6" fill="#BBF1F1F1" id="area-rock" />
+    <style-area fade="6" fill="#302503" id="area-sand" />
+    <style-area fade="6" fill="#f5e9c6" id="area-rail" />
+    <style-area fade="6" fill="#4d4d33" id="area-station" />
+	
+    <!-- Road and Rail Colors, road casings/outlines are defined in the "highway" section -->
+    <style-line cap="butt" id="road-motorway-thin" stroke="#004466" width="1.5" />
+    <style-line cap="butt" id="road-motorway-core" stroke="#004466" width="2.2" />
+    <style-line id="road-motorway-toll-thin" stipple="6" stipple-stroke="#ff0000" stipple-width="1.0" stroke="#004466" width="1.5" />
+    <style-line id="road-highway-toll" dasharray="5,10" cap="butt" stroke="#FF0000" width="2.2" />
+    <style-line cap="butt" id="road-trunk-thin" stroke="#004466" width="1.5" />
+    <style-line cap="butt" id="road-trunk-core" stroke="#004466" width="2.5" />
+    <style-line id="road-primary-thin" stroke="#004466" width="1.0" />
+    <style-line id="road-primary-core" stroke="#004466" width="2.2" />
+    <style-line id="road-secondary-thin" stroke="#004466" width="1.0" />
+    <style-line id="road-secondary-core" stroke="#004466" width="2.2" />
+    <style-line id="road-tertiary-thin" stroke="#004466" width="0.6" />
+    <style-line id="road-tertiary-core" stroke="#004466" width="1.5" />
+    <style-line id="road-unclassified-core" stroke="#004466" width="1.0" />
+    <style-line id="road-residential-thin" stroke="#004466" width="0.4" />
+    <style-line id="road-residential-core" stroke="#004466" width="0.8" />
+    <style-line id="road-service-core" stroke="#004466" width="0.5" />
+    <style-line id="road-construction-core" stipple="2" stipple-stroke="#004466" stipple-width="1.0" stroke="#737373" width="1.0" />
+    <style-line cap="butt" id="road-motorway-link" use="road-motorway-core" width="-0.8" />
+    <style-line cap="butt" id="road-trunk-link" use="road-trunk-core" width="-0.8" />
+    <style-line cap="butt" fix="true" id="road-steps" stipple="2" stipple-stroke="#be6253" stipple-width="1.0" stroke="#FFFFFF" width="4.2" />
+    <style-line id="road-pedestrian" stroke="#b8b8c1" width="0.5" />
+    <style-line cap="butt" fix="true" id="road-rail" stroke="#4d4d4d" width="1.2" />
+    <style-line cap="butt" id="outline-station" stroke="#FFFFFF" width="0.1" />
+
+    <!-- Tunnels -->
+    <style-line cap="butt" id="road-motorway-tunnel" stipple="10" stipple-stroke="#9ea092" use="road-motorway-core" width="1.1" />
+    <style-line cap="butt" id="road-trunk-tunnel" stipple="10" stipple-stroke="#9ea092" use="road-trunk-core" width="0.7" />
+    <style-line cap="butt" id="road-primary-tunnel" stipple="10" stipple-stroke="#9ea092" use="road-primary-core" width="0.7" />
+    <style-line cap="butt" id="road-secondary-tunnel" stipple="10" stipple-stroke="#9ea092" use="road-secondary-core" />
+    <style-line cap="butt" id="road-tertiary-tunnel" stipple="10" stipple-stroke="#9ea092" use="road-tertiary-core" />
+    <style-line cap="butt" id="road-unclassified-tunnel" stipple="10" stipple-stroke="#9ea092" use="road-unclassified-core" />
+    <style-line cap="butt" id="road-residential-tunnel" stipple="10" stipple-stroke="#9ea092" use="road-residential-core" />
+    <style-line cap="butt" id="road-service-tunnel" stipple="10" stipple-stroke="#9ea092" use="road-service-core" />
+    <style-line cap="butt" id="road-motorway-link-tunnel" stipple="10" stipple-stroke="#9ea092" use="road-motorway-core" width="1.1" />
+    <style-line cap="butt" id="road-trunk-link-tunnel" stipple="10" stipple-stroke="#9ea092" use="road-trunk-core" width="0.7" />
+
+    <style-line id="residential" stroke="#FFFFFF" width="1.3" />
+
+    <!-- track|footway|path|cycleway -->
+    <style-line cap="butt" fix="true" id="footway" stipple="2" stipple-stroke="#55442b" stipple-width="0.6" stroke="#aaffffff" width="1.8" />
+    <style-line cap="butt" fix="true" id="cycleway" stipple="2" stipple-stroke="#a39b68" stipple-width="0.6" stroke="#aaffffff" width="2.8" />
+    <style-line id="highway:cycleway" stipple-stroke="#0a0a75" use="cycleway" width="0.1" />
+    <style-line id="highway:track" stipple="3" stipple-stroke="#a39b68" use="footway" width="0.1" />
+    <style-line id="highway:path" stipple="2" stipple-stroke="#55442b" use="footway" width="0.1" />
+    <style-line id="footway:z17" stroke="#55442b" width="0.3" />
+
+    <!-- Water -->
+    <style-line cap="butt" fix="true" id="water:outline" stroke="#6c91ac" width="1.0" />
+    <style-line cap="butt" fix="true" id="water" stroke="#002a4d" width="1.0" />
+    <style-line fix="false" id="river" stroke="#002a4d" use="water" />
+    <style-area fade="-1" fill="#002a4d" id="water" />
+
+    <!-- Building fill/line -->
+    <style-line fade="15" id="building" stroke="#ee42413e" use="fix" />
+    <style-area fade="15" fill="#2a2922" id="building" />
+
+    <!-- color of the ocean/sea -->
+    <m e="way" k="natural" v="issea|sea">
+        <area use="water" />
+    </m>
+    <m e="way" k="freizeitkarte" v="meer">
+        <area use="water" />
+    </m>
+
+    <!-- main background colour -->
+    <m e="way" k="natural" v="nosea">
+        <area fill="#0d1a26" />
+    </m>
+    <m e="way" k="freizeitkarte" v="land">
+        <area fill="#0d1a26" />
+    </m>
+    <m e="way" k="natural" v="land">
+        <area fill="#BBF8F8F8" stroke="#F8F8F8" stroke-width="0.1" />
+    </m>
+
+    <!-- all closed areas/land/ways that are not 'highway' or 'building' -->
+    <m closed="yes" e="way" k="highway|building" v="~">
+        <m cat="nature" k="landuse|natural|leisure">
+            <m v="common|conservation|garden|grass|recreation_ground|village_green">
+                <area use="area-grass" />
+            </m>
+            <m v="farm|farmland|field|orchard|vineyard">
+                <area use="area-field" />
+            </m>
+            <m v="fell">
+                <area use="area-fell" />
+            </m>
+            <m v="forest|wood">
+                <area use="area-forest" />
+            </m>
+            <m v="glacier">
+                <area use="area-ice" />
+            </m>
+            <m v="grassland|meadow">
+                <area use="area-meadow" />
+            </m>
+            <m v="heath">
+                <area use="area-heath" />
+            </m>
+            <m v="marsh|mud|wetland">
+                <area use="area-mud" />
+            </m>
+			<m v="allotments|green|greenfield|golf_course|park">
+				<area use="area-park" />
+			</m>
+            <m v="landfill|quarry">
+                <area use="area-quarry" />
+            </m>
+			<m e="way" k="natural" v="rock|stone|bare_rock|bedrock">
+                <area use="area-rock" />
+			</m>
+            <m v="scree">
+                <area use="area-scree" />
+            </m>
+            <m v="scrub">
+                <area use="area-scrub" />
+            </m>
+        </m>
+
+        <!-- landuse, human -->
+        <m k="landuse">
+            <m v="residential|urban" zoom-min="12">
+                <area use="area-residential" />
+            </m>
+            <m v="commercial" zoom-min="12">
+                <area use="area-commercial" />
+            </m>
+            <m v="retail" zoom-min="12">
+                <area use="area-retail" />
+            </m>
+            <m v="industrial|brownfield|railway|garages|construction" zoom-min="12">
+                <area use="area-industrial" />
+            </m>
+        </m>
+        <m k="landuse|leisure|tourism">
+            <m v="camp_site|caravan_site|picnic_site|zoo">
+                <area use="area-campsite" />
+            </m>
+        </m>
+        <m k="landuse">
+            <m v="military">
+                <area use="area-military" />
+            </m>
+            <m cat="nature" v="cemetery|grave_yard" zoom-min="11">
+                <area use="area-cemetery" />
+            </m>
+        </m>
+        <m k="natural">
+            <m v="beach|sand">
+                <area use="area-sand" />
+            </m>
+        </m>
+        <m k="landuse" v="reservoir|basin">
+            <area use="water" />
+        </m>
+		<!--<m cat="nature" e="way" k="leisure|boundary" v="nature_reserve|national_park|protected_area" zoom-min="12">
+			<area fill="#88c5deba" />
+		</m>-->
+
+        <!-- amenity -->
+        <m k="amenity" zoom-min="12">
+            <m v="kindergarten|school|college|university">
+                <area use="area-school" />
+            </m>
+            <m v="hospital">
+                <area use="area-hospital" />
+            </m>
+            <m v="public_bath">
+                <area use="water" />
+            </m>
+        </m>
+
+        <!-- leisure -->
+        <m k="leisure" zoom-min="14">
+            <m cat="nature" v="stadium|sports_centre|water_park|playground|miniature_golf|playing_fields|pitch|track">
+                <area use="area-park" />
+            </m>
+            <m v="swimming_pool">
+                <area use="water" />
+            </m>
+        </m>
+    </m>
+	
+    <!-- waterways -->
+    <m e="way" k="waterway">
+        <m v="ditch|drain" zoom-min="14">
+            <line fade="14" use="water" width="0.2" />
+        </m>
+        <m v="canal">
+            <line use="river" width="-0.3" />
+        </m>
+        <m v="stream" zoom-min="13">
+            <line fade="13" use="water" width="0.5" />
+        </m>
+        <m select="first" v="river">
+            <m zoom-min="12">
+                <line use="river" width="0.3" />
+            </m>
+            <m k="rank" v="~|-1" zoom-min="9">
+                <line fade="9" use="water" width="0.2" />
+            </m>
+            <m k="rank" v="0|1|2">
+                <line fade="2" use="water" width="0.3" />
+            </m>
+            <m k="rank" v="3" zoom-min="3">
+                <line fade="3" use="water" width="0.3" />
+            </m>
+            <m k="rank" v="4" zoom-min="4">
+                <line fade="4" use="water" width="0.3" />
+            </m>
+            <m k="rank" v="5" zoom-min="5">
+                <line fade="5" use="water" width="0.3" />
+            </m>
+            <m k="rank" v="6" zoom-min="6">
+                <line fade="6" use="water" width="0.2" />
+            </m>
+            <m k="rank" v="7" zoom-min="7">
+                <line fade="7" use="water" width="0.2" />
+            </m>
+            <m k="rank" v="8" zoom-min="8">
+                <line fade="8" use="water" width="0.1" />
+            </m>
+            <m k="rank" v="9" zoom-min="9">
+                <line fade="9" use="water" width="0.1" />
+            </m>
+        </m>
+        <m v="riverbank|dock">
+            <area use="water" />
+            <line use="water:outline" />
+        </m>
+        <m v="weir">
+            <line stroke="#000088" use="fix" />
+        </m>
+        <m v="dam" zoom-min="12">
+            <line stroke="#ababab" use="fix" width="0.2" />
+        </m>
+        <m k="lock" v="yes|true">
+            <line stroke="#f8f8f8" use="fix" width="0.5" />
+        </m>
+		<m v="lake|river" zoom-min="11">
+			<text use="river" />
+		</m>
+		<m v="drain" zoom-min="15">
+			<text use="river" />
+		</m>
+    </m>
+
+	<m closed="yes" k="natural" v="water">
+		<area use="water" />
+		<text area-size="0.2" use="caption-water-name" />
+	</m>
+
+	<!-- contour lines LAYER, to work with Freizeitkarte and OpenAndroMaps -->
+	<m cat="contour" k="contour_ext">
+		<m zoom-max="12">
+			<m v="elevation_major">
+				<line stroke="#8E8072" width="0.5" />
+			</m>
+		</m>
+		<m zoom-min="12" zoom-max="13">
+			<m v="elevation_medium">
+				<line stroke="#8E8072" width="0.4" />
+			</m>
+			<m v="elevation_major">
+				<line stroke="#8E8072" width="0.8" />
+			</m>
+		</m>
+		<m zoom-min="14" zoom-max="15">
+			<m v="elevation_minor" zoom-max="15">
+				<line stroke="#8E8072" width="0.2" />
+			</m>
+			<m v="elevation_medium|elevation_major">
+				<line stroke="#8E8072" width="0.4" />
+			</m>
+		</m>
+		<m zoom-min="16" zoom-max="16">
+			<m v="elevation_minor">
+				<line stroke="#8E8072" width="0.2" />
+			</m>
+			<m v="elevation_medium|elevation_major">
+				<line stroke="#8E8072" width="0.3" />
+			</m>
+		</m>
+		<m zoom-min="17">
+			<m v="elevation_minor">
+				<line stroke="#8E8072" width="0.15" />
+			</m>
+			<m v="elevation_medium|elevation_major">
+				<line stroke="#8E8072" width="0.2" />
+			</m>
+		</m>
+		<!-- captions -->
+		<m zoom-min="13" zoom-max="13">
+			<m v="elevation_major">
+				<text k="ele" style="bold" size="10" fill="#734A08" stroke="#FFFFFF" stroke-width="1" />
+				<text k="name" style="bold" size="10" fill="#734A08" stroke="#FFFFFF" stroke-width="1" />
+			</m>
+		</m>
+		<m zoom-min="14" zoom-max="15">
+			<m v="elevation_medium|elevation_major">
+				<text k="ele" style="bold" size="11" fill="#734A08" stroke="#FFFFFF" stroke-width="1" />
+				<text k="name" style="bold" size="11" fill="#734A08" stroke="#FFFFFF" stroke-width="1" />
+			</m>
+		</m>
+		<m zoom-min="16">
+			<m v="elevation_medium|elevation_major">
+				<text k="ele" style="bold" size="11" fill="#734A08" stroke="#FFFFFF" stroke-width="2" />
+				<text k="name" style="bold" size="11" fill="#734A08" stroke="#FFFFFF" stroke-width="2" />
+			</m>
+		</m>
+	</m>
+
+    <!-- roads -->
+    <m e="way">
+        <!-- Airport/Airfield -->
+        <m e="way" k="aeroway" v="runway|apron|helipad" closed="yes" zoom-min="11">
+            <area fill="#696449" />
+        </m>
+        <m e="way" k="aeroway" v="taxiway" closed="no" zoom-min="13">
+            <line cap="butt" stroke="#8c8c8c" width="0.8" />
+        </m>
+        <m e="way" k="aeroway" v="taxiway" closed="yes" zoom-min="15">
+            <line stroke="#696449" width="1.6" />
+        </m>
+        <m e="way" k="aeroway" v="runway" closed="no" zoom-min="11">
+            <line cap="square" stroke="#595959" width="5" />
+            <line cap="square" stroke="#CCCCCC" width="0.8" />
+        </m>
+
+		<m k="highway" v="turning_circle">
+			<circle radius="1.5" scale-radius="true" fill="#707070" />
+        </m>
+
+		<!-- building -->
+        <m k="building|building:part">
+            <m k="building">
+                <m zoom-min="16">
+                    <m closed="yes">
+                        <area fade="15" use="building" />
+                        <line fade="15" use="building" />
+                    </m>
+                    <m closed="no">
+                        <line fade="15" use="building" />
+                    </m>
+                </m>
+            </m>
+            <m k="building:part">
+                <m zoom-min="16">
+                    <m closed="yes">
+                        <area fade="16" use="building" />
+                        <line fade="16" use="building" />
+                    </m>
+                    <m closed="no">
+                        <line fade="16" use="building" />
+                    </m>
+                </m>
+            </m>
+            <m zoom-min="17">
+                <extrusion line-color="#ff404040" side-color="#ea00061a" top-color="#ea1a1a1a" />
+            </m>
+
+            <m select="first">
+                <m zoom-min="17">
+                    <!--<text use="house-name-caption" />-->
+                    <text use="housenumber-caption" />
+                </m>
+            </m>
+        </m>
+
+        <!-- man_made features -->
+        <m k="man_made" v="pier">
+            <m closed="no">
+                <line cap="butt" stroke="#d0d0d0" width="0.4" />
+                <line cap="butt" stroke="#e4e4e4" width="0.3" />
+            </m>
+            <m closed="yes">
+                <area fill="#595959" />
+            </m>
+        </m>
+        <!-- non-physical routes -->
+        <m k="route" v="ferry" zoom-min="11">
+			<line dasharray="5,5" cap="butt" stroke="#5b7ad7" width="0.8" />
+            <m zoom-min="13">
+                <text use="ferry" />
+            </m>
+        </m>
+
+        <!-- seldomly used for some footpaths construction etc... -->
+        <outline-layer id="0" stroke="#44000000" width="0.1" />
+        <outline-layer id="1" stroke="#aa807040" width="0.1" />
+
+        <!-- casings/outlines for roads -->
+        <outline-layer id="road-major-outline" stroke="#CCCCCC" width="0.3" />
+        <outline-layer id="road-minor-outline" stroke="#CCCCCC" width="0.2" />
+        <outline-layer id="road-thin-outline" stroke="#333333" width="0.1" />
+
+        <!-- match tunnel-tag (to ensure tunnel key is present) -->
+        <m k="tunnel" zoom-min="8">
+            <!-- match tunnel-tag that are not 'no' or 'false' -->
+            <m k="tunnel" v="-|no|false">
+                <!-- match area-tag that are 'no' or 'false' or not present -->
+                <m k="area" v="~|no|false">
+                    <!-- highway tunnels -->
+                    <m k="highway">
+                        <!-- links have to appear first -->
+                        <m v="tertiary_link">
+                            <line use="road-tertiary-tunnel" />
+                        </m>
+                        <m v="secondary_link">
+                            <line use="road-secondary-tunnel" />
+                        </m>
+                        <m v="primary_link">
+                            <line use="road-primary-tunnel" />
+                        </m>
+                        <m v="trunk_link">
+                            <line use="road-trunk-link-tunnel" />
+                        </m>
+                        <m v="motorway_link">
+                            <line use="road-motorway-link-tunnel" />
+                        </m>
+                        <m zoom-min="16">
+                            <m v="steps">
+                                <line use="road-steps" />
+                            </m>
+                        </m>
+                        <m zoom-min="14">
+                            <m v="footway|cycleway">
+                                <line use="footway" />
+                            </m>
+                            <m v="track">
+                                <line use="highway:track" />
+                            </m>
+                            <m v="path">
+                                <line use="highway:path" />
+                            </m>
+                            <m v="bridleway">
+                                <line use="bridleway" />
+                            </m>
+                            <m v="construction">
+                                <outline use="0" />
+                                <line outline="0" use="road-construction-core" />
+                            </m>
+                            <m v="service">
+                                <line use="road-service-tunnel" />
+                            </m>
+                        </m>
+                        <m v="byway|pedestrian|living_street">
+                            <line outline="0" use="road-pedestrian" />
+                        </m>
+                        <m v="residential|road">
+                            <line outline="0" use="road-residential-tunnel" />
+                        </m>
+                        <m v="unclassified">
+                            <line use="road-unclassified-tunnel" />
+                        </m>
+                        <m v="tertiary">
+                            <line use="road-tertiary-tunnel" />
+                        </m>
+                        <m v="secondary">
+                            <line use="road-secondary-tunnel" />
+                        </m>
+                        <m v="primary">
+                            <line use="road-primary-tunnel" />
+                        </m>
+                        <m v="trunk">
+                            <line use="road-trunk-tunnel" />
+                        </m>
+                        <m v="motorway">
+                            <line use="road-motorway-tunnel" />
+                        </m>
+                    </m>
+					<!-- railway tunnel -->
+					<m e="way" k="railway"
+						v="tram|subway|light_rail|narrow_gauge|preserved|funicular|miniature|monorail">
+						<line stroke="#CCCCCC" width="0.4" />
+						<line stroke="#808080" dasharray="4,6" cap="butt" width="0.25" />
+					</m>
+					<m e="way" k="railway" v="rail" zoom-min="11">
+						<line stroke="#CCCCCC" width="0.6" />
+						<line stroke="#999999" dasharray="6,6" cap="butt" width="0.5" />
+					</m>
+                </m>
+            </m>
+        </m><!-- end tunnel -->
+
+        <!-- railway tracks, not in a tunnel -->
+		<m e="way" k="tunnel" v="~|no|false">
+			<m k="railway" v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|disused|abandoned">
+				<m zoom-min="11" zoom-max="15">
+					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#a6a6a6" stipple-width="0.8" stroke="#666666" width="1.8" />
+				</m>
+				<m zoom-min="16">
+					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#a6a6a6" stipple-width="0.8" stroke="#666666" width="2.5" />
+				</m>
+			</m>
+		</m>
+
+        <!-- highways/roads -->
+        <m k="highway">
+            <m select="first" zoom-max="8" zoom-min="4">
+                <m k="area" v="~|no|false">
+                    <!-- Low Zoom, only motorways -->
+                    <m v="motorway">
+						<line outline="road-minor-outline" use="road-motorway-thin" />
+						<m cat="toll_roads" e="way" k="toll" v="tl_yes">
+							<line outline="road-minor-outline" use="road-motorway-toll-thin" />
+						</m>
+                    </m>
+                </m>
+            </m>
+            <m zoom-min="8">
+                <!-- when tunnel|bridge is present it must be 'no' -->
+                <m k="tunnel|bridge" v="~|no">
+                    <!-- highway area -->
+                    <m k="area" v="yes|true" zoom-min="14">
+                        <m v="service|unclassified|residential|road">
+                            <area use="area-residential" />
+                            <line cap="butt" fix="true" stroke="#44000000" width="1.0" />
+                        </m>
+                        <m v="pedestrian|footway|living_street">
+                            <area use="road-pedestrian" />
+                            <line cap="butt" fix="true" stroke="#44000000" width="1.0" />
+                        </m>
+                    </m>
+
+                    <m k="area" v="~|no|false">
+                        <m zoom-min="16">
+                            <m v="steps">
+                                <line use="road-steps" />
+                            </m>
+                            <m v="track|footway|path|cycleway" zoom-min="17">
+                                <line outline="1" use="footway:z17" />
+                            </m>
+                        </m>
+                        <m zoom-min="14">
+                            <m v="footway">
+								<m cat="map_detail" zoom-min="15">
+									<line use="footway" />
+								</m>
+								<m zoom-min="17">
+									<line use="footway" />
+								</m>
+                            </m>
+                            <m v="cycleway">
+								<m cat="map_detail" zoom-min="14">
+									<line use="highway:cycleway" />
+								</m>
+								<m zoom-min="17">
+									<line use="highway:cycleway" />
+								</m>
+                            </m>
+                            <m cat="off_road" v="byway|track">
+								<m e="way" k="tracktype" v="grade1">
+									<line stroke="#cbc0b3" width="0.6" />
+								</m>
+								<m e="way" k="tracktype" v="grade2">
+									<line stroke="#cc9966" width="0.6" />
+								</m>
+								<m e="way" k="tracktype" v="grade3">
+									<line stroke="#8c8c8c" dasharray="25,5" cap="butt" width="0.6" />
+								</m>
+								<m e="way" k="tracktype" v="grade4">
+									<line stroke="#669900" dasharray="20,5,8,5" cap="butt" width="0.6" />
+								</m>
+								<m e="way" k="tracktype" v="grade5">
+									<line stroke="#669900" dasharray="8,5" cap="butt" width="0.6" />
+								</m>
+								<m e="way" k="tracktype" v="~">
+									<line stroke="#cbc0b3" dasharray="15,5" cap="butt" width="0.6" />
+								</m>                            
+							</m>
+							<m cat="off_road" e="way" k="highway" v="bridleway" zoom-min="14">
+								<line stroke="#cbc0b3" dasharray="10,12" cap="round" width="0.6" />
+							</m>
+                            <m v="path">
+								<m cat="map_detail" zoom-min="15">
+									<line use="highway:path" />
+								</m>
+								<m zoom-min="17">
+									<line use="highway:path" />
+								</m>
+                            </m>
+                            <m v="construction">
+                                <line outline="1" use="road-construction-core" />
+                            </m>
+                            <m v="service">
+								<line outline="road-thin-outline" use="road-service-core" />
+                            </m>
+                            <m v="pedestrian|living_street" zoom-min="16">
+                                <line outline="0" use="road-pedestrian" />
+                            </m>
+                        </m>
+                        <m v="residential|road">
+							<m zoom-min="12" zoom-max="13">
+								<line outline="road-thin-outline" use="road-residential-thin" />
+							</m>
+							<m zoom-min="14">
+								<line outline="road-thin-outline" use="road-residential-core" />
+							</m>
+                        </m>
+                        <m v="unclassified">
+							<m zoom-min="11" zoom-max="12">
+								<line outline="road-thin-outline" use="road-unclassified-core" />
+							</m>
+							<m zoom-min="13">
+								<line outline="road-thin-outline" use="road-unclassified-core" />
+							</m>
+                        </m>
+                        <m v="tertiary|tertiary_link">
+							<m zoom-min="10" zoom-max="10">
+								<line outline="road-minor-outline" use="road-tertiary-thin" />
+							</m>
+							<m zoom-min="11">
+								<line outline="road-minor-outline" use="road-tertiary-core" />
+							</m>
+                        </m>
+                        <m v="secondary|secondary_link">
+							<m zoom-min="9" zoom-max="9">
+								<line outline="road-major-outline" use="road-secondary-thin" />
+							</m>
+							<m zoom-min="10">
+								<line outline="road-major-outline" use="road-secondary-core" />
+							</m>
+                        </m>
+                        <m v="primary|primary_link">
+							<m zoom-min="8" zoom-max="8">
+								<line outline="road-minor-outline" use="road-primary-thin" />
+							</m>
+							<m zoom-min="9" zoom-max="9">
+								<line outline="road-major-outline" use="road-primary-thin" />
+							</m>
+							<m zoom-min="10">
+								<line outline="road-major-outline" use="road-primary-core" />
+								<m cat="toll_roads" e="way" k="toll" v="tl_yes">
+									<line outline="road-major-outline" use="road-highway-toll" />
+								</m>
+							</m>
+                        </m>
+                        <m v="trunk|trunk_link">
+							<m zoom-min="7" zoom-max="8">
+								<line outline="road-major-outline" use="road-trunk-thin" />
+							</m>
+							<m zoom-min="9">
+								<line outline="road-major-outline" use="road-trunk-core" />
+								<m cat="toll_roads" e="way" k="toll" v="tl_yes">
+									<line outline="road-major-outline" use="road-highway-toll" />
+								</m>
+							</m>
+                        </m>
+                        <m v="motorway|motorway_link">
+							<line outline="road-major-outline" use="road-motorway-core" />
+							<m cat="toll_roads" e="way" k="toll" v="tl_yes" zoom-min="6">
+								<line outline="road-major-outline" use="road-highway-toll" />
+							</m>
+                        </m>
+                    </m> <!-- end area=~|no|false -->
+                </m><!-- end tunnel|bridge=~|no|false -->
+
+                <!-- Bridge casings should be above other roads -->
+                <outline-layer id="bridge" stroke="#000000" width="0.08" />
+                <outline-layer id="road-bridge" stroke="#d9d9d9" width="0.6" />
+
+                <!-- must contain bridge -->
+                <m k="bridge">
+                    <!-- except bridge=no|false -->
+                    <m k="bridge" v="-|no|false">
+
+                        <!-- no areas -->
+                        <m k="area" v="~|no|false">
+                            <!-- links have to appear first -->
+                            <m v="tertiary_link">
+                                <line cap="butt" outline="road-bridge" use="road-tertiary-core" />
+                            </m>
+                            <m v="secondary_link">
+                                <line cap="butt" outline="road-bridge" use="road-secondary-core" />
+                            </m>
+                            <m v="primary_link">
+                                <line cap="butt" outline="road-bridge" use="road-primary-core" />
+                            </m>
+                            <m v="trunk_link">
+                                <line outline="road-bridge" use="road-trunk-core" />
+                            </m>
+                            <m v="motorway_link">
+                                <line outline="road-bridge" use="road-motorway-core" />
+                            </m>
+                            <m zoom-min="16">
+                                <m v="steps">
+                                    <line use="steps" />
+                                </m>
+                            </m>
+
+                            <m v="track|footway|path|cycleway" zoom-min="15">
+                                <line cap="butt" outline="bridge" use="footway:z17" />
+                            </m>
+
+                            <m select="first" zoom-min="14">
+                                <m v="footway">
+                                    <line use="footway" />
+                                </m>
+                                <m v="cycleway">
+                                    <line use="highway:cycleway" />
+                                </m>
+                                <m v="track">
+                                    <line use="highway:track" />
+                                </m>
+                                <m v="path">
+                                    <line use="highway:path" />
+                                </m>
+                                <m v="bridleway">
+                                    <line use="bridleway" />
+                                </m>
+                                <m v="construction">
+                                    <line cap="butt" outline="road-bridge" use="road-construction-core" />
+                                </m>
+                                <m v="service">
+                                    <line cap="butt" outline="road-minor-outline" use="road-service-core" />
+                                </m>
+                            </m>
+
+                            <m select="first" zoom-min="13">
+                                <m v="pedestrian|living_street">
+                                    <line cap="butt" outline="bridge" use="road-pedestrian" />
+                                </m>
+                                <m v="residential|road">
+                                    <line cap="butt" outline="road-bridge" use="road-residential" />
+                                </m>
+                            </m>
+
+                            <m select="first">
+                                <m v="unclassified">
+                                    <line cap="butt" outline="road-bridge" use="road-unclassified-core" />
+                                </m>
+                                <m v="tertiary">
+                                    <line cap="butt" outline="road-bridge" use="road-tertiary-core" />
+                                </m>
+                                <m v="secondary">
+                                    <line cap="butt" outline="road-bridge" use="road-secondary-core" />
+                                </m>
+                                <m v="primary">
+                                    <line cap="butt" outline="road-bridge" use="road-primary-core" />
+									<m cat="toll_roads" e="way" k="toll" v="tl_yes">
+										<line outline="road-bridge" use="road-highway-toll" />
+									</m>
+                                </m>
+                                <m v="trunk">
+                                    <line cap="butt" outline="road-bridge" use="road-trunk-core" />
+									<m cat="toll_roads" e="way" k="toll" v="tl_yes" zoom-min="6">
+										<line outline="road-bridge" use="road-highway-toll" />
+									</m>
+                                </m>
+                                <m v="motorway">
+                                    <line cap="butt" outline="road-bridge" use="road-motorway-core" />
+									<m cat="toll_roads" e="way" k="toll" v="tl_yes" zoom-min="6">
+										<line outline="road-major-outline" use="road-highway-toll" />
+									</m>
+                                </m>
+                            </m>
+                        </m><!-- end area=~|no|false -->
+
+                        <m k="area" select="first" v="yes|true" zoom-min="14">
+                            <m v="service|unclassified|residential|road">
+                                <area fill="#FFFFFF" />
+                                <line cap="butt" fix="true" stroke="#44000000" width="1.0" />
+                            </m>
+                            <m v="pedestrian|footway|living_street">
+                                <area use="road-pedestrian" />
+                                <line cap="butt" fix="true" stroke="#44000000" width="1.0" />
+                            </m>
+                        </m>  <!-- end area=yes|true -->
+                    </m>
+                </m> <!-- end bridge=yes -->
+
+                <!-- Highway Captions/Names -->
+                <m k="area" v="~|no|false">
+                    <m k="highway">
+						<m v="services">
+							<text use="junction-caption" />
+						</m>
+                        <m v="motorway|motorway_link">
+							<m cat="map_detail" v="motorway" zoom-min="10" zoom-max="10">
+                                <text use="motorway-road-box" />
+							</m>
+                            <m zoom-min="11" zoom-max="12">
+								<text use="motorway-road-box" />
+                            </m>
+                            <m zoom-min="13">
+                                <text use="motorway-road-ref" />
+                            </m>
+                        </m>
+                        <m v="trunk|trunk_link">
+							<m cat="map_detail" v="trunk" zoom-min="11" zoom-max="11">
+                                <text use="trunk-road-box" />
+							</m>
+                            <m zoom-min="12" zoom-max="12">
+                                <text use="trunk-road-box" />
+                            </m>
+                            <m zoom-min="13">
+                                <text use="trunk-road-name" />
+                                <text use="trunk-road-ref" />
+                            </m>
+                        </m>
+                        <m v="primary|primary_link">
+							<m cat="map_detail" v="primary|primary_link" zoom-min="12" zoom-max="12">
+                                <text use="primary-road-box" />
+                            </m>
+							<!--<m zoom-min="13" zoom-max="13">
+                                <text use="primary-road-box" />
+                            </m>-->
+                            <m zoom-min="13">
+								<text use="primary-road-name" />
+								<text use="primary-road-ref" />
+                            </m>
+                        </m>
+                        <m v="secondary|secondary_link">
+							<m cat="map_detail" v="secondary|secondary_link" zoom-min="12" zoom-max="12">
+                                <text use="secondary-road-box" />
+                            </m>
+							<!--<m zoom-min="13" zoom-max="13">
+                                <text use="secondary-road-box" />
+                            </m>-->
+                            <m zoom-min="13">
+								<text use="secondary-road-name" />
+								<text use="secondary-road-ref" />
+                            </m>
+                        </m>
+                        <m v="tertiary|tertiary_link" zoom-min="14">
+                            <text use="road" />
+                            <text use="road-ref" />
+                        </m>
+                        <m v="byway|pedestrian|residential|living_street|service|unclassified" zoom-min="14">
+                            <text use="residential-road" />
+                        </m>
+                    </m>
+                </m>
+            </m>
+        </m><!-- end highway -->
+
+        <!-- railway tracks, not on a bridge or in a tunnel -->
+		<m e="way" k="bridge|tunnel" v="no|false">
+			<m k="railway" v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|disused|abandoned">
+				<m zoom-min="11" zoom-max="15">
+					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#333333" width="1.8" />
+				</m>
+				<m zoom-min="16">
+					<line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#333333" width="2.2" />
+				</m>
+			</m>
+		</m>
+
+		<!-- railway bridges -->
+		<m e="way" k="bridge" v="yes|true|viaduct|aqueduct|suspension|culvert|swing">
+			<m e="way" k="railway" v="subway|narrow_gauge|preserved|funicular|miniature|tram|light_rail|monorail">
+				<line stroke="#666666" cap="butt" width="1.2" />
+				<line stroke="#EEEEEE" cap="butt" width="0.8" />
+			</m>
+			<m e="way" k="railway" v="rail">
+				<line stroke="#666666" cap="butt" width="1.2" />
+				<line stroke="#EEEEEE" cap="butt" width="1.0" />
+			</m>
+		</m>
+        <m k="railway"
+            v="station|platform">
+            <area use="area-station" />
+            <line use="outline-station" />
+        </m>
+
+        <!-- highway one-way markers -->
+        <m k="tunnel" v="~|false|no">
+            <m k="area" v="~|false|no">
+                <m k="highway">
+                    <m k="oneway" v="yes|true" zoom-min="16">
+                        <symbol repeat="true" src="assets:symbols/oneway.svg" />
+                    </m>
+                </m>
+            </m>
+        </m>
+
+    </m><!-- end e="way" -->
+
+    <m e="node" select="first">
+		<!-- motorway junctions -->
+        <m k="highway">
+            <m v="motorway_junction" zoom-min="14">
+                <text use="junction-caption" />
+            </m>
+        </m>
+
+		<m e="node" k="railway" v="crossing" zoom-min="15">
+			<symbol src="assets:symbols/railway-crossing-small.svg" />
+		</m>
+		<m e="node" k="railway" v="level_crossing" zoom-min="15">
+			<symbol src="assets:symbols/railway-crossing.svg" />
+		</m>
+
+        <m k="barrier">
+			<m cat="map_detail" zoom-min="16">
+				<m v="bollard">
+					<symbol src="assets:symbols/barrier/bollard.svg" />
+				</m>
+				<m v="block">
+					<symbol src="assets:symbols/barrier/blocks.svg" />
+				</m>
+				<m v="gate">
+					<symbol src="assets:symbols/barrier/gate.svg" />
+				</m>
+				<m v="lift_gate">
+					<symbol src="assets:symbols/barrier/lift_gate.svg" />
+				</m>
+			</m>
+			<m zoom-min="18">
+				<m v="bollard">
+					<symbol src="assets:symbols/barrier/bollard.svg" />
+				</m>
+				<m v="block">
+					<symbol src="assets:symbols/barrier/blocks.svg" />
+				</m>
+				<m v="gate">
+					<symbol src="assets:symbols/barrier/gate.svg" />
+				</m>
+				<m v="lift_gate">
+					<symbol src="assets:symbols/barrier/lift_gate.svg" />
+				</m>
+			</m>
+			<!-- this makes toll roads (ie: France) easier to spot -->
+			<m v="toll_booth" zoom-min="15">
+				<symbol src="assets:symbols/barrier/gate.svg" />
+				<text use="poi-emergency" />
+			</m>
+        </m>
+
+        <!-- place -->
+        <m k="place">
+            <m v="hamlet" zoom-min="14">
+                <text use="hamlet-caption" />
+            </m>
+            <m v="locality|isolated_dwelling|neighbourhood" zoom-min="15">
+                <text use="hamlet-caption" />
+            </m>
+            <m v="suburb" zoom-min="13">
+                <text use="suburb-caption" />
+            </m>
+            <m v="village" zoom-min="11" zoom-max="15">
+                <text use="village-caption" />
+            </m>
+            <m v="island" zoom-min="10" zoom-max="15">
+                <text use="island-caption" />
+            </m>
+            <m v="islet" zoom-min="12" zoom-max="15">
+                <text use="island-caption" />
+            </m>
+            <m cat="map_detail" v="town" zoom-min="8" zoom-max="8">
+                <text use="town-lz-caption" />
+            </m>
+            <m v="town" zoom-min="9" zoom-max="12">
+                <text use="town-lz-caption" />
+            </m>
+            <m v="town" zoom-min="13" zoom-max="14">
+                <text use="town-caption" />
+            </m>
+            <m v="city" zoom-min="6" zoom-max="9">
+				<text use="city-lz-caption" />
+            </m>
+            <m v="city" zoom-min="10" zoom-max="15">
+				<text use="city-caption" />
+            </m>
+            <m v="country" zoom-max="6">
+                <text use="country-caption" />
+            </m>
+        </m>
+
+        <!-- house numbers -->
+        <m k="addr:housenumber">
+            <m cat="housenumber" zoom-min="16">
+				<text use="housenumber-caption" />
+			</m>
+            <m zoom-min="18">
+				<text use="housenumber-caption" />
+			</m>
+            <!--<text use="house-name-caption" />-->
+        </m>
+
+        <m k="highway">
+			<m v="traffic_signals">
+				<m cat="map_detail" zoom-min="15">
+					<symbol src="assets:symbols/transport/traffic_lights.svg" />
+				</m>
+            <m zoom-min="17">
+					<symbol src="assets:symbols/transport/traffic_lights.svg" />
+				</m>
+			</m>
+        </m>
+    </m>
+
+	<!-- Borders -->
+	<m k="boundary" v="administrative">
+		<m k="admin_level">
+			<m v="2"> <!-- country border -->
+				<m zoom-min="6" zoom-max="11">
+					<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="2.5" stroke="#737373" width="1.5" />
+				</m>
+				<m zoom-min="12">
+					<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#737373" width="2.0" />
+				</m>
+			</m>
+			<m v="4"> <!-- state border -->
+				<m zoom-min="6" zoom-max="11">
+					<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="2.5" stroke="#737373" width="1.5" />
+				</m>
+				<m zoom-min="12">
+					<line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#737373" width="2.0" />
+				</m>
+			</m>
+			<m v="5" zoom-min="12">
+				<line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#737373" width="2" />
+			</m>
+			<m v="6" zoom-min="12"> <!-- county border -->
+				<line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#737373" width="1.0" />
+			</m>
+			<m v="8" zoom-min="12">
+				<line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#737373" width="1.5" />
+			</m>
+			<m v="9" zoom-min="12">
+				<line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#737373" width="1.5" />
+			</m>
+		</m>
+	</m>
+
+    <!-- accommodation LAYER -->
+	<m k="name" select="first">
+		<m k="building|tourism">
+			<m cat="accommodation" v="camp_site" zoom-min="15">
+				<symbol src="assets:symbols/accommodation/camping.svg" />
+			</m>
+			<m cat="accommodation" v="caravan_site" zoom-min="15">
+				<symbol src="assets:symbols/accommodation/caravan_park.svg" />
+			</m>
+			<m cat="accommodation" v="guest_house|hotel" zoom-min="15">
+				<symbol src="assets:symbols/accommodation/hotel2.svg" />
+			</m>
+			<m cat="accommodation" v="hostel" zoom-min="15">
+				<symbol src="assets:symbols/accommodation/hostel.svg" />
+			</m>
+		</m>
+		<m select="when-matched">
+			<text use="poi-accommodation" />
+		</m>
+    </m>
+
+    <!-- emergency services LAYER -->
+	<m k="name" select="first">
+		<m k="amenity|building">
+			<m cat="emergency" v="hospital" zoom-min="15">
+				<symbol src="assets:symbols/health/hospital.svg" />
+			</m>
+			<m cat="emergency" v="pharmacy" zoom-min="15">
+				<symbol src="assets:symbols/health/pharmacy.svg" />
+			</m>
+			<m cat="emergency" v="doctors" zoom-min="15">
+				<symbol src="assets:symbols/health/doctors2.svg" />
+			</m>
+			<m cat="emergency" v="fire_station" zoom-min="15">
+				<symbol src="assets:symbols/amenity/firestation3.svg" />
+			</m>
+			<m cat="emergency" v="police" zoom-min="15">
+				<symbol src="assets:symbols/amenity/police2.svg" />
+			</m>
+			<m cat="emergency" v="embassy" zoom-min="15">
+				<symbol src="assets:symbols/poi/embassy2.svg" />
+			</m>
+		</m>
+		<m select="when-matched">
+			<text use="poi-emergency" />
+		</m>
+    </m>
+
+	<!-- entertainment venues LAYER -->
+	<m k="name" select="first">
+		<m cat="entertainment" k="amenity" v="cinema" zoom-min="16">
+			<symbol src="assets:symbols/tourist/cinema2.svg" />
+		</m>
+		<m cat="entertainment" k="amenity" v="theatre" zoom-min="16">
+			<symbol src="assets:symbols/tourist/theatre.svg" />
+		</m>
+		<m select="when-matched">
+			<text use="poi" />
+		</m>
+	</m>
+
+    <!-- food and drink LAYER -->
+	<m k="name" select="first">
+		<m k="amenity">
+			<m cat="food" v="bar|pub" zoom-min="15">
+				<symbol src="assets:symbols/food/pub.svg" />
+			</m>
+			<m cat="food" v="biergarten" zoom-min="15">
+				<symbol src="assets:symbols/food/biergarten.svg" />
+			</m>
+			<m cat="food" v="cafe" zoom-min="15">
+				<symbol src="assets:symbols/food/cafe.svg" />
+			</m>
+			<m cat="food" v="fast_food" zoom-min="15">
+				<symbol src="assets:symbols/food/fastfood.svg" />
+			</m>
+			<m cat="food" v="restaurant" zoom-min="15">
+				<symbol src="assets:symbols/food/restaurant.svg" />
+			</m>
+		</m>
+		<m select="when-matched">
+			<text use="poi" />
+		</m>
+    </m>
+
+    <!-- fuel and charging stations LAYER -->
+	<m select="first">
+		<m k="amenity">
+			<m cat="fuel" v="fuel" zoom-min="10">
+				<symbol src="assets:symbols/transport/fuel.svg" />
+			</m>
+			<m cat="charging_station" v="charging_station" zoom-min="10">
+				<symbol src="assets:symbols/custom/transport/charging_station.svg" />
+			</m>
+		</m>
+		<m select="when-matched" zoom-min="16">
+			<text use="poi-fuel" />
+		</m>
+    </m>
+	
+	<!-- mountain peak LAYER -->
+	<m select="first">
+		<m cat="mountain_peak" k="natural" v="peak" zoom-min="10">
+            <symbol src="assets:symbols/peak.svg" />
+            <text use="peak-name-caption" />
+            <text use="peak-ele-caption" />
+        </m>
+	</m>
+
+	<!-- parking LAYER -->
+	<m select="first">
+		<m k="amenity">
+			<m cat="parking" v="motorcycle_parking" zoom-min="14">
+				<symbol src="assets:symbols/custom/transport/parking_motorcycle.svg" />
+			</m>
+			<m cat="parking" v="parking" zoom-min="14">
+				<symbol src="assets:symbols/transport/parking.svg" />
+			</m>
+		</m>
+		<m select="when-matched">
+			<text use="poi-parking" />
+		</m>
+	</m>
+	
+	<!-- POI miscellaneous and holding area LAYER -->
+	<m select="first">
+        <m cat="misc" e="any" k="amenity" v="kindergarten" zoom-min="16">
+            <symbol id="nursery" src="assets:symbols/education/nursery3.svg" />
+        </m>
+        <m cat="misc" e="any" k="amenity|building" v="school" zoom-min="16">
+            <symbol id="school" src="assets:symbols/education/school.svg" />
+        </m>
+        <m cat="misc" e="any" k="amenity|building" v="university|college" zoom-min="16">
+            <symbol id="university" src="assets:symbols/education/university.svg" />
+        </m>
+        <m cat="misc" e="any" k="amenity" v="post_box" zoom-min="16">
+            <symbol src="assets:symbols/amenity/post_box.svg" />
+        </m>
+        <m cat="misc" e="any" k="amenity" v="post_office" zoom-min="16">
+            <symbol id="post_office" src="assets:symbols/amenity/post_office.svg" />
+        </m>
+        <m cat="misc" e="any" k="amenity" v="telephone" zoom-min="16">
+            <symbol src="assets:symbols/amenity/telephone.svg" />
+        </m>
+        <m cat="misc" e="any" k="amenity" v="toilets" zoom-min="16">
+            <symbol src="assets:symbols/amenity/toilets.svg" />
+        </m>
+        <m cat="misc" e="any" k="amenity|building" v="library" zoom-min="16">
+            <symbol id="library" src="assets:symbols/amenity/library.svg" />
+        </m>
+		<!-- sports -->
+		<m e="any" k="*" v="*">
+			<m cat="misc" e="any" k="leisure" v="water_park" zoom-min="16">
+				<symbol src="assets:symbols/sport/swimming_outdoor.svg" />
+			</m>
+			<m cat="misc" e="way" k="leisure" v="~" zoom-min="16">
+				<m e="way" k="sport" v="swimming">
+					<symbol src="assets:symbols/sport/swimming_outdoor.svg" />
+				</m>
+			</m>
+			<m cat="misc" e="node" k="sport" v="swimming" zoom-min="16">
+				<symbol src="assets:symbols/sport/swimming_outdoor.svg" />
+			</m>
+			<m cat="misc" e="any" k="sport" v="soccer" zoom-min="16">
+				<symbol src="assets:symbols/sport/soccer.svg" />
+			</m>
+			<m cat="misc" e="any" k="sport" v="tennis" zoom-min="16">
+				<symbol src="assets:symbols/sport/tennis.svg" />
+			</m>
+			<m cat="misc" e="any" k="sport|leisure" v="golf|golf_course" zoom-min="16">
+				<symbol src="assets:symbols/sport/golf.svg" />
+			</m>
+			<m cat="misc" e="any" k="sport" v="shooting" zoom-min="16">
+				<symbol src="assets:symbols/sport/shooting.svg" />
+			</m>
+			<m cat="misc" e="any" k="leisure" v="stadium" zoom-min="16">
+				<symbol src="assets:symbols/sport/stadium.svg" />
+			</m>
+		</m>
+        <m cat="misc" e="any" k="leisure" v="playground" zoom-min="16">
+            <symbol id="playground" src="assets:symbols/amenity/playground.svg" />
+        </m>
+        <m cat="misc" e="any" k="amenity" v="drinking_water" zoom-min="16">
+            <symbol src="assets:symbols/food/drinkingtap.svg" />
+        </m>
+        <m cat="misc" e="any" k="tourism" v="picnic_site" zoom-min="15">
+            <symbol src="assets:symbols/tourist/picnic.svg" />
+        </m>
+        <!--<m cat="misc" e="node" k="amenity" v="bench" zoom-min="17">
+            <symbol src="assets:symbols/bench.svg" />
+        </m>-->
+        <m cat="misc" e="any" k="amenity" v="recycling" zoom-min="15">
+            <symbol src="assets:symbols/amenity/recycling.svg" />
+        </m>
+        <m cat="misc" e="any" k="amenity" v="fountain" zoom-min="15">
+            <m e="any" k="drinking_water" v="yes">
+                <symbol src="assets:symbols/food/drinkingtap.svg" />
+            </m>
+            <m e="any" k="*" v="*">
+                <symbol src="assets:symbols/amenity/fountain2.svg" />
+            </m>
+        </m>
+        <m cat="misc" e="any" k="amenity" v="bicycle_rental" zoom-min="16">
+            <symbol src="assets:symbols/transport/rental_bicycle.svg" />
+        </m>
+        <m cat="misc" e="any" k="leisure" v="slipway" zoom-min="17">
+            <symbol src="assets:symbols/transport/slipway.svg" />
+        </m>
+        <m cat="misc" e="node" k="natural" v="cave_entrance" zoom-min="16">
+            <symbol id="cave" src="assets:symbols/poi/cave.svg" />
+        </m>
+		<m select="when-matched">
+			<text use="poi-misc" />
+		</m>
+	</m>
+
+	<!-- public transport, bus, train, tram etc LAYER -->
+	<m select="first">
+		<m cat="public_transport" k="railway" v="station" zoom-min="14">
+			<symbol src="assets:symbols/transport/train_station2.svg" />
+		</m>
+		<m cat="public_transport" k="station" v="light_rail|subway" zoom-min="14">
+			<symbol src="assets:symbols/transport/train_station2.svg" />
+		</m>
+		<m cat="public_transport" v="halt|tram_stop" zoom-min="14">
+			<symbol src="assets:symbols/transport/tram_stop.svg" />
+		</m>
+		<m cat="public_transport" k="amenity" v="bus_station" zoom-min="14">
+			<symbol src="assets:symbols/transport/bus_station.svg" />
+		</m>
+		<m cat="public_transport" k="highway" v="bus_stop" zoom-min="14">
+			<symbol src="assets:symbols/transport/bus_stop.svg" />
+		</m>
+		<m cat="public_transport" e="way" k="aeroway" v="helipad" zoom-min="14">
+			<symbol id="helipad" src="assets:symbols/transport/helicopter.svg" />
+			<caption fill="#0092DA" size="12" style="bold" k="name" priority="-20" stroke="#FFFFFF" stroke-width="2.0" />
+		</m>
+		<m cat="public_transport" e="way" k="aeroway" v="aerodrome|airport" zoom-min="14">
+			<symbol id="airport" src="assets:symbols/transport/airport2.svg" />
+		</m>
+		<m cat="public_transport" e="way" k="aeroway" v="runway" zoom-min="14">
+			<caption fill="#000000" size="12" style="bold" k="ref" priority="-10" stroke="#FFFFFF" stroke-width="2.0" />
+		</m>
+		<m select="when-matched">
+			<text use="poi-transport" />
+		</m>
+	</m>
+
+    <!-- shops LAYER -->
+	<m select="first">
+		<m cat="shop" k="amenity|shop" >
+			<m v="marketplace" zoom-min="16">
+				<symbol id="marketplace" src="assets:symbols/shopping/marketplace.svg" />
+			</m>
+			<m v="supermarket|department_store|frozen_food|mall|wholesale" zoom-min="16">
+				<symbol src="assets:symbols/shopping/supermarket.svg" />
+			</m>
+			<m v="confectionery|convenience|general|kiosk" zoom-min="16">
+				<symbol src="assets:symbols/shopping/convenience.svg" />
+			</m>
+			<m v="bakery" zoom-min="16">
+				<symbol src="assets:symbols/shopping/bakery.svg" />
+			</m>
+			<m k="shop" v="doityourself|electrical|garden_centre|hardware|houseware|locksmith|paint|tool_hire" zoom-min="16">
+				<symbol src="assets:symbols/shopping/diy.svg" />
+			</m>
+			<m k="shop" v="bicycle" zoom-min="16">
+				<symbol src="assets:symbols/shopping/bicycle.svg" />
+			</m>
+			<m v="organic|farm|greengrocer|cheese|health_food" zoom-min="16">
+				<symbol src="assets:symbols/shopping/greengrocer.svg" />
+			</m>
+			<m v="butcher|seafood|deli" zoom-min="16">
+				<symbol src="assets:symbols/shopping/butcher.svg" />
+			</m>
+			<m v="laundry|dry_cleaning" zoom-min="16">
+				<symbol src="assets:symbols/shopping/laundrette.svg" />
+			</m>
+			<m v="beverages|alcohol" zoom-min="16">
+				<symbol src="assets:symbols/shopping/alcohol.svg" />
+			</m>
+			<m v="books|newsagent" zoom-min="16">
+				<symbol src="assets:symbols/shopping/book.svg" />
+			</m>
+			<m v="car|car_repair|car_parts|motorcycle|motorcycle_repair|motorcycle_parts" zoom-min="15">
+				<symbol src="assets:symbols/shopping/car_repair.svg" />
+			</m>
+			<m v="beauty|boutique|charity|clothes|computer|electronics|hairdresser|optician|second_hand|shoes|tattoo" zoom-min="16">
+				<symbol id="shop" src="assets:symbols/dot_magenta.svg" />
+			</m>
+		</m>
+		<m select="when-matched" >
+			<text use="poi-fuel" />
+		</m>
+    </m>
+
+	<!-- tourist attractions LAYER -->
+	<m select="first">
+		<m cat="attraction" k="tourism" zoom-min="15">
+			<m v="attraction">
+				<symbol src="assets:symbols/tourist/attraction.svg" />
+			</m>
+			<m v="attraction|picnic_site">
+				<symbol src="assets:symbols/tourist/attraction.svg" />
+			</m>
+			<m v="information">
+				<symbol src="assets:symbols/tourist/information.svg" />
+			</m>
+			<m v="zoo">
+				<symbol src="assets:symbols/tourist/zoo.svg" />
+			</m>
+		</m>
+        <m cat="attraction" e="any" k="tourism|building" v="museum" zoom-min="15">
+            <symbol id="museum" src="assets:symbols/tourist/museum.svg" />
+        </m>
+        <m cat="attraction" e="any" k="historic|building" zoom-min="15">
+			<m v="castle">
+				<symbol src="assets:symbols/tourist/castle2.svg" />
+			</m>
+			<m v="ruins">
+				<symbol src="assets:symbols/tourist/ruin.svg" />
+			</m>
+		</m>
+        <m cat="attraction" e="any" k="historic" zoom-min="15">
+			<m v="archaeological_site">
+				<symbol src="assets:symbols/tourist/archaeological2.svg" />
+			</m>
+			<m v="castle">
+				<symbol src="assets:symbols/tourist/castle2.svg" />
+			</m>
+			<m v="memorial">
+				<symbol src="assets:symbols/tourist/memorial.svg" />
+			</m>
+			<m v="monument">
+				<symbol src="assets:symbols/tourist/monument.svg" />
+			</m>
+		</m>
+        <m cat="attraction" e="any" k="historic|building" zoom-min="15">
+			<m v="ruins|castle|monument">
+				<symbol src="assets:symbols/tourist/castle2.svg" />
+			</m>
+			<m v="church|cathedral|chapel" zoom-min="15">
+				<symbol src="assets:symbols/place_of_worship/christian.svg" />
+			</m>
+		</m>
+        <m cat="attraction" e="any" k="amenity" v="place_of_worship" zoom-min="15">
+            <m e="any" k="religion" v="buddhist">
+                <symbol id="buddhist" src="assets:symbols/place_of_worship/buddhist.svg" />
+            </m>
+            <m e="any" k="religion" v="christian">
+                <symbol id="christian" src="assets:symbols/place_of_worship/christian.svg" />
+            </m>
+            <m e="any" k="religion" v="hindu">
+                <symbol id="hindu" src="assets:symbols/place_of_worship/hindu.svg" />
+            </m>
+            <m e="any" k="religion" v="jewish">
+                <symbol id="jewish" src="assets:symbols/place_of_worship/jewish.svg" />
+            </m>
+            <m e="any" k="religion" v="muslim">
+                <symbol id="muslim" src="assets:symbols/place_of_worship/islamic.svg" />
+            </m>
+            <m e="any" k="religion" v="shinto">
+                <symbol id="shinto" src="assets:symbols/place_of_worship/shinto.svg" />
+            </m>
+            <m e="any" k="religion" v="~|*">
+                <symbol id="religion-unknown" src="assets:symbols/place_of_worship/unknown.svg" />
+            </m>
+        </m>
+        <m cat="attraction" e="any" k="man_made" zoom-min="15">
+			<m v="windmill">
+				<symbol src="assets:symbols/tourist/windmill.svg" />
+			</m>
+			<m v="lighthouse">
+				<symbol id="lighthouse" src="assets:symbols/transport/lighthouse.svg" />
+			</m>
+		</m>
+		<m select="when-matched" >
+			<text use="poi" />
+		</m>
+    </m>
+
+	<!-- viewpoint LAYER -->
+	<m select="first">
+		<m k="tourism">
+			<m cat="view" v="viewpoint" zoom-min="13">
+				<symbol src="assets:symbols/tourist/view_point.svg" />
+			</m>
+		</m>
+		<m cat="mountain_pass" k="mountain_pass" v="yes" zoom-min="13">
+			<symbol src="assets:symbols/poi/mountain_pass.svg" symbol-percent="60" />
+		</m>
+		<m select="when-matched">
+			<text use="poi" />
+		</m>
+	</m>
+		
+</rendertheme>

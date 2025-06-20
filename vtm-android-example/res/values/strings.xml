@@ -3,6 +3,8 @@
     <string name="app_name">VTM Samples</string>
     <string name="theme_motorider">Motorider</string>
     <string name="theme_biker">Biker</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_indigo">Indigo</string>
     <string name="theme_default">Default</string>
     <string name="theme_osmarender">Osmarender</string>
     <string name="theme_external">External theme (Android 5)</string>

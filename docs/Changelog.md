@@ -3,6 +3,7 @@
 ## Next version
 
 - `ThemeCallback.getText` method [#1225](https://github.com/mapsforge/vtm/pull/1225)
+- Dark and Indigo map themes [#1229](https://github.com/mapsforge/vtm/issues/1229)
 - Motorider map theme improvements [#1183](https://github.com/mapsforge/vtm/issues/1183)
 - Biker map theme improvements [#1192](https://github.com/mapsforge/vtm/issues/1192)
 - Minor improvements and bug fixes

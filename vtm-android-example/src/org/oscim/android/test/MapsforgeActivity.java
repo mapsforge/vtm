@@ -120,6 +120,18 @@ public class MapsforgeActivity extends MapActivity {
             mTheme = mMap.setTheme(VtmThemes.BIKER);
             item.setChecked(true);
             return true;
+        } else if (itemId == R.id.theme_dark) {
+            if (mTheme != null)
+                mTheme.dispose();
+            mTheme = mMap.setTheme(VtmThemes.DARK);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_indigo) {
+            if (mTheme != null)
+                mTheme.dispose();
+            mTheme = mMap.setTheme(VtmThemes.INDIGO);
+            item.setChecked(true);
+            return true;
         } else if (itemId == R.id.theme_default) {
             if (mTheme != null)
                 mTheme.dispose();

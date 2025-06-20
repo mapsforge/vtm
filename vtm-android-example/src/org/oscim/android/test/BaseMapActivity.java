@@ -84,6 +84,14 @@ public class BaseMapActivity extends MapActivity {
             mMap.setTheme(VtmThemes.BIKER);
             item.setChecked(true);
             return true;
+        } else if (itemId == R.id.theme_dark) {
+            mMap.setTheme(VtmThemes.DARK);
+            item.setChecked(true);
+            return true;
+        } else if (itemId == R.id.theme_indigo) {
+            mMap.setTheme(VtmThemes.INDIGO);
+            item.setChecked(true);
+            return true;
         } else if (itemId == R.id.theme_default) {
             mMap.setTheme(VtmThemes.DEFAULT);
             item.setChecked(true);

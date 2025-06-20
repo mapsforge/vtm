@@ -34,8 +34,10 @@ import java.io.InputStream;
  */
 public enum VtmThemes implements ThemeFile {
 
+    DARK("vtm/dark.xml"),
     DEFAULT("vtm/default.xml"),
     BIKER("vtm/biker.xml"),
+    INDIGO("vtm/indigo.xml"),
     MAPZEN("vtm/mapzen.xml"),
     MOTORIDER("vtm/motorider.xml"),
     NEWTRON("vtm/newtron.xml"),
