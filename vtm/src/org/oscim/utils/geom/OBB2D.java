@@ -86,8 +86,8 @@ public class OBB2D {
         }
     }
 
-    float originX;
-    float originY;
+    public float originX;
+    public float originY;
 
     public final float[] vec = new float[4 * 2 + 2 * 2];
 
