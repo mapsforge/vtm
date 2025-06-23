@@ -35,6 +35,7 @@ import org.oscim.utils.FastMath;
 import org.oscim.utils.Parameters;
 import org.oscim.utils.geom.OBB2D;
 
+import java.util.logging.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,6 +44,8 @@ import static org.oscim.layers.tile.MapTile.State.READY;
 
 public class LabelPlacement {
     static final boolean dbg = false;
+
+    private static final Logger log = Logger.getLogger(LabelPlacement.class.getName());
 
     public static final LabelTileData getLabels(MapTile tile) {
         return (LabelTileData) tile.getData(LabelLayer.LABEL_DATA);
@@ -101,12 +104,10 @@ public class LabelPlacement {
     private byte checkOverlap(Label l) {
 
         for (Label o = mLabels; o != null; ) {
-            //check bounding box
             if (!Label.bboxOverlaps(l, o, 100)) {
-                o = (Label) o.next;
-                continue;
-            }
-
+                    o = (Label) o.next;
+                    continue;
+	    }
             if (Label.shareText(l, o)) {
                 // keep the label that was active earlier
                 if (o.active <= l.active)
@@ -196,7 +197,6 @@ public class LabelPlacement {
 
     private Label addWayLabels(MapTile t, Label l, float dx, float dy,
                                double scale) {
-
         LabelTileData ld = getLabels(t);
         if (ld == null)
             return l;
@@ -282,13 +282,19 @@ public class LabelPlacement {
                     l.text.dy);
 
             for (Label o = mLabels; o != null; ) {
-                if (l.bbox.overlaps(o.bbox)) {
+                if (o.text.caption && Label.withinRepeatProximity(l, o)){
+		    o = removeLabel(o);
+                    continue;
+		}
+
+		if (l.bbox.overlaps(o.bbox)) {
                     if (l.text.priority < o.text.priority) {
                         o = removeLabel(o);
                         continue;
                     }
                     continue O;
                 }
+
                 o = (Label) o.next;
             }
 

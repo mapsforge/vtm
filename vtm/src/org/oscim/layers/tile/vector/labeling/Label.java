@@ -17,10 +17,16 @@
 package org.oscim.layers.tile.vector.labeling;
 
 import org.oscim.renderer.bucket.TextItem;
+import org.oscim.utils.geom.GeometryUtils;
 import org.oscim.utils.geom.OBB2D;
+import org.oscim.utils.Parameters;
+
+import java.util.logging.Logger;
 
 final class Label extends TextItem {
     TextItem item;
+
+    private static final Logger log = Logger.getLogger(Label.class.getName());
 
     //Link blocking;
     //Link blockedBy;
@@ -60,6 +66,19 @@ final class Label extends TextItem {
             return true;
         }
 
+        return false;
+    }
+
+    public static boolean withinRepeatProximity(Label l1, Label l2) {
+        if (shareText(l1, l2)) {
+	    // get distance between Label centers
+	    float[] p1 = {l1.bbox.originX, l1.bbox.originY};
+	    float[] p2 = {l2.bbox.originX, l2.bbox.originY};
+	    double d = GeometryUtils.distance2D(p1, p2);
+
+	    //log.info("DWN d= " + d + " p1=" + p1[0] + "," + p1[1] + " p2=" + p2[0] + "," + p2[1] + " -- " + l1.label);
+            return d < Parameters.REPEAT_PROXIMITY; 
+	} 
         return false;
     }
 
