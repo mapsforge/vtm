@@ -39,7 +39,7 @@ public class LocationTextureRenderer extends BucketRenderer {
     private static final long ANIM_RATE = 50;
     private static final long INTERVAL = 2000;
 
-    public static float ACCURACY_CIRCLE_SIZE = 30;
+    public static float ACCURACY_CIRCLE_SIZE = 0;
     public static float CIRCLE_SIZE = /*30*/0;
     private static final int COLOR = 0xff3333cc;
     private static final int SHOW_ACCURACY_ZOOM = 16;
