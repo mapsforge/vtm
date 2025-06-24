@@ -23,8 +23,6 @@ import org.oscim.utils.Parameters;
 final class Label extends TextItem {
     TextItem item;
 
-    private static final Logger log = Logger.getLogger(Label.class.getName());
-
     //Link blocking;
     //Link blockedBy;
     // shared list of all label for a tile
