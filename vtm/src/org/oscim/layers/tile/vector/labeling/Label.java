@@ -71,14 +71,11 @@ final class Label extends TextItem {
 
     public static boolean withinRepeatProximity(Label l1, Label l2) {
         if (shareText(l1, l2)) {
-	    // get distance between Label centers
-	    float[] p1 = {l1.bbox.originX, l1.bbox.originY};
-	    float[] p2 = {l2.bbox.originX, l2.bbox.originY};
-	    double d = GeometryUtils.distance2D(p1, p2);
-
-	    //log.info("DWN d= " + d + " p1=" + p1[0] + "," + p1[1] + " p2=" + p2[0] + "," + p2[1] + " -- " + l1.label);
-            return d < Parameters.REPEAT_PROXIMITY; 
-	} 
+            // get distance squared between Label centers
+            float dx = l2.bbox.originX - l1.bbox.originX;
+            float dy = l2.bbox.originY - l1.bbox.originY;
+            return (dx * dx + dy * dy) < Parameters.REPEAT_PROXIMITY_SQR;
+        }
         return false;
     }
 

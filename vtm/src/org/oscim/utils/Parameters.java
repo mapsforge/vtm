@@ -76,7 +76,7 @@ public final class Parameters {
      * Repeat proximity (distance squared) for labels with same text
      * TODO - use squared distance to avoid sqrt
      */
-    public static double REPEAT_PROXIMITY = 3.5;
+    public static double REPEAT_PROXIMITY_SQR = 16.0;
 
     /**
      * Optimal placement of labels or symbols on polygons.
