@@ -70,7 +70,7 @@ final class Label extends TextItem {
     }
 
     public static boolean withinRepeatProximity(Label l1, Label l2) {
-        if (shareText(l1, l2)) {
+        if (Parameters.REPEAT_PROXIMITY_SQR > 0.0 && shareText(l1, l2)) {
             // get distance squared between Label centers
             float dx = l2.bbox.originX - l1.bbox.originX;
             float dy = l2.bbox.originY - l1.bbox.originY;
