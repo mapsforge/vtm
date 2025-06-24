@@ -104,10 +104,12 @@ public class LabelPlacement {
     private byte checkOverlap(Label l) {
 
         for (Label o = mLabels; o != null; ) {
+            //check bounding box
             if (!Label.bboxOverlaps(l, o, 100)) {
-                    o = (Label) o.next;
-                    continue;
-	    }
+                o = (Label) o.next;
+                continue;
+            }
+
             if (Label.shareText(l, o)) {
                 // keep the label that was active earlier
                 if (o.active <= l.active)
