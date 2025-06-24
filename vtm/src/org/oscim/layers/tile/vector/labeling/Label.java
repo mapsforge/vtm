@@ -17,11 +17,8 @@
 package org.oscim.layers.tile.vector.labeling;
 
 import org.oscim.renderer.bucket.TextItem;
-import org.oscim.utils.geom.GeometryUtils;
 import org.oscim.utils.geom.OBB2D;
 import org.oscim.utils.Parameters;
-
-import java.util.logging.Logger;
 
 final class Label extends TextItem {
     TextItem item;
