@@ -294,7 +294,6 @@ public class LabelPlacement {
                     }
                     continue O;
                 }
-
                 o = (Label) o.next;
             }
 
