@@ -282,12 +282,11 @@ public class LabelPlacement {
                     l.text.dy);
 
             for (Label o = mLabels; o != null; ) {
-                if (o.text.caption && Label.withinRepeatProximity(l, o)){
-		    o = removeLabel(o);
+                if (o.text.caption && Label.withinRepeatProximity(l, o)) {
+                    o = removeLabel(o);
                     continue;
-		}
-
-		if (l.bbox.overlaps(o.bbox)) {
+                }
+                if (l.bbox.overlaps(o.bbox)) {
                     if (l.text.priority < o.text.priority) {
                         o = removeLabel(o);
                         continue;
