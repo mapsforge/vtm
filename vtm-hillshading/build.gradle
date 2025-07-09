@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 
 dependencies {
     api project(':vtm')
-    api "org.mapsforge:mapsforge-map:$mapsforgeVersion"
+    api "com.github.mapsforge.mapsforge:mapsforge-map:$mapsforgeVersion"
 }
 
 sourceSets {
