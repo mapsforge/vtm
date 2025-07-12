@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 	
     <!-- This is the 2nd generation OpenGL/VTM "Biker" theme -->
-	<!-- Version 30 20th June 2025-->
+	<!-- Version 32 12th July 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -1491,20 +1491,28 @@
 		</m>
 	</m>
 
-    <!-- accommodation LAYER -->
+    <!-- accommodation / camping / caravan / hut / shelter LAYER -->
 	<m k="name" select="first">
 		<m k="building|tourism">
-			<m cat="accommodation" v="camp_site" zoom-min="15">
-				<symbol src="assets:symbols/accommodation/camping.svg" />
-			</m>
-			<m cat="accommodation" v="caravan_site" zoom-min="15">
-				<symbol src="assets:symbols/accommodation/caravan_park.svg" />
-			</m>
-			<m cat="accommodation" v="guest_house|hotel" zoom-min="15">
-				<symbol src="assets:symbols/accommodation/hotel2.svg" />
-			</m>
-			<m cat="accommodation" v="hostel" zoom-min="15">
-				<symbol src="assets:symbols/accommodation/hostel.svg" />
+			<m cat="accommodation">
+				<m v="camp_site" zoom-min="12">
+					<symbol src="assets:symbols/accommodation/camping.svg" />
+				</m>
+				<m v="caravan_site" zoom-min="12">
+					<symbol src="assets:symbols/accommodation/caravan_park.svg" />
+				</m>
+				<m e="any" v="alpine_hut|wilderness_hut" zoom-min="12">
+					<symbol src="assets:symbols/accommodation/alpinehut.svg" />
+				</m>
+				<m v="chalet" zoom-min="12">
+					<symbol src="assets:symbols/accommodation/chalet.svg" />
+				</m>
+				<m v="guest_house|hotel|motel" zoom-min="12">
+					<symbol src="assets:symbols/accommodation/hotel2.svg" />
+				</m>
+				<m v="hostel" zoom-min="12">
+					<symbol src="assets:symbols/accommodation/hostel.svg" />
+				</m>
 			</m>
 		</m>
 		<m select="when-matched">
@@ -1617,6 +1625,9 @@
 	
 	<!-- POI miscellaneous and holding area LAYER -->
 	<m select="first">
+		<m cat="misc" e="any" k="amenity" v="shelter" zoom-min="16">
+			<symbol src="assets:symbols/accommodation/shelter2.svg" />
+		</m>
         <m cat="misc" e="any" k="amenity" v="kindergarten" zoom-min="16">
             <symbol id="nursery" src="assets:symbols/education/nursery3.svg" />
         </m>
