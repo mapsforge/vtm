@@ -24,7 +24,7 @@ if (project.hasProperty("SONATYPE_USERNAME")) {
     afterEvaluate {
         project.apply from: "${rootProject.projectDir}/deploy.gradle"
         tasks.named("sourcesJar") {
-            duplicatesStrategy DuplicatesStrategy.INCLUDE
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
         }
     }
 }

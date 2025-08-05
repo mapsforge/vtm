@@ -8,8 +8,8 @@ dependencies {
 }
 
 android {
-    namespace 'org.oscim.app'
-    compileSdk androidCompileSdk()
+    namespace = 'org.oscim.app'
+    compileSdkVersion androidCompileSdk()
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -19,8 +19,8 @@ android {
     defaultConfig {
         versionCode project.versionCode()
         versionName project.versionName()
-        minSdk androidMinSdk()
-        targetSdk androidTargetSdk()
+        minSdkVersion androidMinSdk()
+        targetSdkVersion androidTargetSdk()
     }
 
     sourceSets {
@@ -38,7 +38,7 @@ android {
     }
 
     lint {
-        abortOnError false
+        abortOnError = false
     }
 
     packagingOptions {
