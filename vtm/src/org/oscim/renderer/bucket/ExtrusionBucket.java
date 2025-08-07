@@ -649,12 +649,16 @@ public class ExtrusionBucket extends RenderBucket {
     }
 
     void releaseVertexPool() {
-        if (mVertexMap == null)
-            return;
+        try {
+            if (mVertexMap == null)
+                return;
 
-        synchronized (vertexPool) {
-            vertexPool.releaseAll(mVertexMap.releaseItems());
-            mVertexMap = vertexMapPool.release(mVertexMap);
+            synchronized (vertexPool) {
+                vertexPool.releaseAll(mVertexMap.releaseItems());
+                mVertexMap = vertexMapPool.release(mVertexMap);
+            }
+        } catch (Exception e) {
+            log.severe(e.toString());
         }
     }
 
