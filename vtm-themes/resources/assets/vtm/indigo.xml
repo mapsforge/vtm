@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     
     <!-- This is the OpenGL/VTM "Indigo" theme based on the Biker map theme -->
-    <!-- Version 33 27th July 2025-->
+    <!-- Version 34 15th August 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -420,6 +420,7 @@
     <style-text caption="true" fill="#FFFFFF" id="suburb-caption" k="name" priority="5" size="12" style="italic" stroke="#000000" stroke-width="2.0" />
     <style-text caption="true" fill="#FFFFFF" id="hamlet-caption" k="name" priority="6" size="12" stroke="#000000" stroke-width="2.0" />
     <style-text caption="true" fill="#FFFFFF" id="island-caption" k="name" priority="6" size="12" style="italic" stroke="#000000" stroke-width="2.0" />
+    <style-text fill="#b3b3b3" id="border-caption" k="name" priority="6" size="11" style="bold" stroke="#000000" stroke-width="2.0" />
 
     <!-- POI captions/labels -->
     <style-text priority="3" caption="true" dy="-20" fill="#FFFFFF" font-family="medium" id="poi" k="name" size="12" stroke="#b35900" stroke-width="1.0" />
@@ -1470,19 +1471,20 @@
     <m k="boundary" v="administrative">
         <m k="admin_level">
             <m v="2"> <!-- country border -->
-                <m zoom-min="6" zoom-max="11">
-                    <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="2.5" stroke="#737373" width="1.5" />
+                <m zoom-min="6" zoom-max="13">
+                    <line fix="true" stipple="6" stipple-stroke="#CCCCCC" stipple-width="2.5" stroke="#737373" width="1.5" />
                 </m>
-                <m zoom-min="12">
-                    <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#737373" width="2.0" />
+                <m zoom-min="14">
+                    <line fix="true" stipple="6" stipple-stroke="#CCCCCC" stipple-width="1.0" stroke="#737373" width="1.5" />
+                    <text use="border-caption" />
                 </m>
             </m>
             <m v="4"> <!-- state border -->
                 <m zoom-min="6" zoom-max="11">
-                    <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="2.5" stroke="#737373" width="1.5" />
+                    <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="2.5" stroke="#737373" width="1.0" />
                 </m>
                 <m zoom-min="12">
-                    <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#737373" width="2.0" />
+                    <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#737373" width="1.0" />
                 </m>
             </m>
             <m v="5" zoom-min="12">
