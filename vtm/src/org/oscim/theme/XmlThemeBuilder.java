@@ -825,6 +825,13 @@ public class XmlThemeBuilder {
         if (src != null)
             b.texture = Utils.loadTexture(mTheme.getRelativePathPrefix(), src, mTheme.getResourceProvider(), b.symbolWidth, b.symbolHeight, b.symbolPercent, mThemeCallback);
 
+        if (mThemeCallback != null) {
+            if (mCurrentRule != null) {
+                b.color(mThemeCallback.getColor(mCurrentRule.keys, mCurrentRule.values, b.fillColor));
+                b.strokeColor(mThemeCallback.getColor(mCurrentRule.keys, mCurrentRule.values, b.strokeColor));
+            }
+        }
+
         return b.build();
     }
 

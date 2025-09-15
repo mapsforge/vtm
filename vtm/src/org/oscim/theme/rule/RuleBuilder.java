@@ -3,7 +3,7 @@
  * Copyright 2016-2017 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later version.
@@ -18,12 +18,7 @@
 package org.oscim.theme.rule;
 
 import org.oscim.theme.IRenderTheme.ThemeException;
-import org.oscim.theme.rule.Rule.Element;
-import org.oscim.theme.rule.Rule.NegativeRule;
-import org.oscim.theme.rule.Rule.PositiveRuleK;
-import org.oscim.theme.rule.Rule.PositiveRuleKV;
-import org.oscim.theme.rule.Rule.PositiveRuleMultiKV;
-import org.oscim.theme.rule.Rule.PositiveRuleV;
+import org.oscim.theme.rule.Rule.*;
 import org.oscim.theme.styles.RenderStyle;
 import org.oscim.theme.styles.RenderStyle.StyleBuilder;
 
@@ -48,8 +43,8 @@ public class RuleBuilder {
     int selector;
     RuleType type;
 
-    String keys[];
-    String values[];
+    public String keys[];
+    public String values[];
 
     ArrayList<RenderStyle> renderStyles = new ArrayList<>(4);
     ArrayList<RuleBuilder> subRules = new ArrayList<>(4);

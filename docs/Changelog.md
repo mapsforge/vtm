@@ -2,6 +2,7 @@
 
 ## Next version
 
+- `ThemeCallback.getColor` method [#1251](https://github.com/mapsforge/vtm/pull/1251)
 - Minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.27.0)
 

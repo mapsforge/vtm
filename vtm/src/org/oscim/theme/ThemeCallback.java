@@ -33,6 +33,11 @@ public interface ThemeCallback {
     int getColor(RenderStyle origin, int color);
 
     /**
+     * @return the color-int
+     */
+    int getColor(String[] keys, String[] values, int color);
+
+    /**
      * @return the text
      */
     String getText(MapElement element, String text);
