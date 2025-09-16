@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     
     <!-- This is the 2nd generation OpenGL/VTM "Biker" theme -->
-    <!-- Version 34 15th August 2025-->
+    <!-- Version 35 16th September 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -23,6 +23,22 @@
             <name lang="pl" value="Zakwaterowanie" />
             <name lang="zh" value="住宿" />
             <cat id="accommodation" />
+        </layer>
+        <layer id="camping">
+            <name lang="ar" value="موقع التخييم والقوافل" />
+            <name lang="ca" value="露营和旅行车营地" />
+            <name lang="cs" value="Kemp a karavan" />
+            <name lang="de" value="Camping- und Caravanplatz" />
+            <name lang="el" value="Χώρος για κάμπινγκ και τροχόσπιτα" />
+            <name lang="en" value="Camping and Caravan site" />
+            <name lang="es" value="Camping y zona de caravanas" />
+            <name lang="fr" value="Camping et caravaning" />
+            <name lang="it" value="Campeggio e area roulotte" />
+            <name lang="ko" value="캠핑 및 캐러밴 사이트" />
+            <name lang="nl" value="Camping en caravanterrein" />
+            <name lang="pl" value="Pole namiotowe i kempingowe" />
+            <name lang="zh" value="露营和旅行车营地" />
+            <cat id="camping" />
         </layer>
         <layer id="money">
             <name lang="ar" value="البنوك وأجهزة الصراف الآلي" />
@@ -135,6 +151,22 @@
             <name lang="pl" value="Miejsca parkingowe" />
             <name lang="zh" value="停车场" />
             <cat id="parking" />
+        </layer>
+        <layer id="moto-parking">
+            <name lang="ar" value="موقف الدراجات النارية" />
+            <name lang="ca" value="Aparcament de motos" />
+            <name lang="cs" value="Parkování motocyklů" />
+            <name lang="de" value="Motorradparkplatz" />
+            <name lang="el" value="Πάρκινγκ μοτοσικλετών" />
+            <name lang="en" value="Motorcycle parking" />
+            <name lang="es" value="Estacionamiento de motocicletas" />
+            <name lang="fr" value="Parking moto" />
+            <name lang="it" value="Parcheggio per moto" />
+            <name lang="ko" value="오토바이 주차" />
+            <name lang="nl" value="Motorfietsparkeerplaats" />
+            <name lang="pl" value="Parking dla motocykli" />
+            <name lang="zh" value="摩托车停车场" />
+            <cat id="moto-parking" />
         </layer>
         <layer id="misc">
             <name lang="ar" value="متنوع" />
@@ -346,6 +378,7 @@
         </layer>
         <layer id="normal" visible="true">
             <overlay id="accommodation" />
+            <overlay id="camping" />
             <overlay id="money" />
             <overlay id="entertainment" />
             <overlay id="food" />
@@ -353,6 +386,7 @@
             <overlay id="fuel" />
             <overlay id="charging_station" />
             <overlay id="parking" />
+            <overlay id="moto-parking" />
             <overlay id="misc" />
             <overlay id="mountain_pass" />
             <overlay id="mountain_peak" />
@@ -1505,7 +1539,7 @@
     <!-- accommodation / camping / caravan / hut LAYER -->
     <m k="name" select="first">
         <m k="building|tourism">
-            <m cat="accommodation">
+            <m cat="camping">
                 <m v="camp_site" zoom-min="12">
                     <symbol src="assets:symbols/accommodation/camping.svg" />
                 </m>
@@ -1515,6 +1549,8 @@
                 <m e="any" v="alpine_hut|wilderness_hut" zoom-min="12">
                     <symbol src="assets:symbols/accommodation/alpinehut.svg" />
                 </m>
+            </m>
+            <m cat="accommodation">
                 <m v="chalet" zoom-min="12">
                     <symbol src="assets:symbols/accommodation/chalet.svg" />
                 </m>
@@ -1622,7 +1658,7 @@
     <!-- parking LAYER -->
     <m select="first">
         <m k="amenity">
-            <m cat="parking" v="motorcycle_parking" zoom-min="14">
+            <m cat="moto-parking" v="motorcycle_parking" zoom-min="14">
                 <symbol src="assets:symbols/custom/transport/parking_motorcycle.svg" />
             </m>
             <m cat="parking" v="parking" zoom-min="14">
@@ -1697,9 +1733,6 @@
         </m>
         <m cat="misc" e="any" k="amenity" v="drinking_water" zoom-min="16">
             <symbol src="assets:symbols/food/drinkingtap.svg" />
-        </m>
-        <m cat="misc" e="any" k="tourism" v="picnic_site" zoom-min="15">
-            <symbol src="assets:symbols/tourist/picnic.svg" />
         </m>
         <!--<m cat="misc" e="node" k="amenity" v="bench" zoom-min="17">
             <symbol src="assets:symbols/bench.svg" />
