@@ -182,7 +182,8 @@ public class MapFileTileSource extends TileSource implements IMapFileTileSource 
             mapFile = file;
             databaseIndexCache = new IndexCache(inputChannel, INDEX_CACHE_SIZE);
 
-            log.fine("File version: " + fileInfo.fileVersion);
+            if (fileInfo != null)
+                log.fine("File version: " + fileInfo.fileVersion);
             return OpenResult.SUCCESS;
         } catch (IOException e) {
             log.severe(e.toString());
