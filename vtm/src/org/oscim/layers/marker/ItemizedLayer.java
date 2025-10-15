@@ -38,6 +38,8 @@ import java.util.List;
 
 public class ItemizedLayer extends MarkerLayer implements GestureListener {
 
+    public static int TOUCH_SIZE = 20;
+
     protected final List<MarkerInterface> mItemList;
     protected final Point mTmpPoint = new Point();
     protected OnItemGestureListener<MarkerInterface> mOnItemGestureListener;
@@ -194,9 +196,8 @@ public class ItemizedLayer extends MarkerLayer implements GestureListener {
         int inside = -1;
         double insideY = -Double.MAX_VALUE;
 
-        // squared dist: 50x50 px ~ 2mm on 400dpi
         // 20x20 px on baseline mdpi (160dpi)
-        double dist = (20 * CanvasAdapter.getScale()) * (20 * CanvasAdapter.getScale());
+        double dist = (TOUCH_SIZE * CanvasAdapter.getScale()) * (TOUCH_SIZE * CanvasAdapter.getScale());
 
         for (int i = 0; i < size; i++) {
             MarkerInterface item = mItemList.get(i);
