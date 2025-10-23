@@ -222,7 +222,7 @@ public abstract class Map implements TaskQueue {
             throw new IllegalStateException();
         }
 
-        MapRenderer.setBackgroundColor(theme.getMapBackground());
+        MapRenderer.setBackgroundColor(theme.getMapBackgroundOutside());
 
         clearMap();
     }

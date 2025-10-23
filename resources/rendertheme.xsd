@@ -354,6 +354,8 @@
         </xs:sequence>
         <xs:attribute name="version" type="xs:positiveInteger" use="required" />
         <xs:attribute name="map-background" default="#ffffff" type="tns:color" use="optional" />
+        <xs:attribute name="map-background-outside" default="#ffffff" type="tns:color"
+            use="optional" />
         <xs:attribute name="base-stroke-width" default="1" type="tns:nonNegativeFloat"
             use="optional" />
         <xs:attribute name="base-text-scale" default="1" type="tns:nonNegativeFloat"

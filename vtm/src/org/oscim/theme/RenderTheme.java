@@ -42,6 +42,7 @@ public class RenderTheme implements IRenderTheme {
 
     private final float mBaseTextSize;
     private final int mMapBackground;
+    private final int mMapBackgroundOutside;
 
     private final int mLevels;
     private final Rule[] mRules;
@@ -81,25 +82,26 @@ public class RenderTheme implements IRenderTheme {
 
     private final RenderStyleCache[] mStyleCache;
 
-    public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels) {
-        this(mapBackground, baseTextSize, rules, levels, false);
+    public RenderTheme(int mapBackground, int mapBackgroundOutside, float baseTextSize, Rule[] rules, int levels) {
+        this(mapBackground, mapBackgroundOutside, baseTextSize, rules, levels, false);
     }
 
-    public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels,
+    public RenderTheme(int mapBackground, int mapBackgroundOutside, float baseTextSize, Rule[] rules, int levels,
                        Map<String, String> transformKeyMap, Map<Tag, Tag> transformTagMap) {
-        this(mapBackground, baseTextSize, rules, levels, transformKeyMap, transformTagMap, false);
+        this(mapBackground, mapBackgroundOutside, baseTextSize, rules, levels, transformKeyMap, transformTagMap, false);
     }
 
-    public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels, boolean mapsforgeTheme) {
-        this(mapBackground, baseTextSize, rules, levels, null, null, mapsforgeTheme);
+    public RenderTheme(int mapBackground, int mapBackgroundOutside, float baseTextSize, Rule[] rules, int levels, boolean mapsforgeTheme) {
+        this(mapBackground, mapBackgroundOutside, baseTextSize, rules, levels, null, null, mapsforgeTheme);
     }
 
-    public RenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels,
+    public RenderTheme(int mapBackground, int mapBackgroundOutside, float baseTextSize, Rule[] rules, int levels,
                        Map<String, String> transformKeyMap, Map<Tag, Tag> transformTagMap, boolean mapsforgeTheme) {
         if (rules == null)
             throw new IllegalArgumentException("rules missing");
 
         mMapBackground = mapBackground;
+        mMapBackgroundOutside = mapBackgroundOutside;
         mBaseTextSize = baseTextSize;
         mLevels = levels;
         mRules = rules;
@@ -134,6 +136,11 @@ public class RenderTheme implements IRenderTheme {
     @Override
     public int getMapBackground() {
         return mMapBackground;
+    }
+
+    @Override
+    public int getMapBackgroundOutside() {
+        return mMapBackgroundOutside;
     }
 
     Rule[] getRules() {

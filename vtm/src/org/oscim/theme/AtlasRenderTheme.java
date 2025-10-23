@@ -27,14 +27,14 @@ public class AtlasRenderTheme extends RenderTheme {
     private final Map<Object, TextureRegion> textureRegionMap;
     private final List<TextureAtlas> atlasList;
 
-    public AtlasRenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels,
+    public AtlasRenderTheme(int mapBackground, int mapBackgroundOutside, float baseTextSize, Rule[] rules, int levels,
                             Map<Object, TextureRegion> textureRegionMap, List<TextureAtlas> atlasList) {
-        this(mapBackground, baseTextSize, rules, levels, false, textureRegionMap, atlasList);
+        this(mapBackground, mapBackgroundOutside, baseTextSize, rules, levels, false, textureRegionMap, atlasList);
     }
 
-    public AtlasRenderTheme(int mapBackground, float baseTextSize, Rule[] rules, int levels, boolean mapsforgeTheme,
+    public AtlasRenderTheme(int mapBackground, int mapBackgroundOutside, float baseTextSize, Rule[] rules, int levels, boolean mapsforgeTheme,
                             Map<Object, TextureRegion> textureRegionMap, List<TextureAtlas> atlasList) {
-        super(mapBackground, baseTextSize, rules, levels, mapsforgeTheme);
+        super(mapBackground, mapBackgroundOutside, baseTextSize, rules, levels, mapsforgeTheme);
         this.textureRegionMap = textureRegionMap;
         this.atlasList = atlasList;
     }

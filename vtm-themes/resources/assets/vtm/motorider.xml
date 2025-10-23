@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#FFFFFF"
-    version="1" xmlns="http://opensciencemap.org/rendertheme"
+    map-background-outside="#DDDDDD" version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->

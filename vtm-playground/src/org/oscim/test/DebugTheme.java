@@ -39,6 +39,11 @@ public class DebugTheme implements IRenderTheme {
     }
 
     @Override
+    public int getMapBackgroundOutside() {
+        return 0;
+    }
+
+    @Override
     public boolean isMapsforgeTheme() {
         return false;
     }

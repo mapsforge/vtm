@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" base-stroke-width="0.7"
-    map-background="#d8dbcb" version="1" xmlns="http://opensciencemap.org/rendertheme"
+<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#d8dbcb"
+    map-background-outside="#DDDDDD" base-stroke-width="0.7" version="1" xmlns="http://opensciencemap.org/rendertheme"
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
     <tag-transform k="render_height" k-lib="height" />

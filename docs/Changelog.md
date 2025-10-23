@@ -2,6 +2,7 @@
 
 ## Next version
 
+- Render themes: `map-background-outside` [#1262](https://github.com/mapsforge/vtm/pull/1262)
 - `ThemeCallback.getColor` method [#1251](https://github.com/mapsforge/vtm/pull/1251)
 - Map theme improvements
 - Minor improvements and bug fixes

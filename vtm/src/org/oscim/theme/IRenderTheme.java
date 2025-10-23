@@ -52,6 +52,11 @@ public interface IRenderTheme {
     int getMapBackground();
 
     /**
+     * @return the map background outside color of this RenderTheme.
+     */
+    int getMapBackgroundOutside();
+
+    /**
      * Is Mapsforge or VTM theme.
      */
     boolean isMapsforgeTheme();

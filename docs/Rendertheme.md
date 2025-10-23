@@ -76,13 +76,14 @@ At the moment, the following rendering instructions are available:
  
 The following header elements can be used:
  - `map-background`: a color value to set the color of a blank tile. This should not be used to set the color of the sea or land. Default is `#FFFFFF`.
+ - `map-background-outside`: a color value to set the color of the background of a map outside the map area. Effectively everything outside the map area will be overwritten by this color. For transparent layers, the color value will be ignored, but the outside area will be erased to transparent.
  - `base-stroke-width`: set the basic width of strokes. Default is `1`.
  - `base-text-scale`: set the overall text scale. Default is `1`.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <rendertheme xmlns="http://opensciencemap.org/rendertheme" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd" version="1" map-background="#FFFCFA">
+    xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd" version="1" map-background="#FFFCFA" map-background-outside="#DDDDDD">
     …
 </rendertheme>
 ```

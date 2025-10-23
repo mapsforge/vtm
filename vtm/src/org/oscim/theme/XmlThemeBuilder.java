@@ -166,6 +166,7 @@ public class XmlThemeBuilder {
 
     int mLevels = 0;
     int mMapBackground = 0xffffffff;
+    int mMapBackgroundOutside = 0xffffffff;
     private float mStrokeScale = 1;
     float mTextScale = 1;
 
@@ -235,7 +236,7 @@ public class XmlThemeBuilder {
     }
 
     RenderTheme createTheme(Rule[] rules) {
-        return new RenderTheme(mMapBackground, mTextScale, rules, mLevels, mTransformKeyMap, mTransformTagMap, mTheme.isMapsforgeTheme());
+        return new RenderTheme(mMapBackground, mMapBackgroundOutside, mTextScale, rules, mLevels, mTransformKeyMap, mTransformTagMap, mTheme.isMapsforgeTheme());
     }
 
     public void endElement() {
@@ -976,6 +977,7 @@ public class XmlThemeBuilder {
     private void createRenderTheme(String elementName) {
         Integer version = null;
         int mapBackground = Color.WHITE;
+        int mapBackgroundOutside = Color.WHITE;
         float baseStrokeWidth = 1;
         float baseTextScale = 1;
 
@@ -1005,10 +1007,12 @@ public class XmlThemeBuilder {
             else if ("base-text-scale".equals(name) || "base-text-size".equals(name))
                 baseTextScale = Float.parseFloat(value);
 
-            else if ("map-background-outside".equals(name))
-                ; // no-op
+            else if ("map-background-outside".equals(name)) {
+                mapBackgroundOutside = Color.parseColor(value);
+                if (mThemeCallback != null)
+                    mapBackgroundOutside = mThemeCallback.getColor(null, mapBackgroundOutside);
 
-            else
+            } else
                 logUnknownAttribute(elementName, name, value, i);
 
         }
@@ -1023,6 +1027,7 @@ public class XmlThemeBuilder {
         validateNonNegative("base-text-scale", baseTextScale);
 
         mMapBackground = mapBackground;
+        mMapBackgroundOutside = mapBackgroundOutside;
         mStrokeScale = baseStrokeWidth;
         mTextScale = baseTextScale;
     }

@@ -22,6 +22,7 @@ public class ThemeBuilder {
 
     protected int mLevels = 0;
     protected int mMapBackground = 0xffffffff;
+    protected int mMapBackgroundOutside = 0xffffffff;
     protected float mBaseTextSize = 1;
 
     protected RuleBuilder mCurrentRule;
@@ -33,7 +34,7 @@ public class ThemeBuilder {
         for (int i = 0, n = rules.length; i < n; i++)
             rules[i] = mRulesList.get(i).onComplete(layer);
 
-        RenderTheme theme = new RenderTheme(mMapBackground, mBaseTextSize, rules, mLevels);
+        RenderTheme theme = new RenderTheme(mMapBackground, mMapBackgroundOutside, mBaseTextSize, rules, mLevels);
 
         mRulesList.clear();
         mRuleStack.clear();
