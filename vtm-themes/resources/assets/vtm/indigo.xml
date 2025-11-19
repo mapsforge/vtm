@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     
     <!-- This is the OpenGL/VTM "Indigo" theme based on the Biker map theme -->
-    <!-- Version 35 16th September 2025-->
+    <!-- Version 36 18th November 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -920,9 +920,9 @@
             <line cap="square" stroke="#CCCCCC" width="0.8" />
         </m>
 
-        <m k="highway" v="turning_circle">
+        <!--<m k="highway" v="turning_circle">
             <circle radius="1.5" scale-radius="true" fill="#707070" />
-        </m>
+        </m>-->
 
         <!-- building -->
         <m k="building|building:part">

@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     
     <!-- This is the 2nd generation OpenGL/VTM "light" theme based on the Biker map theme-->
-    <!-- Version 35 16th September 2025-->
+    <!-- Version 36 18th November 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -589,7 +589,7 @@
     <style-area fade="6" fill="#f5e9c6" id="area-sand" />
     <style-area fade="6" fill="#f5e9c6" id="area-rail" />
     <style-area fade="6" fill="#ccccb3" id="area-station" />
-    
+   
     <!-- Road and Rail Colors, road casings/outlines are defined in the "highway" section -->
     <style-line cap="butt" id="road-motorway-thin" stroke="#98afcd" width="1.5" />
     <style-line cap="butt" id="road-motorway-core" stroke="#98afcd" width="2.2" />
@@ -920,9 +920,9 @@
             <line cap="square" stroke="#FFFFFF" width="0.8" />
         </m>
 
-        <m k="highway" v="turning_circle">
+        <!--<m k="highway" v="turning_circle">
             <circle radius="1.5" scale-radius="true" fill="#707070" />
-        </m>
+        </m>-->
 
         <!-- building -->
         <m k="building|building:part">
@@ -1617,7 +1617,7 @@
                 <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="2" />
             </m>
             <m v="6" zoom-min="12"> <!-- county border -->
-                <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="1.5" />
+                <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="1.0" />
             </m>
             <m v="8" zoom-min="12">
                 <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="1.5" />
@@ -2033,5 +2033,5 @@
             <text use="poi" />
         </m>
     </m>
-        
+
 </rendertheme>
