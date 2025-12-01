@@ -3,7 +3,7 @@
  * Copyright 2016 devemux86
  *
  * This file is part of the OpenScienceMap project (http://www.opensciencemap.org).
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later version.
@@ -318,10 +318,16 @@ public class Rule {
             if (!containsKeys(tags))
                 return true;
 
-            for (Tag tag : tags)
-                for (String value : values)
-                    if (Utils.equals(value, tag.value))
-                        return !exclusive;
+            for (Tag tag : tags) {
+                for (String key : keys) {
+                    if (Utils.equals(key, tag.key)) {
+                        for (String value : values) {
+                            if (Utils.equals(value, tag.value))
+                                return !exclusive;
+                        }
+                    }
+                }
+            }
 
             return exclusive;
         }
