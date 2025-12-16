@@ -369,8 +369,8 @@ public class LineBucket extends RenderBucket {
             vNextX = nextX - curX;
             vNextY = nextY - curY;
             a = Math.sqrt(vNextX * vNextX + vNextY * vNextY);
-            /* skip two vertex segments */
-            if (a < mMinDist) {
+            /* skip two vertex segments except end */
+            if (a < mMinDist && ipos < end) {
                 numVertices -= 2;
                 continue;
             }
