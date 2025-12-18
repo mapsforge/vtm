@@ -1480,7 +1480,7 @@
     </m><!-- end e="way" -->
 
     <m k="highway" v="mini_roundabout">
-        <symbol src="assets:symbols/dot_black.svg" />
+        <symbol src="assets:symbols/dot_gray_dark.svg" />
     </m>
 
     <m e="node" select="first">
