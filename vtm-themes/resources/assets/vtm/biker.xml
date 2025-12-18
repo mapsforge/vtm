@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     
     <!-- This is the 2nd generation OpenGL/VTM "Biker" theme -->
-    <!-- Version 36 18th November 2025-->
+    <!-- Version 38 17th December 2025-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -544,7 +544,7 @@
     <style-text caption="true" fill="#000000" id="town-lz-caption" k="name" priority="4" size="13" style="bold" stroke="#e8eae1" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="village-caption" k="name" priority="6" size="12" stroke="#e8eae1" stroke-width="2.0" />
     <style-text caption="true" fill="#000000" id="suburb-caption" k="name" priority="5" size="12" style="italic" stroke="#e8eae1" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="hamlet-caption" k="name" priority="6" size="12" stroke="#e8eae1" stroke-width="2.0" />
+    <style-text caption="true" fill="#000000" id="hamlet-caption" k="name" priority="6" size="12" style="italic" stroke="#e8eae1" stroke-width="2.0" />
     <style-text caption="true" fill="#0000FF" id="island-caption" k="name" priority="6" size="12" style="italic" stroke="#FFFFFF" stroke-width="2.0" />
     <style-text fill="#737373" id="border-caption" k="name" priority="6" size="11" style="bold" stroke="#FFFFFF" stroke-width="2.0" />
 
@@ -581,7 +581,7 @@
     <style-area fade="6" fill="#e5efdc" id="area-field" />
     <style-area fade="6" fill="#BBC7F1A3" id="area-campsite" />
     <style-area fade="6" fill="#BBB7EBA4" id="area-cemetery" />
-    <style-area fade="6" fill="#bbffe6e6" id="area-military" />
+    <style-area fade="6" fill="#25ff3333" id="area-military" />
     <style-area fade="6" fill="#D0D9BF" id="area-mud" />
     <style-area fade="6" fill="#e8eff2" id="area-ice" />
     <style-area fade="6" fill="#c5c3c3" id="area-quarry" />
@@ -1478,6 +1478,10 @@
         </m>
 
     </m><!-- end e="way" -->
+
+    <m k="highway" v="mini_roundabout">
+        <symbol src="assets:symbols/dot_black.svg" />
+    </m>
 
     <m e="node" select="first">
         <!-- motorway junctions -->
