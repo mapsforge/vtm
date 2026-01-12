@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     
     <!-- This is the OpenGL/VTM "Indigo" theme based on the Biker map theme -->
-    <!-- Version 39 23rd December 2025-->
+    <!-- Version 40 12th January 2026-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -1748,8 +1748,13 @@
     
     <!-- mountain peak LAYER -->
     <m select="first">
-        <m cat="mountain_peak" k="natural" v="peak" zoom-min="10">
+        <m cat="mountain_peak" k="natural" v="peak" zoom-min="12">
             <symbol src="assets:symbols/peak.svg" />
+            <text use="peak-name-caption" />
+            <text use="peak-ele-caption" />
+        </m>
+        <m k="natural" v="volcano" zoom-min="12">
+            <symbol src="assets:symbols/volcano.svg" />
             <text use="peak-name-caption" />
             <text use="peak-ele-caption" />
         </m>
