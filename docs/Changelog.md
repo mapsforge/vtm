@@ -2,6 +2,11 @@
 
 ## Next version
 
+- Minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.28.0)
+
+## Version 0.27.0 (2026-01-12)
+
 - Negative rule improvement [#1270](https://github.com/mapsforge/vtm/pull/1270)
 - Render themes: `map-background-outside` [#1262](https://github.com/mapsforge/vtm/pull/1262)
 - `ThemeCallback.getColor` method [#1251](https://github.com/mapsforge/vtm/pull/1251)
