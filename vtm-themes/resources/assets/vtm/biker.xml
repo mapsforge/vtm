@@ -1487,6 +1487,18 @@
         <symbol src="assets:symbols/dot_gray_dark.svg" />
     </m>
 
+    <m e="way" select="first">
+        <!-- place -->
+        <m k="place">
+            <m v="island" zoom-min="10" zoom-max="15">
+                <text use="island-caption" />
+            </m>
+            <m v="islet" zoom-min="12" zoom-max="15">
+                <text use="island-caption" />
+            </m>
+        </m>
+    </m>
+
     <m e="node" select="first">
         <!-- motorway junctions -->
         <m k="highway">
