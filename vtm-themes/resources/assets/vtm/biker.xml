@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     
     <!-- This is the 2nd generation OpenGL/VTM "Biker" theme -->
-    <!-- Version 41 26th January 2026-->
+    <!-- Version 42 5th March 2026-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -1490,10 +1490,10 @@
     <m e="way" select="first">
         <!-- place -->
         <m k="place">
-            <m v="island" zoom-min="10" zoom-max="15">
+            <m v="island" zoom-min="10" zoom-max="13">
                 <text use="island-caption" />
             </m>
-            <m v="islet" zoom-min="12" zoom-max="15">
+            <m v="islet" zoom-min="12" zoom-max="13">
                 <text use="island-caption" />
             </m>
         </m>
@@ -1564,10 +1564,10 @@
             <m v="village" zoom-min="11" zoom-max="15">
                 <text use="village-caption" />
             </m>
-            <m v="island" zoom-min="10" zoom-max="15">
+            <m v="island" zoom-min="10" zoom-max="13">
                 <text use="island-caption" />
             </m>
-            <m v="islet" zoom-min="12" zoom-max="15">
+            <m v="islet" zoom-min="12" zoom-max="13">
                 <text use="island-caption" />
             </m>
             <m cat="map_detail" v="town" zoom-min="8" zoom-max="8">
