@@ -242,7 +242,7 @@ public class TileManager {
         // FIXME cant expect init to be called otherwise
         // Should use some onLayerAttached callback instead.
         if (mNewTiles == null || mNewTiles.tiles.length == 0) {
-            mPrevZoomlevel = pos.zoomLevel;
+            mPrevZoomlevel = clamp(pos.zoomLevel, mMinZoom, mMaxZoom);
             init();
         }
         /* clear JobQueue and set tiles to state == NONE.
