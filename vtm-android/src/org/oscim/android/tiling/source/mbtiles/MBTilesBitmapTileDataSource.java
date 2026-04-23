@@ -108,7 +108,7 @@ public class MBTilesBitmapTileDataSource extends MBTilesTileDataSource {
         QueryResult res = QueryResult.FAILED;
         try {
             byte[] bytes = readTile(tile.tileX, tile.tileY, tile.zoomLevel);
-            if (bytes == null) {
+            if (bytes != null) {
                 if (mTransparentColor != null || mAlpha != null) {
                     android.graphics.Bitmap androidBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     if (mTransparentColor != null)
