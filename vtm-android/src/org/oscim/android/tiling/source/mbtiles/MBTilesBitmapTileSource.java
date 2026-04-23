@@ -40,4 +40,30 @@ public class MBTilesBitmapTileSource extends MBTilesTileSource {
     public MBTilesBitmapTileSource(String path, Integer alpha, Integer transparentColor) {
         super(new MBTilesBitmapTileDataSource(path, alpha, transparentColor));
     }
+
+    /**
+     * Create a tile source for MBTiles raster databases.
+     *
+     * @param path             the path to the MBTiles database.
+     * @param overZoom         allow over zooming to this level.
+     */
+    public MBTilesBitmapTileSource(String path, int overZoom) {
+        this(path, null, null, overZoom);
+    }
+
+    /**
+     * Create a tile source for MBTiles raster databases.
+     *
+     * @param path             the path to the MBTiles database.
+     * @param alpha            an optional alpha value [0-255] to make the tiles transparent.
+     * @param transparentColor an optional color that will be made transparent in the bitmap.
+     * @param overZoom         allow over zooming to this level.
+     */
+    public MBTilesBitmapTileSource(String path, Integer alpha, Integer transparentColor, int overZoom) {
+        super(new MBTilesBitmapTileDataSource(path, alpha, transparentColor));
+        MBTilesTileDataSource ds = getDataSource();
+        mZoomMin = ds.getMinZoom();
+        mZoomMax = ds.getMaxZoom();
+        mOverZoom = overZoom;
+    }
 }
