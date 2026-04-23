@@ -55,7 +55,7 @@ public class BitmapTileLoader extends TileLoader {
 
     @Override
     public void setTileImage(Bitmap bitmap) {
-        if (isCanceled() || !mTile.state(LOADING)) {
+        if (mTile == null || isCanceled() || !mTile.state(LOADING)) {
             bitmap.recycle();
             return;
         }
