@@ -123,7 +123,7 @@ public class MBTilesBitmapTileDataSource extends MBTilesTileDataSource {
                 Bitmap bitmap = CanvasAdapter.decodeBitmap(new ByteArrayInputStream(bytes));
                 sink.setTileImage(bitmap);
                 res = QueryResult.SUCCESS;
-	    }
+            }
         } catch (Throwable t) {
             log.severe(t.toString());
         } finally {
