@@ -1,0 +1,45 @@
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom {
+                name = 'VTM'
+                description = 'OpenGL vector map library - running on Android, iOS, Desktop and browser.'
+                url = 'https://github.com/mapsforge/vtm'
+                licenses {
+                    license {
+                        name = 'GNU Lesser GPL'
+                        url = 'https://www.gnu.org/licenses/lgpl.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'hannes.janetzek'
+                        name = 'Hannes Janetzek'
+                        email = 'hannes.janetzek@gmail.com'
+                    }
+                    developer {
+                        id = 'devemux86'
+                        name = 'Emux'
+                        email = 'devemux86@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/mapsforge/vtm'
+                    developerConnection = 'scm:git:https://github.com/mapsforge/vtm'
+                    url = 'https://github.com/mapsforge/vtm'
+                }
+            }
+        }
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
