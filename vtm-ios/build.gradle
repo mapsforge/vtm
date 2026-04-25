@@ -76,4 +76,8 @@ if (project.hasProperty("SONATYPE_USERNAME")) {
             dependsOn copyVtmResources, copyVtmThemesResources
         }
     }
+} else {
+    afterEvaluate {
+        project.apply from: "${rootProject.projectDir}/publish.gradle"
+    }
 }
