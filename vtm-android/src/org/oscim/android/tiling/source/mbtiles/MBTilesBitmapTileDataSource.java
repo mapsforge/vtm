@@ -108,21 +108,22 @@ public class MBTilesBitmapTileDataSource extends MBTilesTileDataSource {
         QueryResult res = QueryResult.FAILED;
         try {
             byte[] bytes = readTile(tile.tileX, tile.tileY, tile.zoomLevel);
+            if (bytes != null) {
+                if (mTransparentColor != null || mAlpha != null) {
+                    android.graphics.Bitmap androidBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    if (mTransparentColor != null)
+                        androidBitmap = processTransparentColor(androidBitmap, mTransparentColor);
+                    if (mAlpha != null)
+                        androidBitmap = processAlpha(androidBitmap, mAlpha);
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    androidBitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, bos);
+                    bytes = bos.toByteArray();
+                }
 
-            if (mTransparentColor != null || mAlpha != null) {
-                android.graphics.Bitmap androidBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                if (mTransparentColor != null)
-                    androidBitmap = processTransparentColor(androidBitmap, mTransparentColor);
-                if (mAlpha != null)
-                    androidBitmap = processAlpha(androidBitmap, mAlpha);
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                androidBitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, bos);
-                bytes = bos.toByteArray();
+                Bitmap bitmap = CanvasAdapter.decodeBitmap(new ByteArrayInputStream(bytes));
+                sink.setTileImage(bitmap);
+                res = QueryResult.SUCCESS;
             }
-
-            Bitmap bitmap = CanvasAdapter.decodeBitmap(new ByteArrayInputStream(bytes));
-            sink.setTileImage(bitmap);
-            res = QueryResult.SUCCESS;
         } catch (Throwable t) {
             log.severe(t.toString());
         } finally {
