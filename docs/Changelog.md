@@ -2,6 +2,11 @@
 
 ## Next version
 
+- Minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.29.0)
+
+## Version 0.28.0 (2026-04-30)
+
 - Map theme improvements
 - Minor improvements and bug fixes
 - [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.28.0)
