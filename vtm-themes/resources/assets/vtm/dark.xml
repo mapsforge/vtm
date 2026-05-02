@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     
     <!-- This is the 2nd generation OpenGL/VTM "dark" theme based on the Biker map theme -->
-    <!-- Version 42 5th March 2026-->
+    <!-- Version 43 2nd May 2026-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -547,6 +547,7 @@
     <style-text caption="true" fill="#FFFFFF" id="hamlet-caption" k="name" priority="6" size="12" style="italic" stroke="#000000" stroke-width="2.0" />
     <style-text caption="true" fill="#FFFFFF" id="island-caption" k="name" priority="6" size="12" style="italic" stroke="#000000" stroke-width="2.0" />
     <style-text fill="#b3b3b3" id="border-caption" k="name" priority="6" size="11" style="bold" stroke="#000000" stroke-width="2.0" />
+    <style-text caption="true" fill="#FFFFFF" id="landuse-caption" k="name" priority="4" size="12" style="italic" stroke="#000000" stroke-width="2.0" />
 
     <!-- POI captions/labels -->
     <style-text priority="3" caption="true" dy="-20" fill="#FFFFFF" font-family="medium" id="poi" k="name" size="12" stroke="#b35900" stroke-width="1.0" />
@@ -672,6 +673,9 @@
         <m cat="nature" k="landuse|natural|leisure">
             <m v="common|conservation|garden|grass|recreation_ground|village_green">
                 <area use="area-grass" />
+            </m>
+            <m v="grass|village_green|recreation_ground|military|park|garden|common|green|dog_park|allotments|cemetery|graveyard" zoom-min="17">
+                <text use="landuse-caption" />
             </m>
             <m v="farm|farmland|field|orchard|vineyard">
                 <area use="area-field" />
