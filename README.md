@@ -57,7 +57,7 @@ If you have any questions or problems, don't hesitate to ask the [forum](https:/
 - VTM is used by many [applications](docs/Applications.md).
 
 ## Maps
-- Mapsforge [map providers](docs/Mapsforge-Maps.md).
+- Mapsforge [map providers](https://github.com/mapsforge/mapsforge/blob/master/docs/Mapsforge-Maps.md).
 
 ## Credits
 This library contains code from several projects:
