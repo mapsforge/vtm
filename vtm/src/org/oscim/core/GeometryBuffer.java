@@ -151,10 +151,10 @@ public class GeometryBuffer {
     }
 
     /**
-     * @param out PointF to set coordinates to.
-     * @param i   the 2D point position.
-     * @return when out is null a temporary PointF is
+     * When out is null a temporary PointF is
      * returned which belongs to GeometryBuffer.
+     * @param i   the 2D point position.
+     * @param out PointF to set coordinates to.
      */
     public void getPoint(int i, PointF out) {
         out.x = points[(i << 1)];

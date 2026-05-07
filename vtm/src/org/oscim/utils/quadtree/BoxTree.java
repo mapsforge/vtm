@@ -152,7 +152,7 @@ public class BoxTree<T extends BoxItem<E>, E> extends TileIndex<BoxNode<T>, T> {
      * BoxTreee for the range [-extents, extents]
      *
      * @param extents  must be power of two
-     * @param maxDepth must be <= 30
+     * @param maxDepth must be {@code <= 30}
      */
     public BoxTree(int extents, int maxDepth) {
         super();

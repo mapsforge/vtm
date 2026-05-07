@@ -109,7 +109,7 @@ public class GLMatrix {
     /**
      * Project Vectors with Matrix
      *
-     * @param vec2 Vector to project
+     * @param src Vector to project
      */
     public void prj2D(float[] src, int src_offset, float[] dst, int dst_offset, int length) {
         if (src == null || src_offset < 0 || length + src_offset * 2 > src.length)

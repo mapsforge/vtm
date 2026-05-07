@@ -242,7 +242,6 @@ public class KeyMap<K extends HashItem> extends Inlist<KeyMap<K>> {
      * Maps the specified key to the specified value.
      *
      * @param key   the key.
-     * @param value the value.
      * @return the value of any previous mapping with the specified key or
      * {@code null} if there was no such mapping.
      */
