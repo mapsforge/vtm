@@ -32,7 +32,7 @@ import org.oscim.map.Map;
  * Draws a list of {@link MarkerInterface} as markers to a map. The item with the
  * lowest index is drawn as last and therefore the 'topmost' marker. It also
  * gets checked for onTap first. This class is generic, because you then you get
- * your custom item-class passed back in onTap(). << TODO
+ * your custom item-class passed back in onTap().
  */
 public abstract class MarkerLayer extends Layer {
 

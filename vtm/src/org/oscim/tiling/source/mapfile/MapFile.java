@@ -1125,7 +1125,7 @@ public class MapFile implements ITileDataSource {
     /**
      * Reads data for an area defined by the tile in the upper left and the tile in
      * the lower right corner.
-     * Precondition: upperLeft.tileX <= lowerRight.tileX && upperLeft.tileY <= lowerRight.tileY
+     * Precondition: {@code upperLeft.tileX <= lowerRight.tileX && upperLeft.tileY <= lowerRight.tileY}
      *
      * @param upperLeft  tile that defines the upper left corner of the requested area.
      * @param lowerRight tile that defines the lower right corner of the requested area.
@@ -1148,7 +1148,7 @@ public class MapFile implements ITileDataSource {
     /**
      * Reads data for an area defined by the tile in the upper left and the tile in
      * the lower right corner.
-     * Precondition: upperLeft.tileX <= lowerRight.tileX && upperLeft.tileY <= lowerRight.tileY
+     * Precondition: {@code upperLeft.tileX <= lowerRight.tileX && upperLeft.tileY <= lowerRight.tileY}
      *
      * @param upperLeft  tile that defines the upper left corner of the requested area.
      * @param lowerRight tile that defines the lower right corner of the requested area.

@@ -77,7 +77,7 @@ public final class MercatorProjection {
     /**
      * @param scale the scale factor for which the size of the world map should be returned.
      * @return the horizontal and vertical size of the map in pixel at the given scale.
-     * @throws IllegalArgumentException if the given scale factor is < 1
+     * @throws IllegalArgumentException if the given scale factor is {@code < 1}
      */
     public static long getMapSizeWithScale(double scale) {
         if (scale < 1) {

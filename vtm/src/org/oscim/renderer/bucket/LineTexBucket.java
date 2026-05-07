@@ -73,7 +73,7 @@ import static org.oscim.renderer.MapRenderer.*;
  * 6, 5, 7,
  * <p/>
  * BIG NOTE: renderer assumes to be able to offset vertex array position
- * so that in the first pass 'pos1' offset will be < 0 if no data precedes
+ * so that in the first pass 'pos1' offset will be {@code < 0} if no data precedes
  * - in our case there is always the polygon fill array at start
  * - see addLine hack otherwise.
  */

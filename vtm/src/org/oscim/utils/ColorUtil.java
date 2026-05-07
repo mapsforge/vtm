@@ -97,9 +97,9 @@ public class ColorUtil {
      * Assumes r, g, and b are contained in the set [0, 255] and
      * returns h, s, and l in the set [0, 1].
      *
-     * @param Number r The red color value
-     * @param Number g The green color value
-     * @param Number b The blue color value
+     * @param r The red color value
+     * @param g The green color value
+     * @param b The blue color value
      * @return Array The HSL representation
      */
     public static Vec3 rgbToHsl(double r, double g, double b, Vec3 out) {
@@ -140,9 +140,9 @@ public class ColorUtil {
      * Assumes h, s, and l are contained in the set [0, 1] and
      * returns r, g, and b in the set [0, 255].
      *
-     * @param Number h The hue
-     * @param Number s The saturation
-     * @param Number l The lightness
+     * @param h The hue
+     * @param s The saturation
+     * @param l The lightness
      * @return Array The RGB representation
      */
     public static int hslToRgb(double h, double s, double l, Vec3 out) {
@@ -184,9 +184,9 @@ public class ColorUtil {
      * Assumes r, g, and b are contained in the set [0, 255] and
      * returns h, s, and v in the set [0, 1].
      *
-     * @param Number r The red color value
-     * @param Number g The green color value
-     * @param Number b The blue color value
+     * @param r The red color value
+     * @param g The green color value
+     * @param b The blue color value
      * @return Array The HSV representation
      */
     public static Vec3 rgbToHsv(double r, double g, double b, Vec3 out) {

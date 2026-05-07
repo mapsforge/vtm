@@ -60,8 +60,8 @@ public class PolygonDrawable extends JtsDrawable {
      *
      * @param points
      * @param holePoints
-     * @param outlineColor
-     * @param outlineAlpha
+     * @param lineWidth
+     * @param lineColor
      * @param fillColor
      * @param fillAlpha
      */
@@ -80,8 +80,8 @@ public class PolygonDrawable extends JtsDrawable {
      *
      * @param points
      * @param holePoints
-     * @param outlineColor
-     * @param outlineAlpha
+     * @param lineWidth
+     * @param lineColor
      * @param fillColor
      * @param fillAlpha
      */

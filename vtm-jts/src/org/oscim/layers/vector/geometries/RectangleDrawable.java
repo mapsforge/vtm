@@ -40,8 +40,11 @@ public class RectangleDrawable extends JtsDrawable {
      * Creates a Rectangle given the top-left and the bottom-right coordinate of
      * it
      *
-     * @param topLeft
-     * @param bottomRight
+     * @param minLat
+     * @param minLon
+     * @param maxLat
+     * @param maxLon
+     * @param style
      */
     public RectangleDrawable(double minLat, double minLon, double maxLat, double maxLon, Style style) {
         super(style);
