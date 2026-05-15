@@ -137,7 +137,8 @@ public class VectorTileLoader extends TileLoader implements RenderStyle.Callback
         mTileLayer.callHooksComplete(mTile, ok);
 
         /* finish buckets- tessellate and cleanup on worker-thread */
-        mBuckets.prepare();
+        if (mBuckets != null)
+            mBuckets.prepare();
         clearState();
 
         super.completed(result);
