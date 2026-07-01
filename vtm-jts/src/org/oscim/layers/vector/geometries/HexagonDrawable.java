@@ -1,8 +1,6 @@
 package org.oscim.layers.vector.geometries;
 
 import org.oscim.core.GeoPoint;
-import org.oscim.core.MercatorProjection;
-import org.oscim.core.Point;
 import org.oscim.utils.geom.GeomBuilder;
 
 /**
@@ -38,14 +36,12 @@ public class HexagonDrawable extends JtsDrawable {
     public HexagonDrawable(GeoPoint center, double radiusKm, double rotationRad, Style style) {
         super(style);
         GeomBuilder gb = new GeomBuilder();
-        Point tmp = new Point();
 
         for (int i = 0; i < 6; i++) {
             GeoPoint point = findGeoPointWithGivenDistance(center,
                     rotationRad + i * Math.PI / 3,
                     radiusKm);
-            MercatorProjection.project(point, tmp);
-            gb.points(tmp.x, tmp.y);
+            gb.points(point.getLongitude(), point.getLatitude());
         }
         geometry = gb.toPolygon();
     }
