@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     
     <!-- This is the OpenGL/VTM "Indigo" theme based on the Biker map theme -->
-    <!-- Version 43 2nd May 2026-->
+    <!-- Version 44 17th July 2026-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
@@ -631,10 +631,12 @@
 
     <style-line id="residential" stroke="#FFFFFF" width="1.3" />
 
-    <!-- track|footway|path|cycleway -->
+    <!-- track|footway|path|cycleway|raceway -->
     <style-line cap="butt" fix="true" id="footway" stipple="2" stipple-stroke="#55442b" stipple-width="0.6" stroke="#aaffffff" width="1.8" />
     <style-line cap="butt" fix="true" id="cycleway" stipple="2" stipple-stroke="#a39b68" stipple-width="0.6" stroke="#aaffffff" width="2.8" />
+    <style-line cap="butt" fix="true" id="raceway" stroke="#808080" width="1.0" />
     <style-line id="highway:cycleway" stipple-stroke="#0a0a75" use="cycleway" width="0.1" />
+    <style-line id="highway:raceway" stipple-stroke="#808080" use="raceway" width="1.0" />
     <style-line id="highway:track" stipple="3" stipple-stroke="#a39b68" use="footway" width="0.1" />
     <style-line id="highway:path" stipple="2" stipple-stroke="#55442b" use="footway" width="0.1" />
     <style-line id="footway:z17" stroke="#55442b" width="0.3" />
@@ -1092,7 +1094,7 @@
 
         <!-- railway tracks, not in a tunnel -->
         <m e="way" k="tunnel" v="~|no|false">
-            <m k="railway" v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|disused|abandoned">
+            <m k="railway" v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|disused">
                 <m zoom-min="11" zoom-max="15">
                     <line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#a6a6a6" stipple-width="0.8" stroke="#666666" width="1.8" />
                 </m>
@@ -1101,6 +1103,11 @@
                 </m>
             </m>
         </m>
+		<m k="railway" v="abandoned">
+			<m zoom-min="14">
+				<line cap="butt" stroke="#8c8c8c" width="0.8" stipple="3" stipple-stroke="#A04d4d4d" stipple-width="0.4"/>
+			</m>
+		</m>
 
         <!-- highways/roads -->
         <m k="highway">
@@ -1154,6 +1161,11 @@
                                 </m>
                                 <m zoom-min="17">
                                     <line use="highway:cycleway" />
+                                </m>
+                            </m>
+                            <m v="raceway">
+                                <m zoom-min="14">
+                                    <line use="highway:raceway" />
                                 </m>
                             </m>
                             <m cat="off_road" v="byway|track">
@@ -1447,7 +1459,7 @@
 
         <!-- railway tracks, not on a bridge or in a tunnel -->
         <m e="way" k="bridge|tunnel" v="no|false">
-            <m k="railway" v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|disused|abandoned">
+            <m k="railway" v="rail|tram|light_rail|narrow_gauge|preserved|funicular|miniature|monorail|disused">
                 <m zoom-min="11" zoom-max="15">
                     <line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#e6e6e6" stipple-width="0.8" stroke="#333333" width="1.8" />
                 </m>
@@ -1456,6 +1468,11 @@
                 </m>
             </m>
         </m>
+		<m k="railway" v="abandoned">
+			<m zoom-min="14">
+				<line cap="butt" stroke="#8c8c8c" width="0.8" stipple="3" stipple-stroke="#A04d4d4d" stipple-width="0.4"/>
+			</m>
+		</m>
 
         <!-- railway bridges -->
         <m e="way" k="bridge" v="yes|true|viaduct|aqueduct|suspension|culvert|swing">
@@ -1549,7 +1566,7 @@
             </m>
             <!-- this makes toll roads (ie: France) easier to spot -->
             <m v="toll_booth" zoom-min="15">
-                <symbol src="assets:symbols/barrier/gate.svg" />
+                <symbol src="assets:symbols/barrier/lift_gate.svg" />
                 <text use="poi-emergency" />
             </m>
         </m>
