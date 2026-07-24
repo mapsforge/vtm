@@ -296,7 +296,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
                 org.mapsforge.core.model.BoundingBox bb = new org.mapsforge.core.model.BoundingBox(
                         params[0].getMinLatitude(), params[0].getMinLongitude(),
                         params[0].getMaxLatitude(), params[0].getMaxLongitude());
-                return mPersistenceManager.findInRect(bb, categoryFilter, patterns, null, Integer.MAX_VALUE, true);
+                return mPersistenceManager.findInRect(bb, categoryFilter, patterns, false, null, Integer.MAX_VALUE, true);
             } catch (Throwable t) {
                 log.severe(t.toString());
             }
