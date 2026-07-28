@@ -81,10 +81,10 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
         final List<Pattern> searchPatterns = new ArrayList<>();
 
         final PatternAdapter adapter = new PatternAdapter(this, searchPatterns);
-        ListView searchList = (ListView) findViewById(R.id.search_list);
+        ListView searchList = findViewById(R.id.search_list);
         searchList.setAdapter(adapter);
 
-        Button addItem = (Button) findViewById(R.id.add_item);
+        Button addItem = findViewById(R.id.add_item);
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +93,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
             }
         });
 
-        Button startSearch = (Button) findViewById(R.id.start_search);
+        Button startSearch = findViewById(R.id.start_search);
         startSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +154,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
 
             Bitmap bitmap = new AndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.marker_green));
             MarkerSymbol symbol = new MarkerSymbol(bitmap, MarkerSymbol.HotspotPlace.BOTTOM_CENTER);
-            mMarkerLayer = new ItemizedLayer(mMap, new ArrayList<MarkerInterface>(), symbol, this);
+            mMarkerLayer = new ItemizedLayer(mMap, new ArrayList<>(), symbol, this);
             mMap.layers().add(mMarkerLayer);
         }
     }
@@ -162,7 +162,8 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
     @Override
     public boolean onItemSingleTapUp(int index, MarkerInterface item) {
         MarkerItem markerItem = (MarkerItem) item;
-        Toast.makeText(this, markerItem.getTitle(), Toast.LENGTH_SHORT).show();
+        if (markerItem.getTitle() != null && !markerItem.getTitle().isEmpty())
+            Toast.makeText(this, markerItem.getTitle(), Toast.LENGTH_SHORT).show();
         return true;
     }
 
@@ -196,7 +197,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
         }
     }
 
-    private class Pattern {
+    private static class Pattern {
         String key;
         String val;
 
@@ -206,7 +207,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
         }
     }
 
-    private class PatternAdapter extends ArrayAdapter<Pattern> {
+    private static class PatternAdapter extends ArrayAdapter<Pattern> {
         PatternAdapter(Context context, List<Pattern> patterns) {
             super(context, 0, patterns);
         }
@@ -220,21 +221,21 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_poi_search, parent, false);
 
             // Populate the data
-            EditText etKey = (EditText) convertView.findViewById(R.id.key);
+            EditText etKey = convertView.findViewById(R.id.key);
             etKey.removeTextChangedListener((PatternTextWatcher) etKey.getTag()); // remove previous listeners
             etKey.setText(pattern.key); // set text when no listener is attached
             PatternTextWatcher ptwKey = new PatternTextWatcher(pattern, true);
             etKey.setTag(ptwKey);
             etKey.addTextChangedListener(ptwKey);
 
-            EditText etValue = (EditText) convertView.findViewById(R.id.value);
+            EditText etValue = convertView.findViewById(R.id.value);
             etValue.removeTextChangedListener((PatternTextWatcher) etValue.getTag());
             etValue.setText(pattern.val);
             PatternTextWatcher ptwVal = new PatternTextWatcher(pattern, false);
             etValue.setTag(ptwVal);
             etValue.addTextChangedListener(ptwVal);
 
-            Button remove = (Button) convertView.findViewById(R.id.remove);
+            Button remove = convertView.findViewById(R.id.remove);
             remove.setTag(pattern);
             remove.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -248,9 +249,9 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
         }
     }
 
-    private class PatternTextWatcher implements TextWatcher {
-        private Pattern pattern;
-        private boolean isKey;
+    private static class PatternTextWatcher implements TextWatcher {
+        private final Pattern pattern;
+        private final boolean isKey;
 
         PatternTextWatcher(Pattern pattern, boolean isKey) {
             this.pattern = pattern;
@@ -296,7 +297,7 @@ public class PoiSearchActivity extends MapsforgeActivity implements ItemizedLaye
                 org.mapsforge.core.model.BoundingBox bb = new org.mapsforge.core.model.BoundingBox(
                         params[0].getMinLatitude(), params[0].getMinLongitude(),
                         params[0].getMaxLatitude(), params[0].getMaxLongitude());
-                return mPersistenceManager.findInRect(bb, categoryFilter, patterns, false, null, Integer.MAX_VALUE, true);
+                return mPersistenceManager.findInRect(bb, categoryFilter, patterns, false, null, -1, false);
             } catch (Throwable t) {
                 log.severe(t.toString());
             }
