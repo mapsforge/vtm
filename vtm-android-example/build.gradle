@@ -21,7 +21,7 @@ dependencies {
 
 android {
     namespace = 'org.oscim.android.test'
-    compileSdkVersion androidCompileSdk()
+    compileSdkVersion "android-${androidCompileSdk()}"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
