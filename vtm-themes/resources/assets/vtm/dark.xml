@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#262626"
-    map-background-outside="#222222" version="1" xmlns="http://opensciencemap.org/rendertheme"
-    xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
-    
+<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#262626" map-background-outside="#222222" version="1" xmlns="http://opensciencemap.org/rendertheme" xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
+
     <!-- This is the 2nd generation OpenGL/VTM "dark" theme based on the Biker map theme -->
     <!-- Version 44 17th July 2026-->
 
@@ -591,7 +589,7 @@
     <style-area fade="6" fill="#473805" id="area-sand" />
     <style-area fade="6" fill="#f5e9c6" id="area-rail" />
     <style-area fade="6" fill="#7a7a52" id="area-station" />
-    
+
     <!-- Road and Rail Colors, road casings/outlines are defined in the "highway" section -->
     <style-line cap="butt" id="road-motorway-thin" stroke="#004080" width="1.5" />
     <style-line cap="butt" id="road-motorway-core" stroke="#004080" width="2.2" />
@@ -780,7 +778,7 @@
             </m>
         </m>
     </m>
-    
+
     <!-- waterways -->
     <m e="way" k="waterway">
         <m v="ditch|drain" zoom-min="14">
@@ -1061,26 +1059,25 @@
                         </m>
                         <m v="primary">
                             <line use="road-primary-tunnel" />
-							<m cat="toll_roads" e="way" k="toll" v="tl_yes">
-								<line outline="road-major-outline" use="road-highway-toll" />
-							</m>
+                            <m cat="toll_roads" e="way" k="toll" v="tl_yes">
+                                <line outline="road-major-outline" use="road-highway-toll" />
+                            </m>
                         </m>
                         <m v="trunk">
                             <line use="road-trunk-tunnel" />
-							<m cat="toll_roads" e="way" k="toll" v="tl_yes">
-								<line outline="road-major-outline" use="road-highway-toll" />
-							</m>
+                            <m cat="toll_roads" e="way" k="toll" v="tl_yes">
+                                <line outline="road-major-outline" use="road-highway-toll" />
+                            </m>
                         </m>
                         <m v="motorway">
                             <line use="road-motorway-tunnel" />
-							<m cat="toll_roads" e="way" k="toll" v="tl_yes">
-								<line outline="road-major-outline" use="road-highway-toll" />
-							</m>
+                            <m cat="toll_roads" e="way" k="toll" v="tl_yes">
+                                <line outline="road-major-outline" use="road-highway-toll" />
+                            </m>
                         </m>
                     </m>
                     <!-- railway tunnel -->
-                    <m e="way" k="railway"
-                        v="tram|subway|light_rail|narrow_gauge|preserved|funicular|miniature|monorail">
+                    <m e="way" k="railway" v="tram|subway|light_rail|narrow_gauge|preserved|funicular|miniature|monorail">
                         <line stroke="#CCCCCC" width="0.4" />
                         <line stroke="#808080" dasharray="4,6" cap="butt" width="0.25" />
                     </m>
@@ -1103,11 +1100,11 @@
                 </m>
             </m>
         </m>
-		<m k="railway" v="abandoned">
-			<m zoom-min="14">
-				<line cap="butt" stroke="#8c8c8c" width="0.8" stipple="3" stipple-stroke="#A04d4d4d" stipple-width="0.4"/>
-			</m>
-		</m>
+        <m k="railway" v="abandoned">
+            <m zoom-min="14">
+                <line cap="butt" stroke="#8c8c8c" width="0.8" stipple="3" stipple-stroke="#A04d4d4d" stipple-width="0.4" />
+            </m>
+        </m>
 
         <!-- highways/roads -->
         <m k="highway">
@@ -1186,7 +1183,7 @@
                                 </m>
                                 <m e="way" k="tracktype" v="~">
                                     <line stroke="#89755d" dasharray="15,5" cap="butt" width="0.6" />
-                                </m>                            
+                                </m>
                             </m>
                             <m cat="off_road" e="way" k="highway" v="bridleway" zoom-min="14">
                                 <line stroke="#89755d" dasharray="10,12" cap="round" width="0.6" />
@@ -1468,11 +1465,11 @@
                 </m>
             </m>
         </m>
-		<m k="railway" v="abandoned">
-			<m zoom-min="14">
-				<line cap="butt" stroke="#8c8c8c" width="0.8" stipple="3" stipple-stroke="#A04d4d4d" stipple-width="0.4"/>
-			</m>
-		</m>
+        <m k="railway" v="abandoned">
+            <m zoom-min="14">
+                <line cap="butt" stroke="#8c8c8c" width="0.8" stipple="3" stipple-stroke="#A04d4d4d" stipple-width="0.4" />
+            </m>
+        </m>
 
         <!-- railway bridges -->
         <m e="way" k="bridge" v="yes|true|viaduct|aqueduct|suspension|culvert|swing">
@@ -1485,8 +1482,7 @@
                 <line stroke="#EEEEEE" cap="butt" width="1.0" />
             </m>
         </m>
-        <m k="railway"
-            v="station|platform">
+        <m k="railway" v="station|platform">
             <area use="area-station" />
             <line use="outline-station" />
         </m>
@@ -1627,7 +1623,7 @@
                 <m cat="map_detail" zoom-min="15">
                     <symbol src="assets:symbols/transport/traffic_lights.svg" />
                 </m>
-            <m zoom-min="17">
+                <m zoom-min="17">
                     <symbol src="assets:symbols/transport/traffic_lights.svg" />
                 </m>
             </m>
@@ -1778,7 +1774,7 @@
             <text use="poi-fuel" />
         </m>
     </m>
-    
+
     <!-- mountain peak LAYER -->
     <m select="first">
         <m cat="mountain_peak" k="natural" v="peak" zoom-min="12">
@@ -1807,7 +1803,7 @@
             <text use="poi-parking" />
         </m>
     </m>
-    
+
     <!-- POI miscellaneous and holding area LAYER -->
     <m select="first">
         <m cat="misc" e="any" k="amenity" v="shelter" zoom-min="16">
@@ -1934,7 +1930,7 @@
 
     <!-- shops LAYER -->
     <m select="first">
-        <m cat="shop" k="amenity|shop" >
+        <m cat="shop" k="amenity|shop">
             <m v="marketplace" zoom-min="16">
                 <symbol id="marketplace" src="assets:symbols/shopping/marketplace.svg" />
             </m>
@@ -1975,7 +1971,7 @@
                 <symbol id="shop" src="assets:symbols/dot_magenta.svg" />
             </m>
         </m>
-        <m select="when-matched" >
+        <m select="when-matched">
             <text use="poi-shop" />
         </m>
     </m>
@@ -2060,7 +2056,7 @@
                 <symbol id="lighthouse" src="assets:symbols/transport/lighthouse.svg" />
             </m>
         </m>
-        <m select="when-matched" >
+        <m select="when-matched">
             <text use="poi" />
         </m>
     </m>
@@ -2079,5 +2075,5 @@
             <text use="poi" />
         </m>
     </m>
-        
+
 </rendertheme>

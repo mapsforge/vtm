@@ -1,37 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" base-text-scale="1.25"
-    map-background="#fffcfa" version="1" xmlns="http://opensciencemap.org/rendertheme"
-    xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
+<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" base-text-scale="1.25" map-background="#fffcfa" version="1" xmlns="http://opensciencemap.org/rendertheme" xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
     <!--###### TEXT styles ######-->
 
     <!--default label-->
-    <style-text caption="true" dy="20" fill="#2d51bc" font-family="medium" id="caption-small-blue"
-        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" dy="20" fill="#2d51bc" font-family="medium" id="caption-small-blue" k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
     <!--shop-->
-    <style-text caption="true" dy="20" fill="#ac39ac" font-family="medium" id="shop" k="name"
-        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" dy="20" fill="#ac39ac" font-family="medium" id="shop" k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
     <!--tavern-->
-    <style-text caption="true" dy="20" fill="#734a08" font-family="medium" id="tavern" k="name"
-        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" dy="20" fill="#734a08" font-family="medium" id="tavern" k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
     <!--accommodation-->
-    <style-text caption="true" dy="20" fill="#0092da" font-family="medium" id="accommodation"
-        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" dy="20" fill="#0092da" font-family="medium" id="accommodation" k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
     <!--education-->
-    <style-text caption="true" dy="20" fill="#0a4f0a" font-family="medium" id="education" k="name"
-        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" dy="20" fill="#0a4f0a" font-family="medium" id="education" k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
     <!--health-->
-    <style-text caption="true" dy="20" fill="#da0092" font-family="medium" id="health" k="name"
-        size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" dy="20" fill="#da0092" font-family="medium" id="health" k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
     <!--entertainment-->
-    <style-text caption="true" dy="20" fill="#b7650c" font-family="medium" id="entertainment"
-        k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" dy="20" fill="#b7650c" font-family="medium" id="entertainment" k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
     <!--roads-->
-    <style-text fill="#101010" id="road" k="name" priority="2" size="16" stroke="#eeeeee"
-        stroke-width="2.0" />
+    <style-text fill="#101010" id="road" k="name" priority="2" size="16" stroke="#eeeeee" stroke-width="2.0" />
     <!--major roads-->
-    <style-text style="bold" fill="#101010" id="major-road" k="name" priority="1" size="16"
-        stroke="#eeeeee" stroke-width="2.0" />
+    <style-text style="bold" fill="#101010" id="major-road" k="name" priority="1" size="16" stroke="#eeeeee" stroke-width="2.0" />
 
 
     <!--###### AREA styles ######-->
@@ -114,8 +103,7 @@
     <style-line id="highway-service" use="residential" width="-0.6" />
 
     <!-- track|footway|path|cycleway -->
-    <style-line cap="butt" fix="true" id="footway" stipple="2" stipple-stroke="#d35c48"
-        stipple-width="0.6" stroke="#aaffffff" width="1.8" />
+    <style-line cap="butt" fix="true" id="footway" stipple="2" stipple-stroke="#d35c48" stipple-width="0.6" stroke="#aaffffff" width="1.8" />
     <style-line id="highway:cycleway" stipple-stroke="#4040ee" use="footway" width="0.1" />
     <style-line id="highway:track" stipple="3" stipple-stroke="#a39b68" use="footway" width="0.1" />
     <style-line id="highway:path" stipple="2" stipple-stroke="#837b58" use="footway" width="0.1" />
@@ -124,10 +112,8 @@
     <style-line id="footway:z17" stroke="#faf8f5" width="0.3" />
 
     <!-- de: ein Weg der für Reiter vorgesehen ist.. -->
-    <style-line cap="butt" id="bridleway" stipple-stroke="#837b58" stroke="#d3cb98" use="footway"
-        width="0.1" />
-    <style-line cap="butt" fix="true" id="steps" stipple="2" stipple-stroke="#be6253"
-        stipple-width="1.0" stroke="#aaffffff" width="4.2" />
+    <style-line cap="butt" id="bridleway" stipple-stroke="#837b58" stroke="#d3cb98" use="footway" width="0.1" />
+    <style-line cap="butt" fix="true" id="steps" stipple="2" stipple-stroke="#be6253" stipple-width="1.0" stroke="#aaffffff" width="4.2" />
     <style-line cap="butt" fix="true" id="water:outline" stroke="#a4bbcc" width="1.0" />
 
     <!-- no-go area boundary -->
@@ -630,9 +616,7 @@
             <!--Only add house numbers where no name exist-->
             <m k="addr:housenumber" zoom-min="18">
                 <m k="name" v="~">
-                    <caption style="bold" fill="#606060" font-family="condensed"
-                        k="addr:housenumber" priority="10" size="10" stroke="#ffffff"
-                        stroke-width="2.0" />
+                    <caption style="bold" fill="#606060" font-family="condensed" k="addr:housenumber" priority="10" size="10" stroke="#ffffff" stroke-width="2.0" />
                 </m>
             </m>
         </m>
@@ -693,8 +677,7 @@
                             <line cap="butt" fix="true" stroke="#c0c0c0" width="1.0" />
                         </m>
 
-                        <m v="pedestrian|service|unclassified|residential|road|living_street"
-                            zoom-min="13">
+                        <m v="pedestrian|service|unclassified|residential|road|living_street" zoom-min="13">
                             <area fill="#ffffff" />
                             <line cap="butt" fix="true" stroke="#d0d0d0" width="1.0" />
                         </m>
@@ -875,8 +858,7 @@
                                 <area fill="#fefefe" />
                                 <line cap="butt" stroke="#c0c0c0" width="0.15" />
                             </m>
-                            <m v="pedestrian|service|unclassified|residential|road|living_street"
-                                zoom-min="13">
+                            <m v="pedestrian|service|unclassified|residential|road|living_street" zoom-min="13">
                                 <area fill="#eeffffff" />
                                 <line cap="butt" fix="true" stroke="#c0c0c0" width="1.0" />
                             </m>
@@ -951,8 +933,7 @@
                     <line cap="butt" fade="12" fix="true" stroke="#ddaa9988" width="1.0" />
                 </m>
                 <m k="railway" v="rail|turntable" zoom-min="15">
-                    <line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#ffffff"
-                        stipple-width="0.8" stroke="#aaa6a4" width="2.0" />
+                    <line cap="butt" fade="12" fix="true" stipple="10" stipple-stroke="#ffffff" stipple-width="0.8" stroke="#aaa6a4" width="2.0" />
                 </m>
 
                 <!-- <m k="railway" v="rail" zoom-max="14" zoom-min="13">
@@ -984,12 +965,10 @@
         <!--<m k="boundary" v="administrative"> -->
         <m k="admin_level">
             <m k="admin_level" v="4">
-                <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0"
-                    stroke="#dadada" width="2.0" />
+                <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="2.0" />
             </m>
             <m k="admin_level" v="2">
-                <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0"
-                    stroke="#bbbbbb" width="2.5" />
+                <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#bbbbbb" width="2.5" />
             </m>
         </m>
         <!-- </m> -->
@@ -1002,8 +981,7 @@
 
         <!-- place -->
         <m k="place" v="locality" zoom-min="17">
-            <caption style="bold" fill="#000000" k="name" size="10" stroke="#ffffff"
-                stroke-width="2.0" />
+            <caption style="bold" fill="#000000" k="name" size="10" stroke="#ffffff" stroke-width="2.0" />
         </m>
 
         <m k="highway" v="track">
@@ -1191,34 +1169,27 @@
         <!-- place -->
         <m k="place">
             <m v="suburb" zoom-max="14">
-                <caption style="italic" fill="#606060" k="name" priority="4" size="17"
-                    stroke="#ffffff" stroke-width="2.0" />
+                <caption style="italic" fill="#606060" k="name" priority="4" size="17" stroke="#ffffff" stroke-width="2.0" />
             </m>
             <m v="village" zoom-max="14">
-                <caption fill="#444411" k="name" priority="3" size="17" stroke="#ffffff"
-                    stroke-width="2.0" />
+                <caption fill="#444411" k="name" priority="3" size="17" stroke="#ffffff" stroke-width="2.0" />
             </m>
             <m v="island" zoom-min="10">
-                <caption style="bold" fill="#000000" k="name" priority="1" size="20"
-                    stroke="#ffffff" stroke-width="2.0" />
+                <caption style="bold" fill="#000000" k="name" priority="1" size="20" stroke="#ffffff" stroke-width="2.0" />
             </m>
             <m v="town">
-                <caption dy="20" fill="#000000" k="name" priority="2" size="19" stroke="#ffffff"
-                    stroke-width="2.0" symbol="town" />
+                <caption dy="20" fill="#000000" k="name" priority="2" size="19" stroke="#ffffff" stroke-width="2.0" symbol="town" />
             </m>
             <m v="city">
                 <m zoom-min="7">
-                    <caption style="bold" dy="14" fill="#000000" k="name" priority="1" size="19"
-                        stroke="#ffffff" stroke-width="2.0" symbol="city" />
+                    <caption style="bold" dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff" stroke-width="2.0" symbol="city" />
                 </m>
                 <m zoom-max="6">
-                    <caption dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff"
-                        stroke-width="2.0" symbol="city" />
+                    <caption dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff" stroke-width="2.0" symbol="city" />
                 </m>
             </m>
             <m v="country">
-                <caption style="bold" fill="#000000" k="name" priority="0" size="20"
-                    stroke="#ffffff" stroke-width="2.0" />
+                <caption style="bold" fill="#000000" k="name" priority="0" size="20" stroke="#ffffff" stroke-width="2.0" />
             </m>
         </m>
 
@@ -1226,14 +1197,12 @@
         <m k="railway">
             <m v="station" zoom-min="14">
                 <!--<circle fill="#af3a3a" radius="6" stroke="#606060" stroke-width="1.5" />-->
-                <caption style="bold" dy="15" fill="#af3a3a" k="name" size="14" stroke="#ffffff"
-                    stroke-width="2.0" />
+                <caption style="bold" dy="15" fill="#af3a3a" k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
             </m>
 
             <m v="halt|tram_stop">
                 <!--<circle fill="#af3a3a" radius="4" stroke="#606060" stroke-width="1.5" />-->
-                <caption style="bold" dy="10" fill="#af3a3a" k="name" size="12" stroke="#ffffff"
-                    stroke-width="2.0" />
+                <caption style="bold" dy="10" fill="#af3a3a" k="name" size="12" stroke="#ffffff" stroke-width="2.0" />
             </m>
         </m>
 
