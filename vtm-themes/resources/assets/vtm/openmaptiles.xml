@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#d8dbcb"
-    map-background-outside="#DDDDDD" base-stroke-width="0.7" version="1" xmlns="http://opensciencemap.org/rendertheme"
-    xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
+<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#d8dbcb" map-background-outside="#DDDDDD" base-stroke-width="0.7" version="1" xmlns="http://opensciencemap.org/rendertheme" xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
     <tag-transform k="render_height" k-lib="height" />
     <tag-transform k="render_min_height" k-lib="min_height" />
@@ -10,50 +8,31 @@
     <style-line cap="butt" fix="true" id="fix" width="1.0" />
 
     <!-- Road Text -->
-    <style-text fill="#606060" font-family="medium" id="road" k="name" priority="9" size="14"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" fill="#606060" id="major-road" k="name" priority="7" size="16"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" fill="#606060" id="road-ref" k="ref" priority="8" size="14"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" style="bold" fill="#ffffff" id="road-ref-caption" k="ref"
-        priority="8" size="12" bg-fill="#6c9f43" />
+    <style-text fill="#606060" font-family="medium" id="road" k="name" priority="9" size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text style="bold" fill="#606060" id="major-road" k="name" priority="7" size="16" stroke="#ffffff" stroke-width="2.0" />
+    <style-text style="bold" fill="#606060" id="road-ref" k="ref" priority="8" size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" style="bold" fill="#ffffff" id="road-ref-caption" k="ref" priority="8" size="12" bg-fill="#6c9f43" />
 
     <!-- Water -->
-    <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-major-water-name"
-        k="name" size="16" />
-    <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-water-name" k="name"
-        size="14" />
+    <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-major-water-name" k="name" size="16" />
+    <style-text caption="true" fill="#2d51bc" font-family="light" id="caption-water-name" k="name" size="14" />
     <style-text fill="#2d51bc" font-family="light" id="river" k="name" size="12" />
 
     <!-- Places -->
-    <style-text style="bold" caption="true" fill="#000000" id="country-caption" k="name"
-        priority="0" size="20" stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="city-lz-caption" k="name" priority="3" size="18"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" caption="true" fill="#000000" id="city-caption" k="name" priority="1"
-        size="18" stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="town-caption" k="name" priority="4" size="18"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="village-caption" k="name" priority="5" size="16"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="suburb-caption" k="name" priority="5" size="16"
-        stroke="#ffffff" stroke-width="2.0" />
-    <style-text caption="true" fill="#000000" id="hamlet-caption" k="name" priority="6" size="14"
-        stroke="#ffffff" stroke-width="2.0" />
+    <style-text style="bold" caption="true" fill="#000000" id="country-caption" k="name" priority="0" size="20" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" fill="#000000" id="city-lz-caption" k="name" priority="3" size="18" stroke="#ffffff" stroke-width="2.0" />
+    <style-text style="bold" caption="true" fill="#000000" id="city-caption" k="name" priority="1" size="18" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" fill="#000000" id="town-caption" k="name" priority="4" size="18" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" fill="#000000" id="village-caption" k="name" priority="5" size="16" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" fill="#000000" id="suburb-caption" k="name" priority="5" size="16" stroke="#ffffff" stroke-width="2.0" />
+    <style-text caption="true" fill="#000000" id="hamlet-caption" k="name" priority="6" size="14" stroke="#ffffff" stroke-width="2.0" />
 
     <!-- Pois -->
-    <style-text caption="true" dy="20" fill="#606060" font-family="medium" id="poi" k="name"
-        size="14" stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" caption="true" dy="12" fill="#4D2F08" id="peak-name-caption" k="name"
-        size="14" stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" caption="true" dy="-12" fill="#4D2F08" id="peak-ele-caption" k="ele"
-        size="12" stroke="#ffffff" stroke-width="2.0" />
-    <style-text style="bold" caption="true" fill="#606060" font-family="condensed"
-        id="housenumber-caption" k="housenumber" priority="12" size="12" />
-    <style-text style="bold" caption="true" fill="#606060" font-family="condensed"
-        id="house-name-caption" k="name" priority="11" size="12" stroke="#ffffff"
-        stroke-width="2.0" />
+    <style-text caption="true" dy="20" fill="#606060" font-family="medium" id="poi" k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text style="bold" caption="true" dy="12" fill="#4D2F08" id="peak-name-caption" k="name" size="14" stroke="#ffffff" stroke-width="2.0" />
+    <style-text style="bold" caption="true" dy="-12" fill="#4D2F08" id="peak-ele-caption" k="ele" size="12" stroke="#ffffff" stroke-width="2.0" />
+    <style-text style="bold" caption="true" fill="#606060" font-family="condensed" id="housenumber-caption" k="housenumber" priority="12" size="12" />
+    <style-text style="bold" caption="true" fill="#606060" font-family="condensed" id="house-name-caption" k="name" priority="11" size="12" stroke="#ffffff" stroke-width="2.0" />
 
     <!-- De Area Styles -->
     <style-area fade="8" fill="#c5c6be" id="de-residential" />
@@ -89,40 +68,27 @@
     <style-line id="de-service" stroke="#ffffff" width="0.5" />
     <style-line cap="butt" id="de-motorway-link" use="de-motorway" width="-0.8" />
     <style-line cap="butt" id="de-trunk-link" use="de-trunk" width="-0.8" />
-    <style-line cap="butt" fix="true" id="de-steps" stipple="2" stipple-stroke="#be6253"
-        stipple-width="1.0" stroke="#aaffffff" width="4.2" />
+    <style-line cap="butt" fix="true" id="de-steps" stipple="2" stipple-stroke="#be6253" stipple-width="1.0" stroke="#aaffffff" width="4.2" />
     <style-line id="de-pedestrian" stroke="#b8b8c1" width="0.5" />
     <style-line cap="butt" fix="true" id="de-rail" stroke="#999999" width="0.9" />
     <!-- Tunnels TODO activate tunnel rendering -->
-    <style-line cap="butt" id="de-motorway-tunnel" stipple="10" stipple-stroke="#c5c6be"
-        use="de-motorway" />
-    <style-line cap="butt" id="de-trunk-tunnel" stipple="10" stipple-stroke="#c5c6be"
-        use="de-trunk" />
-    <style-line cap="butt" id="de-primary-tunnel" stipple="10" stipple-stroke="#c5c6be"
-        use="de-primary" />
-    <style-line cap="butt" id="de-secondary-tunnel" stipple="10" stipple-stroke="#c5c6be"
-        use="de-secondary" />
-    <style-line cap="butt" id="de-tertiary-tunnel" stipple="10" stipple-stroke="#c5c6be"
-        use="de-tertiary" />
-    <style-line cap="butt" id="de-unclassified-tunnel" stipple="10" stipple-stroke="#c5c6be"
-        use="de-unclassified" />
-    <style-line cap="butt" id="de-residential-tunnel" stipple="10" stipple-stroke="#c5c6be"
-        use="de-residential" />
-    <style-line cap="butt" id="de-service-tunnel" stipple="10" stipple-stroke="#c5c6be"
-        use="de-service" />
-    <style-line cap="butt" id="de-motorway-link-tunnel" stipple="10" stipple-stroke="#c5c6be"
-        use="de-motorway-link" />
-    <style-line cap="butt" id="de-trunk-link-tunnel" stipple="10" stipple-stroke="#c5c6be"
-        use="de-trunk-link" />
+    <style-line cap="butt" id="de-motorway-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-motorway" />
+    <style-line cap="butt" id="de-trunk-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-trunk" />
+    <style-line cap="butt" id="de-primary-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-primary" />
+    <style-line cap="butt" id="de-secondary-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-secondary" />
+    <style-line cap="butt" id="de-tertiary-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-tertiary" />
+    <style-line cap="butt" id="de-unclassified-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-unclassified" />
+    <style-line cap="butt" id="de-residential-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-residential" />
+    <style-line cap="butt" id="de-service-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-service" />
+    <style-line cap="butt" id="de-motorway-link-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-motorway-link" />
+    <style-line cap="butt" id="de-trunk-link-tunnel" stipple="10" stipple-stroke="#c5c6be" use="de-trunk-link" />
 
 
     <!-- Not for motorcycle -->
     <!-- track|footway|path|cycleway -->
-    <style-line cap="butt" id="footway" stipple="2" stipple-stroke="#a39b68" stipple-width="0.6"
-        stroke="#aaffffff" width="1.8" />
+    <style-line cap="butt" id="footway" stipple="2" stipple-stroke="#a39b68" stipple-width="0.6" stroke="#aaffffff" width="1.8" />
     <style-line id="highway:track" stipple="3" stipple-stroke="#a39b68" use="footway" width="0.4" />
-    <style-line fix="true" id="highway:path" stipple="2" stipple-stroke="#837b58" use="footway"
-        width="4.2" />
+    <style-line fix="true" id="highway:path" stipple="2" stipple-stroke="#837b58" use="footway" width="4.2" />
 
     <!-- Water -->
     <style-line cap="butt" fix="true" id="water" stroke="#a4bbcc" width="1.0" />
@@ -210,12 +176,10 @@
     <m e="way" k="layer" v="boundary">
         <m k="admin_level">
             <m v="4">
-                <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0"
-                    stroke="#dadada" width="1.5" />
+                <line fix="true" stipple="4" stipple-stroke="#888888" stipple-width="1.0" stroke="#dadada" width="1.5" />
             </m>
             <m v="2">
-                <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0"
-                    stroke="#dadada" width="2" />
+                <line fix="true" stipple="6" stipple-stroke="#647b9c" stipple-width="1.0" stroke="#dadada" width="2" />
             </m>
         </m>
     </m>
@@ -618,4 +582,5 @@
             </m>
         </m>
     </m>
+
 </rendertheme>
