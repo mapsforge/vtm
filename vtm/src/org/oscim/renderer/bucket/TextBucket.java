@@ -108,21 +108,26 @@ public class TextBucket extends TextureBucket {
                 x = 0;
                 y += advanceY;
                 advanceY = (int) (height + 0.5f);
+            }
 
-                if (y + height > TEXTURE_HEIGHT) {
-                    t.offset = offsetIndices;
-                    t.indices = (numIndices - offsetIndices);
-                    offsetIndices = numIndices;
+            /* start a new texture when the cell does not fit, regardless of
+             * whether the label triggered a row break -- a label that fits
+             * horizontally into an existing bottom row would otherwise be
+             * packed past TEXTURE_HEIGHT and its glyphs rasterized clipped
+             * at the bitmap's bottom edge */
+            if (y + height > TEXTURE_HEIGHT) {
+                t.offset = offsetIndices;
+                t.indices = (numIndices - offsetIndices);
+                offsetIndices = numIndices;
 
-                    t.next = pool.get();
-                    t = t.next;
+                t.next = pool.get();
+                t = t.next;
 
-                    mCanvas.setBitmap(t.bitmap);
+                mCanvas.setBitmap(t.bitmap);
 
-                    x = 0;
-                    y = 0;
-                    advanceY = (int) height;
-                }
+                x = 0;
+                y = 0;
+                advanceY = (int) height;
             }
 
             xx = x + mFontPadX;
