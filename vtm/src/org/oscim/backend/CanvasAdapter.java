@@ -77,6 +77,16 @@ public abstract class CanvasAdapter {
     public static float textScale = 1;
 
     /**
+     * Pack text labels so that no label cell exceeds the texture atlas height.
+     * When disabled (default) labels are packed like before: a label that fits
+     * horizontally into an existing bottom row may be rasterized clipped at
+     * the bitmap's bottom edge. When enabled, such a label starts a new
+     * texture instead, trading a possible extra texture (and thus one extra
+     * GL bind + draw call) for correct rendering.
+     */
+    public static boolean correctTextPacking = false;
+
+    /**
      * The user scale.
      */
     public static float userScale = 1;
