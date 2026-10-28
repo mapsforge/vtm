@@ -2,6 +2,11 @@
 
 ## Next version
 
+- Minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/vtm/issues?q=is%3Aclosed+milestone%3A0.32.0)
+
+## Version 0.31.0 (2026-10-28)
+
 - Fix text label rendering [#1314](https://github.com/mapsforge/vtm/pull/1314)
   - `CanvasAdapter.correctTextPacking`
 - Minor improvements and bug fixes
