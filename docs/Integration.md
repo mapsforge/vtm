@@ -70,9 +70,9 @@ runtimeOnly 'org.lwjgl:lwjgl:3.3.1:natives-windows'
 
 ```groovy
 implementation 'org.mapsforge:vtm-hillshading:master-SNAPSHOT@jar'
-implementation 'com.github.mapsforge.mapsforge:mapsforge-core:master-SNAPSHOT@jar'
-implementation 'com.github.mapsforge.mapsforge:mapsforge-map:master-SNAPSHOT@jar'
-implementation 'com.github.mapsforge.mapsforge:mapsforge-map-android:master-SNAPSHOT@jar'
+implementation 'org.mapsforge:mapsforge-core:master-SNAPSHOT@jar'
+implementation 'org.mapsforge:mapsforge-map:master-SNAPSHOT@jar'
+implementation 'org.mapsforge:mapsforge-map-android:master-SNAPSHOT@jar'
 ```
 
 ### Overlays
