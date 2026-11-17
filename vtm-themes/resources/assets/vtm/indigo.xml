@@ -2,7 +2,7 @@
 <rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#0d1a26" map-background-outside="#222222" version="1" xmlns="http://opensciencemap.org/rendertheme" xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
     <!-- This is the OpenGL/VTM "Indigo" theme based on the Biker map theme -->
-    <!-- Version 44 17th July 2026-->
+    <!-- Version 45 15th November 2026-->
 
     <!-- Defines LAYERS Menu -->
     <stylemenu defaultlang="en" defaultvalue="normal" id="menu">
