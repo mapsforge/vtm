@@ -41,6 +41,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -123,6 +124,7 @@ public class HillshadingTileDataSource implements ITileDataSource {
     private void createTile(MapTile tile, ITileDataSink sink, ITileCache cache) {
         QueryResult res = QueryResult.FAILED;
         ITileCache.TileWriter cacheWriter = null;
+        boolean cacheOk = false;
         try {
             final byte zoomLevel = tile.zoomLevel >= 0 ? tile.zoomLevel : 0;
 
@@ -154,8 +156,16 @@ public class HillshadingTileDataSource implements ITileDataSource {
                     deque.addLast(code);
                 }
 
+                boolean allStripsOk = true;
                 while (!deque.isEmpty()) {
-                    deque.pollFirst().get();
+                    if (!Boolean.TRUE.equals(deque.pollFirst().get())) {
+                        allStripsOk = false;
+                    }
+                }
+
+                if (!allStripsOk) {
+                    log.fine(tile + " incomplete shading, not displayed or cached");
+                    return;
                 }
 
                 if (!tileBitmap.isValid()) {
@@ -163,18 +173,34 @@ public class HillshadingTileDataSource implements ITileDataSource {
                     return;
                 }
 
+                // Encode for the cache BEFORE handing the bitmap over: setTileImage()
+                // transfers ownership to the tile loader, which may recycle the bitmap,
+                // so encoding it afterwards raced and threw "Can't compress a recycled
+                // bitmap". A failure here costs only the cache entry, never the tile.
+                byte[] pngBytes = null;
+                if (cache != null) {
+                    try {
+                        pngBytes = tileBitmap.getPngEncodedData();
+                    } catch (Throwable t) {
+                        log.log(Level.SEVERE, tile + " png encode for cache failed", t);
+                    }
+                }
+
                 // Set tile bitmap to sink
                 sink.setTileImage(tileBitmap);
 
                 // Write to cache
-                if (cache != null) {
+                if (cache != null && pngBytes != null) {
                     cacheWriter = cache.writeTile(tile);
                     OutputStream outputStream = cacheWriter.getOutputStream();
                     try {
-                        byte[] pngBytes = tileBitmap.getPngEncodedData();
                         outputStream.write(pngBytes);
+                        cacheOk = true;
                     } catch (IOException e) {
-                        log.severe(e.toString());
+                        // Must not be committed: swallowing this and still reporting
+                        // SUCCESS committed a truncated PNG that was then served from
+                        // disk forever.
+                        log.severe(tile + " cache write failed: " + e);
                     } finally {
                         IOUtils.closeQuietly(outputStream);
                     }
@@ -187,8 +213,11 @@ public class HillshadingTileDataSource implements ITileDataSource {
         } finally {
             boolean ok = (res == QueryResult.SUCCESS);
 
+            // complete() must run for every writer we obtained -- it is what returns
+            // the pooled buffer -- but only commit a write that fully succeeded. A good
+            // tile with a failed cache write still renders.
             if (cacheWriter != null)
-                cacheWriter.complete(ok);
+                cacheWriter.complete(ok && cacheOk);
 
             sink.completed(res);
         }
@@ -226,10 +255,16 @@ public class HillshadingTileDataSource implements ITileDataSource {
                             try {
                                 shadingTile = mHillsRenderConfig.getShadingTile(shadingBottomLat, shadingLeftLon, zoomLevel, pxPerLat, pxPerLon, effectiveColor);
                             } catch (Exception e) {
-                                log.severe(e.toString());
+                                // Must not be swallowed: a load failure is NOT the same
+                                // as "no DEM data here". Swallowed, both arrived at the
+                                // null check below, so a failed cell was skipped and the
+                                // incomplete tile was displayed and cached as a success.
+                                log.log(Level.SEVERE, tile + " shading tile load failed", e);
+                                return false;
                             }
                         }
 
+                        // Genuine no-data (ocean, missing .hgt): skipping is correct.
                         if (shadingTile == null) {
                             continue;
                         }
@@ -307,8 +342,10 @@ public class HillshadingTileDataSource implements ITileDataSource {
                         canvas.drawBitmap(bitmap, 0, 0);
                     }
                 } catch (Throwable t) {
-                    log.severe(t.toString());
+                    log.log(Level.SEVERE, tile + " shading strip failed", t);
+                    return false;
                 }
+
                 return true;
             }
         };
